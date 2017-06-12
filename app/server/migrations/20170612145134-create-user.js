@@ -9,13 +9,13 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       email: {
-        type: Sequelize.VARCHAR
+        type: Sequelize.STRING
       },
       username: {
-        type: Sequelize.VARCHAR
+        type: Sequelize.STRING
       },
       password: {
-        type: Sequelize.VARCHAR
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -27,7 +27,7 @@ module.exports = {
       }
     });
   },
-  down: (queryInterface, Sequelize) => {
+  down: (queryInterface) => {
     return queryInterface.dropTable('Users');
   }
 };

@@ -1,23 +1,10 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "root",
+    "username": "joe1",
+    "password": "1234",
     "database": "postit",
     "host": "127.0.0.1",
-    "dialect": "postgres"
-  },
-  "test": {
-    "username": "postgres",
-    "password": "root",
-    "database": "postit",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
-  },
-  "production": {
-    "username": "postgres",
-    "password": "root",
-    "database": "postit",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "port": 5432
   }
 }

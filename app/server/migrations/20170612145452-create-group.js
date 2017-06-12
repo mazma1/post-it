@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       group_name: {
-        type: Sequelize.VARCHAR
+        type: Sequelize.STRING
       },
       user_id: {
         type: Sequelize.INTEGER
