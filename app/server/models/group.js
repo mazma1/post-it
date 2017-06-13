@@ -1,7 +1,6 @@
 
 module.exports = (sequelize, DataTypes) => {
   const Group = sequelize.define('Group', {
-    id: DataTypes.INTEGER,
     group_name: DataTypes.STRING,
     user_id: DataTypes.INTEGER
   }, {
