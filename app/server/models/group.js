@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     classMethods: {
       associate: (models) => {
-        Group.hasMany(models.Message);
+        Group.hasMany(models.Message, {foreignKey: 'group_id'});
       }
     }
   });

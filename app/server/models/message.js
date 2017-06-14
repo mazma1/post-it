@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     classMethods: {
       associate: (models) => {
-        Message.belongsTo(models.User);
+        Message.belongsTo(models.User, {foreignKey: 'user_id'});
+        // Message.belongsTo(models.group, {foreignKey: 'grou_id'});
       }
     }
   });
