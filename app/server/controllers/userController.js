@@ -1,7 +1,7 @@
 const User = require('../models').User;
 const Group = require('../models').Group;
 const Group_member = require('../models').Group_member;
-const Message= require('../models').Message;
+const Message = require('../models').Message;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -51,7 +51,7 @@ module.exports = {
           res.status(201).send({
             success: true,
             message: 'User successfully logged in.',
-            token: token,
+            token,
             user: user
           });
         } else {
