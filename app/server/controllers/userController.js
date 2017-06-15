@@ -113,13 +113,31 @@ module.exports = {
       const userId = req.decoded.data.id;
       const messageDetail = {
         body: req.body.message,
-        group_id: req.params
-        .group_id,
+        group_id: req.params.group_id,
         user_id: userId
       };
       Message.create(messageDetail)
       .then(message => res.status(201).send(message))
       .catch(error => res.status(400).send(error));
     }
+  },
+
+  // Method to get messages posted to a group
+  getGroupMessages: (req, res) => {
+    if (req.params.group_id) {
+      Message.findAll({
+        where: {
+          group_id: req.params.group_id
+        },
+      })
+      .then((message) => {
+        if (message) {
+          res.status(200).send({ data: message });
+        } else if (message.data.length === 0) {
+          res.status(404).send({ message: 'No message was found for the specified group' });
+        }
+      });
+    }
   }
+
 };
