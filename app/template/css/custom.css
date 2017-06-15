@@ -14,4 +14,19 @@
 .call-to-sign-in {
   padding-top: 16px; }
 
+section.nav-bar {
+  border-bottom: 1px solid grey; }
+  section.nav-bar .brand {
+    padding-top: 8px; }
+  section.nav-bar ul {
+    list-style: none;
+    text-align: right;
+    padding-top: 24px; }
+  section.nav-bar li {
+    display: inline-block;
+    padding: 5px 10px; }
+  section.nav-bar li.username {
+    color: #31708f;
+    font-size: 16px; }
+
 /*# sourceMappingURL=custom.css.map */
