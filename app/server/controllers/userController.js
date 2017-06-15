@@ -1,5 +1,6 @@
 const User = require('../models').User;
 const Group = require('../models').Group;
+const Group_member = require('../models').Group_member;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -8,6 +9,7 @@ const salt = bcrypt.genSaltSync(saltRounds);
 
 module.exports = {
 
+  // Method to signup a user
   signup: (req, res) => {
     if (!req.body.email) {
       res.status(400).send({ message: 'Email is required.' });
@@ -27,6 +29,7 @@ module.exports = {
     }
   },
 
+  // Method to sign in a user
   signin: (req, res) => {
     User.findOne({
       where: {
@@ -57,12 +60,13 @@ module.exports = {
     });
   },
 
+  // Method to create a new group
   group: (req, res) => {
     // res.send(req.decoded); --JSON that contains details of the token owner.
-    const id = req.decoded.data.id;
+    const userId = req.decoded.data.id;
     const groupData = {
       group_name: req.body.group_name,
-      user_id: id
+      user_id: userId
     };
     if (!req.body.group_name) {
       res.status(400).send({ status: false, message: 'Group name is required.' });
@@ -71,5 +75,34 @@ module.exports = {
         .then(group => res.status(201).send(group))
         .catch(error => res.status(400).send(error));
     }
+  },
+
+  // Method to add user to a group
+  addUserToGroup: (req, res) => {
+    if (!req.body.username) {
+      res.send({ status: false, message: 'Username is required.' });
+    } else {
+      User.findOne({
+        where: {
+          username: req.body.username
+        },
+      })
+      .then((user) => {
+        if (user) {
+          const details = {
+            group_id: req.params.group_id,
+            user_id: user.id
+          };
+          Group_member.create(details)
+          .then(group_member => res.status(201).send(group_member))
+          .catch(error => res.status(400).send(error));
+          // res.send(details);
+        } else {
+          res.status(404).send({ status: false, message: 'User does not exist' });
+        }
+      });
+    }
   }
+
+  // Method to post message to a group
 };
