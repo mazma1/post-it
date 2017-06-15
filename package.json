@@ -11,9 +11,6 @@
     "build": "babel --presets es2015 app/template/js/src -d app/template/js/dist",
     "start": "node app/server/bin/www"
   },
-  "engines": {
-    "node": "4.2.6"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mazma1/post-it.git"
