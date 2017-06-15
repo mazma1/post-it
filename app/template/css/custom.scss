@@ -1,5 +1,6 @@
 $mt72 : 72px;
 $pt32 : 32px;
+$mt16 : 16px;
 $pad40 : 40px;
 
 .signup-container {
@@ -9,4 +10,16 @@ $pad40 : 40px;
 
 .signup-form {
   padding-top: $pt32;
+}
+
+.signup-btn {
+  margin-top: $mt16;
+}
+
+.jumbotron p {
+  font-size: $mt16;
+}  
+
+.call-to-sign-in {
+  padding-top: $mt16;
 }
