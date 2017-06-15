@@ -1,6 +1,7 @@
 const User = require('../models').User;
 const Group = require('../models').Group;
 const Group_member = require('../models').Group_member;
+const Message= require('../models').Message;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -102,7 +103,23 @@ module.exports = {
         }
       });
     }
-  }
+  },
 
   // Method to post message to a group
+  postMessageToGroup: (req, res) => {
+    if (!req.body.message) {
+      res.send({ status: false, message: 'Message is required.' });
+    } else {
+      const userId = req.decoded.data.id;
+      const messageDetail = {
+        body: req.body.message,
+        group_id: req.params
+        .group_id,
+        user_id: userId
+      };
+      Message.create(messageDetail)
+      .then(message => res.status(201).send(message))
+      .catch(error => res.status(400).send(error));
+    }
+  }
 };
