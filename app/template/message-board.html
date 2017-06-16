@@ -9,24 +9,46 @@
   <title>Message Board</title>
 </head>
 <body>
-  <div class="container">
-
-    <section class="nav-bar">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-3 brand">
-            <h2><strong>Post It</strong></h2>
-          </div>
-
-          <div class="col-md-9">
-            <ul>
-              <li class="username"><i class="glyphicon glyphicon-user"></i> @mazma</li>
-              <li><button type="submit" class="btn btn-danger signout-btn">Sign Out</button></li>
-            </ul>
-          </div>
-        </div>
+  <div >
+    <aside>  
+      <div  style="background-color:#C0C0C0;" id="sidebar">
+        <ul class="nav nav-pills nav-stacked">
+          <li id="brand-name">Post It</li>
+          <li role="presentation" class="active"><a href="#">Group 1</a></li>
+          <li role="presentation"><a href="#">Group 2</a></li>
+          <li role="presentation"><a href="#">Group 3</a></li>
+          <li role="presentation"><a href="#">Group 4</a></li>
+          <li role="presentation"><a href="#">Group 5</a></li>
+        </ul>
       </div>
-    </section>
+    </aside> 
+     <!--Sidebar-->
+
+     <!-- Page Content -->
+     <main class="col-md-9" id="content-area">
+        <!--Nav bar-->
+        <section class="nav-bar">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-3 brand">
+                <h3>Group Name</h3>
+              </div>
+
+              <div class="col-md-9">
+                <ul>
+                  <li class="username"><i class="glyphicon glyphicon-user"></i> @mazma</li>
+                  <li><button type="submit" class="btn btn-info signout-btn">Add User</button></li>
+                  <li><button type="submit" class="btn btn-danger signout-btn">Sign Out</button></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!--Nav Bar-->
+        Content area
+     </main>
+
+    <!--Content area-->
 
   </div>
   

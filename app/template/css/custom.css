@@ -30,3 +30,24 @@ section.nav-bar {
     font-size: 16px; }
 
 /*# sourceMappingURL=custom.css.map */
+
+#brand-name {
+  font-size: 26px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+#sidebar {
+    width: 280px;
+    position: fixed;
+    top: 0;
+    height:100%;
+    background: blue;
+}
+
+
+#content-area {
+    position:relative;
+    left: 280px; // width of your side box.
+}
