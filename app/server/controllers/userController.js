@@ -1,5 +1,11 @@
 const User = require('../models').User;
+<<<<<<< HEAD
 
+=======
+const Group = require('../models').Group;
+const Group_member = require('../models').Group_member;
+const Message = require('../models').Message;
+>>>>>>> 800f203c29cc72b50ce96bce5be53109460ef0e4
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -72,7 +78,12 @@ module.exports = {
           res.status(201).send({
             success: true,
             message: 'User successfully logged in.',
+<<<<<<< HEAD
             token
+=======
+            token,
+            user: user
+>>>>>>> 800f203c29cc72b50ce96bce5be53109460ef0e4
           });
         } else {
           res.status(401).send({ success: false, message: 'Invalid username or password.' });
