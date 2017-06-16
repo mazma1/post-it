@@ -61,7 +61,6 @@ module.exports = {
     })
     .then((user, err) => {
       if (err) throw err;
-
       if (!user) {
         res.status(401).send({ success: false, message: 'Invalid username or password.' });
       } else if (user) {
@@ -73,7 +72,7 @@ module.exports = {
           res.status(201).send({
             success: true,
             message: 'User successfully logged in.',
-            token: token
+            token
           });
         } else {
           res.status(401).send({ success: false, message: 'Invalid username or password.' });

@@ -1,6 +1,7 @@
 const Group = require('../models').Group;
 const Group_member = require('../models').Group_member;
 const Message= require('../models').Message;
+const User = require('../models').User;
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -10,7 +11,7 @@ const salt = bcrypt.genSaltSync(saltRounds);
 
 module.exports = {
   // Method to create a new group
-  group: (req, res) => {
+  createGroup: (req, res) => {
     // res.send(req.decoded); --JSON that contains details of the token owner.
     const userId = req.decoded.data.id;
     const groupData = {
@@ -20,9 +21,25 @@ module.exports = {
     if (!req.body.group_name) {
       res.status(400).send({ status: false, message: 'Group name is required.' });
     } else {
-      Group.create(groupData)
-        .then(group => res.status(201).send(group))
-        .catch(error => res.status(400).send(error));
+      Group.findOne({
+        where: {
+          group_name: req.body.group_name
+        },
+      })
+      .then((group) => {
+        if (group) {
+          res.status(400).send({ success: false, message: 'Group already exists' });
+        } else {
+          Group.create(groupData)
+          .then(group => res.status(201).send({
+            success: true,
+            message: 'Group was successfully created',
+            groupName: group.group_name,
+            groupOwner: group.user_id
+          }))
+          .catch(error => res.status(400).send(error));
+        }
+      });
     }
   },
 
@@ -43,7 +60,10 @@ module.exports = {
             user_id: user.id
           };
           Group_member.create(details)
-          .then(group_member => res.status(201).send(group_member))
+          .then(groupMember => res.status(201).send({
+            success: true,
+            message: 'User successfully added to group',
+          }))
           .catch(error => res.status(400).send(error));
           // res.send(details);
         } else {
@@ -65,7 +85,12 @@ module.exports = {
         user_id: userId
       };
       Message.create(messageDetail)
-      .then(message => res.status(201).send(message))
+      .then(message => res.status(201).send({
+        success: true,
+        message: 'Message was successfully sent',
+        timeSent: message.createdAt,
+        messageBody: message.body
+      }))
       .catch(error => res.status(400).send(error));
     }
   },
@@ -80,11 +105,11 @@ module.exports = {
       })
       .then((message) => {
         if (message) {
-          res.status(200).send({ data: message });
-        } else if (message.data.length === 0) {
+          res.status(200).send({ message });
+        } else if (JSON.stringify(message) === '{}') {
           res.status(404).send({ message: 'No message was found for the specified group' });
         }
       });
     }
   }
-}  
+};
