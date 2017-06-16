@@ -43,11 +43,59 @@ section.nav-bar {
     position: fixed;
     top: 0;
     height:100%;
-    background: blue;
+    background: #C0C0C0;
+    overflow: auto;
 }
 
 
 #content-area {
     position:relative;
     left: 280px; // width of your side box.
+}
+
+.msg_card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 24px;
+}
+
+.msg_body {
+  padding-top: 8px;
+}
+
+.nav_bar {
+  position: absolute; 
+  top:0px; 
+  left: 0px; 
+  width: 100%; 
+  height: 100px; 
+  background-color: #aabbff; 
+  overflow: hidden; 
+} 
+
+.nav-container {
+  width: 77%;
+  position: fixed;
+  background-color: #ffffff;
+  z-index: 99;
+  box-shadow: 0 4px 6px -6px black;
+ } 
+
+ .msg_card_padding {
+   padding-top: 68px;
+ }
+
+ .footer {
+    position: fixed;
+    bottom: 0;
+    width: 78%;
+    right: 0;
+    padding-bottom: 8px;
+    padding-right: 70px;
+    background-color: white;
+}
+
+.footer_padding {
+  padding-bottom: 90px;
 }
