@@ -19,7 +19,7 @@ module.exports = {
       user_id: userId
     };
     if (!req.body.group_name) {
-      res.status(400).send({ status: false, message: 'Group name is required.' });
+      res.status(400).send({ success: false, message: 'Group name is required.' });
     } else {
       Group.findOne({
         where: {
@@ -46,7 +46,7 @@ module.exports = {
   // Method to add user to a group
   addUserToGroup: (req, res) => {
     if (!req.body.username) {
-      res.send({ status: false, message: 'Username is required.' });
+      res.status(400).send({ status: false, message: 'Username is required.' });
     } else {
       User.findOne({
         where: {
@@ -55,19 +55,29 @@ module.exports = {
       })
       .then((user) => {
         if (user) {
-          const details = {
-            group_id: req.params.group_id,
-            user_id: user.id
-          };
-          Group_member.create(details)
-          .then(groupMember => res.status(201).send({
-            success: true,
-            message: 'User successfully added to group',
-          }))
-          .catch(error => res.status(400).send(error));
-          // res.send(details);
+          Group_member.findOne({
+            where: {
+              user_id: user.id
+            },
+          })
+          .then((member) => {
+            if (member) {
+              res.status(400).send({ success: false, message: 'User has already been added to group' });
+            } else {
+              const details = {
+                group_id: req.params.group_id,
+                user_id: user.id
+              };
+              Group_member.create(details)
+              .then(groupMember => res.status(201).send({
+                success: true,
+                message: 'User successfully added to group',
+              }))
+              .catch(error => res.status(400).send(error));
+            }
+          });
         } else {
-          res.status(404).send({ status: false, message: 'User does not exist' });
+          res.status(404).send({ success: false, message: 'User does not exist' });
         }
       });
     }
