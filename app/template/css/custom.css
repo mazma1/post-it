@@ -1,0 +1,105 @@
+.signup-container {
+  margin-top: 72px;
+  padding: 40px; }
+
+.signup-form {
+  padding-top: 32px; }
+
+.signup-btn {
+  margin-top: 16px; }
+
+.jumbotron p {
+  font-size: 16px; }
+
+.call-to-sign-in {
+  padding-top: 16px; }
+
+section.nav-bar {
+  border-bottom: 1px solid grey; }
+  section.nav-bar .brand {
+    padding-top: 8px; }
+  section.nav-bar ul {
+    list-style: none;
+    text-align: right;
+    padding-top: 24px; }
+  section.nav-bar li {
+    display: inline-block;
+    padding: 5px 10px; }
+  section.nav-bar li.username {
+    color: #31708f;
+    font-size: 16px; }
+
+/*# sourceMappingURL=custom.css.map */
+
+#brand-name {
+  font-size: 26px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+#sidebar {
+    width: 280px;
+    position: fixed;
+    top: 0;
+    height:100%;
+    background: #C0C0C0;
+    overflow: auto;
+}
+
+
+#content-area {
+    position:relative;
+    left: 280px; // width of your side box.
+}
+
+.msg_card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 24px;
+}
+
+.msg_body {
+  padding-top: 8px;
+}
+
+.nav_bar {
+  position: absolute; 
+  top:0px; 
+  left: 0px; 
+  width: 100%; 
+  height: 100px; 
+  background-color: #aabbff; 
+  overflow: hidden; 
+} 
+
+.nav-container {
+  width: 77%;
+  position: fixed;
+  background-color: #ffffff;
+  z-index: 99;
+  box-shadow: 0 4px 6px -6px black;
+ } 
+
+ .msg_card_padding {
+   padding-top: 68px;
+ }
+
+ .footer {
+    position: fixed;
+    bottom: 0;
+    width: 78%;
+    right: 0;
+    padding-bottom: 8px;
+    padding-right: 70px;
+    background-color: white;
+}
+
+.footer_padding {
+  padding-bottom: 90px;
+}
+
+.auth {
+  background-color: #5b7dde;
+}

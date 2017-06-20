@@ -1,0 +1,50 @@
+$pt8 : 8px;
+$mt16 : 16px;
+$pt24 : 24px;
+$pt32 : 32px;
+$pad40 : 40px;
+$mt72 : 72px;
+$blue : #31708f;
+
+
+.signup-container {
+  margin-top: $mt72;
+  padding: $pad40;
+}
+
+.signup-form {
+  padding-top: $pt32;
+}
+
+.signup-btn {
+  margin-top: $mt16;
+}
+
+.jumbotron p {
+  font-size: $mt16;
+}  
+
+.call-to-sign-in {
+  padding-top: $mt16;
+}
+
+section.nav-bar {
+  border-bottom : 1px solid grey;
+  .brand {
+    padding-top: $pt8;
+  }
+  ul {
+    list-style: none;
+    text-align: right;
+    padding-top: $pt24;
+  }
+  li {
+    display: inline-block;
+    padding: 5px 10px;
+  }
+  li.username {
+    color: $blue;
+    font-size: $mt16;
+  }
+}
+
