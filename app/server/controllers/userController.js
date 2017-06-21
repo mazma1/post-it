@@ -2,6 +2,7 @@ const User = require('../models').User;
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const validator = require('validator');
 
 const saltRounds = 7;
 const salt = bcrypt.genSaltSync(saltRounds);
@@ -12,6 +13,8 @@ module.exports = {
   signup: (req, res) => {
     if (!req.body.email) {
       res.status(400).send({ success: false, message: 'Email is required' });
+    } else if (!validator.isEmail(req.body.email)) {
+      res.status(400).send({ success: false, message: 'Incorrect email syntax' });
     } else if (!req.body.username) {
       res.status(400).send({ success: false, message: 'Username is required' });
     } else if (!req.body.password) {

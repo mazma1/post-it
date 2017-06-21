@@ -45,10 +45,10 @@ describe('Users sign up', () => {
           });
     });
 
-    it('it should return 400 for existing user', (done) => {
+    it('it should return 400 for incorrect email syntax', (done) => {
       const user = {
-        email: 'maryx@gmail.com',
-        username: 'maryx',
+        email: 'maryxgmail.com',
+        username: 'maryx1',
         password: '1234'
       };
       chai.request(app)
@@ -57,7 +57,7 @@ describe('Users sign up', () => {
           .end((err, res) => {
             res.status.should.equal(400);
             res.body.should.be.a('object');
-            res.body.should.have.property('message').eql('Username already exists');
+            res.body.should.have.property('message').eql('Incorrect email syntax');
             done();
           });
     });

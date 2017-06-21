@@ -9,7 +9,7 @@
   "scripts": {
     "start:dev": "nodemon ./app/server/bin/www",
     "build": "babel --presets es2015 app/template/js/src -d app/template/js/dist",
-    "test": "mocha tests/tests.js",
+    "test": "mocha tests/",
     "start": "node app/server/bin/www",
     "reset_db": "NODE_ENV=production sequelize db:migrate:undo:all && NODE_ENV=production sequelize db:migrate:all"
   },
@@ -49,6 +49,7 @@
     "pg-hstore": "^2.3.2",
     "sequelize": "^3.23.0",
     "sequelize-cli": "^2.7.0",
-    "uuid": "^3.0.1"
+    "uuid": "^3.0.1",
+    "validator": "^7.0.0"
   }
 }
