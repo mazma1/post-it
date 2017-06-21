@@ -39,6 +39,7 @@
     "bcrypt": "^1.0.2",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.2",
+    "config": "^1.26.1",
     "dotenv": "^4.0.0",
     "express": "^4.15.3",
     "jsonwebtoken": "^7.4.1",
@@ -47,7 +48,7 @@
     "pg": "^6.2.4",
     "pg-hstore": "^2.3.2",
     "sequelize": "^3.23.0",
-    "uuid": "^3.0.1",
-    "sequelize-cli": "^2.7.0"
+    "sequelize-cli": "^2.7.0",
+    "uuid": "^3.0.1"
   }
 }
