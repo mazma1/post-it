@@ -57,30 +57,34 @@ module.exports = {
 
   // Method to sign in a user
   signin: (req, res) => {
-    User.findOne({
-      where: {
-        username: req.body.username
-      },
-    })
-    .then((user, err) => {
-      if (err) throw err;
-      if (!user) {
-        res.status(401).send({ success: false, message: 'Invalid username or password.' });
-      } else if (user) {
-        if (bcrypt.compareSync(req.body.password, user.password)) {
-          // if user is found and password is right, create a token
-          const token = jwt.sign({ data: user }, process.env.TOKEN_SECRET, { expiresIn: 1440 });
+    if (!req.body.username && !req.body.password) {
+      res.status(401).send({ success: false, message: 'Enter a valid username and password' });
+    } else {
+      User.findOne({
+        where: {
+          username: req.body.username
+        },
+      })
+      .then((user, err) => {
+        if (err) throw err;
+        if (!user) {
+          res.status(401).send({ success: false, message: 'Invalid username or password' });
+        } else if (user) {
+          if (bcrypt.compareSync(req.body.password, user.password)) {
+            // if user is found and password is right, create a token
+            const token = jwt.sign({ data: user }, process.env.TOKEN_SECRET, { expiresIn: 1440 });
 
-          // return the information including token as JSON
-          res.status(201).send({
-            success: true,
-            message: 'User successfully logged in.',
-            token
-          });
-        } else {
-          res.status(401).send({ success: false, message: 'Invalid username or password.' });
+            // return the information including token as JSON
+            res.status(201).send({
+              success: true,
+              message: 'User successfully logged in',
+              token
+            });
+          } else {
+            res.status(401).send({ success: false, message: 'Invalid username or password' });
+          }
         }
-      }
-    });
+      });
+    }
   },
 };

@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 const saltRounds = 7;
 const salt = bcrypt.genSaltSync(saltRounds);
 
-describe('Users sign up', () => {
+describe('POST /api/user/signup', () => {
   // This function will run before every test to clear database
   before((done) => {
     User.sync({ force: true }) // drops table and re-creates it
@@ -27,8 +27,8 @@ describe('Users sign up', () => {
       });
   });
 
-  describe('/POST New User', () => {
-    it('it should add a new user to the db', (done) => {
+  describe('status 201', () => {
+    it('returns successfully signed up user', (done) => {
       const user = {
         email: 'maryx@gmail.com',
         username: 'maryx',
@@ -44,8 +44,10 @@ describe('Users sign up', () => {
             done();
           });
     });
+  });
 
-    it('it should return 400 for incorrect email syntax', (done) => {
+  describe('status 400', () => {
+    it('throws error for incorrect email syntax', (done) => {
       const user = {
         email: 'maryxgmail.com',
         username: 'maryx1',
@@ -62,7 +64,7 @@ describe('Users sign up', () => {
           });
     });
 
-    it('it should return 400 for missing email', (done) => {
+    it('throws error for missing email', (done) => {
       const user = {
         username: 'maryx',
         password: '1234'
@@ -78,7 +80,7 @@ describe('Users sign up', () => {
           });
     });
 
-    it('it should return 400 for missing username', (done) => {
+    it('throws error for missing username', (done) => {
       const user = {
         email: 'maryx@gmail.com',
         password: '1234'
@@ -94,7 +96,7 @@ describe('Users sign up', () => {
           });
     });
 
-    it('it should return 400 for missing password', (done) => {
+    it('throws error for missing password', (done) => {
       const user = {
         email: 'maryx@gmail.com',
         username: 'maryx',
