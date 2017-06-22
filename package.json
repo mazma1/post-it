@@ -9,8 +9,8 @@
   "scripts": {
     "start:dev": "nodemon ./app/server/bin/www",
     "build": "babel --presets es2015 app/template/js/src -d app/template/js/dist",
-    "test": "./node_modules/.bin/mocha tests/",
-    "coverage": "node node_modules/.bin/istanbul cover _mocha -- -R spec",
+    "test": "./node_modules/.bin/mocha tests/*.js",
+    "coverage": "node node_modules/.bin/istanbul cover _mocha tests/*tests.js",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
     "start": "node app/server/bin/www",
     "reset_db": "NODE_ENV=production sequelize db:migrate:undo:all && NODE_ENV=production sequelize db:migrate:all"
