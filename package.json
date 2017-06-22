@@ -9,7 +9,7 @@
   "scripts": {
     "start:dev": "nodemon ./app/server/bin/www",
     "build": "babel --presets es2015 app/template/js/src -d app/template/js/dist",
-    "test": "NODE_ENV=test mocha tests/",
+    "test": "./node_modules/.bin/mocha tests/",
     "coverage": "node node_modules/.bin/istanbul cover _mocha -- -R spec",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
     "start": "node app/server/bin/www",
