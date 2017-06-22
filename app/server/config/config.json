@@ -8,11 +8,20 @@
     "port": 5432
   },
 
+  "test": {
+    "username": "joe1",
+    "password": "1234",
+    "database": "postit",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "port": 5432
+  },
+
   "production": {
-    "username": "mghlmknptrjeux",
-    "password": "d32c40566201dc09cc451b5a43ae6517a1105352227a7f6dc6810b827dc8f52d",
-    "database": "d1lj7qbgsbc2tl",
-    "host": "ec2-23-21-246-11.compute-1.amazonaws.com",
+    "username": "process.env.PRODUCTION_USERNAME",
+    "password": "process.env.PRODUCTION_PASSWORD",
+    "database": "process.env.PRODUCTION_DATABASE",
+    "host": "process.env.PRODUCTION_HOST",
     "dialect":"postgres",
     "protocol":"postgres",
     "port":"5432"
