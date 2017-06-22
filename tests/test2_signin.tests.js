@@ -2,8 +2,6 @@ process.env.NODE_ENV = 'test';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../app/server/app.js');
-const bcrypt = require('bcrypt');
-const User = require('../app/server/models').User;
 
 const should = chai.should();
 chai.use(chaiHttp);
