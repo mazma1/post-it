@@ -3,7 +3,7 @@ const Group_member = require('../models').Group_member;
 const Message= require('../models').Message;
 const User = require('../models').User;
 
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const saltRounds = 7;
