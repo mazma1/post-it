@@ -11,6 +11,7 @@
     "build": "babel --presets es2015 app/template/js/src -d app/template/js/dist",
     "test": "NODE_ENV=test mocha tests/",
     "coverage": "node node_modules/.bin/istanbul cover _mocha -- -R spec",
+    "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
     "start": "node app/server/bin/www",
     "reset_db": "NODE_ENV=production sequelize db:migrate:undo:all && NODE_ENV=production sequelize db:migrate:all"
   },
@@ -41,8 +42,6 @@
     "supertest": "^3.0.0"
   },
   "dependencies": {
-    "bcrypt": "^1.0.2",
-    "bcrypt-nodejs": "0.0.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
     "config": "^1.26.1",

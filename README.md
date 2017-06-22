@@ -1,5 +1,7 @@
 # Post It
 A simple Node.js application that allows friends and colleagues create groups for messaging
+[![Build Status](https://travis-ci.org/mazma1/post-it.svg?branch=master)](https://travis-ci.org/mazma1/post-it)
+[![Coverage Status](https://coveralls.io/repos/github/mazma1/post-it/badge.svg?branch=master)](https://coveralls.io/github/mazma1/post-it?branch=master)
 ## Structure
 Post it is a REST API that allows users do the following:
 1. Sign up and log in to their accounts.
