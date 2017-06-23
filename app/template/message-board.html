@@ -5,15 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="css/materialize.min.css"/>
   <link rel="stylesheet" href="css/custom.css">
-  <script src="js/bootstrap.min.js"></script>
+  
   <title>Message Board</title>
 </head>
 <body>
   <div >
+    <!--Start: Sidebar-->
     <aside>  
       <div id="sidebar">
-        <ul class="nav nav-pills nav-stacked">
+        <ul class="nav nav-pills nav-stacked side-nav" id="slide-out">
           <li id="brand-name">Post It</li>
           <li role="presentation" class="active"><a href="#">Group 1</a></li>
           <li role="presentation"><a href="#">Group 2</a></li>
@@ -21,101 +24,105 @@
           <li role="presentation"><a href="#">Group 4</a></li>
           <li role="presentation"><a href="#">Group 5</a></li>
         </ul>
+        <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
       </div>
     </aside> 
-     <!--Sidebar-->
+    <!--End: Sidebar-->
 
-     <!-- Page Content -->
-     <main class="col-md-9" id="content-area">
-        <!--Nav bar-->
-        <section class="nav-bar">
-          <div class="nav-container">
-            <div class="row">
-              <div class="col-md-3 brand">
-                <h3>Group Name</h3>
-              </div>
+    <!-- Page Content -->
+    <main class="col-md-9" id="content-area">
+      <!--Start: Nav bar-->
+      <section class="nav-bar">
+        <div class="nav-container">
+          <div class="row">
+            <div class="col-md-3 brand">
+              <h4>Group Name</h4>
+            </div>
 
-              <div class="col-md-9">
-                <ul>
-                  <li class="username"><i class="glyphicon glyphicon-user"></i> @mazma</li>
-                  <button type="" class="btn btn-info signout-btn" data-toggle="modal" data-target="#addUser">Add User</button>
-                  <li><button type="submit" class="btn btn-danger signout-btn">Sign Out</button></li>
-                </ul>
-              </div>
+            <div class="col-md-9">
+              <ul>
+                <li class="username"><i class="glyphicon glyphicon-user"></i> @mazma</li>
+                <button type="" class="btn waves-effect waves-light blue lighten-1" data-toggle="modal" data-target="#addUser">Add User</button>
+                <li><button type="submit" class="btn waves-effect waves-light red darken-2">Sign Out</button></li>
+              </ul>
             </div>
           </div>
-        </section>
-        <!--Nav Bar-->
+        </div>
+      </section>
+      <!--End: Nav Bar-->
+
+      <!--Start: Message content area-->
+      <section>
         <div class="msg_card_padding"></div>
-        <div class="msg_card">
+        <div class="card-panel">
           <div>
-            <span><strong>@mazma</strong></span> <span>2:00pm</span>
+            <span class="blue-text text-darken-2"><b>@mazma</b></span> <span class="blue-text text-darken-2">2:00pm</span>
           </div>
           <p class="msg_body">Hello ladies, who will be attending the Google I/O event on tommorrow?</p>
         </div>
 
-        <div class="msg_card">
+        <div class="card-panel">
           <div>
-            <span><strong>@oyinda</strong></span> <span>2:13pm</span>
+            <span class="blue-text text-darken-2"><b>@oyinda</b></span> <span class="blue-text text-darken-2">2:13pm</span>
           </div>
           <p class="msg_body">Hey, not me! I didn't get to sleep last night!! :(</p>
         </div>
 
-        <div class="msg_card">
+        <div class="card-panel">
           <div>
-            <span><strong>@mazma</strong></span> <span>12:49pm</span>
+            <span class="blue-text text-darken-2"><b>@mazma</b></span> <span class="blue-text text-darken-2">2:00pm</span>
           </div>
-          <p class="msg_body">Hello ladies, who will be attending the Google I/O event on Saturday?</p>
+          <p class="msg_body">Hello ladies, who will be attending the Google I/O event on tommorrow?</p>
         </div>
 
-        <div class="msg_card">
+        <div class="card-panel">
           <div>
-            <span><strong>@mazma</strong></span> <span>12:49pm</span>
+            <span class="blue-text text-darken-2"><b>@oyinda</b></span> <span class="blue-text text-darken-2">2:13pm</span>
           </div>
-          <p class="msg_body">Hello ladies, who will be attending the Google I/O event on Saturday?</p>
+          <p class="msg_body">Hey, not me! I didn't get to sleep last night!! :(</p>
         </div>
 
-        <div class="msg_card">
+        <div class="card-panel">
           <div>
-            <span><strong>@mazma</strong></span> <span>12:49pm</span>
+            <span class="blue-text text-darken-2"><b>@mazma</b></span> <span class="blue-text text-darken-2">2:00pm</span>
           </div>
-          <p class="msg_body">Hello ladies, who will be attending the Google I/O event on Saturday?</p>
+          <p class="msg_body">Hello ladies, who will be attending the Google I/O event on tommorrow?</p>
         </div>
 
-        <div class="msg_card">
+        <div class="card-panel">
           <div>
-            <span><strong>@mazma</strong></span> <span>12:49pm</span>
+            <span class="blue-text text-darken-2"><b>@oyinda</b></span> <span class="blue-text text-darken-2">2:13pm</span>
           </div>
-          <p class="msg_body">Hello ladies, who will be attending the Google I/O event on Saturday?</p>
+          <p class="msg_body">Hey, not me! I didn't get to sleep last night!! :(</p>
         </div>
 
-        <div class="msg_card">
+        <div class="card-panel">
           <div>
-            <span><strong>@mazma</strong></span> <span>12:49pm</span>
+            <span class="blue-text text-darken-2"><b>@mazma</b></span> <span class="blue-text text-darken-2">2:00pm</span>
           </div>
-          <p class="msg_body">Hello ladies, who will be attending the Google I/O event on Saturday?</p>
+          <p class="msg_body">Hello ladies, who will be attending the Google I/O event on tommorrow?</p>
         </div>
+      </section>  
+      <!--End: Message content area-->    
+    </main>
 
-        <div class="footer_padding"></div>
-     </main>
-
-    <!--Content area-->
+    <!--Start: Enter your message area-->
     <div class="footer">
       <div class="footer-container">
         <form class="form-horizontal">
           <div class="form-group">
             <div class="col-sm-11">
-              <input type="email" class="form-control" id="groupMessage" placeholder="Enter your message...">
+              <input type="text" class="form-control" id="groupMessage" placeholder="Enter your message...">
             </div>
 
-            <div class="col-sm-1">
-            <button type="submit" class="btn btn-primary">Send</button>
-          </div>  
+            <div class="col-sm-1 msg-send-btn">
+              <button type="submit" class="btn waves-effect waves-light blue lighten-1">Send</button>
+            </div>  
           </div>     
         </form>
        </div> 
     </div>
-
+    <!--End: Enter your message area-->
   </div>
 
   <!--Add user modal-->
@@ -136,6 +143,12 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
-  
+
+
+  <!--Import jQuery before materialize.js-->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="js/materialize.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+
 </body>
 </html>

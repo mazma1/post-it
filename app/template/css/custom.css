@@ -49,8 +49,9 @@ section.nav-bar {
 
 
 #content-area {
-    position:relative;
-    left: 280px; // width of your side box.
+  width: 78%;
+  position:relative;
+  left: 280px; // width of your side box.
 }
 
 .msg_card {
@@ -83,7 +84,7 @@ section.nav-bar {
  } 
 
  .msg_card_padding {
-   padding-top: 68px;
+   padding-top: 100px;
  }
 
  .footer {
@@ -92,14 +93,36 @@ section.nav-bar {
     width: 78%;
     right: 0;
     padding-bottom: 8px;
-    padding-right: 70px;
+    padding-right: 65px;
+    margin-right: 10px;
     background-color: white;
+    box-shadow: 0 -4px 6px -6px black;
 }
 
-.footer_padding {
-  padding-bottom: 90px;
+.footer-container{
+  padding-left: 12px;
 }
 
 .auth {
   background-color: #5b7dde;
+}
+
+.card-panel {
+  padding: 10px;
+  margin: 1.5rem 0 1rem 1rem;
+}
+
+.msg-send-btn {
+  padding-left: 0;
+  padding-top: 8px;
+}
+
+input[type=text]:focus {
+  border-bottom: 1px solid #42a5f5;
+  box-shadow: 0 1px 0 0 #42a5f5;
+}
+
+input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):focus:not([readonly]) {
+  border-bottom: 1px solid #42a5f5;
+  box-shadow: 0 1px 0 0 #42a5f5;
 }
