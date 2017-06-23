@@ -91,7 +91,7 @@ section.nav-bar {
     position: fixed;
     bottom: 0;
     width: 78%;
-    right: 0;
+    /*right: 0;*/
     padding-bottom: 8px;
     padding-right: 65px;
     margin-right: 10px;
@@ -226,3 +226,25 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
     width: 70%;
   }
 } 
+
+@media screen and (max-width: 1317px) and (min-width: 1285px) {
+  .footer {
+    padding-right: 90px;
+  }
+} 
+
+@media screen and (max-width: 1284px) and (min-width: 1200px) {
+  .footer {
+    padding-right: 110px;
+  }
+} 
+
+@media screen and (max-width: 1070px) and (min-width: 992px) {
+  .footer {
+    padding-right: 105px;
+  }
+} 
+
+body {
+  overflow-x: hidden;
+}
