@@ -132,32 +132,97 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
 }
 
 @media (max-width: 767px) {
-    #sidebar {
-        position: relative;
-        width: 100%;
-        margin-bottom: 10px;
-    }
-    #sidebar .toggle-btn {
-        display: block;
-        cursor: pointer;
-        position: absolute;
-        right: 10px;
-        top: 10px;
-        z-index: 10 !important;
-        padding: 3px;
-        background-color: #ffffff;
-        color: #000;
-        width: 40px;
-        text-align: center;
-    }
-    #brand-name {
-        text-align: left !important;
-        font-size: 22px;
-        padding-left: 20px;
-        line-height: 50px !important;
-    }
+  #sidebar {
+      position: relative;
+      width: 100%;
+      margin-bottom: 10px;
+  }
+  #sidebar .toggle-btn {
+      display: block;
+      cursor: pointer;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      z-index: 10 !important;
+      padding: 3px;
+      background-color: #ffffff;
+      color: #000;
+      width: 40px;
+      text-align: center;
+  }
+  #brand-name {
+      text-align: left !important;
+      font-size: 22px;
+      padding-left: 20px;
+      line-height: 50px !important;
+  }
 
-    #content-area {
+  #content-area {
     left: 50px;
   }
 }
+
+@media screen and (max-width: 1263px) and (min-width: 1153px) {
+  .nav-container {
+    width: 75%;
+  }
+}
+
+@media screen and (max-width: 1152px) and (min-width: 1080px) {
+  .nav-container {
+    width: 73%;
+  }
+}
+
+@media screen and (max-width: 1079px) and (min-width: 768px) {
+  .nav-container {
+    width: 70%;
+  }
+
+  .group-name {
+    font-size: 1.5rem;
+    margin-top: 1.7rem;
+  }
+}
+
+@media screen and (max-width: 1212px) and (min-width: 1080px) {
+  .group-name {
+    font-size: 1.8rem;
+    margin-top: 1.5rem;
+  }
+}  
+
+@media screen and (max-width: 920px) and (min-width: 768px) {
+  .btn {
+    letter-spacing: 0;
+    padding: 0 1rem;
+  }
+
+  section.nav-bar li.username  {
+    display: none;
+  }
+
+  section.nav-bar ul {
+    padding-right: 60px;
+  }
+}  
+
+@media screen and (max-width: 773px) and (min-width: 768px) {
+  .col-sm-5 {
+    width: 30%;
+  }
+
+  .col-sm-7 {
+    width: 70%;
+  }
+} 
+
+@media screen and (max-width: 991px) and (min-width: 921px) {
+  .col-sm-5 {
+    width: 30%;
+  }
+
+  .col-sm-7 {
+    width: 70%;
+  }
+} 
