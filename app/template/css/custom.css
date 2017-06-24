@@ -21,7 +21,8 @@ section.nav-bar {
   section.nav-bar ul {
     list-style: none;
     text-align: right;
-    padding-top: 24px; }
+    /*padding-top: 24px; */
+    }
   section.nav-bar li {
     display: inline-block;
     padding: 5px 10px; }
@@ -30,13 +31,19 @@ section.nav-bar {
     font-size: 16px; }
 
 /*# sourceMappingURL=custom.css.map */
+body {
+  overflow-x: hidden;
+}
+
+.navbar-collapse {
+  padding-right: 0;
+}
 
 #brand-name {
   font-size: 26px;
   padding-top: 20px;
   padding-bottom: 20px;
   text-align: center;
-  display: inline-block;
 }
 
 #sidebar {
@@ -88,10 +95,14 @@ section.nav-bar {
    padding-top: 100px;
  }
 
+ .msg_card_bottom_padding {
+   padding-bottom: 80px;
+ }
+
  .footer {
     position: fixed;
     bottom: 0;
-    width: 78%;
+    width: 77%;
     /*right: 0;*/
     padding-bottom: 8px;
     padding-right: 65px;
@@ -110,7 +121,7 @@ section.nav-bar {
 
 .card-panel {
   padding: 10px;
-  margin: 1.5rem 0 1rem 1rem;
+  margin: 1.5rem 1rem 1rem 1rem;
 }
 
 .msg-send-btn {
@@ -128,6 +139,14 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
   box-shadow: 0 1px 0 0 #42a5f5;
 }
 
+input[type=text]:not(.browser-default) {
+  margin: 0 0 10px 0;
+}
+
+.cards {
+  width: 101%;
+}
+
 #sidebar .toggle-btn {
     display: none;
 }
@@ -136,7 +155,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
   #sidebar {
       position: relative;
       width: 100%;
-      margin-bottom: 10px;
+      /*margin-bottom: 10px;*/
   }
   /*#sidebar .toggle-btn {
       display: block;
@@ -156,6 +175,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
       font-size: 22px;
       padding: 5px 20px;
       line-height: 50px !important;
+      display: inline-block;
   }
 
   #sidebar .mobile-nav-btn {
@@ -174,17 +194,17 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
 
 @media screen and (max-width: 1263px) and (min-width: 1153px) {
   .nav-container {
-    width: 75%;
+    width: 76%;
   }
 
   .card-panel {
-    width: 96%;
+    width: 94%;
   }
 }
 
 @media screen and (max-width: 1152px) and (min-width: 1080px) {
   .nav-container {
-    width: 73%;
+    width: 74%;
   }
 
   .card-panel {
@@ -192,7 +212,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
   }
 }
 
-@media screen and (max-width: 1079px) and (min-width: 768px) {
+@media screen and (max-width: 1079px) and (min-width: 769px) {
   .nav-container {
     width: 70%;
   }
@@ -214,7 +234,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
   }
 }  
 
-@media screen and (max-width: 920px) and (min-width: 768px) {
+@media screen and (max-width: 920px) and (min-width: 769px) {
   .btn {
     letter-spacing: 0;
     padding: 0 1rem;
@@ -261,7 +281,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
 
 @media screen and (max-width: 1284px) and (min-width: 1200px) {
   .footer {
-    padding-right: 110px;
+    padding-right: 100px;
   }
 } 
 
@@ -270,10 +290,6 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
     padding-right: 105px;
   }
 } 
-
-body {
-  overflow-x: hidden;
-}
 
 @media screen and (max-width: 960px) and (min-width: 991px) {
   .card-panel {
@@ -287,10 +303,14 @@ body {
   }
 } 
 
-@media screen and (max-width: 850px) and (min-width: 768px) {
+@media screen and (max-width: 850px) and (min-width: 769px) {
   .card-panel {
     width: 79%;
   }
+
+  #content-area {
+    width: 74%;
+  } 
 }  
 
 @media screen and (max-width: 767px)  {
@@ -301,6 +321,7 @@ body {
 
   .nav-container {
     width: 98%;
+    padding-top: 45px;
   }
 
   .group-name {
@@ -309,7 +330,7 @@ body {
   }
 
   .footer {
-    width: 96%;
+    width: 98%;
   }
 
   .form-group {
@@ -320,4 +341,123 @@ body {
     margin-bottom: 0;
   }
     
+}
+
+@media screen and (max-width: 628px)  {
+  .btn {
+    letter-spacing: 0;
+    padding: 0 1rem;
+  }
+
+  .group-name {
+    font-size: 1.3rem;
+    margin-top: 2.2rem;
+  }
+} 
+
+.mobile-stack {
+  display: none;
+}
+
+.lg-stack {
+   padding-top: 24px;
+}
+
+@media screen and (max-width: 560px)  {
+  .lg-stack {
+    display: none;
+  }
+
+  .mobile-stack {
+    display: inline-block;
+    padding-top: 24px;
+  }
+
+  .dropdown-menu {
+    left: -80px;
+  } 
+
+  section.nav-bar li.username {
+    font-size: 14px;
+  }
+
+  .group-name {
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+  }
+
+  .col-xs-3 {
+    width: 32%;
+  }
+
+  .col-md-9 {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }  
+
+@media screen and (max-width: 384px)  {
+  section.nav-bar li {
+    padding: 3px;
+  }
+
+  section.nav-bar li.username {
+    font-size: 13px;
+  } 
+
+  section.nav-bar li>a.options {
+    font-size: 13px;
+  } 
+
+  .col-xs-3 {
+    width: 35%;
+    padding-left: 10px;
+  }
+
+  .col-xs-8 {
+    width: 65%;
+  }
+
+  .col-md-9 {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .dropdown-menu {
+    left: -95px;
+  } 
+
+  .footer {
+    padding-bottom: 0;
+  }
+
+  .msg_card_bottom_padding {
+   padding-bottom: 60px;
+ }
+} 
+
+@media screen and (min-width: 561px) {
+  main#content-area.col-md-9 {
+    padding-right: 0;
+  }
+
+  .footer {
+    width: 95%;
+  }
+}
+
+@media screen and (max-width: 767px) and (min-width: 629px) {
+  .col-xs-11 {
+    width: 87%;
+  }
+
+  .footer {
+    width: 96%;
+  }
+
+  @media screen and (max-width: 1079px) and (min-width: 1024px)  {
+    .card-panel {
+      width: 94%;
+    }
+  }  
+}   

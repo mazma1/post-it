@@ -27,7 +27,7 @@
           <span class="icon-bar"></span>
         </button>
 
-        <ul class="nav nav-pills nav-stacked navbar-collapse collapse" id="menu-content">       
+        <ul class="nav nav-pills nav-stacked navbar-fixed-side navbar-collapse collapse" id="menu-content">       
           <li role="presentation" class="active"><a href="#">Group 1</a></li>
           <li role="presentation"><a href="#">Group 2</a></li>
           <li role="presentation"><a href="#">Group 3</a></li>
@@ -49,11 +49,27 @@
               <h4 class="group-name">Group Name</h4>
             </div>
 
-            <div class="col-md-9 col-sm-7 col-xs-9">
+            <div class="col-md-9 col-sm-7 col-xs-9 lg-stack">
               <ul>
                 <li class="username"><i class="glyphicon glyphicon-user"></i> @mazma</li>
                 <button type="" class="btn waves-effect waves-light blue lighten-1" data-toggle="modal" data-target="#addUser">Add User</button>
                 <li><button type="submit" class="btn waves-effect waves-light red darken-2">Sign Out</button></li>
+              </ul>
+            </div>
+
+            <div class="col-md-9 col-sm-7 col-xs-8 mobile-stack">
+              <ul>
+                <li class="username"><i class="glyphicon glyphicon-user"></i> @mazma</li>
+                <li role="presentation" class="dropdown">
+                  <a class="dropdown-toggle options" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    Options <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Add User</a></li>
+                    <li><a href="#">Create Group</a></li>
+                    <li><a href="#">Log Out</a></li>
+                  </ul>
+                </li>
               </ul>
             </div>
           </div>
@@ -62,7 +78,7 @@
       <!--End: Nav Bar-->
 
       <!--Start: Message content area-->
-      <section class="">
+      <section class="cards">
         <div class="msg_card_padding"></div>
         <div class="card-panel">
           <div class="">
@@ -112,6 +128,7 @@
           </div>
           <p class="msg_body">Hello ladies, who will be attending the Google I/O event on tommorrow?</p>
         </div>
+        <div class="msg_card_bottom_padding"></div>
       </section>  
       <!--End: Message content area-->    
 
