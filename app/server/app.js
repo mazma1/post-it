@@ -8,8 +8,10 @@ require('dotenv').config();
 // Set up the express app
 const app = express();
 
-// Log requests to the console.
-app.use(logger('dev'));
+if (process.env.NODE_ENV !== 'test') {
+  // Log requests to the console.
+  app.use(logger('dev'));
+}
 
 // Parse incoming requests data
 app.use(bodyParser.json());
