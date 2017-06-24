@@ -166,11 +166,19 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
   .nav-container {
     width: 75%;
   }
+
+  .card-panel {
+    width: 96%;
+  }
 }
 
 @media screen and (max-width: 1152px) and (min-width: 1080px) {
   .nav-container {
     width: 73%;
+  }
+
+  .card-panel {
+    width: 93%;
   }
 }
 
@@ -182,6 +190,10 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
   .group-name {
     font-size: 1.5rem;
     margin-top: 1.7rem;
+  }
+
+  .card-panel {
+    width: 89%;
   }
 }
 
@@ -204,6 +216,10 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
 
   section.nav-bar ul {
     padding-right: 60px;
+  }
+
+  .card-panel {
+    width: 83%;
   }
 }  
 
@@ -248,3 +264,21 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
 body {
   overflow-x: hidden;
 }
+
+@media screen and (max-width: 960px) and (min-width: 991px) {
+  .card-panel {
+    width: 89%;
+  }
+} 
+
+@media screen and (max-width: 990px) and (min-width: 935px) {
+  .card-panel {
+    width: 88%;
+  }
+} 
+
+@media screen and (max-width: 850px) and (min-width: 768px) {
+  .card-panel {
+    width: 79%;
+  }
+}  
