@@ -36,6 +36,7 @@ section.nav-bar {
   padding-top: 20px;
   padding-bottom: 20px;
   text-align: center;
+  display: inline-block;
 }
 
 #sidebar {
@@ -137,7 +138,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
       width: 100%;
       margin-bottom: 10px;
   }
-  #sidebar .toggle-btn {
+  /*#sidebar .toggle-btn {
       display: block;
       cursor: pointer;
       position: absolute;
@@ -147,18 +148,27 @@ input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):
       padding: 3px;
       background-color: #ffffff;
       color: #000;
-      width: 40px;
-      text-align: center;
-  }
+      /*width: 40px;
+      text-align: center;*/
+  /*}*/
   #brand-name {
       text-align: left !important;
       font-size: 22px;
-      padding-left: 20px;
+      padding: 5px 20px;
       line-height: 50px !important;
   }
 
-  #content-area {
-    left: 50px;
+  #sidebar .mobile-nav-btn {
+    margin-top: 11px;
+  }
+
+  .mobile-navbar {  
+    top: 0;
+    border-width: 0 0 1px;
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 1030;
   }
 }
 
@@ -281,4 +291,33 @@ body {
   .card-panel {
     width: 79%;
   }
+}  
+
+@media screen and (max-width: 767px)  {
+  #content-area {
+    left: 0;
+    width: 98%;
+  }
+
+  .nav-container {
+    width: 98%;
+  }
+
+  .group-name {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .footer {
+    width: 96%;
+  }
+
+  .form-group {
+    margin-bottom: 0;
+  }
+
+  .row {
+    margin-bottom: 0;
+  }
+    
 }  

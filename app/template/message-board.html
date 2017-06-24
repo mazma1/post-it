@@ -15,12 +15,19 @@
 <body>
   <div >
     <!--Start: Sidebar-->
-    <aside>  
+    <aside class="navbar-default mobile-navbar">  
       <div id="sidebar">
         <div id="brand-name">Post It</div> 
         <!--<i class="glyphicon glyphicon-list" data-toggle="collapse" data-target="#menu-content">-->
-        <i class="fa fa-bars fa-3x toggle-btn navbar-toggle" data-toggle="collapse" data-target="#menu-content"></i>
-        <ul class="nav nav-pills nav-stacked" id="menu-content">       
+        <!--<i class="fa fa-bars fa-3x toggle-btn navbar-toggle collapsed" data-toggle="collapse" data-target="#menu-content"></i>-->
+        <button type="button" class="mobile-nav-btn  navbar-toggle collapsed" data-toggle="collapse" data-target="#menu-content" aria-expanded="false" aria-controls="menu-content">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <ul class="nav nav-pills nav-stacked navbar-collapse collapse" id="menu-content">       
           <li role="presentation" class="active"><a href="#">Group 1</a></li>
           <li role="presentation"><a href="#">Group 2</a></li>
           <li role="presentation"><a href="#">Group 3</a></li>
@@ -113,11 +120,11 @@
       <div class="footer-container">
         <form class="form-horizontal">
           <div class="form-group">
-            <div class="col-lg-11 col-md-10 col-sm-9">
+            <div class="col-lg-11 col-md-10 col-sm-9 col-xs-11">
               <input type="text" class="form-control" id="groupMessage" placeholder="Enter your message...">
             </div>
 
-            <div class="col-lg-1 col-md-2 col-sm-3 msg-send-btn">
+            <div class="col-lg-1 col-md-2 col-sm-3 col-xs-1 msg-send-btn">
               <button type="submit" class="btn waves-effect waves-light blue lighten-1">Send</button>
             </div>  
           </div>     
