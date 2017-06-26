@@ -1,7 +1,7 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 
-require('./test.css');
+require('./scss/test.scss');
 
 const Client = require('./components/Client');
 
