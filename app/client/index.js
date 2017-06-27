@@ -9,6 +9,6 @@ const Client = require('./components/Client');
 
 // render component to DOM
 ReactDOM.render(
-  <AppRoutes />,
+  <Client />,
   document.getElementById('clientApp')
 );

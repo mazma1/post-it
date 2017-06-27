@@ -8,7 +8,8 @@ module.exports = {
   ],
   output: {
     path: path.resolve(__dirname, './app/client/dist'),
-    filename: 'index_bundle.js'
+    filename: 'index_bundle.js',
+    publicPath: '/'
   },
   module: {
     rules: [
