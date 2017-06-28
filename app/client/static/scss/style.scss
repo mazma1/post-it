@@ -1,0 +1,27 @@
+$blue : #31708f;
+$sidebar-bkground: #C0C0C0;
+$pixel20: 20px;
+$pixel26: 26px;
+$pixel280: 280px;
+
+body {
+  background-color: $blue;
+}
+
+aside.navbar-default.mobile-navbar {
+  #sidebar {
+    width: $pixel280;
+    position: fixed;
+    top: 0;
+    height:100%;
+    background: $sidebar-bkground;
+    overflow: auto;
+  }
+
+  #brand-name {
+    font-size: $pixel26;
+    padding-top: $pixel20;
+    padding-bottom: $pixel20;
+    text-align: center;
+  }
+}
