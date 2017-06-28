@@ -1,16 +1,16 @@
 import React from 'react';
 import ClientFrame from './ClientFrame';
 
-class Test extends React.Component {
+class MessageBoard extends React.Component {
   render() {
     return (
       <ClientFrame>
         <div>
           <h5>I am the Test Page</h5>
         </div>
-       </ClientFrame> 
+       </ClientFrame>
     );
   }
 }
 
-module.exports = Test;
+module.exports = MessageBoard;

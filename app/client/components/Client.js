@@ -1,7 +1,7 @@
 import { BrowserRouter, HashRouter, Route, NavLink, Switch, Redirect } from 'react-router-dom';
 import React from 'react';
 import ClientFrame from './ClientFrame';
-import Test from './Test';
+import MessageBoard from './MessageBoard';
 
 
 // create a component
@@ -10,7 +10,7 @@ class Client extends React.Component {
     return (
       <HashRouter>
         <Switch>
-          <Route exact path="/test" component={Test}/>
+          <Route exact path="/message_board" component={MessageBoard}/>
         </Switch>
       </HashRouter>
     );
