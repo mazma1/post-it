@@ -8,8 +8,10 @@ $tablet-width: 767px;
 
 body {
   background-color: $blue;
+  overflow-x: hidden;
 }
 
+// Start: Sidebar Navigation
 aside.navbar-default.mobile-navbar {
   #sidebar {
     width: $pixel280;
@@ -45,6 +47,10 @@ aside.navbar-default.mobile-navbar {
       margin-top: 13px;
     }
 
+    .navbar-collapse {
+      padding-right: $pixel0;
+    }
+
     .mobile-navbar {  
       top: 0;
       border-width: 0 0 1px;
@@ -55,15 +61,8 @@ aside.navbar-default.mobile-navbar {
     }
   }
 }
+// End: Sidebar Navigation
 
-.navbar-collapse {
-  padding-right: $pixel0;
-}
-
-.active {
-  color: #fff;
-  background-color: #337ab7;
-}
 
 
 
