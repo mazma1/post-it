@@ -10,35 +10,9 @@ $pixel32: 32px;
 $pixel40: 40px;
 $pixel72: 72px;
 $pixel280: 280px;
+$pixel300: 300px;
 $tablet-width: 767px;
 
-.navbar-collapse.collapse.in {
-  display: block!important;
-}
-
-//Troubleshooting collapsed navbar
-// @media screen and (max-width: 768px)
-// {
-//     .collapsing
-//     {
-//         position: absolute !important;
-//         z-index: 20;
-//         width: 100%;
-//         top: 50px;
-//     }
-//     .collapse.in {
-//         display: block;
-//         position: absolute;
-//         z-index: 20;
-//         width: 100%;
-//         top: 50px;
-//     }
-//     .navbar-collapse
-//     {
-//         max-height: none !important;
-//     }
-// }
-//Troubleshooting collapsed navbar
 
 
 body {
@@ -46,7 +20,7 @@ body {
 }
 
 // Start: Mobile Sidebar Navigation
-aside.navbar-default.mobile-navbar {
+// aside.navbar-default.mobile-navbar {
   #sidebar {
     width: $pixel280;
     position: fixed;
@@ -90,7 +64,7 @@ aside.navbar-default.mobile-navbar {
       z-index: 1030;
     }
   }
-}
+// }
 
 .navbar-collapse {
   padding-right: $pixel0;
@@ -106,10 +80,12 @@ aside.navbar-default.mobile-navbar {
 
 // Start: Content Area
 #content-area {
-  padding-top: 70px; // msg _card_padding
-  width: 78%;
+  // padding-top: 70px; // msg _card_padding
+  width: 76%;
   position:relative;
-  left: $pixel280; // width of your side box.
+  left: $pixel300; // width of your side box.
+
+  
 }
 
 @media screen and (max-width: 850px) and (min-width: 769px) {
@@ -177,7 +153,7 @@ aside.navbar-default.mobile-navbar {
       display: none;
     }
     ul {
-      padding-right: 60px;
+      // padding-right: 40px;
     }
   }  
  }
@@ -273,7 +249,7 @@ section.nav-bar {
   // background-color: #aabbff; 
   
   .nav-container {
-    width: 77%;
+    width: 76%;
     position: fixed;
     background-color: #ffffff;
     z-index: 99;
@@ -301,11 +277,23 @@ section.nav-bar {
 
   @media screen and (max-width: 1079px) and (min-width: 768px) {
     .nav-container {
-      width: 70%;
+      // width: 64%;
     }
     .group-name {
       font-size: 1.5rem;
       margin-top: 1.5rem;
+    }
+  }  
+
+  @media screen and (max-width: 768px) and (min-width: 426px) {
+    .nav-container {
+      width: 64%;
+    }
+  } 
+  
+  @media screen and (max-width: 1024px) and (min-width: 769px) {
+    .nav-container {
+      width: 70.5%;
     }
   }  
 
@@ -318,7 +306,7 @@ section.nav-bar {
   @media screen and (max-width: 767px)  {
     .nav-container {
       width: 98%;
-      // padding-top: 45px;
+      padding-top: 45px;
     }
     .group-name {
       font-size: 1.5rem;
@@ -345,6 +333,115 @@ section.nav-bar {
   }
 }
 // End: Desktop Side Navbar
+
+// .card-panel-wrapper {
+//   width: 100%;
+//   margin: 0 auto;
+// }
+
+// Start: Message Card
+section.cards {
+  
+  .msg_card_padding {
+    padding-top: 100px;
+  }
+
+  .msg_card_bottom_padding {
+    padding-bottom: 80px;
+  }
+
+  .msg_card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 24px;
+  }
+
+  .msg_body {
+    padding-top: 8px;
+  }
+
+  .card-panel {
+      padding: 10px;
+      margin: 1.5rem 1rem 1rem 1rem;
+  }
+  .card-panel {
+    padding: 10px;
+    margin: 1.5rem 1rem 1rem 1rem;
+  } 
+  @media screen and (max-width: 1263px) and (min-width: 1153px) {
+    .card-panel {
+      width: 94%;
+    }
+  }  
+  @media screen and (max-width: 1152px) and (min-width: 1080px) {
+    .card-panel {
+      width: 93%;
+    }
+  } 
+
+  @media screen and (max-width: 1079px) and (min-width: 768px) {
+    .card-panel {
+      width: 89%;
+    }
+  }  
+
+  @media screen and (max-width: 920px) and (min-width: 768px) {
+    .card-panel {
+      width: 83%;
+    }
+  }
+
+  @media screen and (max-width: 960px) and (min-width: 991px) {
+    .card-panel {
+      width: 89%;
+    }
+  } 
+
+  @media screen and (max-width: 990px) and (min-width: 935px) {
+    .card-panel {
+      width: 88%;
+    }
+  } 
+
+  @media screen and (max-width: 850px) and (min-width: 769px) {
+    .card-panel {
+      width: 79%;
+    }  
+  }  
+
+  @media screen and (max-width: 768px) and (min-width: 426px) {
+    .card-panel {
+      width: 92%;
+    }  
+  }  
+
+  @media screen and (max-width: 767px) and (min-width: 561px) {
+    .msg_card_padding {
+      padding-top: 115px;
+    }
+  }  
+
+  @media screen and (min-width: 768px)  {
+    .msg_card_padding {
+      padding-top: 70px;
+    }
+  }
+
+  @media screen and (max-width: 384px)  {
+    .msg_card_bottom_padding {
+      padding-bottom: 60px;
+    }
+  }  
+
+  @media screen and (max-width: 1079px) and (min-width: 1024px)  {
+    .card-panel {
+      width: 94%;
+    }
+  } 
+}  
+
+//End: Message Card
 
 
 

@@ -1,7 +1,6 @@
 import { BrowserRouter, HashRouter, Route, NavLink, Switch, Redirect } from 'react-router-dom';
 import React from 'react';
-import ClientFrame from './ClientFrame';
-import MessageBoard from './MessageBoard';
+import MessageBoard from './message-board/MessageBoard';
 
 
 // create a component

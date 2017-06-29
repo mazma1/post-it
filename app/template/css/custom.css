@@ -522,8 +522,8 @@ input[type=text]:not(.browser-default) {
   }
 
   .msg_card_bottom_padding {
-   padding-bottom: 60px;
- }
+    padding-bottom: 60px;
+  }
 } 
 
 @media screen and (min-width: 561px) {
