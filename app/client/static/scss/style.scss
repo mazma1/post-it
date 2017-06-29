@@ -159,7 +159,7 @@ body {
  }
 
    
-@media screen and (max-width: 920px) and (min-width: 768px) {
+@media screen and (max-width: 768px) {
   .btn {
     letter-spacing: 0;
     padding: 0 1rem;
@@ -386,7 +386,7 @@ section.cards {
     }
   }  
 
-  @media screen and (max-width: 920px) and (min-width: 768px) {
+  @media screen and (max-width: 920px) and (min-width: 769px) {
     .card-panel {
       width: 83%;
     }
@@ -440,8 +440,186 @@ section.cards {
     }
   } 
 }  
-
 //End: Message Card
+
+
+// Start: Message Input Form
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 76%;
+  /*right: 0;*/
+  padding-bottom: 8px;
+  padding-right: 65px;
+  margin-right: 10px;
+  background-color: white;
+  box-shadow: 0 -4px 6px -6px black;
+}
+
+.footer-container{
+  padding-left: 24px;
+}
+
+.auth {
+  background-color: #5b7dde;
+}
+
+.msg-send-btn {
+  padding-left: 0;
+  padding-top: 8px;
+}
+
+input[type=text]:focus {
+  border-bottom: 1px solid #42a5f5;
+  box-shadow: 0 1px 0 0 #42a5f5;
+}
+
+input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):focus:not([readonly]) {
+  border-bottom: 1px solid #42a5f5;
+  box-shadow: 0 1px 0 0 #42a5f5;
+}
+
+input[type=text]:not(.browser-default) {
+  margin: 0 0 10px 0;
+}
+
+@media screen and (max-width: 1317px) and (min-width: 1285px) {
+  .footer {
+    padding-right: 90px;
+  }
+} 
+
+@media screen and (max-width: 1284px) and (min-width: 1200px) {
+  .footer {
+    width: 75%;
+  }
+  .col-lg-11 {
+    width: 92%;
+  }
+  .col-lg-1 {
+    width: 8%;
+  }
+} 
+
+@media screen and (max-width: 1119px) and (min-width: 1071px) {
+  .footer {
+    width: 71%;
+  }
+  .col-md-10 {
+    width: 90%;
+  }
+  .col-md-2 {
+    width: 10%;
+  }
+} 
+
+@media screen and (max-width: 1070px) and (min-width: 992px) {
+  .footer {
+    width: 69%;
+  }
+  .col-md-10 {
+    width: 88%;
+  }
+  .col-md-2 {
+    width: 12%;
+  }
+} 
+
+@media screen and (max-width: 810px) and (min-width: 801px) {
+  .footer {
+    width: 61%;
+  }
+}
+
+@media screen and (max-width: 850px) and (min-width: 811px) {
+  .footer {
+    width: 62%;
+  }
+}
+
+@media screen and (max-width: 800px) and (min-width: 768px) {
+  .footer {
+    width: 62%;
+  }
+}
+
+@media screen and (max-width: 920px) and (min-width: 851px) {
+  .footer {
+    width: 64%;
+  }
+}
+
+@media screen and (max-width: 991px) and (min-width: 921px) {
+  .footer {
+    width: 67%;
+  }
+
+  .col-sm-11 {
+    width: 88%;
+  }
+
+  .col-sm-1 {
+    width: 12%;
+  }
+}
+
+@media screen and (max-width: 767px) and (min-width: 561px) {
+  .footer {
+    width: 95%;
+  }
+}
+
+@media screen and (max-width: 767px)  {
+  .footer {
+    width: 98%;
+  }
+}  
+
+@media screen and (max-width: 773px) and (min-width: 768px) {
+  .col-sm-5 {
+    width: 30%;
+  }
+
+  .col-sm-7 {
+    width: 70%;
+  }
+} 
+
+@media screen and (max-width: 991px) and (min-width: 921px) {
+  .col-sm-5 {
+    width: 30%;
+  }
+
+  .col-sm-7 {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 384px)  {
+  .footer {
+    padding-bottom: 0;
+  }
+}  
+
+@media screen and (max-width: 767px) and (min-width: 629px) {
+  .footer {
+    width: 96%;
+  }
+}  
+
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+  .footer {
+    width: 70.5%;
+    padding-right: 55px;
+  }
+}  
+
+@media screen and (max-width: 768px) and (min-width: 426px) {
+  .footer {
+    width: 64%;
+  }
+}  
+//End: Message Input Form
 
 
 
