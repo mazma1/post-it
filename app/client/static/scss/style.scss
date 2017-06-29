@@ -12,6 +12,34 @@ $pixel72: 72px;
 $pixel280: 280px;
 $tablet-width: 767px;
 
+.navbar-collapse.collapse.in {
+  display: block!important;
+}
+
+//Troubleshooting collapsed navbar
+// @media screen and (max-width: 768px)
+// {
+//     .collapsing
+//     {
+//         position: absolute !important;
+//         z-index: 20;
+//         width: 100%;
+//         top: 50px;
+//     }
+//     .collapse.in {
+//         display: block;
+//         position: absolute;
+//         z-index: 20;
+//         width: 100%;
+//         top: 50px;
+//     }
+//     .navbar-collapse
+//     {
+//         max-height: none !important;
+//     }
+// }
+//Troubleshooting collapsed navbar
+
 
 body {
   overflow-x: hidden;
@@ -78,6 +106,7 @@ aside.navbar-default.mobile-navbar {
 
 // Start: Content Area
 #content-area {
+  padding-top: 70px; // msg _card_padding
   width: 78%;
   position:relative;
   left: $pixel280; // width of your side box.
@@ -103,6 +132,71 @@ aside.navbar-default.mobile-navbar {
 }
 // End: Content Area
 
+ ul {
+    list-style: none;
+    text-align: right;
+    // padding-top: $pixel24;
+  }
+  li {
+    display: inline-block;
+    padding: 5px 10px;
+  }
+  li.username {
+    color: $blue;
+    font-size: $pixel16;
+  }
+
+  @media screen and (max-width: 560px)  {
+    li.username {
+      font-size: 14px;
+    }
+  } 
+
+@media screen and (max-width: 384px)  {
+  section.nav-bar li {
+    padding: 3px;
+  }
+
+  section.nav-bar li.username {
+    font-size: 13px;
+  } 
+
+  section.nav-bar li>a.options {
+    font-size: 13px;
+  } 
+}  
+@media screen and (max-width: 920px) and (min-width: 768px) {
+  section.nav-bar li.username  {
+    display: none;
+  }
+  section.nav-bar ul {
+    padding-right: 60px;
+  }
+  .btn {
+    letter-spacing: 0;
+    padding: 0 1rem;
+  }
+} 
+
+  @media screen and (max-width: 767px) {
+    .row {
+      margin-bottom: 0;
+    }
+  }
+
+// Group Name
+@media screen and (max-width: 560px) {
+  .col-xs-3 {
+    width: 32%;
+  } 
+}
+
+@media screen and (max-width: 773px) and (min-width: 768px) {
+  .col-sm-5 {
+    width: 30%;
+  } 
+}   
+
 
 // Start: Large VS Mobile Stack
 .mobile-stack {
@@ -120,6 +214,10 @@ aside.navbar-default.mobile-navbar {
   .dropdown-menu {
     left: -80px;
   } 
+  .col-md-9 {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }  
 
 @media screen and (min-width: 768px)  {
@@ -140,6 +238,14 @@ aside.navbar-default.mobile-navbar {
     left: -95px;
   } 
 }  
+
+// Lg Stack Unordered List
+@media screen and (max-width: 773px) and (min-width: 768px) {
+  .col-sm-7 {
+    width: 70%;
+  }
+}  
+
 // End: Large VS Mobile Stack
 
 
@@ -175,20 +281,22 @@ section.nav-bar {
     }
   }
 
+  @media screen and (max-width: 1212px) and (min-width: 1080px) {
+    .group-name {
+      font-size: 1.8rem;
+      margin-top: 1.5rem;
+    }
+  } 
+
   @media screen and (max-width: 1079px) and (min-width: 768px) {
     .nav-container {
       width: 70%;
     }
+    .group-name {
+      font-size: 1.5rem;
+      margin-top: 1.5rem;
+    }
   }  
-
-  @media screen and (max-width: 920px) and (min-width: 768px) {
-    section.nav-bar li.username  {
-      display: none;
-    }
-    section.nav-bar ul {
-      padding-right: 60px;
-    }
-  } 
 
    @media screen and (min-width: 768px)  {
     .nav-container div.row {
@@ -199,45 +307,30 @@ section.nav-bar {
   @media screen and (max-width: 767px)  {
     .nav-container {
       width: 98%;
-      padding-top: 45px;
+      // padding-top: 45px;
+    }
+    .group-name {
+      font-size: 1.5rem;
+      margin-top: 2rem;
     }
   }  
+
+  @media screen and (max-width: 628px)  {
+    .group-name {
+      font-size: 1.3rem;
+      margin-top: 2.2rem;
+    }
+  } 
 
   @media screen and (max-width: 560px)  {
-    section.nav-bar li.username {
-      font-size: 14px;
+    .group-name {
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
     }
-  }  
-
-  @media screen and (max-width: 384px)  {
-    section.nav-bar li {
-      padding: 3px;
-    }
-
-    section.nav-bar li.username {
-      font-size: 13px;
-    } 
-
-    section.nav-bar li>a.options {
-      font-size: 13px;
-    } 
   }  
 
   .brand {
     padding-top: $pixel8;
-  }
-  ul {
-    list-style: none;
-    text-align: right;
-    // padding-top: $pixel24;
-  }
-  li {
-    display: inline-block;
-    padding: 5px 10px;
-  }
-  li.username {
-    color: $blue;
-    font-size: $pixel16;
   }
 }
 // End: Desktop Side Navbar
