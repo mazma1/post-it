@@ -131,11 +131,18 @@ aside.navbar-default.mobile-navbar {
   }
 }
 // End: Content Area
+ 
 
- ul {
+
+ section.nav-bar {
+  border-bottom : 1px solid grey;
+  .brand {
+    padding-top: $pixel8;
+  }
+  ul {
     list-style: none;
     text-align: right;
-    // padding-top: $pixel24;
+    // padding-top: $pt24;
   }
   li {
     display: inline-block;
@@ -145,44 +152,49 @@ aside.navbar-default.mobile-navbar {
     color: $blue;
     font-size: $pixel16;
   }
-
   @media screen and (max-width: 560px)  {
     li.username {
       font-size: 14px;
     }
   } 
 
-@media screen and (max-width: 384px)  {
-  section.nav-bar li {
-    padding: 3px;
-  }
+  @media screen and (max-width: 384px)  {
+    li {
+      padding: 3px;
+    }
 
-  section.nav-bar li.username {
-    font-size: 13px;
+    li.username {
+      font-size: 13px;
+    } 
+
+    li>a.options {
+      font-size: 13px;
+    } 
   } 
 
-  section.nav-bar li>a.options {
-    font-size: 13px;
-  } 
-}  
+  @media screen and (max-width: 920px) and (min-width: 768px) {
+    li.username  {
+      display: none;
+    }
+    ul {
+      padding-right: 60px;
+    }
+  }  
+ }
+
+   
 @media screen and (max-width: 920px) and (min-width: 768px) {
-  section.nav-bar li.username  {
-    display: none;
-  }
-  section.nav-bar ul {
-    padding-right: 60px;
-  }
   .btn {
     letter-spacing: 0;
     padding: 0 1rem;
   }
 } 
 
-  @media screen and (max-width: 767px) {
-    .row {
-      margin-bottom: 0;
-    }
+@media screen and (max-width: 767px) {
+  .row {
+    margin-bottom: 0;
   }
+}
 
 // Group Name
 @media screen and (max-width: 560px) {
@@ -245,7 +257,6 @@ aside.navbar-default.mobile-navbar {
     width: 70%;
   }
 }  
-
 // End: Large VS Mobile Stack
 
 
