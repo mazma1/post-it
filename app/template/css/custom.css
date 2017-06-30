@@ -1,4 +1,4 @@
-.signup-container {
+/*.signup-container {
   margin-top: 100px;
   padding: 40px; }
 
@@ -9,10 +9,9 @@
   margin-top: 26px; }
 
 .jumbotron p {
-  font-size: 16px; }
+  font-size: 16px; }*/
 
-.call-to-sign-in {
-  padding-top: 16px; }
+
 
 section.nav-bar {
   border-bottom: 1px solid grey; }
@@ -617,4 +616,34 @@ body {
   .form-group {
     margin-bottom: 15px;
   }
+}
+
+
+/*////////////////////////////////////////////////////*/
+.material-icons {
+  padding-top: 12px;
+}
+
+.auth-form div.row {
+  margin-bottom: 0;
+}
+
+.auth-form input[type=text]:not(.browser-default) {
+  height: 2.6rem;
+}
+
+.auth-header {
+  padding-top: 40px;
+}
+
+form.col.s12.auth-form {
+  padding: 20px;
+}
+
+.form-padding-bottom {
+  padding-bottom: 30px;
+}
+
+.call-to-sign-in {
+  padding-top: 16px; 
 }

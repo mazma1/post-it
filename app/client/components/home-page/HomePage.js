@@ -1,11 +1,5 @@
 import React from 'react';
 
-const Background = '/app/client/static/img/index-bg.png';
-
-const sectionStyle = {
-  backgroundImage: `url(${Background})`
-};
-
 class HomePage extends React.Component {
   render() {
     return (
