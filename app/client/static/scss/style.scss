@@ -17,6 +17,7 @@ $tablet-width: 767px;
 
 body {
   overflow-x: hidden;
+  height: 100%;
 }
 
 // Start: Mobile Sidebar Navigation
@@ -460,9 +461,9 @@ section.cards {
   padding-left: 24px;
 }
 
-.auth {
-  background-color: #5b7dde;
-}
+// .auth {
+//   background-color: #5b7dde;
+// }
 
 .msg-send-btn {
   padding-left: 0;
@@ -620,6 +621,66 @@ input[type=text]:not(.browser-default) {
   }
 }  
 //End: Message Input Form
+
+
+
+// Start: Index Page
+html, body, #clientApp, #clientApp>div {
+  height: 100%
+}
+
+.background {
+  background: url("/app/client/static/img/index-bg.png");
+
+
+  .index-header {
+    padding-top: 130px;
+  }   
+
+  .index-desc {
+    padding-top: 20px;
+  }
+
+  .index-line-height {
+    line-height: 1.3;
+  }
+
+  .index-desc a {
+    color: #82012f;
+  }
+
+  .index-color {
+    color: #f1f1f1;
+  }
+
+
+  @media screen and (max-width: 592px) and (min-width: 445px) {
+    .index-header {
+      padding-top: 120px;
+    }
+  }
+
+  @media screen and (max-width: 444px) {
+    .index-header {
+      padding-top: 100px;
+    }
+  }
+
+  @media screen and (max-width: 592px) {
+    .index-header h2 {
+      font-size: 40px;
+    }
+
+    div.auth h4 {
+      font-size: 25px;
+    }
+
+    div.auth h5 {
+      font-size: 20px;
+    }
+  }
+}
+// End: Index Page
 
 
 
