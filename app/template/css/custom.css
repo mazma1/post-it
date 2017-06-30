@@ -1,5 +1,5 @@
 .signup-container {
-  margin-top: 72px;
+  margin-top: 50px;
   padding: 40px; }
 
 .signup-form {
@@ -129,17 +129,17 @@ body {
   padding-top: 8px;
 }
 
-input[type=text]:focus {
+.msg-form input[type=text]:focus {
   border-bottom: 1px solid #42a5f5;
   box-shadow: 0 1px 0 0 #42a5f5;
 }
 
-input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):focus:not([readonly]) {
+.msg-form input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):focus:not([readonly]) {
   border-bottom: 1px solid #42a5f5;
   box-shadow: 0 1px 0 0 #42a5f5;
 }
 
-input[type=text]:not(.browser-default) {
+.msg-form input[type=text]:not(.browser-default) {
   margin: 0 0 10px 0;
 }
 
