@@ -1,12 +1,12 @@
 .signup-container {
-  margin-top: 50px;
+  margin-top: 100px;
   padding: 40px; }
 
 .signup-form {
   padding-top: 32px; }
 
 .signup-btn {
-  margin-top: 16px; }
+  margin-top: 26px; }
 
 .jumbotron p {
   font-size: 16px; }
@@ -596,5 +596,25 @@ body {
 
   div.auth h5 {
     font-size: 20px;
+  }
+}
+
+.border-bottom {
+  margin-top: 10px;
+  margin-bottom: 0;
+  width: 60%;
+  border: 0;
+  border-top: 2px solid black;
+}
+
+@media screen and (max-width: 991px) {
+  .border-bottom {
+    width: 30%;
+  }
+}  
+
+@media screen and (max-width: 767px) {
+  .form-group {
+    margin-bottom: 15px;
   }
 }
