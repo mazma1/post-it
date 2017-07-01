@@ -71,7 +71,7 @@ body {
   padding-right: $pixel0;
 }
 
-.active {
+ul#menu-content li.active {
   color: #fff;
   background-color: #337ab7;
 }
@@ -470,17 +470,17 @@ section.cards {
   padding-top: 8px;
 }
 
-input[type=text]:focus {
+.msg-form input[type=text]:focus {
   border-bottom: 1px solid #42a5f5;
   box-shadow: 0 1px 0 0 #42a5f5;
 }
 
-input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):focus:not([readonly]) {
+.msg-form input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):focus:not([readonly]) {
   border-bottom: 1px solid #42a5f5;
   box-shadow: 0 1px 0 0 #42a5f5;
 }
 
-input[type=text]:not(.browser-default) {
+.msg-form input[type=text]:not(.browser-default) {
   margin: 0 0 10px 0;
 }
 
@@ -626,7 +626,7 @@ input[type=text]:not(.browser-default) {
 
 // Start: Index Page
 html, body, #clientApp, #clientApp>div {
-  height: 100%
+  min-height: 100%;
 }
 
 .background {
@@ -681,6 +681,80 @@ html, body, #clientApp, #clientApp>div {
   }
 }
 // End: Index Page
+
+
+// Start: Signup and Signin
+.material-icons {
+  padding-top: 12px;
+}
+
+.auth-form div.row {
+  margin-bottom: 0;
+}
+
+.auth-form input[type=text]:not(.browser-default) {
+  height: 2.6rem;
+}
+
+.auth-header {
+  padding-top: 40px;
+}
+
+form.col.s12.auth-form {
+  padding: 20px;
+}
+
+.form-padding-bottom {
+  padding-bottom: 30px;
+}
+
+.call-to-sign-in {
+  padding-top: 16px; 
+}
+
+.signin-card {
+  margin-top: 120px;
+}
+
+input[type=email]:not(.browser-default):focus:not([readonly]) {
+    border-bottom: 1px solid #2196f3;
+    box-shadow: 0 1px 0 0 #2196f3; 
+}
+
+input[type=password]:not(.browser-default):focus:not([readonly]) {
+    border-bottom: 1px solid #2196f3; 
+    box-shadow: 0 1px 0 0 #2196f3; 
+}
+
+.input-field .prefix.active {
+  color: #2196f3; 
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly]) + label {
+  color: #2196f3; 
+}
+
+input[type=email]:not(.browser-default):focus:not([readonly]) + label {
+  color: #2196f3; 
+}
+
+input[type=password]:not(.browser-default):focus:not([readonly]) + label {
+  color: #2196f3; 
+}
+
+.auth-btn.btn {
+  background-color: #2196f3;
+}
+
+.auth-btn.btn:hover, .auth-btn.btn-large:hover {
+  background-color: #42a5f5;
+}
+
+.signup-panel {
+  margin-top: 30px;
+}
+
+// End: Signup and Signin
 
 
 
