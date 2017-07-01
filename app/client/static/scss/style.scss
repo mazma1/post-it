@@ -626,13 +626,15 @@ section.cards {
 
 // Start: Index Page
 html, body, #clientApp, #clientApp>div {
-  min-height: 100%;
+  height: 100%;
 }
 
 .background {
-  background: url("/app/client/static/img/index-bg.png");
-
-
+  background-image: url("/app/client/static/img/index-bg.png");
+  min-height: 100%;
+  height: 100vh; 
+  overflow-y: auto;
+ 
   .index-header {
     padding-top: 130px;
   }   
@@ -751,8 +753,14 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label {
 }
 
 .signup-panel {
-  margin-top: 30px;
+  margin-top: 20px;
 }
+
+@media screen and (max-width: 767px) {
+  .signin-card div.input-field {
+    padding-bottom: 20px;
+  }
+}  
 
 // End: Signup and Signin
 
