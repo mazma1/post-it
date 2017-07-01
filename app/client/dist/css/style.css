@@ -1,0 +1,16 @@
+body {
+  background-color: #31708f; }
+
+aside.navbar-default.mobile-navbar #sidebar {
+  width: 280px;
+  position: fixed;
+  top: 0;
+  height: 100%;
+  background: #C0C0C0;
+  overflow: auto; }
+
+aside.navbar-default.mobile-navbar #brand-name {
+  font-size: 26px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center; }
