@@ -11,7 +11,7 @@ module.exports = {
     '../post-it/app/client/index.js'
   ],
   output: {
-    path: DIST_DIR,
+    path: '/',
     filename: 'index_bundle.js',
     publicPath: '/dist/'
   },
