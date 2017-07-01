@@ -4,7 +4,7 @@ const ReactDOM = require('react-dom');
 require('bootstrap-loader');
 require('materialize-loader');
 require('./static/scss/style.scss');
-require('../../node_modules/jquery/dist/jquery.min');
+require('../client/static/img/index-bg.png');
 
 
 const Client = require('./components/Client');

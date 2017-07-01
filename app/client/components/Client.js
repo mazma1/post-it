@@ -10,14 +10,14 @@ import MessageBoard from './message-board/MessageBoard';
 class Client extends React.Component {
   render() {
     return (
-      <HashRouter>
+      <BrowserRouter>
         <Switch>
           <Route exact path="/" component={HomePage}/>
           <Route exact path="/signup" component={SignUpForm}/>
           <Route exact path="/signin" component={SignInForm}/>
           <Route exact path="/message_board" component={MessageBoard}/>
         </Switch>
-      </HashRouter>
+      </BrowserRouter>
     );
   }
 }

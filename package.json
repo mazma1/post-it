@@ -67,7 +67,9 @@
     "style-loader": "^0.18.2",
     "supertest": "^3.0.0",
     "webpack": "^3.0.0",
-    "webpack-dev-server": "^2.5.0"
+    "webpack-dev-middleware": "^1.11.0",
+    "webpack-dev-server": "^2.5.0",
+    "webpack-hot-middleware": "^2.18.0"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

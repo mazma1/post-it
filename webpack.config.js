@@ -3,15 +3,17 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+const DIST_DIR = path.resolve(__dirname, './app/client/dist');
+
 module.exports = {
   entry: [
     // '../post-it/node_modules/materialize-loader/materialize.config.js',
     '../post-it/app/client/index.js'
   ],
   output: {
-    path: path.resolve(__dirname, './app/client/dist'),
+    path: DIST_DIR,
     filename: 'index_bundle.js',
-    publicPath: '/'
+    publicPath: '/dist/'
   },
   module: {
     rules: [
