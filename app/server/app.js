@@ -35,9 +35,7 @@ if (process.env.NODE_ENV !== 'production') {
   }));
 }
 
-app.use(express.static('../client/dist'));
-// app.use('/index_bundle.js', express.static('../client/dist/index_bundle.js'));
-// app.use('/index-bg.png', express.static('../client/dist/img/index-bg.png'));
+app.use(express.static('../client/dist'));  // App still runs when commented out
 
 app.get('*', (req, res) => res.status(200).sendFile(
   path.resolve(__dirname, '../client/dist/index.html')
