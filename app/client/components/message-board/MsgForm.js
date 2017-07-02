@@ -8,7 +8,7 @@ class MsgForm extends React.Component {
           <form className="form-horizontal">
             <div className="form-group">
               <div className="col-lg-11 col-md-10 col-sm-11 col-xs-11">
-                <input type="text" class="form-control" id="groupMessage" placeholder="Enter your message..." />
+                <input type="text" className="form-control" id="groupMessage" placeholder="Enter your message..." />
               </div>
 
               <div className="col-lg-1 col-md-2 col-sm-1 col-xs-1 msg-send-btn">
