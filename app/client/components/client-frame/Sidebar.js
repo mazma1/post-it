@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Route, NavLink, Switch, Redirect } from 'react-router-dom';
 
-const Brand = () => {
+const Brand = (props) => {
   return (
     <div id="brand-name">
-      Post It
+      {props.brand_name}
     </div>
   );
 };
@@ -25,7 +25,7 @@ class Sidebar extends React.Component {
     return (
       <aside className="navbar-default mobile-navbar">
         <div id="sidebar">
-          <Brand />
+          <Brand brand_name='Post It'/>
           <MobileToggleBtn />
 
           <ul className="nav nav-pills nav-stacked navbar-fixed-side navbar-collapse collapse" id="menu-content">
