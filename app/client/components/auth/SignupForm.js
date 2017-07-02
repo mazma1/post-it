@@ -15,13 +15,13 @@ class SignUp extends React.Component {
                 <div className="row">
                   <div className="input-field auth-field col m6 s12">
                     <i className="material-icons prefix">perm_identity</i>
-                    <input id="icon_prefix" type="text" className="validate"/>
+                    <input id="icon_prefix" type="text" className="validate" name='firstname'/>
                     <label htmlFor="icon_prefix">First Name</label>
                   </div>
 
                   <div className="input-field auth-field col m6 s12">
                     <i className="material-icons prefix">perm_identity</i>
-                    <input id="icon_prefix" type="text" className="validate"/>
+                    <input id="icon_prefix" type="text" className="validate" name='lastname'/>
                     <label htmlFor="icon_prefix">Last Name</label>
                   </div>
                 </div>
@@ -29,7 +29,7 @@ class SignUp extends React.Component {
                 <div className="row">
                   <div className="input-field auth-field col s12">
                     <i className="material-icons prefix">perm_identity</i>
-                    <input id="icon_prefix" type="text" className="validate"/>
+                    <input id="icon_prefix" type="text" className="validate" name='username'/>
                     <label htmlFor="icon_prefix">Username</label>
                   </div>
                 </div>
@@ -37,7 +37,7 @@ class SignUp extends React.Component {
                 <div className="row">
                   <div className="input-field auth-field col s12">
                     <i className="material-icons prefix">email</i>
-                    <input id="icon_prefix" type="email" className="validate"/>
+                    <input id="icon_prefix" type="email" className="validate" name='email'/>
                     <label htmlFor="icon_prefix">Email</label>
                   </div>
                 </div>
@@ -45,7 +45,7 @@ class SignUp extends React.Component {
                 <div className="row">
                   <div className="input-field auth-field col s12">
                     <i className="material-icons prefix">https</i>
-                    <input id="icon_prefix" type="password" className="validate"/>
+                    <input id="icon_prefix" type="password" className="validate" name='password'/>
                     <label htmlFor="icon_prefix">Password</label>
                   </div>
                 </div>
@@ -53,7 +53,7 @@ class SignUp extends React.Component {
                 <div className="row">
                   <div className="input-field auth-field col s12">
                     <i className="material-icons prefix">https</i>
-                    <input id="icon_prefix" type="password" className="validate"/>
+                    <input id="icon_prefix" type="password" className="validate" name='confirm_password'/>
                     <label htmlFor="icon_prefix">Confirm Password</label>
                   </div>
                 </div>
