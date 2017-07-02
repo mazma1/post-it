@@ -1,8 +1,8 @@
 import { BrowserRouter, HashRouter, Route, NavLink, Switch, Redirect } from 'react-router-dom';
 import React from 'react';
 import HomePage from './home-page/HomePage';
-import SignUpForm from './auth/SignupForm';
-import SignInForm from './auth/SigninForm';
+import SignUp from './sign-up/SignUp';
+import SignIn from './sign-in/SignIn';
 import MessageBoard from './message-board/MessageBoard';
 
 
@@ -13,8 +13,8 @@ class Client extends React.Component {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={HomePage}/>
-          <Route exact path="/signup" component={SignUpForm}/>
-          <Route exact path="/signin" component={SignInForm}/>
+          <Route exact path="/signup" component={SignUp}/>
+          <Route exact path="/signin" component={SignIn}/>
           <Route exact path="/message_board" component={MessageBoard}/>
         </Switch>
       </BrowserRouter>
