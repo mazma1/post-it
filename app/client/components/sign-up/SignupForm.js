@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-
+import validateInput from '../../validations/signup';
 
 class SignupForm extends React.Component {
   constructor(props) {
@@ -24,13 +24,26 @@ class SignupForm extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  valid() {
+    const { errors, valid } = validateInput(this.state);
+
+    if (!valid) {
+      this.setState({ errors });
+    }
+
+    return valid;
+  }
+
   onSignupClick(e) {
-    this.setState({ errors: {} });
     e.preventDefault();
-    this.props.userSignupRequest(this.state).then(
-      () => {},
-      ({ response }) => this.setState({ errors: response.data })
-    );
+
+    if (this.valid()) {
+      this.setState({ errors: {} });  
+      this.props.userSignupRequest(this.state).then(
+        () => {},
+        ({ response }) => this.setState({ errors: response.data })
+      );
+    }
   }
 
   render() {

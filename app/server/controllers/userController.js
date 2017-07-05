@@ -12,17 +12,6 @@ module.exports = {
 
   // Method to signup a user
   signup: (req, res) => {
-    // if (!req.body.email) {
-    //   res.status(400).send({ success: false, message: 'Email is required' });
-    // } else if (!validator.isEmail(req.body.email)) {
-    //   res.status(400).send({ success: false, message: 'Incorrect email syntax' });
-    // } else if (!req.body.username) {
-    //   res.status(400).send({ success: false, message: 'Username is required' });
-    // } else if (!req.body.password) {
-    //   res.status(400).send({ success: false, message: 'Password is required' });
-    // } else if (req.body.username && req.body.email) {
-
-
     function validateInput(data) {
       let errors = {};
 
@@ -53,9 +42,6 @@ module.exports = {
         valid: isEmpty(errors)
       };
     }
-
-    // res.send(typeof (req.body.username));
-
     const { errors, valid } = validateInput(req.body);
 
     if (!valid) {
