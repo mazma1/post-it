@@ -698,6 +698,14 @@ html, body, #clientApp, #clientApp>div {
   height: 2.6rem;
 }
 
+.auth-form input[type=email]:not(.browser-default) {
+  height: 2.6rem;
+}
+
+.auth-form input[type=password]:not(.browser-default) {
+  height: 2.6rem;
+}
+
 .auth-header {
   padding-top: 40px;
 }
@@ -764,7 +772,15 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label {
 
 // End: Signup and Signin
 
+.help-block {
+    padding-left: 41px;
+    font-size: 13px;
+    margin-top: -15px;
+}
 
+.has-error .help-block {
+  color: #f44336;
+}
 
 
 
