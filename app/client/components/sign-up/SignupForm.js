@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withRouter } from 'react-router-dom';
 import validateInput from '../../validations/signup';
+import TextField from '../common/FormTextField';
 
 class SignupForm extends React.Component {
   constructor(props) {
@@ -55,56 +56,83 @@ class SignupForm extends React.Component {
       <form className="col s12 auth-form">
         <div className="row">
           <div className={classnames('input-field', 'auth-field', 'col m6 s12', { 'has-error': errors.firstname })}>
-            <i className="material-icons prefix">perm_identity</i>
-            <input id="icon_prefix" type="text" className={ classnames('validate', { 'invalid': errors.firstname })} name='firstname' value={this.state.firstname} onChange={this.onChange}/>
-            <label htmlFor="icon_prefix">First Name</label>
-            {errors.firstname && <span className="help-block">{errors.firstname}</span>}
+            <TextField
+              icon='perm_identity'
+              error={errors.firstname}
+              label='First Name'
+              onChange={this.onChange}
+              value={this.state.firstname}
+              field='firstname'
+            />
           </div>
 
           <div className={classnames('input-field', 'auth-field', 'col m6 s12', { 'has-error': errors.lastname })}>
-            <i className="material-icons prefix">perm_identity</i>
-            <input id="icon_prefix" type="text" className={classnames('validate', { 'invalid': errors.lastname })} name='lastname' value={this.state.lastname} onChange={this.onChange}/>
-            <label htmlFor="icon_prefix">Last Name</label>
-            {errors.lastname && <span className="help-block">{errors.lastname}</span>}
+            <TextField
+              icon='perm_identity'
+              error={errors.lastname}
+              label='Last Name'
+              onChange={this.onChange}
+              value={this.state.lastname}
+              field='lastname'
+            />
           </div>
         </div>
 
         <div className="row">
           <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': errors.username })}>
-            <i className="material-icons prefix">perm_identity</i>
-            <input id="icon_prefix" type="text" className={ classnames('validate', { 'invalid': errors.username })} name='username' value={this.state.username} onChange={this.onChange}/>
-            <label htmlFor="icon_prefix">Username</label>
-            {errors.username && <span className="help-block">{errors.username}</span>}
+            <TextField
+              icon='perm_identity'
+              error={errors.username}
+              label='Username'
+              onChange={this.onChange}
+              value={this.state.username}
+              field='username'
+            />  
           </div>
         </div>
 
         <div className="row">
           <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': errors.email })}>
-            <i className="material-icons prefix">email</i>
-            <input id="icon_prefix" type="email" className={classnames('validate', { 'invalid': errors.email })} name='email' value={this.state.email} onChange={this.onChange}/>
-            <label htmlFor="icon_prefix">Email</label>
-            {errors.email && <span className="help-block">{errors.email}</span>}
+            <TextField
+              icon='email'
+              error={errors.email}
+              label='Email'
+              onChange={this.onChange}
+              value={this.state.email}
+              field='email'
+              type='email'
+            />
           </div>
         </div>
 
         <div className="row">
           <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': errors.password })}>
-            <i className="material-icons prefix">https</i>
-            <input id="icon_prefix" type="password" className={classnames('validate', { 'invalid': errors.password })} name='password' value={this.state.password} onChange={this.onChange}/>
-            <label htmlFor="icon_prefix">Password</label>
-            {errors.password && <span className="help-block">{errors.password}</span>}
+            <TextField
+              icon='https'
+              error={errors.password}
+              label='Password'
+              onChange={this.onChange}
+              value={this.state.password}
+              field='password'
+              type='password'
+            />
           </div>
         </div>
 
         <div className="row">
           <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': errors.confirm_password })}>
-            <i className="material-icons prefix">https</i>
-            <input id="icon_prefix" type="password" className={classnames('validate', { 'invalid': errors.confirm_password })} name='confirm_password' value={this.state.confirm_password} onChange={this.onChange}/>
-            <label htmlFor="icon_prefix">Confirm Password</label>
-            {errors.confirm_password && <span className="help-block">{errors.confirm_password}</span>}
+            <TextField
+              icon='https'
+              error={errors.confirm_password}
+              label='Confirm Password'
+              onChange={this.onChange}
+              value={this.state.confirm_password}
+              field='confirm_password'
+              type='password'
+            />
           </div>
         </div>
-          
+        
         <div className="row">
           <div className="input-field col s12">
             <a className="auth-btn btn waves-effect waves-light col s12" onClick={this.onSignupClick}>Sign Up</a>
