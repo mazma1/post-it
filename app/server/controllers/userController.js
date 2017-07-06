@@ -47,7 +47,7 @@ module.exports = {
 
     if (!valid) {
       res.status(400).send(errors);
-    } else if (valid) {
+    } else {
       User.findOne({
         where: {
           username: req.body.username
@@ -69,23 +69,25 @@ module.exports = {
             errors.email = 'Email already exists';
           }
 
-          res.status(400).send(errors);
+          if (!isEmpty(errors)) {
+            res.status(400).send(errors);
+          } else {
+            const userData = {
+              firstname: req.body.firstname,
+              lastname: req.body.lastname,
+              username: req.body.username,
+              email: req.body.email,
+              password: bcrypt.hashSync(req.body.password, salt)
+            };
+            User.create(userData)
+            .then(user => {
+              const token = jwt.sign({ data: user }, process.env.TOKEN_SECRET, { expiresIn: 1440 });
+              res.status(201).send({ success: true, message: 'Signup was successful', token });
+            })
+            .catch(error => res.status(400).send(error));
+          }
         });
       });
-    } else if (isEmpty(errors)) {
-      const userData = {
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        username: req.body.username,
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, salt)
-      };
-      User.create(userData)
-        .then(user => {
-          const token = jwt.sign({ data: user }, process.env.TOKEN_SECRET, { expiresIn: 1440 });
-          res.status(201).send({ success: true, message: 'Signup was successful', token });
-        })
-        .catch(error => res.status(400).send(error));
     }
   },
 
