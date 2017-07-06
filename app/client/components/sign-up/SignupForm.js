@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { withRouter } from 'react-router-dom';
 import validateInput from '../../validations/signup';
 
 class SignupForm extends React.Component {
@@ -38,9 +39,11 @@ class SignupForm extends React.Component {
     e.preventDefault();
 
     if (this.valid()) {
-      this.setState({ errors: {} });  
+      this.setState({ errors: {} });
       this.props.userSignupRequest(this.state).then(
-        () => {},
+        () => {
+          this.props.history.push('/message_board');
+        },
         ({ response }) => this.setState({ errors: response.data })
       );
     }
@@ -122,5 +125,5 @@ SignupForm.propTypes = {
   userSignupRequest: PropTypes.func.isRequired
 };
 
-module.exports = SignupForm;
+export default withRouter(SignupForm);
 
