@@ -664,7 +664,7 @@ html, body, #clientApp, #clientApp>div {
 
   @media screen and (max-width: 444px) {
     .index-header {
-      padding-top: 100px;
+      padding-top: 70px;  //100px
     }
   }
 
@@ -695,6 +695,14 @@ html, body, #clientApp, #clientApp>div {
 }
 
 .auth-form input[type=text]:not(.browser-default) {
+  height: 2.6rem;
+}
+
+.auth-form input[type=email]:not(.browser-default) {
+  height: 2.6rem;
+}
+
+.auth-form input[type=password]:not(.browser-default) {
   height: 2.6rem;
 }
 
@@ -764,7 +772,15 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label {
 
 // End: Signup and Signin
 
+.help-block {
+    padding-left: 45px;
+    font-size: 13px;
+    margin-top: -15px;
+}
 
+.has-error .help-block {
+  color: #f44336;
+}
 
 
 
