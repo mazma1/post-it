@@ -42,11 +42,12 @@ module.exports = {
         valid: isEmpty(errors)
       };
     }
+
     const { errors, valid } = validateInput(req.body);
 
     if (!valid) {
       res.status(400).send(errors);
-    } else {
+    } else if (valid) {
       User.findOne({
         where: {
           username: req.body.username
@@ -55,33 +56,36 @@ module.exports = {
       .then((user, err) => {
         if (err) throw err;
         if (user) {
-          res.status(400).send({ success: false, message: 'Username already exists' });
-        } else {
-          User.findOne({
-            where: {
-              email: req.body.email
-            },
-          })
-          .then((user, err) => {
-            if (err) throw err;
-            if (user) {
-              res.status(400).send({ success: false, message: 'User with the email address already exists.' });
-            } else {
-              const userData = {
-                email: req.body.email,
-                username: req.body.username,
-                password: bcrypt.hashSync(req.body.password, salt)
-              };
-              User.create(userData)
-              .then(user => {
-                const token = jwt.sign({ data: user }, process.env.TOKEN_SECRET, { expiresIn: 1440 });
-                res.status(201).send({ success: true, message: 'Signup was successful', token });
-              })
-              .catch(error => res.status(400).send(error));
-            }
-          });
+          errors.username = 'Username already exists';
         }
+        User.findOne({
+          where: {
+            email: req.body.email
+          },
+        })
+        .then((user, err) => {
+          if (err) throw err;
+          if (user) {
+            errors.email = 'Email already exists';
+          }
+
+          res.status(400).send(errors);
+        });
       });
+    } else if (isEmpty(errors)) {
+      const userData = {
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        username: req.body.username,
+        email: req.body.email,
+        password: bcrypt.hashSync(req.body.password, salt)
+      };
+      User.create(userData)
+        .then(user => {
+          const token = jwt.sign({ data: user }, process.env.TOKEN_SECRET, { expiresIn: 1440 });
+          res.status(201).send({ success: true, message: 'Signup was successful', token });
+        })
+        .catch(error => res.status(400).send(error));
     }
   },
 
