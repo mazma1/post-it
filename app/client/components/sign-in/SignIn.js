@@ -1,8 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import SigninForm from './SigninForm';
+import { userSigninRequest } from '../../actions/signinAction';
 
 class SignIn extends React.Component {
   render() {
+    const { userSigninRequest } = this.props;
     return (
       <div className="background">
         <div className="container">
@@ -12,7 +16,7 @@ class SignIn extends React.Component {
                 <h5 className="center">Sign In | Post It</h5>
               </header>
 
-              <SigninForm />
+              <SigninForm userSigninRequest={userSigninRequest}/>
             </div>
           </div>
         </div>
@@ -21,4 +25,8 @@ class SignIn extends React.Component {
   }
 }
 
-module.exports = SignIn;
+SignIn.propTypes = {
+  userSigninRequest: PropTypes.func.isRequired
+};
+
+export default connect(null, { userSigninRequest })(SignIn);

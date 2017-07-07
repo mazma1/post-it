@@ -93,18 +93,28 @@ module.exports = {
 
   // Method to sign in a user
   signin: (req, res) => {
-    if (!req.body.username && !req.body.password) {
-      res.status(401).send({ success: false, message: 'Enter a valid username and password' });
+    let errors = {};
+    if (!req.body.identifier && !req.body.password) {
+      errors.identifier = 'This field is required';
+      errors.password = 'This field is required';
+      res.status(401).send(errors);
+    } else if (!req.body.identifier) {
+      errors.identifier = 'This field is required';
+      res.status(401).send(errors);
+    } else if (!req.body.password) {
+      errors.password = 'This field is required';
+      res.status(401).send(errors);
     } else {
       User.findOne({
         where: {
-          username: req.body.username
+          $or: [{ username: req.body.identifier }, { email: req.body.identifier }]
         },
       })
       .then((user, err) => {
         if (err) throw err;
         if (!user) {
-          res.status(401).send({ success: false, message: 'Invalid username or password' });
+          errors.identifier = 'Invalid username or password';
+          res.status(401).send(errors);
         } else if (user) {
           if (bcrypt.compareSync(req.body.password, user.password)) {
             // if user is found and password is right, create a token
@@ -117,7 +127,9 @@ module.exports = {
               token
             });
           } else {
-            res.status(401).send({ success: false, message: 'Invalid username or password' });
+            errors.identifier = 'Invalid username or password';
+            res.status(401).send(errors);
+            // res.status(401).send({ success: false, message: 'Invalid username or password' });
           }
         }
       });
