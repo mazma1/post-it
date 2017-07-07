@@ -8,7 +8,7 @@ require('bootstrap-loader');
 require('materialize-loader');
 require('./static/scss/style.scss');
 require('../client/static/img/index-bg.png');
-require('../client/validations/signup.js');
+// require('../client/validations/signup.js');
 
 const Client = require('./components/Client');
 
