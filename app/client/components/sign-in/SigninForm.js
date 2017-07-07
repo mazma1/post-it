@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import TextField from '../common/FormTextField';
+import validateInput from '../../validations/signinValidation';
 
 
 class SigninForm extends React.Component {
@@ -18,19 +19,29 @@ class SigninForm extends React.Component {
     this.onSigninClick = this.onSigninClick.bind(this);
   }
 
+  valid() {
+    const { errors, valid } = validateInput(this.state);
+
+    if (!valid) {
+      this.setState({ errors });
+    }
+
+    return valid;
+  }
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
 
   onSigninClick(e) {
     e.preventDefault();
-    this.setState({ errors: {} });
-    this.props.userSigninRequest(this.state);
-    // .then(
-    //   () => this.props.history.push('/message_board'),
-    //   ({ response }) => this.setState({ errors: response.data })
-    // );
-    console.log('Debugging');
+
+    if (this.valid()) {
+      this.setState({ errors: {} });
+      this.props.userSigninRequest(this.state).then(
+        () => this.props.history.push('/message_board'),
+        ({ response }) => this.setState({ errors: response.data })
+      );
+    }  
   }
   render() {
     const { errors } = this.state;

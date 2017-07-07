@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { withRouter } from 'react-router-dom';
-import validateInput from '../../validations/signup';
+import validateInput from '../../validations/signupValidation';
 import TextField from '../common/FormTextField';
 
 class SignupForm extends React.Component {
