@@ -4,7 +4,7 @@ node_js:
 services:
   - postgresql
 before_script:
-  - psql -c 'create database postit_test;' -U postgres
+  - psql -c 'create database postit;' -U postgres
   - psql -c "CREATE USER joe1 WITH PASSWORD '1234';" -U postgres  
   - sequelize db:migrate
 script: npm run coverage
