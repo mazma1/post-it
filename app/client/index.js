@@ -2,25 +2,33 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import jwt from 'jsonwebtoken';
+import rootReducer from './reducers/rootReducer';
 import setAuthorizationToken from './utils/setAuthorizationToken';
-
+import { setCurrentUser } from './actions/signinAction';
 
 require('bootstrap-loader');
 require('materialize-loader');
 require('./static/scss/style.scss');
 require('../client/static/img/index-bg.png');
-// require('../client/validations/signup.js');
 
 const Client = require('./components/Client');
 
 // Define Redux Store
 const store = createStore(
-  (state = {}) => state,
-  applyMiddleware(thunk)
+  rootReducer,
+  compose(
+    applyMiddleware(thunk),
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+  )
 );
 
-setAuthorizationToken(localStorage.jwtToken);
+if (localStorage.jwtToken) {
+  setAuthorizationToken(localStorage.jwtToken);
+  store.dispatch(setCurrentUser(jwt.decode(localStorage.jwtToken)));
+}
+
 
 
 // render component to DOM
