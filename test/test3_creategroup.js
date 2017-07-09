@@ -53,7 +53,6 @@ describe('POST /api/group', () => {
           done(error);
         });
       });
-    done();
   });
 
 

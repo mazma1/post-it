@@ -4,7 +4,7 @@
   "description": "A simple application that allows friends and colleagues create groups for messaging.",
   "main": "./app/client/index.js",
   "directories": {
-    "test": "tests"
+    "test": "test"
   },
   "scripts": {
     "start": "node app/server/bin/www",
@@ -12,7 +12,8 @@
     "create": "webpack",
     "create:dev": "webpack-dev-server --open",
     "build": "babel --presets es2015 app/template/js/src -d app/template/js/dist",
-    "test": "NODE_ENV=test ./node_modules/.bin/mocha tests/*.js",
+    "test": "NODE_ENV=test mocha test/*.js --R nyan",
+    "migrations": "NODE_ENV=test sequelize db:migrate",
     "coverage": "node node_modules/.bin/istanbul cover _mocha tests/*tests.js",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
     "reset_db": "NODE_ENV=production sequelize db:migrate:undo:all && NODE_ENV=production sequelize db:migrate:all"
