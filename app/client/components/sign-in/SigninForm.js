@@ -41,7 +41,7 @@ class SigninForm extends React.Component {
         () => this.props.history.push('/message_board'),
         ({ response }) => this.setState({ errors: response.data })
       );
-    }  
+    }
   }
   render() {
     const { errors } = this.state;

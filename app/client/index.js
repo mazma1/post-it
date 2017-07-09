@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware } from 'redux';
+import setAuthorizationToken from './utils/setAuthorizationToken';
+
 
 require('bootstrap-loader');
 require('materialize-loader');
@@ -17,6 +19,8 @@ const store = createStore(
   (state = {}) => state,
   applyMiddleware(thunk)
 );
+
+setAuthorizationToken(localStorage.jwtToken);
 
 
 // render component to DOM

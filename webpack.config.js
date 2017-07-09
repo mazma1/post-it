@@ -40,5 +40,9 @@ module.exports = {
       $: 'jquery',
       jQuery: 'jquery'
     })
-  ]
+  ],
+  node: {
+    net: 'empty',
+    dns: 'empty'
+  }
 };
