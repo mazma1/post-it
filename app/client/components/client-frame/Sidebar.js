@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, NavLink, Switch, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 const Brand = (props) => {
   return (
@@ -22,6 +23,8 @@ const MobileToggleBtn = () => {
 
 class Sidebar extends React.Component {
   render() {
+    const { isAuthenticated } = this.props.signedInUser;  // signedInUser.user.data{id, firstname,....}
+
     return (
       <aside className="navbar-default mobile-navbar">
         <div id="sidebar">
@@ -61,4 +64,11 @@ class Sidebar extends React.Component {
   }
 }
 
-module.exports = Sidebar;
+function mapStateToProps(state) {
+  // Whatever is returned will show up as props in Sidebar
+  return {
+    signedInUser: state.signedInUser
+  };
+}
+
+export default connect(mapStateToProps)(Sidebar);
