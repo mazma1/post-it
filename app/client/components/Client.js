@@ -4,6 +4,7 @@ import HomePage from './home-page/HomePage';
 import SignUp from './sign-up/SignUp';
 import SignIn from './sign-in/SignIn';
 import MessageBoard from './message-board/MessageBoard';
+import EnsureLoggedInContainer from '../components/EnsureLoggedInContainer';
 
 
 
@@ -17,7 +18,9 @@ class Client extends React.Component {
           <Route exact path="/" component={HomePage}/>
           <Route exact path="/signup" component={SignUp}/>
           <Route exact path="/signin" component={SignIn}/>
-          <Route exact path="/message_board" component={MessageBoard}/>
+          <EnsureLoggedInContainer>
+            <Route exact path="/message_board" component={MessageBoard}/>
+          </EnsureLoggedInContainer>
         </Switch>
       </BrowserRouter>
     );

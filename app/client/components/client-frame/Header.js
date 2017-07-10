@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter, Link, Redirect } from 'react-router-dom';
 import { logout } from '../../actions/signinAction';
 
 const GroupName = (props) => {
@@ -14,6 +15,7 @@ class Header extends React.Component {
   logout(e) {
     e.preventDefault();
     this.props.logout();
+    this.props.history.push('/signin');
   }
 
   render() {
@@ -27,7 +29,7 @@ class Header extends React.Component {
               <ul>
                 <li className="username"><i className="glyphicon glyphicon-user"></i> @mazma</li>
                 <button type="" className="btn waves-effect waves-light blue lighten-1" data-toggle="modal" data-target="#addUser">Add User</button>
-                <li><button type="submit" className="btn waves-effect waves-light red darken-2" onClick={this.logout.bind(this)}>Sign Out</button></li>
+                <li><Link to="/signin" className="btn waves-effect waves-light red darken-2" onClick={this.logout.bind(this)}>Sign Out</Link></li>
               </ul>
             </div>
 
@@ -61,4 +63,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { logout })(Header);
+export default withRouter(connect(mapStateToProps, { logout })(Header));
