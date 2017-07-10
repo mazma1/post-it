@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter, Link, Redirect } from 'react-router-dom';
+import { logout } from '../../actions/signinAction';
 
 const GroupName = (props) => {
   return (
@@ -9,6 +12,12 @@ const GroupName = (props) => {
 };
 
 class Header extends React.Component {
+  logout(e) {
+    e.preventDefault();
+    this.props.logout();
+    this.props.history.push('/signin');
+  }
+
   render() {
     return (
       <section className="nav-bar">
@@ -20,7 +29,7 @@ class Header extends React.Component {
               <ul>
                 <li className="username"><i className="glyphicon glyphicon-user"></i> @mazma</li>
                 <button type="" className="btn waves-effect waves-light blue lighten-1" data-toggle="modal" data-target="#addUser">Add User</button>
-                <li><button type="submit" className="btn waves-effect waves-light red darken-2">Sign Out</button></li>
+                <li><Link to="/signin" className="btn waves-effect waves-light red darken-2" onClick={this.logout.bind(this)}>Sign Out</Link></li>
               </ul>
             </div>
 
@@ -34,7 +43,7 @@ class Header extends React.Component {
                   <ul className="dropdown-menu">
                     <li><a href="#">Add User</a></li>
                     <li><a href="#">Create Group</a></li>
-                    <li><a href="#">Log Out</a></li>
+                    <li><a href="#" onClick={this.logout.bind(this)}>Log Out</a></li>
                   </ul>
                 </li>
               </ul>
@@ -47,4 +56,11 @@ class Header extends React.Component {
   }
 }
 
-module.exports = Header;
+function mapStateToProps(state) {
+  // Whatever is returned will show up as props in Sidebar
+  return {
+    signedInUser: state.signedInUser
+  };
+}
+
+export default withRouter(connect(mapStateToProps, { logout })(Header));
