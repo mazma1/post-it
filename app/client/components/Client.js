@@ -5,6 +5,7 @@ import SignUp from './sign-up/SignUp';
 import SignIn from './sign-in/SignIn';
 import MessageBoard from './message-board/MessageBoard';
 import EnsureLoggedInContainer from '../components/EnsureLoggedInContainer';
+import HomepageRedirectContainer from '../components/HomepageRedirectContainer';
 
 
 
@@ -15,7 +16,9 @@ class Client extends React.Component {
     return (
       <BrowserRouter>
         <Switch>
-          <Route exact path="/" component={HomePage}/>
+          {/*<HomepageRedirectContainer>*/}
+            <Route exact path="/" component={HomePage}/>
+          {/*</HomepageRedirectContainer>*/}
           <Route exact path="/signup" component={SignUp}/>
           <Route exact path="/signin" component={SignIn}/>
           <EnsureLoggedInContainer>
