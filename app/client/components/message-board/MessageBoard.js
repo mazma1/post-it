@@ -3,6 +3,7 @@ import { BrowserRouter, Route, NavLink, Switch, Redirect } from 'react-router-do
 import ClientFrame from '../client-frame/ClientFrame';
 import MessageCard from './MsgCard';
 import MessageForm from './MsgForm';
+import FlashMessageList from '../flash-message/FlashMessagesList';
 
 
 class MessageBoard extends React.Component {
@@ -11,6 +12,8 @@ class MessageBoard extends React.Component {
       <ClientFrame>
         <section className="cards card-panel-wrapper">
           <div className="msg_card_padding"></div>
+
+          <FlashMessageList/>
 
           <MessageCard/>
 

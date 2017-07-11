@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SigninForm from './SigninForm';
 import { userSigninRequest } from '../../actions/signinAction';
+import { addFlashMessage } from '../../actions/flashMessageAction';
+import FlashMessageList from '../flash-message/FlashMessagesList';
+
 
 class SignIn extends React.Component {
   render() {
-    const { userSigninRequest } = this.props;
+    const { userSigninRequest, addFlashMessage } = this.props;
     return (
       <div className="background">
         <div className="container">
@@ -16,7 +19,9 @@ class SignIn extends React.Component {
                 <h5 className="center">Sign In | Post It</h5>
               </header>
 
-              <SigninForm userSigninRequest={userSigninRequest}/>
+              <FlashMessageList/>
+
+              <SigninForm userSigninRequest={userSigninRequest} addFlashMessage={addFlashMessage}/>
             </div>
           </div>
         </div>
@@ -26,7 +31,8 @@ class SignIn extends React.Component {
 }
 
 SignIn.propTypes = {
-  userSigninRequest: PropTypes.func.isRequired
+  userSigninRequest: PropTypes.func.isRequired,
+   addFlashMessage: PropTypes.func.isRequired
 };
 
-export default connect(null, { userSigninRequest })(SignIn);
+export default connect(null, { userSigninRequest, addFlashMessage })(SignIn);

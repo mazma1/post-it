@@ -38,7 +38,13 @@ class SigninForm extends React.Component {
     if (this.valid()) {
       this.setState({ errors: {} });
       this.props.userSigninRequest(this.state).then(
-        () => this.props.history.push('/message_board'),
+        () => {
+          this.props.addFlashMessage({
+            type: 'success',
+            text: 'Sign in was successful. Welcome back!'
+          });
+          this.props.history.push('/message_board');
+        },
         ({ response }) => this.setState({ errors: response.data })
       );
     }
@@ -91,7 +97,8 @@ class SigninForm extends React.Component {
 }
 
 SigninForm.propTypes = {
-  userSigninRequest: PropTypes.func.isRequired
+  userSigninRequest: PropTypes.func.isRequired,
+  addFlashMessage: PropTypes.func.isRequired
 };
 
 export default withRouter(SigninForm);

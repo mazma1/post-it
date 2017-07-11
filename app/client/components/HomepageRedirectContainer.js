@@ -1,31 +1,39 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { addFlashMessage } from '../actions/flashMessageAction';
 
-class HomepageRedirect extends React.Component {
-  componentDidMount() {
-    const { isLoggedIn } = this.props;
-    console.log(isLoggedIn);
-    if (isLoggedIn) {
-      this.props.history.push('/message_board'); // then redirect
+export default function(ComposedComponent) {
+  class HomepageRedirect extends React.Component {
+    componentWillMount() {
+      if (this.props.isAuthenticated) {
+        this.props.addFlashMessage({
+          type: 'success',
+          text: 'Welcome back!'
+        });
+        this.props.history.push('/message_board');
+      }
+    }
+    render() {
+      return (
+        <ComposedComponent {...this.props}/>
+      );
     }
   }
 
-  render() {
-    const { isLoggedIn } = this.props;
-    if (!isLoggedIn) {
-      return this.props.children;
-    }
-    return null;
-  }
-}
-
-
-function mapStateToProps(state) {
-  return {
-    isLoggedIn: state.signedInUser.isAuthenticated // True or False
+  HomepageRedirect.propTypes = {
+    isAuthenticated: PropTypes.bool.isRequired,
+    addFlashMessage: PropTypes.func.isRequired
   };
+
+  function mapStateToProps(state) {
+    return {
+      isAuthenticated: state.signedInUser.isAuthenticated
+    };
+  }
+
+  return connect(mapStateToProps, { addFlashMessage })(HomepageRedirect);
 }
 
-export default withRouter(connect(mapStateToProps)(HomepageRedirect));
+
 
