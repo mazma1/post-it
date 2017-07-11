@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import SigninForm from './SigninForm';
 import { userSigninRequest } from '../../actions/signinAction';
 import { addFlashMessage } from '../../actions/flashMessageAction';
+import FlashMessageList from '../flash-message/FlashMessagesList';
 
 
 class SignIn extends React.Component {
@@ -17,6 +18,8 @@ class SignIn extends React.Component {
               <header className="auth-header">
                 <h5 className="center">Sign In | Post It</h5>
               </header>
+
+              <FlashMessageList/>
 
               <SigninForm userSigninRequest={userSigninRequest} addFlashMessage={addFlashMessage}/>
             </div>
