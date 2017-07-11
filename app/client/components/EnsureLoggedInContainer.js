@@ -11,7 +11,7 @@ class EnsureLoggedIn extends React.Component {
     if (!isLoggedIn) {
       this.props.addFlashMessage({
         type: 'error',
-        text: 'You need to signvin to access this page'
+        text: 'You need to sign in to access this page'
       });
       this.props.history.push('/signin');
     }
