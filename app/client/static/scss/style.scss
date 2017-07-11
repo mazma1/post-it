@@ -782,6 +782,13 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label {
   color: #f44336;
 }
 
+.flash-msg {
+  padding-top: 22px;
+  margin-bottom: -10px;
+  padding-right: 15px;
+  padding-left: 13px;
+}
+
 
 
 

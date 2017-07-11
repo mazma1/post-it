@@ -100,6 +100,7 @@
     "redux-thunk": "^2.2.0",
     "sequelize": "^3.23.0",
     "sequelize-cli": "^2.7.0",
+    "shortid": "^2.2.8",
     "url-loader": "^0.5.9",
     "uuid": "^3.0.1",
     "validator": "^7.0.0"

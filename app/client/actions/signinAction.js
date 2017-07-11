@@ -1,6 +1,6 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
-import { SET_CURRENT_USER, SET_REDIRECT_URL } from './types';
+import { SET_CURRENT_USER } from './types';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 
 
@@ -8,13 +8,6 @@ export function setCurrentUser(user) {
   return {
     type: SET_CURRENT_USER,
     user
-  };
-}
-
-export function setRedirectUrl(url) {
-  return {
-    type: SET_REDIRECT_URL,
-    url
   };
 }
 
