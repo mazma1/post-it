@@ -1,11 +1,11 @@
-import { BrowserRouter, HashRouter, Route, NavLink, Switch, Redirect } from 'react-router-dom';
 import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import HomePage from './home-page/HomePage';
 import SignUp from './sign-up/SignUp';
 import SignIn from './sign-in/SignIn';
 import MessageBoard from './message-board/MessageBoard';
 import EnsureLoggedInContainer from '../components/EnsureLoggedInContainer';
-import HomepageRedirectContainer from '../components/HomepageRedirectContainer';
+import checkAuth from '../components/HomepageRedirectContainer';
 
 
 
@@ -16,9 +16,7 @@ class Client extends React.Component {
     return (
       <BrowserRouter>
         <Switch>
-          {/*<HomepageRedirectContainer>*/}
-            <Route exact path="/" component={HomePage}/>
-          {/*</HomepageRedirectContainer>*/}
+          <Route exact path="/" component={checkAuth(HomePage)}/>
           <Route exact path="/signup" component={SignUp}/>
           <Route exact path="/signin" component={SignIn}/>
           <EnsureLoggedInContainer>
