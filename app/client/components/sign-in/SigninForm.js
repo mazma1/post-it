@@ -41,7 +41,7 @@ class SigninForm extends React.Component {
         () => {
           this.props.addFlashMessage({
             type: 'success',
-            text: 'Sign in was successful, Welcome back!'
+            text: 'Sign in was successful. Welcome back!'
           });
           this.props.history.push('/message_board');
         },
