@@ -9,8 +9,8 @@ module.exports = {
         username: 'mazma',
         email: 'mazi.mary@yahoo.com',
         password: 1234,
-        createdAt: Date.now(),
-        updatedAt: Date.now()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         firstname: 'Clare',
@@ -18,8 +18,8 @@ module.exports = {
         username: 'clare',
         email: 'clare@yahoo.com',
         password: 1234,
-        createdAt: Date.now(),
-        updatedAt: Date.now()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         firstname: 'Godwin',
@@ -27,8 +27,8 @@ module.exports = {
         username: 'chyke',
         email: 'chyke@yahoo.com',
         password: 1234,
-        createdAt: Date.now(),
-        updatedAt: Date.now()
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         firstname: 'Oyindamola',
@@ -36,8 +36,8 @@ module.exports = {
         username: 'oyin',
         email: 'oyin@yahoo.com',
         password: 1234,
-        createdAt: Date.now(),
-        updatedAt: Date.now()
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ]);
   },

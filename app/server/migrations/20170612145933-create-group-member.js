@@ -1,7 +1,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('Group_users', {
+    queryInterface.createTable('Group_members', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,10 +9,18 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       group_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        // references: {
+        //   model: 'Groups',
+        //   key: 'id'
+        // }
       },
       user_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        // references: {
+        //   model: 'Users',
+        //   key: 'id'
+        // }
       },
       createdAt: {
         allowNull: false,

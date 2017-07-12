@@ -57,7 +57,7 @@ module.exports = {
         if (user) {
           Group_member.findOne({
             where: {
-              user_id: user.id
+              $and: [{ user_id: user.id }, { group_id: req.params.group_id }]
             },
           })
           .then((member) => {
