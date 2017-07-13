@@ -13,23 +13,23 @@ module.exports = {
       },
       group_id: {
         type: Sequelize.INTEGER,
-        // references: {
-        //   model: 'Groups',
-        //   key: 'id'
-        // }
+        references: {
+          model: 'Groups',
+          key: 'id'
+        }
       },
       user_id: {
         type: Sequelize.INTEGER,
-        // references: {
-        //   model: 'Users',
-        //   key: 'id'
-        // }
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       }

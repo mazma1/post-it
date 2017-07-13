@@ -9,8 +9,8 @@ module.exports = {
         username: 'mazma',
         email: 'mazi.mary@yahoo.com',
         password: 1234,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        created_at: new Date(),
+        updated_at: new Date()
       },
       {
         firstname: 'Clare',
@@ -18,8 +18,8 @@ module.exports = {
         username: 'clare',
         email: 'clare@yahoo.com',
         password: 1234,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        created_at: new Date(),
+        updated_at: new Date()
       },
       {
         firstname: 'Godwin',
@@ -27,8 +27,8 @@ module.exports = {
         username: 'chyke',
         email: 'chyke@yahoo.com',
         password: 1234,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        created_at: new Date(),
+        updated_at: new Date()
       },
       {
         firstname: 'Oyindamola',
@@ -36,19 +36,31 @@ module.exports = {
         username: 'oyin',
         email: 'oyin@yahoo.com',
         password: 1234,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        firstname: 'Bolaji',
+        lastname: 'Bello',
+        username: 'beejay',
+        email: 'bolaji@yahoo.com',
+        password: 1234,
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        firstname: 'Rose',
+        lastname: 'Mazi',
+        username: 'rose',
+        email: 'rose@yahoo.com',
+        password: 1234,
+        created_at: new Date(),
+        updated_at: new Date()
       }
-    ]);
+    ], {});
   },
 
   down: (queryInterface, Sequelize) => {
-    /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkDelete('Person', null, {});
-    */
+    return queryInterface.bulkDelete('Users', null, {});
   }
 };
