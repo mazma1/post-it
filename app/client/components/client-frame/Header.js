@@ -19,6 +19,7 @@ class Header extends React.Component {
   }
 
   render() {
+    const username = this.props.signedInUser.user.data.username;
     return (
       <section className="nav-bar">
         <div className="nav-container">
@@ -27,7 +28,7 @@ class Header extends React.Component {
 
             <div className="col-md-9 col-sm-7 col-xs-9 lg-stack">
               <ul>
-                <li className="username"><i className="glyphicon glyphicon-user"></i> @mazma</li>
+                <li className="username"><i className="glyphicon glyphicon-user"></i> @{username}</li>
                 <button type="" className="btn waves-effect waves-light blue lighten-1" data-toggle="modal" data-target="#addUser">Add User</button>
                 <li><Link to="/signin" className="btn waves-effect waves-light red darken-2" onClick={this.logout.bind(this)}>Sign Out</Link></li>
               </ul>
