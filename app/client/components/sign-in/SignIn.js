@@ -32,7 +32,7 @@ class SignIn extends React.Component {
 
 SignIn.propTypes = {
   userSigninRequest: PropTypes.func.isRequired,
-   addFlashMessage: PropTypes.func.isRequired
+  addFlashMessage: PropTypes.func.isRequired
 };
 
 export default connect(null, { userSigninRequest, addFlashMessage })(SignIn);
