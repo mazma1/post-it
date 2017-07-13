@@ -7,7 +7,7 @@ import { userSignupRequest } from '../../actions/signupActions';
 
 class SignUp extends React.Component {
   render() {
-    // const { userSignupRequest } = this.props;
+    const { userSignupRequest } = this.props;
     return (
       <div className="background">
         <div className="container">
