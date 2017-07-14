@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
   }, { underscored: true }, {
     classMethods: {
       associate: (models) => {
-        // Message.belongsTo(models.Groups, { foreignKey: 'group_id' });
+        Message.belongsTo(models.Group, { foreignKey: 'group_id' });
+        // .setGroup() // .getGroup()
       }
     }
   });

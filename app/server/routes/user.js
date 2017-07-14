@@ -1,5 +1,6 @@
 const express = require('express');
 const userController = require('../controllers/userController');
+const tokenAuth = require('../middlewares/tokenAuth.js');
 
 const router = express.Router();
 
@@ -7,5 +8,6 @@ const router = express.Router();
 // router.post('/api/user/signup', userController.signup);
 router.route('/api/user/signup').post(userController.signup);
 router.route('/api/user/signin').post(userController.signin);
+router.route('/api/user/:user_id/groups').get(userController.getUserGroups);
 
 module.exports = router;

@@ -1,4 +1,6 @@
 const User = require('../models').User;
+const Group = require('../models').Group;
+const Group_member = require('../models').Group_member;
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -135,4 +137,26 @@ module.exports = {
       });
     }
   },
+
+  // Method to get the groups a user belongs to
+  getUserGroups: (req, res) => {
+    if (req.params.user_id) {
+      // User.findOne({
+      //   where: {
+      //     id: req.params.user_id
+      //   },
+      //   include: [{ model: Group, as: 'group' }]
+      // })
+      Group.findAll({
+        include: [{
+          model: User,
+          as: 'member',
+          where: { '$member.user_id$': req.params.user_id }
+        }]
+      })
+      .then((user) => {
+        res.send(user);
+      });
+    }
+  }
 };
