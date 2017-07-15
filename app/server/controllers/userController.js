@@ -141,21 +141,25 @@ module.exports = {
   // Method to get the groups a user belongs to
   getUserGroups: (req, res) => {
     if (req.params.user_id) {
-      // User.findOne({
-      //   where: {
-      //     id: req.params.user_id
-      //   },
-      //   include: [{ model: Group, as: 'group' }]
-      // })
-      Group.findAll({
+      User.findOne({
+        where: { id: req.params.user_id },
+        attributes: [['id', 'user_id'], 'firstname', 'lastname', 'email'],
         include: [{
-          model: User,
-          as: 'member',
-          where: { '$member.user_id$': req.params.user_id }
+          model: Group,
+          as: 'group',
+          attributes: ['id', ['group_name', 'name']],
+          through: { attributes: [] }
         }]
       })
+      // Group.findAll({
+      //   include: [{
+      //     model: User,
+      //     as: 'member',
+      //     where: { '$member.id$': req.params.user_id }
+      //   }]
+      // })
       .then((user) => {
-        res.send(user);
+        res.status(201).send(user);
       });
     }
   }

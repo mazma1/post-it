@@ -8,6 +8,6 @@ const router = express.Router();
 // router.post('/api/user/signup', userController.signup);
 router.route('/api/user/signup').post(userController.signup);
 router.route('/api/user/signin').post(userController.signin);
-router.route('/api/user/:user_id/groups').get(userController.getUserGroups);
+router.route('/api/user/:user_id/groups').get(tokenAuth, userController.getUserGroups);
 
 module.exports = router;
