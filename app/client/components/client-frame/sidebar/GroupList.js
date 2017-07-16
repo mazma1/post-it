@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
+import classnames from 'classnames';
 
 function GroupList (props) {
   const groupsArray = props.userGroups.groups;
@@ -17,10 +18,12 @@ function GroupList (props) {
     </div>
   );
 
+
   const groupItems = groupsArray.map((group) => {
+    const isSelected = props.selectedGroup.id === group.id;
     return (
-      <li role="presentation" key={group.name} className="active">
-        <NavLink activeClassName="active" to="#" >
+      <li role="presentation" key={group.name} className={classnames({ 'active': isSelected })}>
+        <NavLink to="#">
           {group.name}
         </NavLink>
       </li>
@@ -37,9 +40,8 @@ function GroupList (props) {
 }
 
 GroupList.propTypes = {
-  signedInUser: PropTypes.object.isRequired,
-  getUserGroups: PropTypes.func.isRequired,
-  userGroups: PropTypes.object.isRequired
+  userGroups: PropTypes.object.isRequired,
+  selectedGroup: PropTypes.object.isRequired
 };
 
 export default GroupList;

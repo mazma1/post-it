@@ -6,7 +6,7 @@ import { logout } from '../../actions/signinAction';
 const GroupName = (props) => {
   return (
     <div className="col-md-3 col-sm-5 col-xs-3 brand">
-      <h4 className="group-name">Group Name</h4>
+      <h4 className="group-name">{props.groupname}</h4>
     </div>
   );
 };
@@ -19,12 +19,12 @@ class Header extends React.Component {
   }
 
   render() {
-    const username = this.props.signedInUser.user.data.username;
+    const { username, groupname } = this.props;
     return (
       <section className="nav-bar">
         <div className="nav-container">
           <div className="row">
-            <GroupName />
+            <GroupName groupname={groupname}/>
 
             <div className="col-md-9 col-sm-7 col-xs-9 lg-stack">
               <ul>
@@ -36,7 +36,7 @@ class Header extends React.Component {
 
             <div className="col-md-9 col-sm-7 col-xs-8 mobile-stack">
               <ul>
-                <li className="username"><i className="glyphicon glyphicon-user"></i> @mazma</li>
+                <li className="username"><i className="glyphicon glyphicon-user"></i> @{username}</li>
                 <li role="presentation" className="dropdown">
                   <a className="dropdown-toggle options" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     Options <span className="caret"></span>
@@ -60,7 +60,8 @@ class Header extends React.Component {
 function mapStateToProps(state) {
   // Whatever is returned will show up as props in Sidebar
   return {
-    signedInUser: state.signedInUser
+    username: state.signedInUser.user.data.username,
+    groupname: state.selectedGroup.name
   };
 }
 

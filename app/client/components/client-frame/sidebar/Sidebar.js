@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import GroupList from './GroupList';
 import { getUserGroups } from '../../../actions/getUserGroupsAction';
+import { setSelectedGroup } from '../../../actions/setSelectedGroupAction';
 
 const Brand = (props) => {
   return (
@@ -27,11 +28,15 @@ const MobileToggleBtn = () => {
 class Sidebar extends React.Component {
   componentWillMount() {
     const userId = this.props.signedInUser.user.data.id;  // signedInUser.user.data{id, firstname,....}
-    this.props.getUserGroups(userId);  // Dispatch (thunk) action fetch groups
+    this.props.getUserGroups(userId).then(
+      () => {
+        this.props.setSelectedGroup(this.props.userGroups.groups[0]);
+      }
+    );
   }
 
   render() {
-    const { signedInUser, getUserGroups, userGroups } = this.props;
+    const { userGroups, selectedGroup } = this.props;
     return (
       <aside className="navbar-default mobile-navbar">
         <div id="sidebar">
@@ -39,9 +44,8 @@ class Sidebar extends React.Component {
           <MobileToggleBtn />
 
           <GroupList
-            signedInUser={signedInUser}
-            getUserGroups={getUserGroups}
             userGroups={userGroups}
+            selectedGroup={selectedGroup}
           />
         </div>
       </aside>
@@ -53,20 +57,24 @@ function mapStateToProps(state) {
   // Whatever is returned will show up as props in Sidebar
   return {
     signedInUser: state.signedInUser,
-    userGroups: state.userGroups
+    userGroups: state.userGroups,
+    selectedGroup: state.selectedGroup
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    getUserGroups
+    getUserGroups,
+    setSelectedGroup
   }, dispatch);
 }
 
 Sidebar.propTypes = {
   signedInUser: PropTypes.object.isRequired,
   getUserGroups: PropTypes.func.isRequired,
-  userGroups: PropTypes.object.isRequired
+  userGroups: PropTypes.object.isRequired,
+  setSelectedGroup: PropTypes.func.isRequired,
+  selectedGroup: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
