@@ -3,9 +3,16 @@ const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
   // check header or url parameters or post parameters for token
-  const token = (req.body && req.body.access_token) ||
-                (req.query && req.query.access_token) ||
-                req.headers['x-access-token'];
+  const authorizationHeader = req.headers.authorization;
+  let token;
+
+  if (authorizationHeader) {
+    token = authorizationHeader.split(' ')[1];
+  } else {
+    token = (req.body && req.body.access_token) ||
+            (req.query && req.query.access_token) ||
+            req.headers['x-access-token'];
+  }
   if (token) {
     // verifies secret and checks exp
     jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
