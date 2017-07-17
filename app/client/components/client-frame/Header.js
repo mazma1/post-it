@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Link, Redirect } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { logout } from '../../actions/signinAction';
+import { setSelectedGroup } from '../../actions/setSelectedGroupAction';
 
 const GroupName = (props) => {
   return (
@@ -15,16 +16,18 @@ class Header extends React.Component {
   logout(e) {
     e.preventDefault();
     this.props.logout();
+    this.props.setSelectedGroup({});
     this.props.history.push('/signin');
   }
 
   render() {
-    const { username, groupname } = this.props;
+    const { username, selectedGroup } = this.props;
+
     return (
       <section className="nav-bar">
         <div className="nav-container">
           <div className="row">
-            <GroupName groupname={groupname}/>
+            <GroupName groupname={selectedGroup ? selectedGroup.name : ''}/>
 
             <div className="col-md-9 col-sm-7 col-xs-9 lg-stack">
               <ul>
@@ -61,8 +64,8 @@ function mapStateToProps(state) {
   // Whatever is returned will show up as props in Sidebar
   return {
     username: state.signedInUser.user.data.username,
-    groupname: state.selectedGroup.name
+    selectedGroup: state.selectedGroup
   };
 }
 
-export default withRouter(connect(mapStateToProps, { logout })(Header));
+export default withRouter(connect(mapStateToProps, { logout, setSelectedGroup })(Header));

@@ -26,13 +26,30 @@ const MobileToggleBtn = () => {
 };
 
 class Sidebar extends React.Component {
+  constructor(props) {
+    super(props);
+  //   this.state = {
+  //     selectedGroupId: ''
+  //   };
+
+    this.onGroupSelect = this.onGroupSelect.bind(this);
+  }
+
   componentWillMount() {
     const userId = this.props.signedInUser.user.data.id;  // signedInUser.user.data{id, firstname,....}
     this.props.getUserGroups(userId).then(
       () => {
-        this.props.setSelectedGroup(this.props.userGroups.groups[0]);
+        if (this.props.userGroups.hasGroup === false) {
+          this.props.setSelectedGroup({});
+        } else {
+          this.props.setSelectedGroup(this.props.userGroups.groups[0]);
+        }
       }
     );
+  }
+
+  onGroupSelect(group) {
+    this.props.setSelectedGroup(group);
   }
 
   render() {
@@ -46,6 +63,7 @@ class Sidebar extends React.Component {
           <GroupList
             userGroups={userGroups}
             selectedGroup={selectedGroup}
+            onGroupSelect={this.onGroupSelect}
           />
         </div>
       </aside>
@@ -74,7 +92,7 @@ Sidebar.propTypes = {
   getUserGroups: PropTypes.func.isRequired,
   userGroups: PropTypes.object.isRequired,
   setSelectedGroup: PropTypes.func.isRequired,
-  selectedGroup: PropTypes.object.isRequired
+  selectedGroup: PropTypes.object
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

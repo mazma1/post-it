@@ -8,6 +8,7 @@ export default (state = {}, action = {}) => {
         hasGroup: !isEmpty(action.group),
         groups: action.group
       };
+
     default:
       return state;
   }
