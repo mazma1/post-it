@@ -1,43 +1,34 @@
 import React from 'react';
-import { BrowserRouter, Route, NavLink, Switch, Redirect } from 'react-router-dom';
+import isEmpty from 'lodash/isEmpty';
 
-const MessageCard = (props) => {
+function MessageCard(props) {
+  const messages = props.messages;
+  console.log('Message card:', messages);
+
+  if (isEmpty(messages)) { // undefined
+    return <div>Loading...</div>;
+  }
+
+  const emptyMessage = (
+    <div>
+      <p>No message available in this group</p>
+    </div>
+  );
+
+  const messageItem = messages.map((message) => {
+    return (
+      <div className="card-panel">
+        <div className="">
+          <span className="blue-text text-darken-2"><b>@{message.sent_by.username}</b></span> <span className="blue-text text-darken-2">2:00pm</span>
+        </div>
+        <p className="msg_body">{message.message}</p>
+      </div>
+    );
+  });
+
   return (
     <div>
-      <div className="card-panel">
-        <div className="">
-          <span className="blue-text text-darken-2"><b>@mazma</b></span> <span className="blue-text text-darken-2">2:00pm</span>
-        </div>
-        <p className="msg_body">Hello ladies, who will be attending the Google I/O event on tommorrow?</p>
-      </div>
-
-      <div className="card-panel">
-        <div className="">
-          <span className="blue-text text-darken-2"><b>@mazma</b></span> <span className="blue-text text-darken-2">2:00pm</span>
-        </div>
-        <p className="msg_body">Hello ladies, who will be attending the Google I/O event on tommorrow?</p>
-      </div>
-
-      <div className="card-panel">
-        <div className="">
-          <span className="blue-text text-darken-2"><b>@mazma</b></span> <span className="blue-text text-darken-2">2:00pm</span>
-        </div>
-        <p className="msg_body">Hello ladies, who will be attending the Google I/O event on tommorrow?</p>
-      </div>
-
-      <div className="card-panel">
-        <div className="">
-          <span className="blue-text text-darken-2"><b>@mazma</b></span> <span className="blue-text text-darken-2">2:00pm</span>
-        </div>
-        <p className="msg_body">Hello ladies, who will be attending the Google I/O event on tommorrow?</p>
-      </div>
-
-      <div className="card-panel">
-        <div className="">
-          <span className="blue-text text-darken-2"><b>@mazma</b></span> <span className="blue-text text-darken-2">2:00pm</span>
-        </div>
-        <p className="msg_body">Hello ladies, who will be attending the Google I/O event on tommorrow?</p>
-      </div>
+      { messages.length === 0 ? emptyMessage : messageItem }
     </div>
   );
 };

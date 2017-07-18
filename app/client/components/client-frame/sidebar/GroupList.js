@@ -23,14 +23,14 @@ function GroupList (props) {
     const isSelected = props.selectedGroup.id === group.id;
     const onGroupClick = () => onGroupSelect({ id: group.id, name: group.name });
     return (
-      <li role="presentation" onClick={onGroupClick} key={group.name} className={classnames({ 'active': isSelected })}>
+      <li role="presentation" onClick={onGroupClick} key={group.id} className={classnames({ 'active': isSelected })}>
         <NavLink to="#">
           {group.name}
         </NavLink>
       </li>
     );
   });
-  
+
 
   return (
     <div>

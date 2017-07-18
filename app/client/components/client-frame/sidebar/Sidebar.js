@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import GroupList from './GroupList';
 import { getUserGroups } from '../../../actions/getUserGroupsAction';
 import { setSelectedGroup } from '../../../actions/setSelectedGroupAction';
+import { getGroupMessages } from '../../../actions/getGroupMessagesAction';
 
 const Brand = (props) => {
   return (
@@ -28,9 +29,6 @@ const MobileToggleBtn = () => {
 class Sidebar extends React.Component {
   constructor(props) {
     super(props);
-  //   this.state = {
-  //     selectedGroupId: ''
-  //   };
 
     this.onGroupSelect = this.onGroupSelect.bind(this);
   }
@@ -42,6 +40,7 @@ class Sidebar extends React.Component {
         if (this.props.userGroups.hasGroup === false) {
           this.props.setSelectedGroup({});
         } else {
+          this.props.getGroupMessages(this.props.userGroups.groups[0].id);
           this.props.setSelectedGroup(this.props.userGroups.groups[0]);
         }
       }
@@ -83,7 +82,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     getUserGroups,
-    setSelectedGroup
+    setSelectedGroup,
+    getGroupMessages
   }, dispatch);
 }
 
