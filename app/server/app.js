@@ -28,10 +28,13 @@ if (process.env.NODE_ENV !== 'production') {
   const config = require('../../webpack.config.js');
   const compiler = webpack(config);
 
-  app.use(webpackHotMiddleware(compiler));
   app.use(webpackDevMiddleware(compiler, {
     noInfo: true,
     publicPath: '/dist/'
+  }));
+  app.use(webpackHotMiddleware(compiler, {
+    log: false
+    // path: '/__webpack_hmr'
   }));
 }
 
