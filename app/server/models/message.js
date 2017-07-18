@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
   }, { underscored: true });
   Message.associate = (models) => {
     Message.belongsTo(models.Group, { foreignKey: 'group_id' });
-    // .setGroup() // .getGroup()
+    // User is associated to message
+    Message.belongsTo(models.User, { as: 'sent_by', foreignKey: 'user_id' });
   };
   return Message;
 };

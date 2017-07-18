@@ -108,14 +108,24 @@ module.exports = {
   // Method to get messages posted to a group
   getGroupMessages: (req, res) => {
     if (req.params.group_id) {
-      Message.findAll({
-        where: {
-          group_id: req.params.group_id
-        },
+      Message.findAll({ // User is associated to message
+        where: { group_id: req.params.group_id },
+        attributes: ['group_id', ['body', 'message'], ['created_at', 'sent_at']],
+        include: [{
+          model: User,
+          as: 'sent_by',
+          attributes: ['username'],
+        }]
       })
+      // User.findAll({
+      //   include: [{
+      //     model: Message,
+      //     where: { '$group.id$': req.params.group_id }
+      //   }]
+      // })
       .then((message) => {
         if (message) {
-          res.status(200).send({ message });
+          res.status(200).send(message);
         } else if (JSON.stringify(message) === '{}') {
           res.status(404).send({ message: 'No message was found for the specified group' });
         }

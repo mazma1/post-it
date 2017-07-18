@@ -33,8 +33,7 @@ if (process.env.NODE_ENV !== 'production') {
     publicPath: '/dist/'
   }));
   app.use(webpackHotMiddleware(compiler, {
-    log: false
-    // path: '/__webpack_hmr'
+    // log: false
   }));
 }
 
