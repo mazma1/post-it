@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import ClientFrame from '../client-frame/ClientFrame';
 import MessageCard from './MsgCard';
 import MessageForm from './MsgForm';
@@ -6,6 +7,19 @@ import FlashMessageList from '../flash-message/FlashMessagesList';
 
 
 class MessageBoard extends React.Component {
+  scrollToBottom(){
+    const node = ReactDOM.findDOMNode(this.messagesEnd);
+    node.scrollIntoView({ behavior: "smooth" });
+  }
+
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+  
   render() {
     return (
       <ClientFrame>
@@ -16,7 +30,10 @@ class MessageBoard extends React.Component {
 
           <MessageCard />
 
-          <div className="msg_card_bottom_padding"></div>
+          <div 
+            className="msg_card_bottom_padding" 
+            ref={el => this.messagesEnd = el}
+          />
 
           <MessageForm/>
 

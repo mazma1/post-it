@@ -8,6 +8,17 @@ export function setGroupMessages(messages) {
   };
 }
 
+export function postNewMessage(message) {
+  const groupId = message.group_id;
+  const request = axios.post(`/api/group/${groupId}/message`, message);
+
+  return (dispatch) => {
+    return request.then((res) => {
+      dispatch(getGroupMessages(groupId));
+    });
+  };
+}
+
 export function getGroupMessages(groupId) {
   if (!groupId) {
     return (dispatch) => {
@@ -15,7 +26,7 @@ export function getGroupMessages(groupId) {
     };
   }
 
-  const request = axios.get(`/api/group/${groupId}/messages`); // Returns a response
+  const request = axios.get(`/api/group/${groupId}/messages`); // Returns a promise
 
   return (dispatch) => {
     return request.then((res) => {
