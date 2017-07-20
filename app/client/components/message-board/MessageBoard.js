@@ -7,9 +7,19 @@ import FlashMessageList from '../flash-message/FlashMessagesList';
 
 
 class MessageBoard extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.callback = this.callback.bind(this);
+    this.scrollToBottom = this.scrollToBottom.bind(this);
+  }
+
+  callback(el) {
+    this.messagesEnd = el;
+  }
+
   scrollToBottom(){
-    const node = ReactDOM.findDOMNode(this.messagesEnd);
-    node.scrollIntoView({ behavior: "smooth" });
+    this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
   }
 
   componentDidMount() {
@@ -30,10 +40,7 @@ class MessageBoard extends React.Component {
 
           <MessageCard />
 
-          <div 
-            className="msg_card_bottom_padding" 
-            ref={el => this.messagesEnd = el}
-          />
+          <div className="msg_card_bottom_padding" ref={this.callback}></div>
 
           <MessageForm/>
 
