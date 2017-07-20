@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import GroupList from './GroupList';
 import { getUserGroups } from '../../../actions/getUserGroupsAction';
 import { setSelectedGroup } from '../../../actions/setSelectedGroupAction';
-import { getGroupMessages } from '../../../actions/getGroupMessagesAction';
+import { getGroupMessages } from '../../../actions/groupMessagesAction';
 
 const Brand = (props) => {
   return (
@@ -34,7 +34,7 @@ class Sidebar extends React.Component {
   }
 
   componentWillMount() {
-    const userId = this.props.signedInUser.user.data.id;  // signedInUser.user.data{id, firstname,....}
+    const userId = this.props.signedInUser.user.id;  // signedInUser.user.data{id, firstname,....}
     this.props.getUserGroups(userId).then(
       () => {
         if (this.props.userGroups.hasGroup === false) {

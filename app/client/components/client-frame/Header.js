@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { logout } from '../../actions/signinAction';
 import { setSelectedGroup } from '../../actions/setSelectedGroupAction';
-import { setGroupMessages } from '../../actions/getGroupMessagesAction';
+import { setGroupMessages } from '../../actions/groupMessagesAction';
 
 const GroupName = (props) => {
   return (
@@ -66,7 +66,7 @@ class Header extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    username: state.signedInUser.user.data.username,
+    username: state.signedInUser.user.username,
     selectedGroup: state.selectedGroup
   };
 }

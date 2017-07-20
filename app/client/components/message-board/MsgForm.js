@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { postNewMessage } from '../../actions/getGroupMessagesAction';
+import { postNewMessage } from '../../actions/groupMessagesAction';
 
 class MsgForm extends React.Component {
   constructor(props) {
@@ -72,7 +72,7 @@ class MsgForm extends React.Component {
 function mapStateToProps(state) {
   return {
     groupId: state.selectedGroup.id,
-    userId: state.signedInUser.user.data.id
+    userId: state.signedInUser.id
   };
 }
 
