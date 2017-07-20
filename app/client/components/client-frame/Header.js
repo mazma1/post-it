@@ -1,8 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 import { logout } from '../../actions/signinAction';
 import { setSelectedGroup } from '../../actions/setSelectedGroupAction';
+import { setGroupMessages } from '../../actions/getGroupMessagesAction';
 
 const GroupName = (props) => {
   return (
@@ -17,6 +20,7 @@ class Header extends React.Component {
     e.preventDefault();
     this.props.logout();
     this.props.setSelectedGroup({});
+    this.props.setGroupMessages({});
     this.props.history.push('/signin');
   }
 
@@ -61,11 +65,26 @@ class Header extends React.Component {
 }
 
 function mapStateToProps(state) {
-  // Whatever is returned will show up as props in Sidebar
   return {
     username: state.signedInUser.user.data.username,
     selectedGroup: state.selectedGroup
   };
 }
 
-export default withRouter(connect(mapStateToProps, { logout, setSelectedGroup })(Header));
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    logout,
+    setSelectedGroup,
+    setGroupMessages
+  }, dispatch);
+}
+
+Header.propTypes = {
+  logout: PropTypes.func.isRequired,
+  setSelectedGroup: PropTypes.func.isRequired,
+  setGroupMessages: PropTypes.func.isRequired,
+  selectedGroup: PropTypes.object,
+  username: PropTypes.string.isRequired
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import GroupList from './GroupList';
 import { getUserGroups } from '../../../actions/getUserGroupsAction';
 import { setSelectedGroup } from '../../../actions/setSelectedGroupAction';
+import { getGroupMessages } from '../../../actions/getGroupMessagesAction';
 
 const Brand = (props) => {
   return (
@@ -39,10 +40,8 @@ class Sidebar extends React.Component {
         if (this.props.userGroups.hasGroup === false) {
           this.props.setSelectedGroup({});
         } else {
-          this.props.setSelectedGroup({
-            id: this.props.userGroups.groups[0].id,
-            name: this.props.userGroups.groups[0].name
-          });
+          this.props.setSelectedGroup(this.props.userGroups.groups[0]);
+          this.props.getGroupMessages(this.props.userGroups.groups[0].id);
         }
       }
     );
@@ -50,6 +49,7 @@ class Sidebar extends React.Component {
 
   onGroupSelect(group) {
     this.props.setSelectedGroup(group);
+    this.props.getGroupMessages(group.id);
   }
 
   render() {
@@ -83,7 +83,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     getUserGroups,
-    setSelectedGroup
+    setSelectedGroup,
+    getGroupMessages
   }, dispatch);
 }
 

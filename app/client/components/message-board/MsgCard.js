@@ -40,7 +40,7 @@ class MessageCard extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    messages: state.selectedGroup.messages,
+    messages: state.groupMessages,
     userGroups: state.userGroups,
   };
 }
