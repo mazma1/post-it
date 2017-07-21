@@ -18,7 +18,7 @@ Post it is a simple React application that consumes a Node REST API on an Expre
 2. To start app, navigate to the root directory of the app and run  `node run start:dev`.
 This will fire up the app, with *nodemon* that watches the app for any changes.
 
-Ideally, the server should serve the client on port 3000. So visiting `localhost:3000` on your browser will take you to the index page where you are expected to sign up as a new user. If you are an returning user, you will have to sign in or you will be redirected to message board (if your session has not expired).
+Ideally, the server should serve the client on port 3000. So visiting `localhost:3000` on your browser will take you to the index page where you are expected to sign up as a new user. If you are a returning user, you will either have to sign in or be redirected to your message board (if your session has not expired).
 
 
 ## Database Setup
@@ -30,8 +30,11 @@ The application requires a PostgreSql database to handle it's data. The model, m
 #### To run the seeds:
 The seed files have to be run in the folowing order to avoid running into model dependency errors:
 `sequelize db:seed --seed <user-seed>`
+
 `sequelize db:seed --seed <group-seed>`
+
 `sequelize db:seed --seed <message-seed>`
+
 `sequelize db:seed --seed <group-member-seed>`
 
 
