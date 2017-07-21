@@ -29,6 +29,7 @@ The application requires a PostgreSql database to handle it's data. The model, m
 
 #### To run the seeds:
 The seed files have to be run in the folowing order to avoid running into model dependency errors:
+
 `sequelize db:seed --seed <user-seed>`
 
 `sequelize db:seed --seed <group-seed>`
@@ -72,5 +73,5 @@ The seed files have to be run in the folowing order to avoid running into model 
 | Create New Group | `POST: api/group`         |  `group_name`                                                        |
 | Add User to Group| `POST: api/group/<group id>/user`|  `username`                                                   |
 | Post Message to Group| `POST: api/group/<group id>/user`|  `message`                                                |
-| Retrieve Messages to Group| `GET: api/group/<group id/messages`|                                                    |
+| Retrieve Messages to Group| `GET: api/group/<group id/messages`|  NIL                                               |
 
