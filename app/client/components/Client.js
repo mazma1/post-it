@@ -7,8 +7,9 @@ import MessageBoard from './message-board/MessageBoard';
 import EnsureLoggedInContainer from '../components/EnsureLoggedInContainer';
 import checkAuth from '../components/HomepageRedirectContainer';
 
-
-
+if (module.hot) {
+  module.hot.accept();
+}
 
 // create a component
 class Client extends React.Component {

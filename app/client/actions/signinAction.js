@@ -1,8 +1,15 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
-import { SET_CURRENT_USER } from './types';
+import { SET_CURRENT_USER, DELETE_CURRENT_USER } from './types';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 
+
+export function deleteCurrentUser() {
+  return {
+    type: DELETE_CURRENT_USER,
+    user: {}
+  };
+}
 
 export function setCurrentUser(user) {
   return {
@@ -15,7 +22,7 @@ export function logout() {
   return (dispatch) => {
     localStorage.removeItem('jwtToken');
     setAuthorizationToken(false);
-    dispatch(setCurrentUser({}));
+    dispatch(deleteCurrentUser());
   };
 }
 

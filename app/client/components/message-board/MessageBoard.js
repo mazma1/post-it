@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, NavLink, Switch, Redirect } from 'react-router-dom';
+import ReactDOM from 'react-dom';
 import ClientFrame from '../client-frame/ClientFrame';
 import MessageCard from './MsgCard';
 import MessageForm from './MsgForm';
@@ -7,6 +7,29 @@ import FlashMessageList from '../flash-message/FlashMessagesList';
 
 
 class MessageBoard extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.callback = this.callback.bind(this);
+    this.scrollToBottom = this.scrollToBottom.bind(this);
+  }
+
+  callback(el) {
+    this.messagesEnd = el;
+  }
+
+  scrollToBottom(){
+    this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  componentDidMount() {
+    this.scrollToBottom();
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+  
   render() {
     return (
       <ClientFrame>
@@ -15,16 +38,16 @@ class MessageBoard extends React.Component {
 
           <FlashMessageList/>
 
-          <MessageCard/>
+          <MessageCard />
 
-          <div className="msg_card_bottom_padding"></div>
+          <div className="msg_card_bottom_padding" ref={this.callback}></div>
 
           <MessageForm/>
-          
+
         </section>
        </ClientFrame>
     );
   }
 }
 
-module.exports = MessageBoard;
+export default MessageBoard;

@@ -348,7 +348,7 @@ section.cards {
   }
 
   .msg_card_bottom_padding {
-    padding-bottom: 80px;
+    padding-bottom: 90px;
   }
 
   .msg_card {
@@ -425,7 +425,7 @@ section.cards {
 
   @media screen and (min-width: 768px)  {
     .msg_card_padding {
-      padding-top: 70px;
+      padding-top: 65px;
     }
   }
 
@@ -724,6 +724,12 @@ form.col.s12.auth-form {
 
 .signin-card {
   margin-top: 120px;
+}
+
+@media screen and (max-width: 425px) {
+  .signin-card {
+    margin-top: 50px;
+  }
 }
 
 input[type=email]:not(.browser-default):focus:not([readonly]) {

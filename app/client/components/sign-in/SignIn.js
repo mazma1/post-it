@@ -14,7 +14,7 @@ class SignIn extends React.Component {
       <div className="background">
         <div className="container">
           <div className="row">
-            <div className="card-panel col s10 offset-s1 m8 offset-m2 l6 offset-l3 z-depth-5 signin-card">
+            <div className="card-panel col s12 m8 offset-m2 l6 offset-l3 z-depth-5 signin-card">
               <header className="auth-header">
                 <h5 className="center">Sign In | Post It</h5>
               </header>
@@ -32,7 +32,7 @@ class SignIn extends React.Component {
 
 SignIn.propTypes = {
   userSigninRequest: PropTypes.func.isRequired,
-   addFlashMessage: PropTypes.func.isRequired
+  addFlashMessage: PropTypes.func.isRequired
 };
 
 export default connect(null, { userSigninRequest, addFlashMessage })(SignIn);
