@@ -11,6 +11,7 @@ Post it is a simple React application that consumes a Node REST API on an Expre
 3. Add users to a group
 4. Post messages to a group
 5. Retrieve all the messages posted to groups the user belongs to.
+6. Retrieve the groups a user belongs to.
 
 
 ## To get started
@@ -73,5 +74,6 @@ The seed files have to be run in the folowing order to avoid running into model 
 | Create New Group | `POST: api/group`         |  `group_name`                                                        |
 | Add User to Group| `POST: api/group/<group id>/user`|  `username`                                                   |
 | Post Message to Group| `POST: api/group/<group id>/user`|  `message`                                                |
-| Retrieve Messages to Group| `GET: api/group/<group id/messages`|  NIL                                               |
+| Retrieve Messages to Group| `GET: api/group/<group id>/messages`|  NIL                                              |
+| Retrieve a User's Groups| `GET: api/user/<user id>/groups`|  NIL                                                    |
 
