@@ -795,6 +795,36 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label {
   padding-left: 13px;
 }
 
+@media (min-width: 768px) {
+  .modal-dialog {
+     width: 100%;
+    margin: 0; 
+  }
+
+  .modal-dialog {
+    margin: 0; 
+  }
+}  
+
+modal-open .modal {
+  overflow-y: hidden; 
+}
+
+.modal-dialog {
+  margin: 0;
+}
+
+.modal.fade.in  {
+  padding-right: 0 !important;
+  height: 340px;
+}
+
+.modal .modal-footer .btn, 
+.modal .modal-footer .btn-large, 
+.modal .modal-footer .btn-flat {
+  margin: 6px 5px;
+}   
+
 
 
 
