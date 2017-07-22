@@ -7,7 +7,7 @@ import { logout } from '../../actions/signinAction';
 import { setSelectedGroup } from '../../actions/setSelectedGroupAction';
 import { setGroupMessages } from '../../actions/groupMessagesAction';
 import ModalFrame from '../modal/ModalFrame';
-import {ModalHeader, ModalBody, ModalFooter} from '../modal/SubModals';
+import { ModalHeader, ModalBody, ModalFooter, CancelButton, SubmitButton } from '../modal/SubModals';
 
 
 const GroupName = (props) => {
@@ -22,14 +22,32 @@ class Header extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { isOpen: false };
+    this.state = {
+      isOpen: false,
+      newUsername: '',
+      isLoading: false,
+      errors: {}
+    };
+
+    // this.onChange = this.onChange.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.newUserSubmit = this.newUserSubmit.bind(this);
   }
 
   toggleModal() {
     this.setState({
       isOpen: !this.state.isOpen
     });
+  }
+
+  onChange(e) {
+    console.log(e);
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  newUserSubmit(e) {
+    e.preventDefault();
+    console.log('working');
   }
 
   logout(e) {
@@ -53,8 +71,21 @@ class Header extends React.Component {
               <div className="col-md-9 col-sm-7 col-xs-9 lg-stack">
                 <ul>
                   <li className="username"><i className="glyphicon glyphicon-user"></i> @{username}</li>
-                  <button className="btn waves-effect waves-light blue lighten-1" data-toggle="modal" data-target="#addUser" onClick={this.toggleModal}>Add User</button>
-                  <li><Link to="/signin" className="btn waves-effect waves-light red darken-2" onClick={this.logout.bind(this)}>Sign Out</Link></li>
+                  <button
+                    className="btn waves-effect waves-light blue lighten-1"
+                    data-toggle="modal" data-target="#addUser"
+                    onClick={this.toggleModal}>
+                    Add User
+                  </button>
+                  <li>
+                    <Link
+                      to="/signin" 
+                      className="btn waves-effect waves-light red darken-2"
+                      onClick={this.logout.bind(this)}
+                    >
+                      Sign Out
+                    </Link>
+                  </li>
                 </ul>
               </div>
 
@@ -82,9 +113,17 @@ class Header extends React.Component {
         <ModalFrame id='addUser' show={this.state.isOpen} onClose={this.toggleModal}>
           <ModalHeader header='Add New User' onClose={this.toggleModal}/>
 
-          <ModalBody label='Username or Email'/>
+          <ModalBody
+            label='Username or Email'
+            field='newUsername'
+            onChange={this.onChange}
+            value={this.state.newUsername}
+          />
 
-          <ModalFooter onClick={this.toggleModal}/>
+          <ModalFooter>
+            <CancelButton onClick={this.toggleModal} />
+            <SubmitButton onClick={this.newUserSubmit} />
+          </ModalFooter>
         </ModalFrame>
       </div>
     );
