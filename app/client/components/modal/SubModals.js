@@ -57,7 +57,7 @@ export const SubmitButton = (props) => {
     <a
       type="button"
       className="btn waves-effect waves-light blue lighten-1"
-      onSubmit={props.onClick}>
+      onClick={ () => console.log('submit working') }>
       Submit
     </a>
   );
