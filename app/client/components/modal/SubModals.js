@@ -42,6 +42,20 @@ export const ModalBody = (props) => {
   );
 };
 
+export const CloseButton = (props) => {
+  return (
+    <button
+      type="button"
+      onClick={props.onClick}
+      aria-label="Close"
+      data-dismiss="modal"
+      className="btn waves-effect waves-light blue lighten-1"
+    >
+      Close
+    </button>
+  );
+};
+
 export const CancelButton = (props) => {
   return (
     <button

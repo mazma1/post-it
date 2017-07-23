@@ -134,7 +134,28 @@ module.exports = {
         } else if (JSON.stringify(message) === '{}') {
           res.status(404).send({ message: 'No message was found for the specified group' });
         }
-      });
+      })
+      .catch(error => res.status(400).send(error));
+    }
+  },
+
+  // Method to get the groups a user belongs to
+  getGroupMembers: (req, res) => {
+    if (req.params.group_id) {
+      Group.findOne({
+        where: { id: req.params.group_id },
+        attributes: ['group_name'],
+        include: [{
+          model: User,
+          as: 'members',
+          attributes: ['id', 'firstname', 'lastname', 'username', 'email'],
+          through: { attributes: [] }
+        }]
+      })
+      .then((group) => {
+        res.status(201).send(group);
+      })
+      .catch(error => res.status(400).send(error));
     }
   }
 };

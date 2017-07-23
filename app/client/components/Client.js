@@ -23,6 +23,9 @@ class Client extends React.Component {
           <EnsureLoggedInContainer>
             <Route exact path="/message_board" component={MessageBoard}/>
           </EnsureLoggedInContainer>
+          <Route render={() => {
+            return <p>Not Found</p>;
+          }} />
         </Switch>
       </BrowserRouter>
     );

@@ -805,6 +805,9 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label {
   padding-left: 13px;
 }
 
+.modal {
+  background-color: transparent;
+}
 @media (min-width: 768px) {
   .modal-dialog {
      width: 100%;
@@ -826,7 +829,7 @@ modal-open .modal {
 
 .modal.fade.in  {
   padding-right: 0 !important;
-  height: 360px;
+  // height: 360px;
 }
 
 .modal .modal-footer .btn, 

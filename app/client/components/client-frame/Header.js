@@ -8,15 +8,15 @@ import { logout } from '../../actions/signinAction';
 import { setSelectedGroup } from '../../actions/setSelectedGroupAction';
 import { setGroupMessages } from '../../actions/groupMessagesAction';
 import { addFlashMessage } from '../../actions/flashMessageAction';
-import { submitNewUser } from '../../actions/newUserAction';
+import { submitNewUser } from '../../actions/groupMembersAction';
 import ModalFrame from '../modal/ModalFrame';
-import { ModalHeader, ModalBody, ModalFooter, CancelButton, SubmitButton } from '../modal/SubModals';
+import { ModalHeader, ModalBody, ModalFooter, CloseButton, CancelButton, SubmitButton } from '../modal/SubModals';
+import Table from '../table/Table';
 
 
 const GroupName = (props) => {
   return (
     <div className="col-md-3 col-sm-5 col-xs-3 brand">
-
       <ul>
         <h4 className="group-name">{props.groupname}</h4>
         <li role="presentation" className="dropdown">
@@ -24,7 +24,12 @@ const GroupName = (props) => {
             <span className="caret"></span>
           </a>
           <ul className="dropdown-menu group-members-dropdown">
-            <li><a href="#">View Group Members</a></li>
+            <li><a
+              data-toggle="modal" data-target="#groupMembers"
+              onClick={props.openModal}
+              href="#">
+              View Group Members
+            </a></li>
           </ul>
         </li>
       </ul>
@@ -106,7 +111,7 @@ class Header extends React.Component {
         <section className="nav-bar">
           <div className="nav-container">
             <div className="row">
-              <GroupName groupname={selectedGroup ? selectedGroup.name : ''}/>
+              <GroupName groupname={selectedGroup ? selectedGroup.name : ''} openModal={this.openModal}/>
 
               <div className="col-md-9 col-sm-7 col-xs-9 lg-stack">
                 <ul className='cta'>
@@ -164,6 +169,19 @@ class Header extends React.Component {
           <ModalFooter>
             <CancelButton onClick={this.closeModal} />
             <SubmitButton onSubmit={this.newUserSubmit} isLoading={this.state.isLoading}/>
+          </ModalFooter>
+        </ModalFrame>
+
+        {/*Group Members Modal*/}
+        <ModalFrame id='groupMembers' show={this.state.isOpen}>
+          <ModalHeader header='Group Members' onClose={this.closeModal}/>
+
+          <div className="modal-body">
+            <Table />
+          </div>
+
+          <ModalFooter>
+            <CloseButton onClick={this.closeModal} />
           </ModalFooter>
         </ModalFrame>
       </div>
