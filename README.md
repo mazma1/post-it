@@ -84,7 +84,7 @@ Working to fix this as soon as possible.
 | Sign In          | `POST: api/user/signin`   |  `username or email, password`                                       |
 | Create New Group | `POST: api/group`         |  `group_name`                                                        |
 | Add User to Group| `POST: api/group/<group id>/user`|  `username`                                                   |
-| Post Message to Group| `POST: api/group/<group id>/user`|  `message`                                                |
+| Post Message to Group| `POST: api/group/<group id>/message`|  `message`                                                |
 | Retrieve Messages to Group| `GET: api/group/<group id>/messages`|  NIL                                              |
 | Retrieve a User's Groups| `GET: api/user/<user id>/groups`|  NIL                                                    |
 | Retrieve Members in a Group| `GET: api/group/<group id>/members`|  NIL                                              |
