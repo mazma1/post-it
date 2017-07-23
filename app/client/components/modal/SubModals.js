@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 
 export const ModalHeader = (props) => {
   return (
@@ -17,20 +18,22 @@ export const ModalHeader = (props) => {
 };
 
 export const ModalBody = (props) => {
+  const error = props.errors.error;
   return (
     <div className="modal-body">
       <div className="row">
         <form className="col s12">
           <div className="row">
-            <div className="input-field col s12">
+            <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': error })}>
               <input
                 type="text"
-                className="validate"
+                className={ classnames('validate', { 'invalid': error })}
                 name={props.field}
                 value={props.value}
                 onChange={props.onChange}
               />
               <label>{props.label}</label>
+              {error && <span className="help-block modal-help-block">{error}</span>}
             </div>
           </div>
         </form>
@@ -43,10 +46,11 @@ export const CancelButton = (props) => {
   return (
     <button
       type="button"
-      data-dismiss="modal"
+      onClick={props.onClick}
       aria-label="Close"
+      data-dismiss="modal"
       className="btn waves-effect waves-light red darken-2 modal-cancel-btn"
-      onClick={props.onClick}>
+    >
       Cancel
     </button>
   );
@@ -54,12 +58,13 @@ export const CancelButton = (props) => {
 
 export const SubmitButton = (props) => {
   return (
-    <a
+    <button
       type="button"
+      disabled={props.isLoading}
       className="btn waves-effect waves-light blue lighten-1"
-      onClick={ () => console.log('submit working') }>
+      onClick={props.onSubmit}>
       Submit
-    </a>
+    </button>
   );
 };
 

@@ -3,9 +3,12 @@ import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
 import { logout } from '../../actions/signinAction';
 import { setSelectedGroup } from '../../actions/setSelectedGroupAction';
 import { setGroupMessages } from '../../actions/groupMessagesAction';
+import { addFlashMessage } from '../../actions/flashMessageAction';
+import { submitNewUser } from '../../actions/newUserAction';
 import ModalFrame from '../modal/ModalFrame';
 import { ModalHeader, ModalBody, ModalFooter, CancelButton, SubmitButton } from '../modal/SubModals';
 
@@ -13,7 +16,18 @@ import { ModalHeader, ModalBody, ModalFooter, CancelButton, SubmitButton } from 
 const GroupName = (props) => {
   return (
     <div className="col-md-3 col-sm-5 col-xs-3 brand">
-      <h4 className="group-name">{props.groupname}</h4>
+
+      <ul>
+        <h4 className="group-name">{props.groupname}</h4>
+        <li role="presentation" className="dropdown">
+          <a className="dropdown-toggle options" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            <span className="caret"></span>
+          </a>
+          <ul className="dropdown-menu group-members-dropdown">
+            <li><a href="#">View Group Members</a></li>
+          </ul>
+        </li>
+      </ul>
     </div>
   );
 };
@@ -24,30 +38,56 @@ class Header extends React.Component {
 
     this.state = {
       isOpen: false,
-      newUsername: '',
+      newUser: '',
       isLoading: false,
-      errors: {}
+      error: ''
     };
 
-    // this.onChange = this.onChange.bind(this);
-    this.toggleModal = this.toggleModal.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.onChange = this.onChange.bind(this);
     this.newUserSubmit = this.newUserSubmit.bind(this);
   }
 
-  toggleModal() {
+  openModal(e) {
+    e.stopPropagation();
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: true
+    });
+  }
+
+  closeModal() {
+    // e.preventDefault();
+    this.setState({
+      isOpen: false,
+      newUser: '',
+      error: ''
     });
   }
 
   onChange(e) {
-    console.log(e);
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({
+      error: '',
+      [e.target.name]: e.target.value
+    });
   }
 
   newUserSubmit(e) {
+    this.setState({ error: '', isLoading: true });
     e.preventDefault();
-    console.log('working');
+    this.props.submitNewUser({
+      groupId: this.props.selectedGroup.id,
+      identifier: this.state.newUser
+    }).then(
+      () => {
+        this.props.addFlashMessage({
+          type: 'success',
+          text: 'User has been successfully added to group'
+        });
+        $('[data-dismiss=modal]').trigger({ type: 'click' });
+      },
+      ({ response }) => { this.setState({ error: response.data, isLoading: false }); }
+    );
   }
 
   logout(e) {
@@ -69,17 +109,17 @@ class Header extends React.Component {
               <GroupName groupname={selectedGroup ? selectedGroup.name : ''}/>
 
               <div className="col-md-9 col-sm-7 col-xs-9 lg-stack">
-                <ul>
+                <ul className='cta'>
                   <li className="username"><i className="glyphicon glyphicon-user"></i> @{username}</li>
                   <button
                     className="btn waves-effect waves-light blue lighten-1"
                     data-toggle="modal" data-target="#addUser"
-                    onClick={this.toggleModal}>
+                    onClick={this.openModal}>
                     Add User
                   </button>
                   <li>
                     <Link
-                      to="/signin" 
+                      to="/signin"
                       className="btn waves-effect waves-light red darken-2"
                       onClick={this.logout.bind(this)}
                     >
@@ -90,14 +130,14 @@ class Header extends React.Component {
               </div>
 
               <div className="col-md-9 col-sm-7 col-xs-8 mobile-stack">
-                <ul>
+                <ul className='cta'>
                   <li className="username"><i className="glyphicon glyphicon-user"></i> @{username}</li>
                   <li role="presentation" className="dropdown">
                     <a className="dropdown-toggle options" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                       Options <span className="caret"></span>
                     </a>
                     <ul className="dropdown-menu">
-                      <li><a href="#">Add User</a></li>
+                      <li><a onClick={this.openModal} data-toggle="modal" data-target="#addUser">Add User</a></li>
                       <li><a href="#">Create Group</a></li>
                       <li><a href="#" onClick={this.logout.bind(this)}>Log Out</a></li>
                     </ul>
@@ -109,20 +149,21 @@ class Header extends React.Component {
           </div>
         </section>
 
-        { /*Add User Modal */}
-        <ModalFrame id='addUser' show={this.state.isOpen} onClose={this.toggleModal}>
-          <ModalHeader header='Add New User' onClose={this.toggleModal}/>
+        {/*Add User Modal*/}
+        <ModalFrame id='addUser' show={this.state.isOpen}>
+          <ModalHeader header='Add New User' onClose={this.closeModal}/>
 
           <ModalBody
             label='Username or Email'
-            field='newUsername'
+            field='newUser'
             onChange={this.onChange}
-            value={this.state.newUsername}
+            value={this.state.newUser}
+            errors={this.state.error}
           />
 
           <ModalFooter>
-            <CancelButton onClick={this.toggleModal} />
-            <SubmitButton onClick={this.newUserSubmit} />
+            <CancelButton onClick={this.closeModal} />
+            <SubmitButton onSubmit={this.newUserSubmit} isLoading={this.state.isLoading}/>
           </ModalFooter>
         </ModalFrame>
       </div>
@@ -141,7 +182,9 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     logout,
     setSelectedGroup,
-    setGroupMessages
+    setGroupMessages,
+    submitNewUser,
+    addFlashMessage
   }, dispatch);
 }
 

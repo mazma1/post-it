@@ -45,12 +45,15 @@ module.exports = {
 
   // Method to add user to a group
   addUserToGroup: (req, res) => {
-    if (!req.body.username) {
-      res.status(400).send({ status: false, message: 'Username is required.' });
+    let error = '';
+
+    if (!req.body.identifier) {
+      error = 'Username or email is required';
+      res.status(400).send({ error });
     } else {
       User.findOne({
         where: {
-          username: req.body.username
+          $or: [{ username: req.body.identifier }, { email: req.body.identifier }]
         },
       })
       .then((user) => {
@@ -62,7 +65,8 @@ module.exports = {
           })
           .then((member) => {
             if (member) {
-              res.status(400).send({ success: false, message: 'User has already been added to group' });
+              error = 'User has already been added to group';
+              res.status(400).send({ error });
             } else {
               const details = {
                 group_id: req.params.group_id,
@@ -73,11 +77,12 @@ module.exports = {
                 success: true,
                 message: 'User successfully added to group',
               }))
-              .catch(error => res.status(400).send(error));
+              .catch(err => res.status(400).send(err));
             }
           });
         } else {
-          res.status(404).send({ success: false, message: 'User does not exist' });
+          error = 'User does not exist';
+          res.status(404).send({ error });
         }
       });
     }
