@@ -10,8 +10,9 @@ Post it is a simple React application that consumes a Node REST API on an Expre
 2. Create groups 
 3. Add users to a group
 4. Post messages to a group
-5. Retrieve all the messages posted to groups the user belongs to.
-6. Retrieve the groups a user belongs to.
+5. Retrieve all the messages posted to groups the user belongs to
+6. Retrieve the groups a user belongs to
+7. Retrieve the members of a group
 
 
 ## To get started
@@ -57,11 +58,21 @@ The seed files have to be run in the folowing order to avoid running into model 
 3. View groups on message board
 4. View messages in respective groups
 5. Post messages to groups
+6. View members of a group
+7. Add user to group
 
 
-## Functionalities still being implemented
-1. Add user to group
-2. Create new group
+## Functionality still being implemented
+1. Create new group
+
+
+## Bug to take note of
+The following links launch their respective modals ONLY on the second click:
+1. Add New User
+2. View Group Members
+
+If on the first click nothing seems to happen, please click again.
+Working to fix this as soon as possible.
 
 
 
@@ -73,7 +84,9 @@ The seed files have to be run in the folowing order to avoid running into model 
 | Sign In          | `POST: api/user/signin`   |  `username or email, password`                                       |
 | Create New Group | `POST: api/group`         |  `group_name`                                                        |
 | Add User to Group| `POST: api/group/<group id>/user`|  `username`                                                   |
-| Post Message to Group| `POST: api/group/<group id>/user`|  `message`                                                |
+| Post Message to Group| `POST: api/group/<group id>/message`|  `message`                                                |
 | Retrieve Messages to Group| `GET: api/group/<group id>/messages`|  NIL                                              |
 | Retrieve a User's Groups| `GET: api/user/<user id>/groups`|  NIL                                                    |
+| Retrieve Members in a Group| `GET: api/group/<group id>/members`|  NIL                                              |
+
 
