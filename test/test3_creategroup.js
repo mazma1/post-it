@@ -45,7 +45,7 @@ describe('POST /api/group', () => {
             ]))
             .then((groups) => {
               testGroup = groups[0];
-              token = jwt.sign({ data: user }, process.env.TOKEN_SECRET, { expiresIn: 1440 });
+              token = jwt.sign({ data: user }, process.env.TOKEN_SECRET);
               done();
             });
         })
@@ -53,6 +53,24 @@ describe('POST /api/group', () => {
           done(error);
         });
       });
+  });
+
+  describe('POST /api/group Route', () => {
+    it('returns status 403 when user is not logged in (no token is provided)', (done) => {
+      const group = {
+        // id: 1,
+        group_name: 'Test Group 4'
+        // user_id: userId
+      };
+      chai.request(app).post('/api/group')
+        .send(group)
+        .end((err, res) => {
+          res.status.should.equal(403);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('No token provided.');
+          done();
+        });
+    });
   });
 
 
@@ -76,24 +94,6 @@ describe('POST /api/group', () => {
   //       });
   //   });
   // });
-
-  describe('status 403', () => {
-    it('throws an error when user is not logged in (no token is provided)', (done) => {
-      const group = {
-        // id: 1,
-        group_name: 'Test Group 4'
-        // user_id: userId
-      };
-      chai.request(app).post('/api/group')
-        .send(group)
-        .end((err, res) => {
-          res.status.should.equal(403);
-          res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('No token provided.');
-          done();
-        });
-    });
-  });
 });
 
 
