@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
+import moment from 'moment';
 
 class MessageCard extends React.Component {
   render() {
@@ -19,11 +20,12 @@ class MessageCard extends React.Component {
     );
 
     const messageItem = this.props.messages.map((message) => {
+      const time = moment(message.sent_at).format('ddd, MMM Do. h:mm a');
       return (
         <div className="card-panel" key={message.message_id}>
           <div className="">
             <span className="blue-text text-darken-2"><b>@{message.sent_by.username}</b></span>
-            <span className="blue-text text-darken-2"> 2:00pm</span>
+            <span className="blue-text text-darken-2"> {time}</span>
           </div>
           <p className="msg_body">{message.message}</p>
         </div>

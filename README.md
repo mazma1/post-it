@@ -89,3 +89,4 @@ Working to fix this as soon as possible.
 | Retrieve a User's Groups| `GET: api/user/<user id>/groups`|  NIL                                                    |
 | Retrieve Members in a Group| `GET: api/group/<group id>/members`|  NIL                                              |
 
+
