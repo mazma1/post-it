@@ -116,7 +116,7 @@ ul#menu-content li.active {
   .brand {
     padding-top: $pixel8;
   }
-  ul {
+  ul.cta {
     list-style: none;
     text-align: right;
     // padding-top: $pt24;
@@ -256,6 +256,10 @@ section.nav-bar {
     z-index: 99;
     box-shadow: 0 4px 6px -6px black;
   } 
+
+  .group-name {
+    display: inline-block;
+  }
 
   @media screen and (max-width: 1263px) and (min-width: 1153px) {
     .nav-container {
@@ -429,11 +433,17 @@ section.cards {
     }
   }
 
-  @media screen and (max-width: 384px)  {
+  @media screen and (max-width: 384px) and (min-width: 376px)   {
     .msg_card_bottom_padding {
       padding-bottom: 60px;
     }
   }  
+
+  @media screen and (max-width: 375px) {
+  .msg_card_bottom_padding {
+    padding-bottom: 80px;
+  }
+}
 
   @media screen and (max-width: 1079px) and (min-width: 1024px)  {
     .card-panel {
@@ -795,7 +805,55 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label {
   padding-left: 13px;
 }
 
+.modal {
+  background-color: transparent;
+}
+@media (min-width: 768px) {
+  .modal-dialog {
+     width: 100%;
+    margin: 0; 
+  }
 
+  .modal-dialog {
+    margin: 0; 
+  }
+}  
+
+modal-open .modal {
+  overflow-y: hidden; 
+}
+
+.modal-dialog {
+  margin: 0;
+}
+
+.modal.fade.in  {
+  padding-right: 0 !important;
+  // height: 360px;
+}
+
+.modal .modal-footer .btn, 
+.modal .modal-footer .btn-large, 
+.modal .modal-footer .btn-flat {
+  margin: 6px 5px;
+}   
+
+.help-block.modal-help-block {
+  padding-left: 0;
+}
+
+
+@media screen and (max-width: 425px) and (min-width: 376px) {
+  ul.group-members-dropdown {
+    margin-left: 22px;
+  }
+}  
+
+@media screen and (max-width: 375px) {
+  ul.group-members-dropdown {
+    margin-left: 37px;
+  }
+}
 
 
 

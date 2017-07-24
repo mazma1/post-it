@@ -686,3 +686,27 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label {
   background-color: #42a5f5;
 }
 
+@media (min-width: 768px) {
+  .modal-dialog {
+     width: 100%;
+    margin: 0; 
+  }
+
+  .modal-dialog {
+    margin: 0; 
+  }
+}  
+
+modal-open .modal {
+  overflow-y: hidden; 
+}
+
+.modal-dialog {
+  margin: 0;
+}
+
+.modal.fade.in  {
+  padding-right: 0 !important;
+  height: 340px;
+}
+
