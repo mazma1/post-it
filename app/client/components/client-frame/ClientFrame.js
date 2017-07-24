@@ -1,5 +1,5 @@
 import React from 'react';
-import Sidebar from './Sidebar';
+import Sidebar from '../client-frame/sidebar/Sidebar';
 import Header from './Header';
 
 const ClientFrame = props => ({

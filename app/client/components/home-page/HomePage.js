@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class HomePage extends React.Component {
   render() {
@@ -18,7 +19,7 @@ class HomePage extends React.Component {
                   <a href="/signup">Sign Up</a> to get started!
                 </h5>
                 <h5 className="index-desc index-line-height">
-                  Already have an account? <br/><a href="/signin">Sign In</a> to continue enjoying Post It.
+                  Already have an account? <br/><Link to="/signin">Sign In</Link> to continue enjoying Post It.
                 </h5>
               </div>
               <div className="background-img-hack"></div>

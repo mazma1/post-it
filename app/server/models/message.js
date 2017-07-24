@@ -4,13 +4,11 @@ module.exports = (sequelize, DataTypes) => {
     body: DataTypes.TEXT,
     group_id: DataTypes.INTEGER,
     user_id: DataTypes.INTEGER
-  }, {
-    classMethods: {
-      associate: (models) => {
-        // Message.belongsTo(models.User, {foreignKey: 'user_id'});
-        // Message.belongsTo(models.group, {foreignKey: 'grou_id'});
-      }
-    }
-  });
+  }, { underscored: true });
+  Message.associate = (models) => {
+    Message.belongsTo(models.Group, { foreignKey: 'group_id' });
+    // User is associated to message
+    Message.belongsTo(models.User, { as: 'sent_by', foreignKey: 'user_id' });
+  };
   return Message;
 };

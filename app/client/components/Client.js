@@ -1,12 +1,15 @@
-import { BrowserRouter, HashRouter, Route, NavLink, Switch, Redirect } from 'react-router-dom';
 import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import HomePage from './home-page/HomePage';
 import SignUp from './sign-up/SignUp';
 import SignIn from './sign-in/SignIn';
 import MessageBoard from './message-board/MessageBoard';
+import EnsureLoggedInContainer from '../components/EnsureLoggedInContainer';
+import checkAuth from '../components/HomepageRedirectContainer';
 
-
-
+if (module.hot) {
+  module.hot.accept();
+}
 
 // create a component
 class Client extends React.Component {
@@ -14,10 +17,15 @@ class Client extends React.Component {
     return (
       <BrowserRouter>
         <Switch>
-          <Route exact path="/" component={HomePage}/>
+          <Route exact path="/" component={checkAuth(HomePage)}/>
           <Route exact path="/signup" component={SignUp}/>
           <Route exact path="/signin" component={SignIn}/>
-          <Route exact path="/message_board" component={MessageBoard}/>
+          <EnsureLoggedInContainer>
+            <Route exact path="/message_board" component={MessageBoard}/>
+          </EnsureLoggedInContainer>
+          <Route render={() => {
+            return <p>Not Found</p>;
+          }} />
         </Switch>
       </BrowserRouter>
     );

@@ -1,4 +1,6 @@
 const User = require('../models').User;
+const Group = require('../models').Group;
+const Group_member = require('../models').Group_member;
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -81,7 +83,7 @@ module.exports = {
             };
             User.create(userData)
             .then(user => {
-              const token = jwt.sign({ data: user }, process.env.TOKEN_SECRET, { expiresIn: 1440 });
+              const token = jwt.sign({ data: user }, process.env.TOKEN_SECRET);
               res.status(201).send({ success: true, message: 'Signup was successful', token });
             })
             .catch(error => res.status(400).send(error));
@@ -118,7 +120,7 @@ module.exports = {
         } else if (user) {
           if (bcrypt.compareSync(req.body.password, user.password)) {
             // if user is found and password is right, create a token
-            const token = jwt.sign({ data: user }, process.env.TOKEN_SECRET, { expiresIn: 1440 });
+            const token = jwt.sign({ data: user }, process.env.TOKEN_SECRET);
 
             // return the information including token as JSON
             res.status(201).send({
@@ -135,4 +137,30 @@ module.exports = {
       });
     }
   },
+
+  // Method to get the groups a user belongs to
+  getUserGroups: (req, res) => {
+    if (req.params.user_id) {
+      User.findOne({
+        where: { id: req.params.user_id },
+        attributes: [['id', 'user_id'], 'firstname', 'lastname', 'email'],
+        include: [{
+          model: Group,
+          as: 'group',
+          attributes: ['id', ['group_name', 'name']],
+          through: { attributes: [] }
+        }]
+      })
+      // Group.findAll({
+      //   include: [{
+      //     model: User,
+      //     as: 'member',
+      //     where: { '$member.id$': req.params.user_id }
+      //   }]
+      // })
+      .then((user) => {
+        res.status(201).send(user);
+      });
+    }
+  }
 };
