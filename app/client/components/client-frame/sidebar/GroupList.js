@@ -8,12 +8,17 @@ function GroupList (props) {
   const hasGroup = props.userGroups.hasGroup;
   const onGroupSelect = props.onGroupSelect;
 
+  const divPadding = {
+    paddingLeft: '20px',
+    paddingTop: '20px'
+  };
+
   if (!groupsArray) { // undefined
-    return <div>Loading...</div>;
+    return <div style={divPadding}>Loading...</div>;
   }
 
   const emptyGroup = (
-    <div>
+    <div style={divPadding}>
       <p>No groups available.</p>
       <a href='#'>Click to create new group</a>
     </div>

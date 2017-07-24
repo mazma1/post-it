@@ -4,6 +4,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import $ from 'jquery';
+import isEmpty from 'lodash/isEmpty';
 import { logout } from '../../actions/signinAction';
 import { setSelectedGroup } from '../../actions/setSelectedGroupAction';
 import { setGroupMessages } from '../../actions/groupMessagesAction';
@@ -13,12 +14,18 @@ import ModalFrame from '../modal/ModalFrame';
 import { ModalHeader, ModalBody, ModalFooter, CloseButton, CancelButton, SubmitButton } from '../modal/SubModals';
 import Table from '../table/Table';
 
-
+const noMarginBottom = {
+  marginBottom: 0
+}
 const GroupName = (props) => {
+  if (isEmpty(props.selectedGroup)) {
+    return <div className="col-md-3 col-sm-5 col-xs-3"></div>;
+  }
+
   return (
     <div className="col-md-3 col-sm-5 col-xs-3 brand">
-      <ul>
-        <h4 className="group-name">{props.groupname}</h4>
+      <ul style={noMarginBottom}>
+        <h4 className="group-name">{props.selectedGroup.name}</h4>
         <li role="presentation" className="dropdown">
           <a className="dropdown-toggle options" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
             <span className="caret"></span>
@@ -111,7 +118,8 @@ class Header extends React.Component {
         <section className="nav-bar">
           <div className="nav-container">
             <div className="row">
-              <GroupName groupname={selectedGroup ? selectedGroup.name : ''} openModal={this.openModal}/>
+
+              <GroupName selectedGroup={selectedGroup} openModal={this.openModal}/>
 
               <div className="col-md-9 col-sm-7 col-xs-9 lg-stack">
                 <ul className='cta'>
