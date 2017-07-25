@@ -1,10 +1,17 @@
 import axios from 'axios';
-import { SET_GROUP_MESSAGES } from '../actions/types';
+import { SET_GROUP_MESSAGES, FETCHING_GROUP_MESSAGES } from '../actions/types';
 
 export function setGroupMessages(messages) {
   return {
     type: SET_GROUP_MESSAGES,
     messages
+  };
+}
+
+export function fetchingGroupMessages() {
+  return {
+    type: FETCHING_GROUP_MESSAGES,
+    messages: []
   };
 }
 
@@ -29,6 +36,8 @@ export function getGroupMessages(groupId) {
   const request = axios.get(`/api/group/${groupId}/messages`); // Returns a promise
 
   return (dispatch) => {
+    dispatch(fetchingGroupMessages({}));
+
     return request.then((res) => {
       const messages = res.data;
       dispatch(setGroupMessages(messages));

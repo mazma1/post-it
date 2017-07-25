@@ -1,10 +1,17 @@
 import axios from 'axios';
-import { SET_GROUP_MEMBERS } from '../actions/types';
+import { SET_GROUP_MEMBERS, FETCHING_GROUP_MEMBERS } from '../actions/types';
 
-export function setGroupMembers(members) {
+export function setGroupMembers(membersDetails) {
   return {
     type: SET_GROUP_MEMBERS,
-    members
+    membersDetails
+  };
+}
+
+export function fetchingGroupMembers() {
+  return {
+    type: FETCHING_GROUP_MEMBERS,
+    members: []
   };
 }
 
@@ -29,9 +36,11 @@ export function getGroupMembers(groupId) {
   const request = axios.get(`/api/group/${groupId}/members`);
 
   return (dispatch) => {
+    dispatch(fetchingGroupMembers);
+
     return request.then((res) => {
-      const members = res.data;
-      dispatch(setGroupMembers(members));
+      const membersDetails = res.data;
+      dispatch(setGroupMembers(membersDetails));
     });
   };
 }
