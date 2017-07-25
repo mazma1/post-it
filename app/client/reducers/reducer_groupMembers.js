@@ -1,15 +1,24 @@
-import { SET_GROUP_MEMBERS } from '../actions/types';
+import { SET_GROUP_MEMBERS, FETCHING_GROUP_MEMBERS } from '../actions/types';
 
-export default (state = [], action = {}) => {
+const initialState = {
+  isLoading: false,
+  members: []
+};
+
+export default (state = initialState, action = {}) => {
   switch (action.type) {
-    case SET_GROUP_MEMBERS:
-      return action.members;
+    case FETCHING_GROUP_MEMBERS:
+      return {
+        isLoading: true,
+        members: action.members
+      };
 
-    // case ADD_NEW_MEMBER:
-    //   return [
-    //     ...state,
-    //     action.member
-    //   ];
+    case SET_GROUP_MEMBERS:
+      return {
+        isLoading: false,
+        group_name: action.membersDetails.group_name,
+        members: action.membersDetails.members
+      };
 
     default:
       return state;

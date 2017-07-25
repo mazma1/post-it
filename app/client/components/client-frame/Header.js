@@ -181,7 +181,7 @@ class Header extends React.Component {
         </ModalFrame>
 
         {/*Group Members Modal*/}
-        <ModalFrame id='groupMembers' show={this.state.isOpen}>
+        <ModalFrame id='groupMembers' membersLoading={this.props.membersLoading}>
           <ModalHeader header='Group Members' onClose={this.closeModal}/>
 
           <div className="modal-body">
@@ -200,7 +200,8 @@ class Header extends React.Component {
 function mapStateToProps(state) {
   return {
     username: state.signedInUser.user.username,
-    selectedGroup: state.selectedGroup
+    selectedGroup: state.selectedGroup,
+    membersLoading: state.groupMembers.isLoading
   };
 }
 
