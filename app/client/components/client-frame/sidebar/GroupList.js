@@ -20,7 +20,12 @@ function GroupList (props) {
   const emptyGroup = (
     <div style={divPadding}>
       <p>No groups available.</p>
-      <a href='#'>Click to create new group</a>
+      <a
+        href='#createGroup'
+        data-toggle="modal" data-target="#createGroup"
+        onClick={props.openModal}>
+        Click to create new group
+      </a>
     </div>
   );
 
@@ -35,7 +40,6 @@ function GroupList (props) {
       </li>
     );
   });
-
 
   return (
     <div>
