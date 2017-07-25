@@ -12,7 +12,7 @@ const salt = bcrypt.genSaltSync(saltRounds);
 module.exports = {
   // Method to create a new group
   createGroup: (req, res) => {
-    let errors = '';
+    let error = '';
     // res.send(req.decoded); --JSON that contains details of the token owner.
     const userId = req.decoded.data.id;
     const groupData = {
@@ -20,8 +20,8 @@ module.exports = {
       user_id: userId
     };
     if (!req.body.group_name) {
-      errors = 'Group name is required';
-      res.status(400).send({ errors });
+      error = 'Group name is required';
+      res.status(400).send({ error });
     } else {
       Group.findOne({
         where: {
@@ -30,8 +30,8 @@ module.exports = {
       })
       .then((group) => {
         if (group) {
-          errors = 'Group already exists';
-          res.status(400).send({ errors });
+          error = 'Group already exists';
+          res.status(400).send({ error });
         } else {
           Group.create(groupData)
           .then(group => {
@@ -45,12 +45,12 @@ module.exports = {
               groupName: group.group_name,
               groupOwner: group.user_id
             }))
-            .catch(error => res.status(400).send(error));
+            .catch(err => res.status(400).send(err));
           })
-          .catch(error => res.status(400).send(error));
+          .catch(err => res.status(400).send(err));
         }
       })
-      .catch(error => res.status(400).send(error));
+      .catch(err => res.status(400).send(err));
     }
   },
 

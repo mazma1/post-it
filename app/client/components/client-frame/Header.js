@@ -19,11 +19,11 @@ const noMarginBottom = {
 }
 const GroupName = (props) => {
   if (isEmpty(props.selectedGroup)) {
-    return <div className="col-md-3 col-sm-5 col-xs-3"></div>;
+    return <div className="col-md-4 col-sm-5 col-xs-3"></div>;
   }
 
   return (
-    <div className="col-md-3 col-sm-5 col-xs-3 brand">
+    <div className="col-md-4 col-sm-5 col-xs-3 brand">
       <ul style={noMarginBottom}>
         <h4 className="group-name">{props.selectedGroup.name}</h4>
         <li role="presentation" className="dropdown">
@@ -121,7 +121,7 @@ class Header extends React.Component {
 
               <GroupName selectedGroup={selectedGroup} openModal={this.openModal}/>
 
-              <div className="col-md-9 col-sm-7 col-xs-9 lg-stack">
+              <div className="col-md-8 col-sm-7 col-xs-9 lg-stack">
                 <ul className='cta'>
                   <li className="username"><i className="glyphicon glyphicon-user"></i> @{username}</li>
                   <button

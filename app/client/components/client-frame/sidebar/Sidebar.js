@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import GroupList from './GroupList';
-import { getUserGroups } from '../../../actions/getUserGroupsAction';
+import $ from 'jquery';
+import { getUserGroups, submitNewGroup } from '../../../actions/userGroupsAction';
 import { setSelectedGroup } from '../../../actions/setSelectedGroupAction';
 import { getGroupMessages } from '../../../actions/groupMessagesAction';
 import { getGroupMembers } from '../../../actions/groupMembersAction';
+import { addFlashMessage } from '../../../actions/flashMessageAction';
 import ModalFrame from '../../modal/ModalFrame';
 import { ModalHeader, ModalBody, ModalFooter, CancelButton, SubmitButton } from '../../modal/SubModals';
 
@@ -44,7 +46,7 @@ class Sidebar extends React.Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.onChange = this.onChange.bind(this);
-    // this.newGroupSubmit = this.newGroupSubmit.bind(this);
+    this.newGroupSubmit = this.newGroupSubmit.bind(this);
   }
 
   openModal(e) {
@@ -68,6 +70,24 @@ class Sidebar extends React.Component {
       error: '',
       [e.target.name]: e.target.value
     });
+  }
+
+  newGroupSubmit(e) {
+    this.setState({ error: '', isLoading: true });
+    e.preventDefault();
+    this.props.submitNewGroup({
+      group_name: this.state.newGroup,
+      userId: this.props.signedInUser.user.id
+    }).then(
+      () => {
+        this.props.addFlashMessage({
+          type: 'success',
+          text: 'Your group has been successfully created'
+        });
+        $('[data-dismiss=modal]').trigger({ type: 'click' });
+      },
+      ({ response }) => { this.setState({ error: response.data, isLoading: false }); }
+    );
   }
 
   componentWillMount() {
@@ -123,7 +143,7 @@ class Sidebar extends React.Component {
 
           <ModalFooter>
             <CancelButton onClick={this.closeModal} />
-            <SubmitButton onSubmit={this.newUserSubmit} isLoading={this.state.isLoading}/>
+            <SubmitButton onSubmit={this.newGroupSubmit} isLoading={this.state.isLoading}/>
           </ModalFooter>
         </ModalFrame>
       </div>
@@ -145,7 +165,9 @@ function mapDispatchToProps(dispatch) {
     getUserGroups,
     setSelectedGroup,
     getGroupMessages,
-    getGroupMembers
+    getGroupMembers,
+    submitNewGroup,
+    addFlashMessage
   }, dispatch);
 }
 

@@ -1,12 +1,18 @@
-import { SET_GROUP_MESSAGES, POST_NEW_MESSAGE } from '../actions/types';
+import { SET_GROUP_MESSAGES, FETCHING_GROUP_MESSAGES } from '../actions/types';
 
 const initialState = {
-  isLoading: true,
+  isLoading: false,
   messages: []
 };
 
 export default (state = initialState, action = {}) => {
   switch (action.type) {
+    case FETCHING_GROUP_MESSAGES:
+      return {
+        isLoading: true,
+        messages: action.messages
+      };
+
     case SET_GROUP_MESSAGES:
       return {
         isLoading: false,
