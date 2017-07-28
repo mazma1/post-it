@@ -2,7 +2,7 @@
 A simple Node.js application that allows friends and colleagues create groups for messaging. Up to date version of project can be found on the `development` branch.
 
 [![Build Status](https://travis-ci.org/mazma1/post-it.svg?branch=development)](https://travis-ci.org/mazma1/post-it)
-[![Coverage Status](https://coveralls.io/repos/github/mazma1/post-it/badge.svg?branch=chore%2Ftest)](https://coveralls.io/github/mazma1/post-it?branch=chore%2Ftest)
+[![Coverage Status](https://coveralls.io/repos/github/mazma1/post-it/badge.svg?branch=chore%2Ftest)](https://coveralls.io/github/mazma1/post-it?branch=development)
 
 ## Structure
 Post it is a simple React application that consumes a Node REST API on an Express server. The API allows users do the following:
