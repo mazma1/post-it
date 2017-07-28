@@ -11,28 +11,29 @@ chai.use(chaiHttp);
 const saltRounds = 7;
 const salt = bcrypt.genSaltSync(saltRounds);
 
-// User.sync({ force: true }) // drops table and re-creates it
-User.destroy({
-  cascade: true,
-  truncate: true,
-  restartIdentity: true
-})
-.then(() => {
-  User.create({
-    firstname: 'Mary',
-    lastname: 'Mazi',
-    username: 'mary',
-    email: 'mary@gmail.com',
-    password: bcrypt.hashSync('1234', salt),
-    confirm_password: bcrypt.hashSync('1234', salt)
-  });
-})
-.catch((error) => {
-  console.log(error);
-});
-
-
 describe('POST /api/user/signup Route', () => {
+  before((done) => {
+    User.destroy({
+      cascade: true,
+      truncate: true,
+      restartIdentity: true
+    })
+    .then(() => {
+      User.create({
+        firstname: 'Mary',
+        lastname: 'Mazi',
+        username: 'mary',
+        email: 'mary@gmail.com',
+        password: bcrypt.hashSync('1234', salt),
+        confirm_password: bcrypt.hashSync('1234', salt)
+      });
+      done();
+    })
+    .catch((error) => {
+      done(error);
+    });
+  });
+
   describe('Sign up a new user', () => {
     it('returns successfully signed up user', (done) => {
       const user = {
