@@ -8,15 +8,43 @@ function GroupList (props) {
   const hasGroup = props.userGroups.hasGroup;
   const onGroupSelect = props.onGroupSelect;
 
+  const divPadding = {
+    paddingLeft: '20px',
+    paddingTop: '20px'
+  };
+
+  const newGroup = {
+    marginTop: '8px',
+    borderTop: '1px solid #b5818a',
+    borderBottom: '1px solid #b5818a',
+    backgroundColor: '#eae5e5' // #ece6e6. #eae0e0, #e2d1ff;
+  };
+
   if (!groupsArray) { // undefined
-    return <div>Loading...</div>;
+    return <div style={divPadding}>Loading...</div>;
   }
 
   const emptyGroup = (
-    <div>
+    <div style={divPadding}>
       <p>No groups available.</p>
-      <a href='#'>Click to create new group</a>
+      <a
+        href='#createGroup'
+        data-toggle="modal" data-target="#createGroup"
+        onClick={props.openModal}>
+        Click to create new group
+      </a>
     </div>
+  );
+
+  const createGroup = (
+    <li role="presentation" style={newGroup}>
+      <a
+        href='#createGroup'
+        data-toggle="modal" data-target="#createGroup"
+        onClick={props.openModal}>
+        Create new group
+      </a>
+    </li>
   );
 
   const groupItems = groupsArray.map((group) => {
@@ -31,11 +59,11 @@ function GroupList (props) {
     );
   });
 
-
   return (
     <div>
       <ul className="nav nav-pills nav-stacked navbar-fixed-side navbar-collapse collapse" id="menu-content">
         { !hasGroup ? emptyGroup : groupItems }
+        { hasGroup && createGroup }
       </ul>
     </div>
   );

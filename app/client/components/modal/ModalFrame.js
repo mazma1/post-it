@@ -1,8 +1,7 @@
 import React from 'react';
 
 const ModalFrame = (props) => {
-  // Render nothing if the "show" prop is false
-  if (!props.show) {
+  if (props.membersLoading) {
     return null;
   }
 

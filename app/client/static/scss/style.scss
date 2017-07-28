@@ -4,6 +4,8 @@ $pixel0: 0;
 $pixel8: 8px;
 $pixel16: 16px;
 $pixel20: 20px;
+$pixel21: 21px;
+$pixel22: 22px;
 $pixel24: 24px;
 $pixel26: 26px;
 $pixel32: 32px;
@@ -33,9 +35,10 @@ body {
 
   #brand-name {
     font-size: $pixel26;
-    padding-top: $pixel20;
-    padding-bottom: $pixel20;
+    padding-top: $pixel22;
+    padding-bottom: $pixel21;
     text-align: center;
+    box-shadow: 0 4px 6px -6px black;
   }
 
   @media (max-width: $tablet-width) {
@@ -212,7 +215,7 @@ ul#menu-content li.active {
 @media screen and (min-width: 768px)  {
   .lg-stack {
     padding-top: 15px;
-    padding-bottom: 9px;;
+    padding-bottom: 9px;
   }
 }  
 

@@ -3,10 +3,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import GroupList from './GroupList';
-import { getUserGroups } from '../../../actions/getUserGroupsAction';
+import $ from 'jquery';
+import { getUserGroups, submitNewGroup } from '../../../actions/userGroupsAction';
 import { setSelectedGroup } from '../../../actions/setSelectedGroupAction';
 import { getGroupMessages } from '../../../actions/groupMessagesAction';
 import { getGroupMembers } from '../../../actions/groupMembersAction';
+import { addFlashMessage } from '../../../actions/flashMessageAction';
+import ModalFrame from '../../modal/ModalFrame';
+import { ModalHeader, ModalBody, ModalFooter, CancelButton, SubmitButton } from '../../modal/SubModals';
 
 const Brand = (props) => {
   return (
@@ -31,7 +35,59 @@ class Sidebar extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      isOpen: false,
+      newGroup: '',
+      isLoading: false,
+      error: ''
+    };
+
     this.onGroupSelect = this.onGroupSelect.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.newGroupSubmit = this.newGroupSubmit.bind(this);
+  }
+
+  openModal(e) {
+    e.stopPropagation();
+    this.setState({
+      isOpen: true
+    });
+  }
+
+  closeModal() {
+    // e.preventDefault();
+    this.setState({
+      isOpen: false,
+      newGroup: '',
+      error: ''
+    });
+  }
+
+  onChange(e) {
+    this.setState({
+      error: '',
+      [e.target.name]: e.target.value
+    });
+  }
+
+  newGroupSubmit(e) {
+    this.setState({ error: '', isLoading: true });
+    e.preventDefault();
+    this.props.submitNewGroup({
+      group_name: this.state.newGroup,
+      userId: this.props.signedInUser.user.id
+    }).then(
+      () => {
+        this.props.addFlashMessage({
+          type: 'success',
+          text: 'Your group has been successfully created'
+        });
+        $('[data-dismiss=modal]').trigger({ type: 'click' });
+      },
+      ({ response }) => { this.setState({ error: response.data, isLoading: false }); }
+    );
   }
 
   componentWillMount() {
@@ -58,18 +114,39 @@ class Sidebar extends React.Component {
   render() {
     const { userGroups, selectedGroup } = this.props;
     return (
-      <aside className="navbar-default mobile-navbar">
-        <div id="sidebar">
-          <Brand brand_name='Post It'/>
-          <MobileToggleBtn />
+      <div>
+        <aside className="navbar-default mobile-navbar">
+          <div id="sidebar">
+            <Brand brand_name='Post It'/>
+            <MobileToggleBtn />
 
-          <GroupList
-            userGroups={userGroups}
-            selectedGroup={selectedGroup}
-            onGroupSelect={this.onGroupSelect}
+            <GroupList
+              userGroups={userGroups}
+              selectedGroup={selectedGroup}
+              onGroupSelect={this.onGroupSelect}
+              openModal={this.openModal}
+            />
+          </div>
+        </aside>
+
+        {/*Create Group Modal*/}
+        <ModalFrame id='createGroup' show={this.state.isOpen}>
+          <ModalHeader header='Group Name' onClose={this.closeModal}/>
+
+          <ModalBody
+            label='Group Name'
+            field='newGroup'
+            onChange={this.onChange}
+            value={this.state.newGroup}
+            errors={this.state.error}
           />
-        </div>
-      </aside>
+
+          <ModalFooter>
+            <CancelButton onClick={this.closeModal} />
+            <SubmitButton onSubmit={this.newGroupSubmit} isLoading={this.state.isLoading}/>
+          </ModalFooter>
+        </ModalFrame>
+      </div>
     );
   }
 }
@@ -88,7 +165,9 @@ function mapDispatchToProps(dispatch) {
     getUserGroups,
     setSelectedGroup,
     getGroupMessages,
-    getGroupMembers
+    getGroupMembers,
+    submitNewGroup,
+    addFlashMessage
   }, dispatch);
 }
 

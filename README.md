@@ -60,19 +60,7 @@ The seed files have to be run in the folowing order to avoid running into model 
 5. Post messages to groups
 6. View members of a group
 7. Add user to group
-
-
-## Functionality still being implemented
-1. Create new group
-
-
-## Bug to take note of
-The following links launch their respective modals ONLY on the second click:
-1. Add New User
-2. View Group Members
-
-If on the first click nothing seems to happen, please click again.
-Working to fix this as soon as possible.
+8. Create new group
 
 
 
@@ -88,4 +76,5 @@ Working to fix this as soon as possible.
 | Retrieve Messages to Group| `GET: api/group/<group id>/messages`|  NIL                                              |
 | Retrieve a User's Groups| `GET: api/user/<user id>/groups`|  NIL                                                    |
 | Retrieve Members in a Group| `GET: api/group/<group id>/members`|  NIL                                              |
+
 

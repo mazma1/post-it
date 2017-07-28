@@ -12,6 +12,7 @@ const salt = bcrypt.genSaltSync(saltRounds);
 module.exports = {
   // Method to create a new group
   createGroup: (req, res) => {
+    let error = '';
     // res.send(req.decoded); --JSON that contains details of the token owner.
     const userId = req.decoded.data.id;
     const groupData = {
@@ -19,7 +20,8 @@ module.exports = {
       user_id: userId
     };
     if (!req.body.group_name) {
-      res.status(400).send({ success: false, message: 'Group name is required.' });
+      error = 'Group name is required';
+      res.status(400).send({ error });
     } else {
       Group.findOne({
         where: {
@@ -28,18 +30,27 @@ module.exports = {
       })
       .then((group) => {
         if (group) {
-          res.status(400).send({ success: false, message: 'Group already exists' });
+          error = 'Group already exists';
+          res.status(400).send({ error });
         } else {
           Group.create(groupData)
-          .then(group => res.status(201).send({
-            success: true,
-            message: 'Group was successfully created',
-            groupName: group.group_name,
-            groupOwner: group.user_id
-          }))
-          .catch(error => res.status(400).send(error));
+          .then(group => {
+            Group_member.create({
+              group_id: group.id,
+              user_id: userId
+            })
+            .then(groupMember => res.status(201).send({
+              success: true,
+              message: 'Group was successfully created and you have been added to it',
+              groupName: group.group_name,
+              groupOwner: group.user_id
+            }))
+            .catch(err => res.status(400).send(err));
+          })
+          .catch(err => res.status(400).send(err));
         }
-      });
+      })
+      .catch(err => res.status(400).send(err));
     }
   },
 

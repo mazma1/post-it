@@ -1,29 +1,41 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
+import moment from 'moment';
 
 class MessageCard extends React.Component {
   render() {
     const hasGroup = this.props.userGroups.hasGroup;
+    const messageLoading = this.props.message.isLoading;
+    const messages = this.props.message.messages;
+    const divPadding = {
+      paddingLeft: '20px',
+      paddingTop: '20px'
+    };
 
-    if (hasGroup && isEmpty(this.props.messages)) { // group exists but still fetching msgs
-      return <div>Loading...</div>;
-    } else if (!hasGroup && isEmpty(this.props.userGroups.group)) {
-      return <div></div>;
+    if (messageLoading) {
+      return <div style={divPadding}>Loading...</div>;
     }
 
-    const emptyMessage = (
-      <div>
-        <p>No message available in this group</p>
-      </div>
-    );
+    if (!messageLoading) {
+      if (hasGroup && isEmpty(messages)) {
+        return (
+          <div style={divPadding}>
+            <p>This group currently has no messages</p>
+          </div>
+        ); 
+      } else if (!hasGroup) {
+        return <div></div>;
+      }
+    }
 
-    const messageItem = this.props.messages.map((message) => {
+    const messageItem = messages.map((message) => {
+      const time = moment(message.sent_at).format('ddd, MMM Do. h:mm a');
       return (
         <div className="card-panel" key={message.message_id}>
           <div className="">
             <span className="blue-text text-darken-2"><b>@{message.sent_by.username}</b></span>
-            <span className="blue-text text-darken-2"> 2:00pm</span>
+            <span className="blue-text text-darken-2"> {time}</span>
           </div>
           <p className="msg_body">{message.message}</p>
         </div>
@@ -32,7 +44,7 @@ class MessageCard extends React.Component {
 
     return (
       <div>
-        { hasGroup && isEmpty(this.props.messages) ? emptyMessage : messageItem }
+        { messageItem }
       </div>
     );
   }
@@ -40,8 +52,8 @@ class MessageCard extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    messages: state.groupMessages,
-    userGroups: state.userGroups,
+    message: state.groupMessages,
+    userGroups: state.userGroups
   };
 }
 export default connect(mapStateToProps)(MessageCard);
