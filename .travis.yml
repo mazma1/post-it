@@ -13,7 +13,8 @@ before_script:
 script:
   - npm install
   - npm run migrations
-  - npm test
+  # - npm test
+  - npm run-script test-on-travis
 after_success: 
   - npm run coverage
   - npm run coveralls
