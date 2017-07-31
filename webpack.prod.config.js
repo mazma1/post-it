@@ -15,7 +15,7 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.(js|jsx)$/, loaders: ['react-hot-loader', 'babel-loader'], exclude: /node_modules/ },
+      { test: /\.(js|jsx)$/, loaders: ['babel-loader'], exclude: /node_modules/ },
       { test: /\.css$/, loader: 'style-loader!css-loader?url=false' },
       { test: /\.scss$/, loader: 'style-loader!css-loader?url=false!sass-loader' },
       { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff&name=/fonts/[name].[ext]' },
@@ -39,7 +39,7 @@ module.exports = {
         NODE_ENV: JSON.stringify('production')
       }
     }),
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery'
