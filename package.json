@@ -7,6 +7,7 @@
     "test": "test"
   },
   "scripts": {
+    "postinstall": "NODE_ENV=production webpack -p --config ./webpack.prod.config.js --progress",
     "start": "node app/server/bin/www",
     "start:dev": "nodemon ./app/server/bin/www --ignore ./app/client",
     "create": "webpack",
