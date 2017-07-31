@@ -72,7 +72,6 @@
     "sinon": "^2.3.5",
     "style-loader": "^0.18.2",
     "supertest": "^3.0.0",
-    "webpack": "^3.0.0",
     "webpack-dev-middleware": "^1.11.0",
     "webpack-dev-server": "^2.5.0",
     "webpack-hot-middleware": "^2.18.0"
@@ -111,6 +110,7 @@
     "shortid": "^2.2.8",
     "url-loader": "^0.5.9",
     "uuid": "^3.0.1",
-    "validator": "^7.0.0"
+    "validator": "^7.0.0",
+    "webpack": "^3.0.0"
   }
 }
