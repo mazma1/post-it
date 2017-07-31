@@ -6,7 +6,7 @@ const DIST_DIR = path.resolve(__dirname, './app/client/dist');
 
 module.exports = {
   entry: [
-    '../post-it/app/client/index.js'
+    './app/client/index.js'
   ],
   output: {
     path: DIST_DIR,
