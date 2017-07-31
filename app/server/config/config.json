@@ -18,13 +18,7 @@
   },
 
   "production": {
-    "username": "process.env.PRODUCTION_USERNAME",
-    "password": "process.env.PRODUCTION_PASSWORD",
-    "database": "process.env.PRODUCTION_DATABASE",
-    "host": "process.env.PRODUCTION_HOST",
-    "dialect":"postgres",
-    "protocol":"postgres",
-    "port":"5432"
+    "use_env_variable": "DATABASE_URL"
   }
 
 }
