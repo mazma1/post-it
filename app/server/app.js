@@ -37,7 +37,7 @@ if (process.env.NODE_ENV !== 'production') {
   }));
 }
 
-app.use(express.static('../client/dist'));  // App still runs when commented out
+app.use('/dist', express.static(path.join(__dirname, '../client/dist/')));
 
 app.get('*', (req, res) => res.status(200).sendFile(
   path.resolve(__dirname, '../client/dist/index.html')
