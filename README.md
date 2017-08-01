@@ -53,6 +53,22 @@ The seed files have to be run in the folowing order to avoid running into model 
 | oyinda        | 1234      | 
 
 
+### Seed Data Glitch
+The seeds are meant to provide dummy data for faster testing of the application. However, if on successful seeding you are unable to sign in with any of the above dummy username and password (I encountered this problem), you can try this workaround:
+
+> Revert all migrations ran:
+> `sequelize db:migrate:undo:all`
+>
+> Run migrations again:
+> `sequelize db:migrate`
+>
+> Manually create at least 3 users using the sign up form
+>
+> Run the group-seed, message-seed and group-member-seed files in this order using the seed commands specified above.
+
+Otherwise, you can leave out the seeding process entirely. Run just the migrations and enter your test data using the availble forms on the client.
+
+
 ## Available Functionalities on Client
 1. Signup
 2. Signin
