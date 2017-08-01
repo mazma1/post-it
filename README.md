@@ -68,6 +68,7 @@ The seeds are meant to provide dummy data for faster testing of the application.
 
 Otherwise, you can leave out the seeding process entirely. Run just the migrations and enter your test data using the availble forms on the client.
 
+
 ## Available Functionalities on Client
 1. Signup
 2. Signin
