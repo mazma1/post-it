@@ -2,7 +2,8 @@
 A simple Node.js application that allows friends and colleagues create groups for messaging. Up to date version of project can be found on the `development` branch.
 
 [![Build Status](https://travis-ci.org/mazma1/post-it.svg?branch=development)](https://travis-ci.org/mazma1/post-it)
-[![Coverage Status](https://coveralls.io/repos/github/mazma1/post-it/badge.svg?branch=chore%2Ftest)](https://coveralls.io/github/mazma1/post-it?branch=development)
+[![Coverage Status](https://coveralls.io/repos/github/mazma1/post-it/badge.svg?branch=development)](https://coveralls.io/github/mazma1/post-it?branch=development)
+[![Code Climate](https://codeclimate.com/github/mazma1/post-it/badges/gpa.svg)](https://codeclimate.com/github/mazma1/post-it)
 
 ## Structure
 Post it is a simple React application that consumes a Node REST API on an Express server. The API allows users do the following:
@@ -52,6 +53,22 @@ The seed files have to be run in the folowing order to avoid running into model 
 | oyinda        | 1234      | 
 
 
+### Seed Data Glitch
+The seeds are meant to provide dummy data for faster testing of the application. However, if on successful seeding you are unable to sign in with any of the above dummy username and password (I encountered this problem), you can try this workaround:
+
+> Revert all migrations ran:
+> `sequelize db:migrate:undo:all`
+>
+> Run migrations again:
+> `sequelize db:migrate`
+>
+> Manually create at least 3 users using the sign up form
+>
+> Run the group-seed, message-seed and group-member-seed files in this order using the seed commands specified above.
+
+Otherwise, you can leave out the seeding process entirely. Run just the migrations and enter your test data using the availble forms on the client.
+
+
 ## Available Functionalities on Client
 1. Signup
 2. Signin
@@ -72,7 +89,7 @@ The seed files have to be run in the folowing order to avoid running into model 
 | Sign In          | `POST: api/user/signin`   |  `username or email, password`                                       |
 | Create New Group | `POST: api/group`         |  `group_name`                                                        |
 | Add User to Group| `POST: api/group/<group id>/user`|  `username`                                                   |
-| Post Message to Group| `POST: api/group/<group id>/message`|  `message`                                                |
+| Post Message to Group| `POST: api/group/<group id>/message`|  `message`                                             |
 | Retrieve Messages to Group| `GET: api/group/<group id>/messages`|  NIL                                              |
 | Retrieve a User's Groups| `GET: api/user/<user id>/groups`|  NIL                                                    |
 | Retrieve Members in a Group| `GET: api/group/<group id>/members`|  NIL                                              |
