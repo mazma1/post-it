@@ -16,7 +16,22 @@ import Table from '../table/Table';
 
 const noMarginBottom = {
   marginBottom: 0
-}
+};
+
+const AddUserBtn = (props) => {
+  if (isEmpty(props.selectedGroup)) {
+    return null;
+  }
+  return (
+    <button
+      className="btn waves-effect waves-light blue lighten-1"
+      data-toggle="modal" data-target="#addUser"
+      onClick={props.openModal}>
+      Add User
+    </button>
+  );
+};
+
 const GroupName = (props) => {
   if (isEmpty(props.selectedGroup)) {
     return <div className="col-md-4 col-sm-5 col-xs-3"></div>;
@@ -124,12 +139,7 @@ class Header extends React.Component {
               <div className="col-md-8 col-sm-7 col-xs-9 lg-stack">
                 <ul className='cta'>
                   <li className="username"><i className="glyphicon glyphicon-user"></i> @{username}</li>
-                  <button
-                    className="btn waves-effect waves-light blue lighten-1"
-                    data-toggle="modal" data-target="#addUser"
-                    onClick={this.openModal}>
-                    Add User
-                  </button>
+                  <AddUserBtn selectedGroup={selectedGroup} openModal={this.openModal}/>
                   <li>
                     <Link
                       to="/signin"
