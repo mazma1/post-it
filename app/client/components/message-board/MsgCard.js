@@ -7,6 +7,7 @@ class MessageCard extends React.Component {
   render() {
     const hasGroup = this.props.userGroups.hasGroup;
     const messageLoading = this.props.message.isLoading;
+    const messageLoadingError = this.props.message.error;
     const messages = this.props.message.messages;
     const divPadding = {
       paddingLeft: '20px',
@@ -23,7 +24,13 @@ class MessageCard extends React.Component {
           <div style={divPadding}>
             <p>This group currently has no messages</p>
           </div>
-        ); 
+        );
+      } else if (hasGroup && messageLoadingError) {
+        return (
+          <div style={divPadding}>
+            <p>Unable to load messages. Please try again later</p>
+          </div>
+        );
       } else if (!hasGroup) {
         return <div></div>;
       }

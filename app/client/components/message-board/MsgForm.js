@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { postNewMessage } from '../../actions/groupMessagesAction';
+import { addFlashMessage } from '../../actions/flashMessageAction';
 
 class MsgForm extends React.Component {
   constructor(props) {
@@ -30,6 +31,11 @@ class MsgForm extends React.Component {
         group_id: groupId
       }).then(() => {
         this.setState({ messageInput: '' });
+      }).catch(() => {
+        this.props.addFlashMessage({
+          type: 'error',
+          text: 'Unable to send message, please try again'
+        });
       });
     }
   }
@@ -79,12 +85,14 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    postNewMessage
+    postNewMessage,
+    addFlashMessage
   }, dispatch);
 }
 MsgForm.propTypes = {
   groupId: PropTypes.number,
-  postNewMessage: PropTypes.func.isRequired
+  postNewMessage: PropTypes.func.isRequired,
+  addFlashMessage: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MsgForm);
