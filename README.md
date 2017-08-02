@@ -42,15 +42,11 @@ The seed files have to be run in the folowing order to avoid running into model 
 `sequelize db:seed --seed <group-member-seed>`
 
 
-## Test User Data
-
 | Username      | Password  |
 | ------------- |:---------:| 
 | mazma         | 1234      | 
-| rose          | 1234      | 
-| beejay        | 1234      |  
+| clare         | 1234      | 
 | chyke         | 1234      | 
-| oyinda        | 1234      | 
 
 
 ### Seed Data Glitch
