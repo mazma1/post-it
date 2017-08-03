@@ -3,7 +3,19 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 
-function GroupList (props) {
+/**
+ *Functional component that renders a list of groups a user belongs to on the message board
+ *Parent component: Sidebar.js
+ *@param {object} props All the properties received from the parent
+ *@prop {object} props.userGroups  Contains a user's groups
+ *@prop {object} props.selectedGroup Contains details of the active group
+ *@prop {function} props.onGroupSelect Called when a group name is clicked
+ *@prop {function} props.openModal Updates the parent component state when modal is open
+ *@returns {JSX} Unordered list of a user's groups (if any)
+ *@returns {JSX} Defined 'emptyGroup' constant if a user belongs to no group
+ *@returns {JSX} A 'Loading...' indicator when the groups are still being fetched
+  */
+function GroupList(props) {
   const groupsArray = props.userGroups.groups;
   const hasGroup = props.userGroups.hasGroup;
   const onGroupSelect = props.onGroupSelect;
@@ -71,7 +83,9 @@ function GroupList (props) {
 
 GroupList.propTypes = {
   userGroups: PropTypes.object.isRequired,
-  selectedGroup: PropTypes.object
+  selectedGroup: PropTypes.object.isRequired,
+  onGroupSelect: PropTypes.func.isRequired,
+  openModal: PropTypes.func.isRequired
 };
 
 export default GroupList;

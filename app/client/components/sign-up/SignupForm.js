@@ -5,7 +5,15 @@ import { withRouter } from 'react-router-dom';
 import validateInput from '../../validations/signupValidation';
 import TextField from '../common/FormTextField';
 
+/**
+ * SignupForm component
+ * Parent component: SignUp.js
+ */
 class SignupForm extends React.Component {
+  /**
+   * Constructor
+   * @param {object} props
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -22,10 +30,19 @@ class SignupForm extends React.Component {
     this.onSignupClick = this.onSignupClick.bind(this);
   }
 
+   /**
+   * Handles change event of sign up input fields
+   * @param {SyntheticEvent} e
+   * @returns {void}
+   */
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  /**
+   * Handles sign up input validation on client
+   * @returns {boolean} If an input is valid or not
+   */
   valid() {
     const { errors, valid } = validateInput(this.state);
 
@@ -36,6 +53,15 @@ class SignupForm extends React.Component {
     return valid;
   }
 
+  /**
+   * Handles Sign Up event
+   * Dispatches userSignupRequest action
+   * If sign up request is successful, it equally signs user up and
+   * redirects to the message board with a success flash message
+   * If sign up was not successful, it returns the appropriate error message(s)
+   * @param {SyntheticEvent} e
+   * @returns {void}
+   */
   onSignupClick(e) {
     e.preventDefault();
 
@@ -62,6 +88,11 @@ class SignupForm extends React.Component {
     }
   }
 
+
+  /**
+   * Render
+   * @returns {ReactElement} Sign up form markup
+   */
   render() {
     const { errors } = this.state;
     return (

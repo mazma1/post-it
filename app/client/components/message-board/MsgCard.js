@@ -3,10 +3,20 @@ import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
 
+/** MessageCard component for message board */
 class MessageCard extends React.Component {
+
+  /**
+   * Render
+   * @prop {boolean} hasGroup If a signed in user belongs to a group
+   * @prop {boolean} messageLoading if group messages are still being fetched
+   * @prop {array} messages Group messages
+   * @returns {ReactElement} MessageCard markup
+   */
   render() {
     const hasGroup = this.props.userGroups.hasGroup;
     const messageLoading = this.props.message.isLoading;
+    const messageLoadingError = this.props.message.error;
     const messages = this.props.message.messages;
     const divPadding = {
       paddingLeft: '20px',
@@ -18,12 +28,18 @@ class MessageCard extends React.Component {
     }
 
     if (!messageLoading) {
-      if (hasGroup && isEmpty(messages)) {
+      if (hasGroup && !messageLoadingError && isEmpty(messages)) {
         return (
           <div style={divPadding}>
             <p>This group currently has no messages</p>
           </div>
-        ); 
+        );
+      } else if (hasGroup && messageLoadingError) {
+        return (
+          <div style={divPadding}>
+            <p>Unable to load messages. Please try again later</p>
+          </div>
+        );
       } else if (!hasGroup) {
         return <div></div>;
       }
@@ -50,10 +66,16 @@ class MessageCard extends React.Component {
   }
 }
 
+/**
+ * Maps pieces of the redux state to props
+ * @param {object} state Redux state
+ * @returns {object} Details of active group messages and groups a user belongs to
+ */
 function mapStateToProps(state) {
   return {
     message: state.groupMessages,
     userGroups: state.userGroups
   };
 }
+
 export default connect(mapStateToProps)(MessageCard);

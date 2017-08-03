@@ -1,5 +1,20 @@
 import axios from 'axios';
+import last from 'lodash/last';
+import { setSelectedGroup } from '../actions/setSelectedGroupAction';
+import { getGroupMessages } from '../actions/groupMessagesAction';
+import { getGroupMembers } from '../actions/groupMembersAction';
 import { SET_USER_GROUPS } from '../actions/types';
+
+export function getUserGroups(userId) {
+  const request = axios.get(`/api/user/${userId}/groups`); // Returns a response
+
+  return (dispatch) => {
+    return request.then((res) => {
+      const group = res.data.group;
+      dispatch(setUserGroups(group));
+    });
+  };
+}
 
 export function setUserGroups(group) {
   return {
@@ -14,18 +29,24 @@ export function submitNewGroup(group_name) {
 
   return (dispatch) => {
     return request.then((res) => {
-      dispatch(getUserGroups(userId));
+      dispatch(setNewGroupActive(userId));
     });
   };
 }
 
-export function getUserGroups(userId) {
-  const request = axios.get(`/api/user/${userId}/groups`); // Returns a response
+export function setNewGroupActive(userId) {
+  const request = axios.get(`/api/user/${userId}/groups`);
 
   return (dispatch) => {
     return request.then((res) => {
       const group = res.data.group;
+      const lastGroup = last(group);
       dispatch(setUserGroups(group));
+      dispatch(setSelectedGroup(lastGroup));
+      dispatch(getGroupMessages(lastGroup.id));
+      dispatch(getGroupMembers(lastGroup.id));
     });
   };
 }
+
+
