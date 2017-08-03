@@ -161,7 +161,6 @@ class Header extends React.Component {
                     </a>
                     <ul className="dropdown-menu">
                       <li><a onClick={this.openModal} data-toggle="modal" data-target="#addUser">Add User</a></li>
-                      <li><a href="#">Create Group</a></li>
                       <li><a href="#" onClick={this.logout.bind(this)}>Log Out</a></li>
                     </ul>
                   </li>
