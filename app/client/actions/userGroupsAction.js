@@ -1,6 +1,8 @@
 import axios from 'axios';
 import last from 'lodash/last';
 import { setSelectedGroup } from '../actions/setSelectedGroupAction';
+import { getGroupMessages } from '../actions/groupMessagesAction';
+import { getGroupMembers } from '../actions/groupMembersAction';
 import { SET_USER_GROUPS } from '../actions/types';
 
 export function getUserGroups(userId) {
@@ -38,8 +40,11 @@ export function setNewGroupActive(userId) {
   return (dispatch) => {
     return request.then((res) => {
       const group = res.data.group;
+      const lastGroup = last(group);
       dispatch(setUserGroups(group));
-      dispatch(setSelectedGroup(last(group)));
+      dispatch(setSelectedGroup(lastGroup));
+      dispatch(getGroupMessages(lastGroup.id));
+      dispatch(getGroupMembers(lastGroup.id));
     });
   };
 }
