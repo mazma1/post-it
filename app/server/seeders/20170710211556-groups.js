@@ -23,13 +23,13 @@ module.exports = {
       },
       {
         group_name: 'Marigold',
-        user_id: 4,
+        user_id: 3,
         created_at: new Date(),
         updated_at: new Date()
       },
       {
         group_name: 'Primrose',
-        user_id: 5,
+        user_id: 1,
         created_at: new Date(),
         updated_at: new Date()
       },

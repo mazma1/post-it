@@ -13,7 +13,7 @@ module.exports = {
       {
         body: 'Great to be here people, holla!',
         group_id: 2,
-        user_id: 4,
+        user_id: 3,
         created_at: new Date(),
         updated_at: new Date()
       },
@@ -34,14 +34,14 @@ module.exports = {
       {
         body: 'Welcome dear, how is you? *In Jenefa\'s voice*',
         group_id: 2,
-        user_id: 5,
+        user_id: 1,
         created_at: new Date(),
         updated_at: new Date()
       },
       {
         body: 'I have a meetup on the same day!',
         group_id: 1,
-        user_id: 5,
+        user_id: 3,
         created_at: new Date(),
         updated_at: new Date()
       },
