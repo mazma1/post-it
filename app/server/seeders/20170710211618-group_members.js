@@ -11,7 +11,7 @@ module.exports = {
       },
       {
         group_id: 2,
-        user_id: 4,
+        user_id: 3,
         created_at: new Date(),
         updated_at: new Date()
       },
@@ -24,18 +24,6 @@ module.exports = {
       {
         group_id: 1,
         user_id: 2,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        group_id: 2,
-        user_id: 5,
-        created_at: new Date(),
-        updated_at: new Date()
-      },
-      {
-        group_id: 1,
-        user_id: 5,
         created_at: new Date(),
         updated_at: new Date()
       },

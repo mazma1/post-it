@@ -6,7 +6,16 @@ import TextField from '../common/FormTextField';
 import validateInput from '../../validations/signinValidation';
 
 
+/**
+ * SigninForm component
+ * Parent component: SignIn.js
+ */
 class SigninForm extends React.Component {
+
+  /**
+   * Constructor
+   * @param {object} props
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -19,6 +28,10 @@ class SigninForm extends React.Component {
     this.onSigninClick = this.onSigninClick.bind(this);
   }
 
+   /**
+   * Handles input validation on client
+   * @returns {boolean} If an input is valid or not
+   */
   valid() {
     const { errors, valid } = validateInput(this.state);
 
@@ -28,10 +41,25 @@ class SigninForm extends React.Component {
 
     return valid;
   }
+
+  /**
+   * Handles change event of sign in input fields
+   * @param {SyntheticEvent} e
+   * @returns {void}
+   */
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  /**
+   * Handles Sign In event
+   * Dispatches userSigninRequest action
+   * If sign in request was successful, it redirects to the message board
+   * with a success flash message.
+   * If sign in was not successful, it returns the appropriate error message(s)
+   * @param {SyntheticEvent} e
+   * @returns {void}
+   */
   onSigninClick(e) {
     e.preventDefault();
 
@@ -49,6 +77,11 @@ class SigninForm extends React.Component {
       );
     }
   }
+
+  /**
+   * Render
+   * @returns {ReactElement} Sign in form markup
+   */
   render() {
     const { errors } = this.state;
     return (
