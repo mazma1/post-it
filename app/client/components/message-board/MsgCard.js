@@ -19,7 +19,7 @@ class MessageCard extends React.Component {
     }
 
     if (!messageLoading) {
-      if (hasGroup && isEmpty(messages)) {
+      if (hasGroup && !messageLoadingError && isEmpty(messages)) {
         return (
           <div style={divPadding}>
             <p>This group currently has no messages</p>
