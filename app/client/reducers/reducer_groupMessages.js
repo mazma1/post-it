@@ -1,4 +1,7 @@
-import { SET_GROUP_MESSAGES, FETCHING_GROUP_MESSAGES } from '../actions/types';
+import {
+  SET_GROUP_MESSAGES,
+  FETCHING_GROUP_MESSAGES,
+  FETCH_GROUP_MESSAGES_FAILURE } from '../actions/types';
 
 const initialState = {
   isLoading: false,
@@ -19,11 +22,11 @@ export default (state = initialState, action = {}) => {
         messages: action.messages
       };
 
-    // case POST_NEW_MESSAGE:
-    //   return [
-    //     ...state,
-    //     action.message
-    //   ];
+    case FETCH_GROUP_MESSAGES_FAILURE:
+      return {
+        isLoading: false,
+        error: action.ex
+      };
 
     default:
       return state;
