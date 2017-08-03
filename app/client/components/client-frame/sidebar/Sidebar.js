@@ -85,6 +85,7 @@ class Sidebar extends React.Component {
           text: 'Your group has been successfully created'
         });
         $('[data-dismiss=modal]').trigger({ type: 'click' });
+        this.setState({ isLoading: false });
       },
       ({ response }) => { this.setState({ error: response.data, isLoading: false }); }
     );
