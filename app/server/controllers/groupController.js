@@ -108,7 +108,8 @@ module.exports = {
       const messageDetail = {
         body: req.body.message,
         group_id: req.params.group_id,
-        user_id: userId
+        user_id: userId,
+        priority: req.body.priority
       };
       Message.create(messageDetail)
       .then(message => res.status(201).send({
@@ -126,7 +127,7 @@ module.exports = {
     if (req.params.group_id) {
       Message.findAll({ // User is associated to message
         where: { group_id: req.params.group_id },
-        attributes: ['group_id', ['id', 'message_id'], ['body', 'message'], ['created_at', 'sent_at']],
+        attributes: ['group_id', ['id', 'message_id'], ['body', 'message'], 'priority', ['created_at', 'sent_at']],
         include: [{
           model: User,
           as: 'sent_by',

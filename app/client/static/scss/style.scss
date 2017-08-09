@@ -480,7 +480,7 @@ section.cards {
 
 .msg-send-btn {
   padding-left: 0;
-  padding-top: 8px;
+  padding-top: 18px;
 }
 
 .msg-form input[type=text]:focus {
@@ -856,6 +856,22 @@ modal-open .modal {
   ul.group-members-dropdown {
     margin-left: 37px;
   }
+}
+
+select.browser-default {
+  height: 1.5rem;
+}
+
+.priority-container {
+  padding-top: 10px;
+}
+
+.msg-form-container {
+  padding-top: 10px;
+}
+
+.priority-label {
+  margin-left: 10px;
 }
 
 
