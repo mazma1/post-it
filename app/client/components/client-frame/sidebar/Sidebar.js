@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import isEmpty from 'lodash/isEmpty';
 import GroupList from './GroupList';
 import $ from 'jquery';
 import { getUserGroups, submitNewGroup } from '../../../actions/userGroupsAction';
@@ -155,7 +156,20 @@ class Sidebar extends React.Component {
           this.props.setSelectedGroup({});
         } else {
           this.props.setSelectedGroup(this.props.userGroups.groups[0]);
-          this.props.getGroupMessages(this.props.userGroups.groups[0].id);
+          this.props.getGroupMessages(this.props.userGroups.groups[0].id).then(
+            () => {
+              if (!isEmpty(this.props.messages)) {
+                this.props.messages.map((message) => {
+                  const messageDetails = {
+                    message_id: message.message_id,
+                    username: this.props.signedInUser.user.username,
+                    read_by: message.read_by
+                  };
+                  return this.props.updateReadStatus(messageDetails);
+                });
+              }
+            }
+          );
           this.props.getGroupMembers(this.props.userGroups.groups[0].id);
         }
       }

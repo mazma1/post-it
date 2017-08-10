@@ -25,17 +25,6 @@ class MessageCard extends React.Component {
     this.closeModal = this.closeModal.bind(this);
   }
 
-  componentDidMount() {
-    this.props.message.messages.map((message) => {
-      const messageDetails = {
-        message_id: message.message_id,
-        username: this.props.authenticatedUsername,
-        read_by: message.read_by
-      };
-      this.props.updateReadStatus(messageDetails);
-      console.log(messageDetails);
-    });
-  }
 
   openModal(e) {
     e.stopPropagation();
