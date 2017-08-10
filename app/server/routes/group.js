@@ -9,5 +9,6 @@ router.route('/api/group/:group_id/user').post(tokenAuth, groupController.addUse
 router.route('/api/group/:group_id/message').post(tokenAuth, groupController.postMessageToGroup);
 router.route('/api/group/:group_id/messages').get(tokenAuth, groupController.getGroupMessages);
 router.route('/api/group/:group_id/members').get(tokenAuth, groupController.getGroupMembers);
+router.route('/api/group/message/read').patch(groupController.updateMessageReadStatus);
 
 module.exports = router;

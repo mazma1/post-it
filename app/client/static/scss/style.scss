@@ -373,10 +373,10 @@ section.cards {
       padding: 10px;
       margin: 1.5rem 1rem 1rem 1rem;
   }
-  .card-panel {
-    padding: 10px;
-    margin: 1.5rem 1rem 1rem 1rem;
-  } 
+  // .card-panel {
+  //   padding: 10px;
+  //   margin: 1.5rem 1rem 1rem 1rem;
+  // } 
   @media screen and (max-width: 1263px) and (min-width: 1153px) {
     .card-panel {
       width: 94%;
@@ -874,6 +874,13 @@ select.browser-default {
   margin-left: 10px;
 }
 
+.card-panel .col {
+  padding: 0;
+} 
+
+.msg-read-by {
+  margin-left: -100px;
+}
 
 
 

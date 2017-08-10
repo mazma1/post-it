@@ -1,7 +1,8 @@
 const Group = require('../models').Group;
 const Group_member = require('../models').Group_member;
-const Message= require('../models').Message;
+const Message = require('../models').Message;
 const User = require('../models').User;
+const includes = require('lodash/includes');
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -109,7 +110,8 @@ module.exports = {
         body: req.body.message,
         group_id: req.params.group_id,
         user_id: userId,
-        priority: req.body.priority
+        priority: req.body.priority,
+        read_by: req.body.read_by
       };
       Message.create(messageDetail)
       .then(message => res.status(201).send({
@@ -127,7 +129,7 @@ module.exports = {
     if (req.params.group_id) {
       Message.findAll({ // User is associated to message
         where: { group_id: req.params.group_id },
-        attributes: ['group_id', ['id', 'message_id'], ['body', 'message'], 'priority', ['created_at', 'sent_at']],
+        attributes: ['group_id', ['id', 'message_id'], ['body', 'message'], 'priority', 'read_by', ['created_at', 'sent_at']],
         include: [{
           model: User,
           as: 'sent_by',
@@ -148,6 +150,26 @@ module.exports = {
         }
       })
       .catch(error => res.status(400).send(error));
+    }
+  },
+
+  // Method that updates users that have read a message
+  updateMessageReadStatus: (req, res) => {
+    const username = req.body.username,
+      readBy = req.body.read_by,
+      messageId = req.body.message_id,
+      updatedReadBy = `${readBy},${username}`;
+
+    if (!includes(readBy, username)) {
+      Message.update({
+        read_by: updatedReadBy,
+      }, {
+        where: { id: messageId }
+      })
+      .then((update) => {
+        res.status(201).send('Message read status updated successfully');
+      })
+      .catch(error => res.status(400).send(error.message));
     }
   },
 

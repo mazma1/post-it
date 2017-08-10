@@ -55,12 +55,13 @@ class MsgForm extends React.Component {
    */
   onMessageSend(e) {
     e.preventDefault();
-    const { groupId, userId } = this.props;
+    const { groupId, username } = this.props;
     if (groupId && this.state.messageInput !== '') {
       this.props.postNewMessage({
         message: this.state.messageInput,
         priority: this.state.priority,
-        group_id: groupId
+        group_id: groupId,
+        read_by: username
       }).then(() => {
         this.setState({ messageInput: '' });
       }).catch(() => {
@@ -128,7 +129,7 @@ class MsgForm extends React.Component {
 function mapStateToProps(state) {
   return {
     groupId: state.selectedGroup.id,
-    userId: state.signedInUser.id
+    username: state.signedInUser.user.username
   };
 }
 

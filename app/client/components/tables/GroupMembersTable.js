@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 /** Group members table component */
-class Table extends React.Component {
+class GroupMembersTable extends React.Component {
 
   /**
    * Render
@@ -44,8 +44,8 @@ function mapStateToProps(state) {
   };
 }
 
-Table.propTypes = {
+GroupMembersTable.propTypes = {
   groupMembers: PropTypes.array.isRequired
 };
 
-export default connect(mapStateToProps)(Table);
+export default connect(mapStateToProps)(GroupMembersTable);

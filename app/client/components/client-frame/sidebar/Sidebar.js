@@ -6,11 +6,16 @@ import GroupList from './GroupList';
 import $ from 'jquery';
 import { getUserGroups, submitNewGroup } from '../../../actions/userGroupsAction';
 import { setSelectedGroup } from '../../../actions/setSelectedGroupAction';
-import { getGroupMessages } from '../../../actions/groupMessagesAction';
+import { getGroupMessages, updateReadStatus } from '../../../actions/groupMessagesAction';
 import { getGroupMembers } from '../../../actions/groupMembersAction';
 import { addFlashMessage } from '../../../actions/flashMessageAction';
 import ModalFrame from '../../modal/ModalFrame';
-import { ModalHeader, ModalBody, ModalFooter, CancelButton, SubmitButton } from '../../modal/SubModals';
+import {
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  CancelButton,
+  SubmitButton } from '../../modal/SubModals';
 
 const Brand = (props) => {
   return (
@@ -171,8 +176,17 @@ class Sidebar extends React.Component {
     this.props.setSelectedGroup(group);
     this.props.getGroupMessages(group.id);
     this.props.getGroupMembers(group.id);
-  }
 
+    this.props.messages.map((message) => {
+      return (
+        this.props.updateReadStatus({
+          message_id: message.message_id,
+          username: this.props.signedInUser.user.username,
+          read_by: message.read_by
+        })
+      );
+    });
+  }
   /**
    * Render
    * @returns {ReactElement} Sidebar markup
@@ -227,7 +241,8 @@ function mapStateToProps(state) {
   return {
     signedInUser: state.signedInUser,
     userGroups: state.userGroups,
-    selectedGroup: state.selectedGroup
+    selectedGroup: state.selectedGroup,
+    messages: state.groupMessages.messages
   };
 }
 
@@ -246,7 +261,8 @@ function mapDispatchToProps(dispatch) {
     getGroupMessages,
     getGroupMembers,
     submitNewGroup,
-    addFlashMessage
+    addFlashMessage,
+    updateReadStatus
   }, dispatch);
 }
 

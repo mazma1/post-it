@@ -26,6 +26,14 @@ export function getGroupMessages(groupId) {
   };
 }
 
+export function updateReadStatus(messageDetails) {
+  const request = axios.patch('/api/group/message/read', messageDetails);
+
+  return (dispatch) => {
+    return request;
+  };
+}
+
 export function postNewMessage(message) {
   const groupId = message.group_id;
   const request = axios.post(`/api/group/${groupId}/message`, message);
@@ -57,7 +65,3 @@ export function fetchGroupMessagesFailure(ex) {
     ex
   };
 }
-
-
-
-

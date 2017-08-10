@@ -3,9 +3,53 @@ import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import classnames from 'classnames';
 import moment from 'moment';
+import { updateReadStatus } from '../../actions/groupMessagesAction';
+import ModalFrame from '../modal/ModalFrame';
+import {
+  ModalHeader,
+  ModalFooter,
+  CloseButton } from '../modal/SubModals';
+import ReadByTable from '../tables/ReadByTable';
 
 /** MessageCard component for message board */
 class MessageCard extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isOpen: false
+    };
+
+    // this.updateReadBy = this.updateReadBy.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.message.messages.map((message) => {
+      const messageDetails = {
+        message_id: message.message_id,
+        username: this.props.authenticatedUsername,
+        read_by: message.read_by
+      };
+      this.props.updateReadStatus(messageDetails);
+      console.log(messageDetails);
+    });
+  }
+
+  openModal(e) {
+    e.stopPropagation();
+    this.setState({
+      isOpen: true
+    });
+  }
+
+  closeModal(e) {
+    e.preventDefault();
+    this.setState({
+      isOpen: false
+    });
+  }
 
   /**
    * Render
@@ -61,18 +105,49 @@ class MessageCard extends React.Component {
 
       const time = moment(message.sent_at).format('ddd, MMM Do. h:mm a');
       return (
-        <div className="card-panel" key={message.message_id}>
-          <div className="">
-            <span className="blue-text text-darken-2"><b>@{message.sent_by.username}</b></span>
-            <span className="blue-text text-darken-2"> {time}</span>
-            <span className={
-              classnames('label',
-                          'priority-label',
-                          { 'label-default': normalPriority },
-                          { 'label-warning': urgentPriority },
-                          { 'label-danger': criticalPriority })}>{message.priority}</span>
+        <div>
+          <div className="card-panel row" key={message.message_id}>
+            <div className="col s12 m4 l11">
+              <span className="blue-text text-darken-2"><b>@{message.sent_by.username}</b></span>
+              <span className="blue-text text-darken-2"> {time}</span>
+              <span className={
+                classnames('label',
+                            'priority-label',
+                            { 'label-default': normalPriority },
+                            { 'label-warning': urgentPriority },
+                            { 'label-danger': criticalPriority })}>{message.priority}</span>
+            </div>
+
+            <div className="col s12 m4 l1">
+              <ul>
+                <li role="presentation" className="dropdown">
+                  <a className="dropdown-toggle options" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    Options <span className="caret"></span>
+                  </a>
+                  <ul className="dropdown-menu msg-read-by">
+                    <li><a
+                      data-toggle="modal" data-target="#readBy"
+                      onClick={this.props.openModal}
+                      href="#">Read by</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+            <p className="msg_body">{message.message}</p>
           </div>
-          <p className="msg_body">{message.message}</p>
+
+          {/* Read By Modal */}
+          <ModalFrame id='readBy'>
+            <ModalHeader header='Message Read By' onClose={this.closeModal}/>
+
+            <div className="modal-body">
+              <ReadByTable />
+            </div>
+
+            <ModalFooter>
+              <CloseButton onClick={this.closeModal} />
+            </ModalFooter>
+        </ModalFrame>
         </div>
       );
     });
@@ -93,8 +168,9 @@ class MessageCard extends React.Component {
 function mapStateToProps(state) {
   return {
     message: state.groupMessages,
-    userGroups: state.userGroups
+    userGroups: state.userGroups,
+    authenticatedUsername: state.signedInUser.user.username
   };
 }
 
-export default connect(mapStateToProps)(MessageCard);
+export default connect(mapStateToProps, { updateReadStatus })(MessageCard);
