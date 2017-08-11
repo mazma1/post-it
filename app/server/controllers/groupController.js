@@ -136,12 +136,6 @@ module.exports = {
           attributes: ['username'],
         }]
       })
-      // User.findAll({
-      //   include: [{
-      //     model: Message,
-      //     where: { '$group.id$': req.params.group_id }
-      //   }]
-      // })
       .then((message) => {
         if (message) {
           res.status(200).send(message);

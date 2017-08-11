@@ -17,10 +17,11 @@ class MessageCard extends React.Component {
     super(props);
 
     this.state = {
-      isOpen: false
+      isOpen: false,
+      messageId: ''
     };
 
-    // this.updateReadBy = this.updateReadBy.bind(this);
+    this.setMessageId = this.setMessageId.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
@@ -37,6 +38,13 @@ class MessageCard extends React.Component {
     e.preventDefault();
     this.setState({
       isOpen: false
+    });
+  }
+
+  setMessageId(id) {
+    // e.preventDefault();
+    this.setState({
+      messageId: id
     });
   }
 
@@ -93,6 +101,7 @@ class MessageCard extends React.Component {
       }
 
       const time = moment(message.sent_at).format('ddd, MMM Do. h:mm a');
+      const onReadByClick = () => this.setMessageId(message.message_id);
       return (
         <div key={index}>
           <div className="card-panel row" key={message.message_id}>
@@ -116,7 +125,7 @@ class MessageCard extends React.Component {
                   <ul className="dropdown-menu msg-read-by">
                     <li><a
                       data-toggle="modal" data-target="#readBy"
-                      onClick={this.props.openModal}
+                      onClick={onReadByClick}
                       href="#">Read by</a></li>
                   </ul>
                 </li>
@@ -130,7 +139,7 @@ class MessageCard extends React.Component {
             <ModalHeader header='Message Read By' onClose={this.closeModal}/>
 
             <div className="modal-body">
-              <ReadByTable />
+              <ReadByTable messageId={this.state.messageId}/>
             </div>
 
             <ModalFooter>

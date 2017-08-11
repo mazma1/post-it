@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import split from 'lodash/split';
+import mapKeys from 'lodash/mapKeys';
 
 /** Group members table component */
 class ReadByTable extends React.Component {
@@ -11,22 +12,26 @@ class ReadByTable extends React.Component {
    * @returns {ReactElement} Table markup
    */
   render() {
-    const readByRow = this.props.messages.map((message) => {
-      const readBy = message.read_by;
+    const messagesArray = this.props.messages;
+    const messagesObject = mapKeys(messagesArray, 'message_id');
+    const messageId = this.props.messageId;
+    const readByUsers = messagesObject[messageId];
+    let readByRow;
+
+    if (readByUsers) {
+      const readBy = readByUsers.read_by;
       const readByArray = split(readBy, ',');
 
-      return (
-        readByArray.map((username, index) => {
-          return (
-            <tr key={index}>
-              <td>
-                @{username}
-              </td>
-            </tr>
-          );
-        })
-      );
-    });
+      readByRow = readByArray.map((username, index) => {
+        return (
+          <tr key={index}>
+            <td>
+              @{username}
+            </td>
+          </tr>
+        );
+      });
+    }
 
     return (
       <div>
