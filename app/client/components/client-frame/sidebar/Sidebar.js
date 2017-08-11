@@ -163,7 +163,8 @@ class Sidebar extends React.Component {
                   const messageDetails = {
                     message_id: message.message_id,
                     username: this.props.signedInUser.user.username,
-                    read_by: message.read_by
+                    read_by: message.read_by,
+                    group_id: this.props.userGroups.groups[0].id
                   };
                   return this.props.updateReadStatus(messageDetails);
                 });
@@ -195,7 +196,8 @@ class Sidebar extends React.Component {
       this.props.updateReadStatus({
         message_id: message.message_id,
         username: this.props.signedInUser.user.username,
-        read_by: message.read_by
+        read_by: message.read_by,
+        group_id: group.id
       });
       return message;
     });
