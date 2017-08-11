@@ -29,9 +29,7 @@ export function getGroupMessages(groupId) {
 export function updateReadStatus(messageDetails) {
   const request = axios.patch('/api/group/message/read', messageDetails);
 
-  return (dispatch) => {
-    return request;
-  };
+  return dispatch => request;
 }
 
 export function postNewMessage(message) {

@@ -170,6 +170,8 @@ module.exports = {
         res.status(201).send('Message read status updated successfully');
       })
       .catch(error => res.status(400).send(error.message));
+    } else {
+      res.status(200).send('User has already been recorded to have seen this message');
     }
   },
 

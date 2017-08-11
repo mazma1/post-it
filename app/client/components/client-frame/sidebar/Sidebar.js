@@ -192,13 +192,12 @@ class Sidebar extends React.Component {
     this.props.getGroupMembers(group.id);
 
     this.props.messages.map((message) => {
-      return (
-        this.props.updateReadStatus({
-          message_id: message.message_id,
-          username: this.props.signedInUser.user.username,
-          read_by: message.read_by
-        })
-      );
+      this.props.updateReadStatus({
+        message_id: message.message_id,
+        username: this.props.signedInUser.user.username,
+        read_by: message.read_by
+      });
+      return message;
     });
   }
   /**

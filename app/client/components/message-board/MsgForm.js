@@ -57,19 +57,40 @@ class MsgForm extends React.Component {
     e.preventDefault();
     const { groupId, username } = this.props;
     if (groupId && this.state.messageInput !== '') {
-      this.props.postNewMessage({
-        message: this.state.messageInput,
-        priority: this.state.priority,
-        group_id: groupId,
-        read_by: username
-      }).then(() => {
-        this.setState({ messageInput: '' });
-      }).catch(() => {
-        this.props.addFlashMessage({
-          type: 'error',
-          text: 'Unable to send message, please try again'
+      const userMessage = this.state.messageInput;
+      const validFlag = ['urgent', 'normal', 'critical'];
+      const priority = userMessage.split(' ').shift().slice(1);
+
+      if (validFlag.includes(priority)) {
+        const messageBody = userMessage.slice(priority.length + 1);
+        this.props.postNewMessage({
+          message: messageBody,
+          priority,
+          group_id: groupId,
+          read_by: username
+        }).then(() => {
+          this.setState({ messageInput: '' });
+        }).catch(() => {
+          this.props.addFlashMessage({
+            type: 'error',
+            text: 'Unable to send message, please try again'
+          });
         });
-      });
+      } else {
+        this.props.postNewMessage({
+          message: this.state.messageInput,
+          priority: this.state.priority,
+          group_id: groupId,
+          read_by: username
+        }).then(() => {
+          this.setState({ messageInput: '' });
+        }).catch(() => {
+          this.props.addFlashMessage({
+            type: 'error',
+            text: 'Unable to send message, please try again'
+          });
+        });
+      }
     }
   }
 

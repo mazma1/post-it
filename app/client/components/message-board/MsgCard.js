@@ -79,7 +79,7 @@ class MessageCard extends React.Component {
       }
     }
 
-    const messageItem = messages.map((message) => {
+    const messageItem = messages.map((message, index) => {
       let normalPriority;
       let urgentPriority;
       let criticalPriority;
@@ -94,7 +94,7 @@ class MessageCard extends React.Component {
 
       const time = moment(message.sent_at).format('ddd, MMM Do. h:mm a');
       return (
-        <div>
+        <div key={index}>
           <div className="card-panel row" key={message.message_id}>
             <div className="col s12 m4 l11">
               <span className="blue-text text-darken-2"><b>@{message.sent_by.username}</b></span>
