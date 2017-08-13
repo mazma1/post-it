@@ -236,6 +236,7 @@ class Sidebar extends React.Component {
       });
       return message;
     });
+    this.getUnreadCount();
   }
   /**
    * Render

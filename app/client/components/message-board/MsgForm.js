@@ -102,7 +102,7 @@ class MsgForm extends React.Component {
     return (
       <footer className="footer">
         <div className="footer-container">
-          <form className="form-horizontal">
+          <form className="form-horizontal" onSubmit={this.onMessageSend}>
             <div className="form-group">
               <div className="col-lg-8 col-md-10 col-sm-11 col-xs-11 msg-form-container">
                 <input
