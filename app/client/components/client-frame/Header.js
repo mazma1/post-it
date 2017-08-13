@@ -37,10 +37,17 @@ const GroupName = (props) => {
     return <div className="col-md-4 col-sm-5 col-xs-3"></div>;
   }
 
+  function checkGroupnameLength(groupName) {
+    if (groupName.length > 16) {
+      return `${groupName.substring(0, 16)}...`;
+    }
+    return groupName;
+  }
+
   return (
     <div className="col-md-4 col-sm-5 col-xs-3 brand">
       <ul style={noMarginBottom}>
-        <h4 className="group-name">{props.selectedGroup.name}</h4>
+        <h4 className="group-name">{checkGroupnameLength(props.selectedGroup.name)}</h4>
         <li role="presentation" className="dropdown">
           <a className="dropdown-toggle options" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
             <span className="caret"></span>
