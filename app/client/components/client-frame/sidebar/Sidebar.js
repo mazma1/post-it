@@ -7,7 +7,7 @@ import GroupList from './GroupList';
 import $ from 'jquery';
 import { getUserGroups, submitNewGroup } from '../../../actions/userGroupsAction';
 import { setSelectedGroup } from '../../../actions/setSelectedGroupAction';
-import { getGroupMessages, updateReadStatus } from '../../../actions/groupMessagesAction';
+import { getGroupMessages, updateReadStatus, getGroupMessagesForCount } from '../../../actions/groupMessagesAction';
 import { getGroupMembers } from '../../../actions/groupMembersAction';
 import { addFlashMessage } from '../../../actions/flashMessageAction';
 import ModalFrame from '../../modal/ModalFrame';
@@ -61,7 +61,8 @@ class Sidebar extends React.Component {
       isOpen: false,
       newGroup: '',
       isLoading: false,
-      error: ''
+      error: '',
+      groups: []
     };
 
     this.onGroupSelect = this.onGroupSelect.bind(this);
@@ -69,6 +70,7 @@ class Sidebar extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.onChange = this.onChange.bind(this);
     this.newGroupSubmit = this.newGroupSubmit.bind(this);
+    this.getUnreadCount = this.getUnreadCount.bind(this);
   }
 
   /**
@@ -110,6 +112,39 @@ class Sidebar extends React.Component {
       error: '',
       [e.target.name]: e.target.value
     });
+  }
+
+  getUnreadCount() {
+    const groupsWithNotification = [];
+
+    this.props.getUserGroups(this.props.signedInUser.user.id).then(
+      () => {
+        if (!this.props.userGroups.isLoading) {
+          const groups = this.props.userGroups.groups;
+
+          if (!isEmpty(groups)) {
+            groups.map((group) => {
+              this.props.getGroupMessagesForCount(group.id).then(
+                (res) => {
+                  // map returned message array
+                  let unreadCount = 0;
+                  res.data.map((message) => {
+                    if (!message.read_by.split(',').includes(this.props.signedInUser.user.username)) {
+                      unreadCount = unreadCount + 1;
+                    }
+                  });
+                  groupsWithNotification.push({ id: group.id, name: group.name, unreadCount });
+                  this.setState({ groups: groupsWithNotification });
+                }
+              );
+            });
+          }
+        }
+      });
+  }
+
+  componentDidMount() {
+    this.getUnreadCount();
   }
 
   /**
@@ -207,7 +242,7 @@ class Sidebar extends React.Component {
    * @returns {ReactElement} Sidebar markup
    */
   render() {
-    const { userGroups, selectedGroup } = this.props;
+    const { userGroups, selectedGroup, messages } = this.props;
     return (
       <div>
         <aside className="navbar-default mobile-navbar">
@@ -220,6 +255,9 @@ class Sidebar extends React.Component {
               selectedGroup={selectedGroup}
               onGroupSelect={this.onGroupSelect}
               openModal={this.openModal}
+              unreadCount={this.state.groups}
+              messages={messages}
+              signedInUsername={this.props.signedInUser.user.username}
             />
           </div>
         </aside>
@@ -277,7 +315,8 @@ function mapDispatchToProps(dispatch) {
     getGroupMembers,
     submitNewGroup,
     addFlashMessage,
-    updateReadStatus
+    updateReadStatus,
+    getGroupMessagesForCount
   }, dispatch);
 }
 

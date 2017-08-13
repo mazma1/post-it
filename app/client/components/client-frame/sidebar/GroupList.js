@@ -1,7 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
+import mapKeys from 'lodash/mapKeys';
+import { getGroupMessagesForCount } from '../../../actions/groupMessagesAction';
+import { getUserGroups } from '../../../actions/userGroupsAction';
 
 /**
  *Functional component that renders a list of groups a user belongs to on the message board
@@ -18,7 +22,8 @@ import classnames from 'classnames';
 function GroupList(props) {
   const groupsArray = props.userGroups.groups;
   const hasGroup = props.userGroups.hasGroup;
-  const onGroupSelect = props.onGroupSelect;
+  const { unreadCount, onGroupSelect } = props;
+  const mappedUnreadCount = mapKeys(unreadCount, 'id');
 
   const divPadding = {
     paddingLeft: '20px',
@@ -60,12 +65,15 @@ function GroupList(props) {
   );
 
   const groupItems = groupsArray.map((group) => {
+    const id = group.id;
     const isSelected = props.selectedGroup.id === group.id;
     const onGroupClick = () => onGroupSelect({ id: group.id, name: group.name });
+
     return (
       <li role="presentation" onClick={onGroupClick} key={group.id} className={classnames({ 'active': isSelected })}>
         <NavLink to="#">
           {group.name}
+          { mappedUnreadCount[id] && mappedUnreadCount[id].unreadCount > 0 ? <span className="new badge">{mappedUnreadCount[id].unreadCount}</span> : null}
         </NavLink>
       </li>
     );
@@ -81,6 +89,12 @@ function GroupList(props) {
   );
 }
 
+function mapStateToProps(state) {
+  return {
+    groupLoading: state.groupMessages.isLoading
+  };
+}
+
 GroupList.propTypes = {
   userGroups: PropTypes.object.isRequired,
   selectedGroup: PropTypes.object.isRequired,
@@ -88,4 +102,4 @@ GroupList.propTypes = {
   openModal: PropTypes.func.isRequired
 };
 
-export default GroupList;
+export default connect(mapStateToProps, { getGroupMessagesForCount, getUserGroups })(GroupList);
