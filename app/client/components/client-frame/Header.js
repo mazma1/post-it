@@ -11,8 +11,14 @@ import { setGroupMessages } from '../../actions/groupMessagesAction';
 import { addFlashMessage } from '../../actions/flashMessageAction';
 import { submitNewUser } from '../../actions/groupMembersAction';
 import ModalFrame from '../modal/ModalFrame';
-import { ModalHeader, ModalBody, ModalFooter, CloseButton, CancelButton, SubmitButton } from '../modal/SubModals';
-import Table from '../table/Table';
+import {
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  CloseButton,
+  CancelButton,
+  SubmitButton } from '../modal/SubModals';
+import GroupMembersTable from '../tables/GroupMembersTable';
 
 const noMarginBottom = {
   marginBottom: 0
@@ -256,7 +262,7 @@ class Header extends React.Component {
           <ModalHeader header='Group Members' onClose={this.closeModal}/>
 
           <div className="modal-body">
-            <Table />
+            <GroupMembersTable />
           </div>
 
           <ModalFooter>

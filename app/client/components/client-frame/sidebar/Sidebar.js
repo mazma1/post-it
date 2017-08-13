@@ -2,15 +2,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import isEmpty from 'lodash/isEmpty';
 import GroupList from './GroupList';
 import $ from 'jquery';
 import { getUserGroups, submitNewGroup } from '../../../actions/userGroupsAction';
 import { setSelectedGroup } from '../../../actions/setSelectedGroupAction';
-import { getGroupMessages } from '../../../actions/groupMessagesAction';
+import { getGroupMessages, updateReadStatus, getGroupMessagesForCount } from '../../../actions/groupMessagesAction';
 import { getGroupMembers } from '../../../actions/groupMembersAction';
 import { addFlashMessage } from '../../../actions/flashMessageAction';
 import ModalFrame from '../../modal/ModalFrame';
-import { ModalHeader, ModalBody, ModalFooter, CancelButton, SubmitButton } from '../../modal/SubModals';
+import {
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  CancelButton,
+  SubmitButton } from '../../modal/SubModals';
 
 const Brand = (props) => {
   return (
@@ -55,7 +61,8 @@ class Sidebar extends React.Component {
       isOpen: false,
       newGroup: '',
       isLoading: false,
-      error: ''
+      error: '',
+      groups: []
     };
 
     this.onGroupSelect = this.onGroupSelect.bind(this);
@@ -63,6 +70,7 @@ class Sidebar extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.onChange = this.onChange.bind(this);
     this.newGroupSubmit = this.newGroupSubmit.bind(this);
+    this.getUnreadCount = this.getUnreadCount.bind(this);
   }
 
   /**
@@ -104,6 +112,39 @@ class Sidebar extends React.Component {
       error: '',
       [e.target.name]: e.target.value
     });
+  }
+
+  getUnreadCount() {
+    const groupsWithNotification = [];
+
+    this.props.getUserGroups(this.props.signedInUser.user.id).then(
+      () => {
+        if (!this.props.userGroups.isLoading) {
+          const groups = this.props.userGroups.groups;
+
+          if (!isEmpty(groups)) {
+            groups.map((group) => {
+              this.props.getGroupMessagesForCount(group.id).then(
+                (res) => {
+                  // map returned message array
+                  let unreadCount = 0;
+                  res.data.map((message) => {
+                    if (!message.read_by.split(',').includes(this.props.signedInUser.user.username)) {
+                      unreadCount = unreadCount + 1;
+                    }
+                  });
+                  groupsWithNotification.push({ id: group.id, name: group.name, unreadCount });
+                  this.setState({ groups: groupsWithNotification });
+                }
+              );
+            });
+          }
+        }
+      });
+  }
+
+  componentDidMount() {
+    this.getUnreadCount();
   }
 
   /**
@@ -150,7 +191,21 @@ class Sidebar extends React.Component {
           this.props.setSelectedGroup({});
         } else {
           this.props.setSelectedGroup(this.props.userGroups.groups[0]);
-          this.props.getGroupMessages(this.props.userGroups.groups[0].id);
+          this.props.getGroupMessages(this.props.userGroups.groups[0].id).then(
+            () => {
+              if (!isEmpty(this.props.messages)) {
+                this.props.messages.map((message) => {
+                  const messageDetails = {
+                    message_id: message.message_id,
+                    username: this.props.signedInUser.user.username,
+                    read_by: message.read_by,
+                    group_id: this.props.userGroups.groups[0].id
+                  };
+                  return this.props.updateReadStatus(messageDetails);
+                });
+              }
+            }
+          );
           this.props.getGroupMembers(this.props.userGroups.groups[0].id);
         }
       }
@@ -171,14 +226,24 @@ class Sidebar extends React.Component {
     this.props.setSelectedGroup(group);
     this.props.getGroupMessages(group.id);
     this.props.getGroupMembers(group.id);
-  }
 
+    this.props.messages.map((message) => {
+      this.props.updateReadStatus({
+        message_id: message.message_id,
+        username: this.props.signedInUser.user.username,
+        read_by: message.read_by,
+        group_id: group.id
+      });
+      return message;
+    });
+    this.getUnreadCount();
+  }
   /**
    * Render
    * @returns {ReactElement} Sidebar markup
    */
   render() {
-    const { userGroups, selectedGroup } = this.props;
+    const { userGroups, selectedGroup, messages } = this.props;
     return (
       <div>
         <aside className="navbar-default mobile-navbar">
@@ -191,6 +256,9 @@ class Sidebar extends React.Component {
               selectedGroup={selectedGroup}
               onGroupSelect={this.onGroupSelect}
               openModal={this.openModal}
+              unreadCount={this.state.groups}
+              messages={messages}
+              signedInUsername={this.props.signedInUser.user.username}
             />
           </div>
         </aside>
@@ -228,7 +296,8 @@ function mapStateToProps(state) {
   return {
     signedInUser: state.signedInUser,
     userGroups: state.userGroups,
-    selectedGroup: state.selectedGroup
+    selectedGroup: state.selectedGroup,
+    messages: state.groupMessages.messages
   };
 }
 
@@ -247,7 +316,9 @@ function mapDispatchToProps(dispatch) {
     getGroupMessages,
     getGroupMembers,
     submitNewGroup,
-    addFlashMessage
+    addFlashMessage,
+    updateReadStatus,
+    getGroupMessagesForCount
   }, dispatch);
 }
 

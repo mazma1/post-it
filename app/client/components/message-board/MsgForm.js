@@ -55,20 +55,42 @@ class MsgForm extends React.Component {
    */
   onMessageSend(e) {
     e.preventDefault();
-    const { groupId, userId } = this.props;
+    const { groupId, username } = this.props;
     if (groupId && this.state.messageInput !== '') {
-      this.props.postNewMessage({
-        message: this.state.messageInput,
-        priority: this.state.priority,
-        group_id: groupId
-      }).then(() => {
-        this.setState({ messageInput: '' });
-      }).catch(() => {
-        this.props.addFlashMessage({
-          type: 'error',
-          text: 'Unable to send message, please try again'
+      const userMessage = this.state.messageInput;
+      const validFlag = ['urgent', 'normal', 'critical'];
+      const priority = userMessage.split(' ').shift().slice(1);
+
+      if (validFlag.includes(priority)) {
+        const messageBody = userMessage.slice(priority.length + 1);
+        this.props.postNewMessage({
+          message: messageBody,
+          priority,
+          group_id: groupId,
+          read_by: username
+        }).then(() => {
+          this.setState({ messageInput: '' });
+        }).catch(() => {
+          this.props.addFlashMessage({
+            type: 'error',
+            text: 'Unable to send message, please try again'
+          });
         });
-      });
+      } else {
+        this.props.postNewMessage({
+          message: this.state.messageInput,
+          priority: this.state.priority,
+          group_id: groupId,
+          read_by: username
+        }).then(() => {
+          this.setState({ messageInput: '' });
+        }).catch(() => {
+          this.props.addFlashMessage({
+            type: 'error',
+            text: 'Unable to send message, please try again'
+          });
+        });
+      }
     }
   }
 
@@ -80,7 +102,7 @@ class MsgForm extends React.Component {
     return (
       <footer className="footer">
         <div className="footer-container">
-          <form className="form-horizontal">
+          <form className="form-horizontal" onSubmit={this.onMessageSend}>
             <div className="form-group">
               <div className="col-lg-8 col-md-10 col-sm-11 col-xs-11 msg-form-container">
                 <input
@@ -128,7 +150,7 @@ class MsgForm extends React.Component {
 function mapStateToProps(state) {
   return {
     groupId: state.selectedGroup.id,
-    userId: state.signedInUser.id
+    username: state.signedInUser.user.username
   };
 }
 
