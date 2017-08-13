@@ -242,6 +242,7 @@ class Header extends React.Component {
             onChange={this.onChange}
             value={this.state.newUser}
             errors={this.state.error}
+            onSubmit={this.newUserSubmit}
           />
 
           <ModalFooter>

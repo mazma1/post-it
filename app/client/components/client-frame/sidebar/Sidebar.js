@@ -205,6 +205,7 @@ class Sidebar extends React.Component {
             onChange={this.onChange}
             value={this.state.newGroup}
             errors={this.state.error}
+            onSubmit={this.newGroupSubmit}
           />
 
           <ModalFooter>

@@ -22,7 +22,7 @@ export const ModalBody = (props) => {
   return (
     <div className="modal-body">
       <div className="row">
-        <form className="col s12">
+        <form className="col s12" onSubmit={props.onSubmit}>
           <div className="row">
             <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': error })}>
               <input
