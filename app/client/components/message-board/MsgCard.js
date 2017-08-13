@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
+import classnames from 'classnames';
 import moment from 'moment';
 
 /** MessageCard component for message board */
@@ -46,12 +47,30 @@ class MessageCard extends React.Component {
     }
 
     const messageItem = messages.map((message) => {
+      let normalPriority;
+      let urgentPriority;
+      let criticalPriority;
+
+      if (message.priority === 'normal') {
+        normalPriority = true;
+      } else if (message.priority === 'urgent') {
+        urgentPriority = true;
+      } else if (message.priority === 'critical') {
+        criticalPriority = true;
+      }
+
       const time = moment(message.sent_at).format('ddd, MMM Do. h:mm a');
       return (
         <div className="card-panel" key={message.message_id}>
           <div className="">
             <span className="blue-text text-darken-2"><b>@{message.sent_by.username}</b></span>
             <span className="blue-text text-darken-2"> {time}</span>
+            <span className={
+              classnames('label',
+                          'priority-label',
+                          { 'label-default': normalPriority },
+                          { 'label-warning': urgentPriority },
+                          { 'label-danger': criticalPriority })}>{message.priority}</span>
           </div>
           <p className="msg_body">{message.message}</p>
         </div>

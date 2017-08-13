@@ -86,7 +86,7 @@ module.exports = {
               const token = jwt.sign({ data: user }, process.env.TOKEN_SECRET);
               res.status(201).send({ success: true, message: 'Signup was successful', token });
             })
-            .catch(error => res.status(400).send(error));
+            .catch(error => res.status(400).send(error.message));
           }
         });
       });
