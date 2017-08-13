@@ -38,8 +38,8 @@ const GroupName = (props) => {
   }
 
   function checkGroupnameLength(groupName) {
-    if (groupName.length > 16) {
-      return `${groupName.substring(0, 16)}...`;
+    if (groupName.length > 13) {
+      return `${groupName.substring(0, 13)}...`;
     }
     return groupName;
   }
