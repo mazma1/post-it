@@ -1,3 +1,7 @@
+const nodemailer = require('nodemailer');
+const smtpTransport = require('nodemailer-smtp-transport');
+const sendEmail = require('../../client/utils/sendEmail');
+
 const Group = require('../models').Group;
 const Group_member = require('../models').Group_member;
 const Message = require('../models').Message;
@@ -35,7 +39,7 @@ module.exports = {
           res.status(400).send({ error });
         } else {
           Group.create(groupData)
-          .then(group => {
+          .then((group) => {
             Group_member.create({
               group_id: group.id,
               user_id: userId
@@ -114,13 +118,57 @@ module.exports = {
         read_by: req.body.read_by
       };
       Message.create(messageDetail)
-      .then(message => res.status(201).send({
-        success: true,
-        message: 'Message was successfully sent',
-        timeSent: message.createdAt,
-        messageBody: message.body
-      }))
-      .catch(error => res.status(400).send(error));
+      .then((message) => {
+        res.status(201).send({
+          success: true,
+          message: 'Message was successfully sent',
+          timeSent: message.createdAt,
+          messageBody: message.body
+        });
+        if (req.body.priority === 'urgent' || req.body.priority === 'critical') {
+          const transporter = nodemailer.createTransport(smtpTransport({
+            service: 'gmail',
+            port: 465,
+            auth: {
+              user: 'mazi.mary.o@gmail.com',
+              pass: process.env.EMAIL_PASSWORD
+            }
+          }));
+          // get users email and send email
+          Group.findOne({
+            where: { id: messageDetail.group_id },
+            attributes: ['group_name'],
+            include: [{
+              model: User,
+              as: 'members',
+              attributes: ['email'],
+              through: { attributes: [] }
+            }]
+          }).then((members) => {
+            const priority = messageDetail.priority;
+            const uppercasePriority = priority.toUpperCase();
+            members.members.map((member) => {
+              const mailOptions = {
+                from: 'mazi.mary.o@gmail.com',
+                to: member.email,
+                subject: `${uppercasePriority} message in ${members.group_name}`,
+                text: `${messageDetail.body}`
+              };
+
+              transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                  console.log(error);
+                } else {
+                  console.log(`Email sent:${info.response}`);
+                }
+              });
+            });
+          });
+        }
+
+        // get users number and send sms
+      })
+      .catch(error => res.status(400).send(error.message));
     }
   },
 
