@@ -94,6 +94,8 @@
     "materialize-loader": "^2.0.0",
     "moment": "^2.18.1",
     "morgan": "^1.8.2",
+    "nodemailer": "^4.0.1",
+    "nodemailer-smtp-transport": "^2.7.4",
     "pg": "^6.2.4",
     "pg-hstore": "^2.3.2",
     "prop-types": "^15.5.10",
