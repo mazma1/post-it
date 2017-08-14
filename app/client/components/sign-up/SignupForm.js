@@ -135,6 +135,20 @@ class SignupForm extends React.Component {
         </div>
 
         <div className="row">
+          <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': errors.phone })}>
+            <TextField
+              icon='phone'
+              error={errors.phone}
+              label='Phone Number'
+              onChange={this.onChange}
+              value={this.state.phone}
+              field='phone'
+              type='number'
+            />
+          </div>
+        </div>
+
+        <div className="row">
           <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': errors.email })}>
             <TextField
               icon='email'

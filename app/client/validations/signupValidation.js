@@ -15,6 +15,11 @@ export default function validateInput(data) {
   } else if (!validator.isEmail(data.email)) {
     errors.email = 'Invalid email';
   }
+  if (!data.phone) {
+    errors.phone = 'This field is required';
+  } else if (data.phone.length !== 11) {
+    errors.phone = 'Phone number must be 11 digits';
+  }
   if (!data.username) {
     errors.username = 'This field is required';
   }

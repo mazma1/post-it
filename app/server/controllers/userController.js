@@ -10,12 +10,12 @@ const isEmpty = require('lodash/isEmpty');
 const saltRounds = 7;
 const salt = bcrypt.genSaltSync(saltRounds);
 
-module.exports = {
 
+module.exports = {
   // Method to signup a user
   signup: (req, res) => {
     function validateInput(data) {
-      let errors = {};
+      const errors = {};
 
       if (!data.firstname) {
         errors.firstname = 'This field is required';
@@ -27,6 +27,11 @@ module.exports = {
         errors.email = 'This field is required';
       } else if (!validator.isEmail(data.email)) {
         errors.email = 'Invalid email';
+      }
+      if (!data.phone) {
+        errors.phone = 'This field is required';
+      } else if (data.phone.length !== 11) {
+        errors.phone = 'Phone number must be 11 digits';
       }
       if (!data.username) {
         errors.username = 'This field is required';
@@ -78,6 +83,7 @@ module.exports = {
               firstname: req.body.firstname,
               lastname: req.body.lastname,
               username: req.body.username,
+              mobile: `234${req.body.phone.slice(1)}`,
               email: req.body.email,
               password: bcrypt.hashSync(req.body.password, salt)
             };
@@ -95,7 +101,7 @@ module.exports = {
 
   // Method to sign in a user
   signin: (req, res) => {
-    let errors = {};
+    const errors = {};
     if (!req.body.identifier && !req.body.password) {
       errors.identifier = 'This field is required';
       errors.password = 'This field is required';
