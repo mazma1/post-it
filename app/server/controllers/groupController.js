@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
-const sendEmail = require('../../client/utils/sendEmail');
+const Nexmo = require('nexmo');
 
 const Group = require('../models').Group;
 const Group_member = require('../models').Group_member;
@@ -141,7 +141,7 @@ module.exports = {
             include: [{
               model: User,
               as: 'members',
-              attributes: ['email'],
+              attributes: ['email', 'mobile'],
               through: { attributes: [] }
             }]
           }).then((members) => {
@@ -162,11 +162,23 @@ module.exports = {
                   console.log(`Email sent:${info.response}`);
                 }
               });
+
+              // get users number and send sms
+              if (req.body.priority === 'critical') {
+                const nexmo = new Nexmo({
+                  apiKey: process.env.NEXMO_KEY,
+                  apiSecret: process.env.NEXMO_SECRET
+                });
+
+                const from = 'Post It';
+                const to = member.mobile;
+                const text = `${uppercasePriority} message in ${members.group_name}\n\n${messageDetail.body}`;
+
+                nexmo.message.sendSms(from, to, text);
+              }
             });
           });
         }
-
-        // get users number and send sms
       })
       .catch(error => res.status(400).send(error.message));
     }
