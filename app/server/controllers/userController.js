@@ -1,6 +1,9 @@
+const nodemailer = require('nodemailer');
+const smtpTransport = require('nodemailer-smtp-transport');
 const User = require('../models').User;
 const Group = require('../models').Group;
 const Group_member = require('../models').Group_member;
+const ForgotPassword = require('../models').ForgotPassword;
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -166,6 +169,59 @@ module.exports = {
       // })
       .then((user) => {
         res.status(201).send(user);
+      });
+    }
+  },
+
+   // Method to send password reset link
+  sendResetPasswordLink: (req, res) => {
+    let error;
+    if (!req.body.email) {
+      error = 'Email field is required';
+      res.status(401).send(error);
+    } else if (!validator.isEmail(req.body.email)) {
+      error = 'Invalid email address';
+      res.status(401).send(error);
+    } else {
+      User.findOne({
+        where: { email: req.body.email }
+      }).then(user => {
+        const resetPasswordHash = bcrypt.hashSync('B4c0//#$%gh*', salt),
+          resetPasswordExpires = Date.now() + 3600000;
+
+        ForgotPassword.create({
+          user_id: user.id,
+          hash: resetPasswordHash,
+          expiry_time: resetPasswordExpires
+        }).then(() => {
+          // send email
+          const transporter = nodemailer.createTransport(smtpTransport({
+            service: 'gmail',
+            port: 465,
+            auth: {
+              user: 'mazi.mary.o@gmail.com',
+              pass: process.env.EMAIL_PASSWORD
+            }
+          }));
+
+          const mailOptions = {
+            from: 'mazi.mary.o@gmail.com',
+            to: user.email,
+            subject: 'Reset your Post It Password',
+            html: `Hello ${user.firstname} ${user.firstname}, 
+            \n\nYou recently made a request to reset your Post It password. 
+            Please click the link below to complete the process. 
+            \n\n<a href='http://${req.headers.host}/newpassword/${resetPasswordHash}'>Reset now ></a>`
+          };
+          transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(`Email sent:${info.response}`);
+            }
+          });
+          res.send('Email sent');
+        });
       });
     }
   }

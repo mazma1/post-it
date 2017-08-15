@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import TextField from '../common/FormTextField';
 import validateInput from '../../validations/signinValidation';
@@ -121,6 +121,7 @@ class SigninForm extends React.Component {
 
         <div className="center call-to-sign-in">
           <p className="center">Don't have an account? <a href="/signup">Sign Up</a></p>
+          <p className="center"><Link to="/reset_password">Forgot Password?</Link></p>
         </div>
 
         <div className="form-padding-bottom"></div>
