@@ -22,15 +22,13 @@ class ReadByTable extends React.Component {
       const readBy = readByUsers.read_by;
       const readByArray = split(readBy, ',');
 
-      readByRow = readByArray.map((username, index) => {
-        return (
-          <tr key={index}>
-            <td>
-              @{username}
-            </td>
-          </tr>
-        );
-      });
+      readByRow = readByArray.map((username, index) => (
+        <tr key={index}>
+          <td>
+            @{username}
+          </td>
+        </tr>
+      ));
     }
 
     return (
