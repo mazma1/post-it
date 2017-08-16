@@ -1,5 +1,5 @@
-const gulp = require('gulp');
-const mocha = require('gulp-mocha');
+import gulp from 'gulp';
+import mocha from 'gulp-mocha';
 
 gulp.task('test', () => {
   gulp.src(['test/*test.js'], { read: false })

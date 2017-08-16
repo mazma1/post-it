@@ -1,11 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import HomePage from './home-page/HomePage';
 import SignUp from './sign-up/SignUp';
 import SignIn from './sign-in/SignIn';
-import MessageBoard from './message-board/MessageBoard';
-import EnsureLoggedInContainer from '../components/EnsureLoggedInContainer';
-import checkAuth from '../components/HomepageRedirectContainer';
+import EnsureUserLoggedIn from '../components/EnsureLoggedInContainer';
+import HomePageRedirect from '../components/HomepageRedirectContainer';
+import PageNotFound from '../components/PageNotFound';
 import ResetPassword from '../components/reset-password/EnterEmailForm';
 import NewPassword from '../components/reset-password/NewPasswordForm';
 
@@ -21,18 +20,16 @@ function Client() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/" component={checkAuth(HomePage)}/>
+        <Route exact path="/" component={HomePageRedirect}/>
         <Route exact path="/signup" component={SignUp}/>
         <Route exact path="/signin" component={SignIn}/>
+        <Route exact path="/message_board" component={EnsureUserLoggedIn}/>
         <Route path="/reset_password" component={ResetPassword}/>
         <Route path="/newpassword/:token" component={NewPassword}/>
-        <EnsureLoggedInContainer>
-          <Route exact path="/message_board" component={MessageBoard}/>
-        </EnsureLoggedInContainer>
-        <Route render={() => { return <p>Not Found</p>; }} />
+        <Route component={PageNotFound} />
       </Switch>
     </BrowserRouter>
   );
 }
 
-module.exports = Client;
+export default Client;

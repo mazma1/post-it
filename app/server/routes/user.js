@@ -1,16 +1,14 @@
-const express = require('express');
-const userController = require('../controllers/userController');
-const tokenAuth = require('../middlewares/tokenAuth.js');
+import express from 'express';
+import userController from '../controllers/userController';
+import tokenAuth from '../middlewares/tokenAuth';
 
 const router = express.Router();
 
-/* Sign up router - create new user. */
-// router.post('/api/user/signup', userController.signup);
-router.route('/api/user/signup').post(userController.signup);
-router.route('/api/user/signin').post(userController.signin);
-router.route('/api/user/:user_id/groups').get(tokenAuth, userController.getUserGroups);
+router.post('/api/user/signup', userController.signup);
+router.post('/api/user/signin', userController.signin);
+router.get('/api/user/:user_id/groups', tokenAuth, userController.getUserGroups);
 router.route('/api/user/reset_password').post(userController.sendResetPasswordLink);
 router.route('/api/user/newpassword').post(userController.validateResetPasswordToken);
 router.route('/api/user/updatepassword/:token').post(userController.updateUserPassword);
 
-module.exports = router;
+export default router;

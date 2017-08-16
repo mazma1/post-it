@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import validateInput from '../../validations/signupValidation';
 import TextField from '../common/FormTextField';
 
@@ -107,6 +107,7 @@ class SignupForm extends React.Component {
               onChange={this.onChange}
               value={this.state.firstname}
               field='firstname'
+              autocomplete='off'
             />
           </div>
 
@@ -118,6 +119,7 @@ class SignupForm extends React.Component {
               onChange={this.onChange}
               value={this.state.lastname}
               field='lastname'
+              autocomplete='off'
             />
           </div>
         </div>
@@ -131,6 +133,7 @@ class SignupForm extends React.Component {
               onChange={this.onChange}
               value={this.state.username}
               field='username'
+              autocomplete='off'
             />  
           </div>
         </div>
@@ -145,6 +148,7 @@ class SignupForm extends React.Component {
               value={this.state.phone}
               field='phone'
               type='number'
+              autocomplete='off'
             />
           </div>
         </div>
@@ -159,6 +163,7 @@ class SignupForm extends React.Component {
               value={this.state.email}
               field='email'
               type='email'
+              autocomplete='off'
             />
           </div>
         </div>
@@ -173,6 +178,7 @@ class SignupForm extends React.Component {
               value={this.state.password}
               field='password'
               type='password'
+              autocomplete='off'
             />
           </div>
         </div>
@@ -187,10 +193,11 @@ class SignupForm extends React.Component {
               value={this.state.confirm_password}
               field='confirm_password'
               type='password'
+              autocomplete='off'
             />
           </div>
         </div>
-        
+
         <div className="row">
           <div className="input-field col s12">
             <a className="auth-btn btn waves-effect waves-light col s12" onClick={this.onSignupClick}>Sign Up</a>
@@ -198,7 +205,7 @@ class SignupForm extends React.Component {
         </div>
 
         <div className="call-to-sign-in">
-          <p className="center">Already have an account? <a href="/signin">Sign In</a></p>
+          <p className="center">Already have an account? <Link to="/signin">Sign In</Link></p>
         </div>
 
         <div className="form-padding-bottom"></div>

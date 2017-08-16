@@ -7,13 +7,13 @@ import jwt from 'jsonwebtoken';
 import rootReducer from './reducers/rootReducer';
 import setAuthorizationToken from './utils/setAuthorizationToken';
 import { setCurrentUser } from './actions/signinAction';
+import Client from './components/Client';
 
 require('bootstrap-loader');
 require('materialize-loader');
 require('./static/scss/style.scss');
 require('../client/static/img/index-bg.png');
 
-const Client = require('./components/Client');
 
 // Define Redux Store
 const store = createStore(
@@ -28,8 +28,6 @@ if (localStorage.jwtToken) {
   setAuthorizationToken(localStorage.jwtToken);
   store.dispatch(setCurrentUser(jwt.decode(localStorage.jwtToken)));
 }
-
-
 
 // render component to DOM
 ReactDOM.render(

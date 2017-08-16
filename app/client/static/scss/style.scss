@@ -755,6 +755,11 @@ input[type=password]:not(.browser-default):focus:not([readonly]) {
     box-shadow: 0 1px 0 0 #2196f3; 
 }
 
+input[type=number]:not(.browser-default):focus:not([readonly]) {
+    border-bottom: 1px solid #2196f3; 
+    box-shadow: 0 1px 0 0 #2196f3; 
+}
+
 .input-field .prefix.active {
   color: #2196f3; 
 }
@@ -768,6 +773,10 @@ input[type=email]:not(.browser-default):focus:not([readonly]) + label {
 }
 
 input[type=password]:not(.browser-default):focus:not([readonly]) + label {
+  color: #2196f3; 
+}
+
+input[type=number]:not(.browser-default):focus:not([readonly]) + label {
   color: #2196f3; 
 }
 
@@ -880,6 +889,11 @@ select.browser-default {
 
 .msg-read-by {
   margin-left: -100px;
+}
+
+.not-found {
+  margin-top: 30px;
+  margin-left: 30px;
 }
 
 .pwd-reset-form-padding-bottom {

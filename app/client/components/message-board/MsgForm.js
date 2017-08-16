@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { postNewMessage } from '../../actions/groupMessagesAction';
@@ -99,6 +100,9 @@ class MsgForm extends React.Component {
    * @returns {ReactElement} Message Input Form markup
    */
   render() {
+    if (isEmpty(this.props.selectedGroup)) {
+      return null;
+    }
     return (
       <footer className="footer">
         <div className="footer-container">
@@ -112,6 +116,7 @@ class MsgForm extends React.Component {
                   value={this.state.messageInput}
                   onChange={this.onChange}
                   placeholder="Enter your message..."
+                  autoComplete="off"
                 />
               </div>
 
@@ -150,7 +155,8 @@ class MsgForm extends React.Component {
 function mapStateToProps(state) {
   return {
     groupId: state.selectedGroup.id,
-    username: state.signedInUser.user.username
+    username: state.signedInUser.user.username,
+    selectedGroup: state.selectedGroup
   };
 }
 
