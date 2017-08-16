@@ -136,7 +136,7 @@ export default {
       error = 'Invalid email address';
       res.status(401).send(error);
     } else {
-      User.findOne({
+      models.User.findOne({
         where: { email: req.body.email }
       }).then(user => {
         if (user) {
@@ -161,11 +161,11 @@ export default {
             <br><br>----------------------<br>
             The Post It Team`
           };
-          ForgotPassword.findOne({
+          models.ForgotPassword.findOne({
             where: { user_id: user.id }
           }).then((userAlreadyRequested) => {
             if (userAlreadyRequested) {
-              ForgotPassword.update({
+              models.ForgotPassword.update({
                 hash: resetPasswordHash,
                 expiry_time: Date.now() + 3600000
               }, {
@@ -182,7 +182,7 @@ export default {
                 res.status(200).send('Email sent');
               }).catch(err => res.status(400).send(err.message));
             } else {
-              ForgotPassword.create({
+              models.ForgotPassword.create({
                 user_id: user.id,
                 hash: resetPasswordHash,
                 expiry_time: resetPasswordExpires
