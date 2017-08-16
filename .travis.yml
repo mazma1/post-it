@@ -1,4 +1,7 @@
 language: node_js
+branches:
+  only:
+    - development
 node_js:
   - "6.11.0"
 # Disable email notifications
@@ -6,6 +9,8 @@ notifications:
   email: false 
 services:
   - postgresql
+cache:
+  - npm install
 before_script:
   - npm install -g sequelize-cli
   - psql -c 'create database postit_test;' -U postgres
@@ -13,11 +18,11 @@ before_script:
 script:
   - npm install
   - npm run migrations
-  # - npm test
-  - npm run-script test-on-travis
+  - npm test
+  # - npm run-script test-on-travis
+after_script:
+  - npm run coveralls
 after_success: 
   - npm run coverage
-  - npm run coveralls
-  - process.exit(0)
-after_failure:
-  - process.exit(1)
+  
+
