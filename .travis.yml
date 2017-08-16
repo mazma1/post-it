@@ -1,23 +1,14 @@
 language: node_js
 node_js:
-  - "6.11.0"
-# Disable email notifications
-notifications:  
-  email: false 
+  - 6
+after_success: npm run coveralls
 services:
   - postgresql
 before_script:
-  - npm install -g sequelize-cli
   - psql -c 'create database postit_test;' -U postgres
-  - psql -c "create user joe1 with password '1234';" -U postgres 
+  - npm install -g mocha
+  - npm install -g sequelize-cli
 script:
-  - npm install
-  - npm run migrations
-  # - npm test
-  - npm run-script test-on-travis
-after_success: 
+  - npm test
+after_script:
   - npm run coverage
-  - npm run coveralls
-  - process.exit(0)
-after_failure:
-  - process.exit(1)
