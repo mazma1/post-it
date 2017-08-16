@@ -20,6 +20,7 @@ class SignupForm extends React.Component {
       firstname: '',
       lastname: '',
       username: '',
+      phone: '',
       email: '',
       password: '',
       confirm_password: '',

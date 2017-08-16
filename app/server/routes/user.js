@@ -9,5 +9,8 @@ const router = express.Router();
 router.route('/api/user/signup').post(userController.signup);
 router.route('/api/user/signin').post(userController.signin);
 router.route('/api/user/:user_id/groups').get(tokenAuth, userController.getUserGroups);
+router.route('/api/user/reset_password').post(userController.sendResetPasswordLink);
+router.route('/api/user/newpassword').post(userController.validateResetPasswordToken);
+router.route('/api/user/updatepassword/:token').post(userController.updateUserPassword);
 
 module.exports = router;

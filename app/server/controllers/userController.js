@@ -1,6 +1,10 @@
+const nodemailer = require('nodemailer');
+const smtpTransport = require('nodemailer-smtp-transport');
+const crypto = require('crypto');
 const User = require('../models').User;
 const Group = require('../models').Group;
 const Group_member = require('../models').Group_member;
+const ForgotPassword = require('../models').ForgotPassword;
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -167,6 +171,139 @@ module.exports = {
       .then((user) => {
         res.status(201).send(user);
       });
+    }
+  },
+
+   // Method to send password reset link
+  sendResetPasswordLink: (req, res) => {
+    let error = '';
+    if (!req.body.email) {
+      error = 'Email field is required';
+      res.status(401).send(error);
+    } else if (!validator.isEmail(req.body.email)) {
+      error = 'Invalid email address';
+      res.status(401).send(error);
+    } else {
+      User.findOne({
+        where: { email: req.body.email }
+      }).then(user => {
+        if (user) {
+          const resetPasswordHash = crypto.randomBytes(20).toString('hex');
+          const resetPasswordExpires = Date.now() + 3600000;
+          const transporter = nodemailer.createTransport(smtpTransport({
+            service: 'gmail',
+            port: 465,
+            auth: {
+              user: 'mazi.mary.o@gmail.com',
+              pass: process.env.EMAIL_PASSWORD
+            }
+          }));
+          const mailOptions = {
+            from: 'mazi.mary.o@gmail.com',
+            to: user.email,
+            subject: 'Reset your Post It Password',
+            html: `Hello ${user.firstname} ${user.lastname}, 
+            <br><br>You recently made a request to reset your Post It password. 
+            Please click the link below to complete the process. 
+            <br><br><a href='http://${req.headers.host}/newpassword/${resetPasswordHash}'>Reset now ></a>
+            <br><br>----------------------<br>
+            The Post It Team`
+          };
+          ForgotPassword.findOne({
+            where: { user_id: user.id }
+          }).then((userAlreadyRequested) => {
+            if (userAlreadyRequested) {
+              ForgotPassword.update({
+                hash: resetPasswordHash,
+                expiry_time: Date.now() + 3600000
+              }, {
+                where: { user_id: user.id }
+              }).then(() => {
+                // send email
+                transporter.sendMail(mailOptions, (err, info) => {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    console.log(`Email sent:${info.response}`);
+                  }
+                });
+                res.status(200).send('Email sent');
+              }).catch(err => res.status(400).send(err.message));
+            } else {
+              ForgotPassword.create({
+                user_id: user.id,
+                hash: resetPasswordHash,
+                expiry_time: resetPasswordExpires
+              })
+              .then(() => {
+                // send email
+                transporter.sendMail(mailOptions, (err, info) => {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    console.log(`Email sent:${info.response}`);
+                  }
+                });
+                res.status(200).send('Email sent');
+              });
+            }
+          })
+          .catch(err => res.status(400).send(err.message));
+        } else {
+          res.status(404).send('User does not exist');
+        }
+      })
+      .catch(err => res.status(400).send(err.message));
+    }
+  },
+
+  // Method to check validity of reset password token
+  validateResetPasswordToken: (req, res) => {
+    const token = req.body.token;
+    ForgotPassword.findOne({
+      where: {
+        hash: token
+      },
+    }).then((user) => {
+      if (user) {
+        if (Date.now() > user.expiry_time) {
+          res.status(400).send('Token has expired');
+        } else {
+          res.status(200).send('Token is valid');
+        }
+      } else {
+        res.status(404).send('Token does not exist');
+      }
+    }).catch(err => res.status(400).send(err.message));
+  },
+
+  updateUserPassword: (req, res) => {
+    const errors = {};
+    if (!req.body.password && !req.body.confirm_password) {
+      errors.password = 'New password is required';
+      errors.confirm_password = 'Confirm new password is required';
+      res.status(401).send(errors);
+    } else if (!req.body.password) {
+      errors.password = 'New password is required';
+      res.status(401).send(errors);
+    } else if (!req.body.confirm_password) {
+      errors.confirm_password = 'Confirm new password is required';
+      res.status(401).send(errors);
+    } else if (!validator.equals(req.body.password, req.body.confirm_password)) {
+      errors.confirm_password = 'Passwords must match';
+      res.status(401).send(errors);
+    } else {
+      const hashedNewPassword = bcrypt.hashSync(req.body.password, salt);
+      const token = req.params.token;
+
+      ForgotPassword.findOne({
+        where: { hash: token }
+      }).then((result) => {
+        User.update(
+          { password: hashedNewPassword }, { where: { id: result.user_id } }
+        );
+        res.status(200).send('Password successfully updated');
+      }).catch(err => res.status(400).send(err.message));
     }
   }
 };
