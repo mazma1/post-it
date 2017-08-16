@@ -1,17 +1,12 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import validator from 'validator';
 import isEmpty from 'lodash/isEmpty';
+import nodemailer from 'nodemailer';
+import smtpTransport from 'nodemailer-smtp-transport';
+import crypto from 'crypto';
 import models from '../models';
 import validateInput from '../../client/validations/signupValidation';
-
-const nodemailer = require('nodemailer');
-const smtpTransport = require('nodemailer-smtp-transport');
-const crypto = require('crypto');
-const User = require('../models').User;
-const Group = require('../models').Group;
-const Group_member = require('../models').Group_member;
-const ForgotPassword = require('../models').ForgotPassword;
-const validator = require('validator');
 
 const saltRounds = 7;
 const salt = bcrypt.genSaltSync(saltRounds);
@@ -132,7 +127,7 @@ export default {
   },
 
    // Method to send password reset link
-  sendResetPasswordLink: (req, res) => {
+  sendResetPasswordLink(req, res) {
     let error = '';
     if (!req.body.email) {
       error = 'Email field is required';
@@ -215,9 +210,9 @@ export default {
   },
 
   // Method to check validity of reset password token
-  validateResetPasswordToken: (req, res) => {
+  validateResetPasswordToken(req, res) {
     const token = req.body.token;
-    ForgotPassword.findOne({
+    models.ForgotPassword.findOne({
       where: {
         hash: token
       },
@@ -234,7 +229,7 @@ export default {
     }).catch(err => res.status(400).send(err.message));
   },
 
-  updateUserPassword: (req, res) => {
+  updateUserPassword(req, res) {
     const errors = {};
     if (!req.body.password && !req.body.confirm_password) {
       errors.password = 'New password is required';
@@ -253,10 +248,10 @@ export default {
       const hashedNewPassword = bcrypt.hashSync(req.body.password, salt);
       const token = req.params.token;
 
-      ForgotPassword.findOne({
+      models.ForgotPassword.findOne({
         where: { hash: token }
       }).then((result) => {
-        User.update(
+        models.User.update(
           { password: hashedNewPassword }, { where: { id: result.user_id } }
         );
         res.status(200).send('Password successfully updated');
