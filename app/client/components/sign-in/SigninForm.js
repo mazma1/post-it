@@ -123,7 +123,7 @@ class SigninForm extends React.Component {
 
         <div className="center call-to-sign-in">
           <p className="center">Don't have an account? <Link to="/signup">Sign Up</Link></p>
-          <p className="center"><Link to="/signup">Forgot your password?</Link></p>
+          <p className="center"><Link to="/reset_password">Forgot Password?</Link></p>
         </div>
 
         <div className="form-padding-bottom"></div>
