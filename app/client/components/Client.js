@@ -7,6 +7,7 @@ import MessageBoard from './message-board/MessageBoard';
 import EnsureLoggedInContainer from '../components/EnsureLoggedInContainer';
 import checkAuth from '../components/HomepageRedirectContainer';
 import ResetPassword from '../components/reset-password/EnterEmailForm';
+import NewPassword from '../components/reset-password/NewPasswordForm';
 
 if (module.hot) {
   module.hot.accept();
@@ -24,6 +25,7 @@ function Client() {
         <Route exact path="/signup" component={SignUp}/>
         <Route exact path="/signin" component={SignIn}/>
         <Route path="/reset_password" component={ResetPassword}/>
+        <Route path="/newpassword/:token" component={NewPassword}/>
         <EnsureLoggedInContainer>
           <Route exact path="/message_board" component={MessageBoard}/>
         </EnsureLoggedInContainer>
