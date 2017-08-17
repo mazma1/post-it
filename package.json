@@ -8,7 +8,7 @@
   },
   "scripts": {
     "postinstall": "webpack -p --config ./webpack.prod.config.js",
-    "start": "npm run postinstall & babel-node -- app/server/bin/www",
+    "start": "npm run reset_db & npm run postinstall & babel-node -- app/server/bin/www",
     "build": "webpack --config webpack.prod.config.js -p --progress --colors",
     "start:dev": "nodemon --exec babel-node ./app/server/bin/www --ignore ./app/client",
     "create": "webpack",
