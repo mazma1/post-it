@@ -15,6 +15,7 @@
     "rebuild:testdb": "NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate",
     "run:test": "./node_modules/.bin/mocha --compilers js:babel-register --require babel-polyfill --timeout 10000 test/*.test.js",
     "test:server": "npm run rebuild:testdb && NODE_ENV=test PORT=4000 npm run run:test",
+    "test:client": "jest __test__/  --verbose",
     "test": "NODE_ENV=test npm run test:server",
     "test-on-travis": "NODE_ENV=test npm run test && npm run coverage && npm run coveralls",
     "coverage": "NODE_ENV=test node node_modules/.bin/istanbul cover _mocha --compilers js:babel-register --require babel-polyfill test/*.test.js",

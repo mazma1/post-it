@@ -10,12 +10,11 @@ export function getUserGroups(userId) {
 
   return (dispatch) => {
     dispatch(fetchingUserGroups({}));
-
     return request.then((res) => {
       const group = res.data.group;
       dispatch(setUserGroups(group));
-    }).catch((ex) => {
-      dispatch(fetchUserGroupsFailure(ex));
+    }).catch((error) => {
+      dispatch(fetchUserGroupsFailure(error));
     });
   };
 }
@@ -34,10 +33,10 @@ export function setUserGroups(group) {
   };
 }
 
-export function fetchUserGroupsFailure(ex) {
+export function fetchUserGroupsFailure(error) {
   return {
     type: FETCH_USER_GROUPS_FAILURE,
-    ex
+    error
   };
 }
 
@@ -66,5 +65,3 @@ export function setNewGroupActive(userId) {
     });
   };
 }
-
-

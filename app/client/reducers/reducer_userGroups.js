@@ -11,7 +11,7 @@ export default (state = initialState, action = {}) => {
     case FETCHING_USER_GROUPS:
       return {
         isLoading: true,
-        messages: action.messages
+        groups: action.group
       };
 
     case SET_USER_GROUPS:
@@ -23,7 +23,7 @@ export default (state = initialState, action = {}) => {
     case FETCH_USER_GROUPS_FAILURE:
       return {
         isLoading: false,
-        error: action.ex
+        error: action.error
       };
 
     default:
