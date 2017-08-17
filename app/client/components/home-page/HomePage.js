@@ -16,10 +16,11 @@ function HomePage() {
             </header>
             <div className="auth">
               <h4 className="index-line-height">
-                Post It is a simple application that allows you keep in touch with people that matter.
+                Post It is a simple application that allows you keep in
+                touch with people that matter.
               </h4>
               <h5 className="index-desc">
-                <a href="/signup">Sign Up</a> to get started!
+                <Link to="/signup">Sign Up</Link> to get started!
               </h5>
               <h5 className="index-desc index-line-height">
                 Already have an account? <br/><Link to="/signin">Sign In</Link> to continue enjoying Post It.
@@ -33,4 +34,4 @@ function HomePage() {
   );
 }
 
-module.exports = HomePage;
+export default HomePage;

@@ -11,8 +11,14 @@ import { setGroupMessages } from '../../actions/groupMessagesAction';
 import { addFlashMessage } from '../../actions/flashMessageAction';
 import { submitNewUser } from '../../actions/groupMembersAction';
 import ModalFrame from '../modal/ModalFrame';
-import { ModalHeader, ModalBody, ModalFooter, CloseButton, CancelButton, SubmitButton } from '../modal/SubModals';
-import Table from '../table/Table';
+import {
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  CloseButton,
+  CancelButton,
+  SubmitButton } from '../modal/SubModals';
+import GroupMembersTable from '../tables/GroupMembersTable';
 
 const noMarginBottom = {
   marginBottom: 0
@@ -37,10 +43,17 @@ const GroupName = (props) => {
     return <div className="col-md-4 col-sm-5 col-xs-3"></div>;
   }
 
+  function checkGroupnameLength(groupName) {
+    if (groupName.length > 13) {
+      return `${groupName.substring(0, 13)}...`;
+    }
+    return groupName;
+  }
+
   return (
     <div className="col-md-4 col-sm-5 col-xs-3 brand">
       <ul style={noMarginBottom}>
-        <h4 className="group-name">{props.selectedGroup.name}</h4>
+        <h4 className="group-name">{checkGroupnameLength(props.selectedGroup.name)}</h4>
         <li role="presentation" className="dropdown">
           <a className="dropdown-toggle options" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
             <span className="caret"></span>
@@ -235,6 +248,7 @@ class Header extends React.Component {
             onChange={this.onChange}
             value={this.state.newUser}
             errors={this.state.error}
+            onSubmit={this.newUserSubmit}
           />
 
           <ModalFooter>
@@ -248,7 +262,7 @@ class Header extends React.Component {
           <ModalHeader header='Group Members' onClose={this.closeModal}/>
 
           <div className="modal-body">
-            <Table />
+            <GroupMembersTable />
           </div>
 
           <ModalFooter>

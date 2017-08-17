@@ -3,16 +3,26 @@ import last from 'lodash/last';
 import { setSelectedGroup } from '../actions/setSelectedGroupAction';
 import { getGroupMessages } from '../actions/groupMessagesAction';
 import { getGroupMembers } from '../actions/groupMembersAction';
-import { SET_USER_GROUPS } from '../actions/types';
+import { SET_USER_GROUPS, FETCHING_USER_GROUPS, FETCH_USER_GROUPS_FAILURE } from '../actions/types';
 
 export function getUserGroups(userId) {
   const request = axios.get(`/api/user/${userId}/groups`); // Returns a response
 
   return (dispatch) => {
+    dispatch(fetchingUserGroups({}));
     return request.then((res) => {
       const group = res.data.group;
       dispatch(setUserGroups(group));
+    }).catch((error) => {
+      dispatch(fetchUserGroupsFailure(error));
     });
+  };
+}
+
+export function fetchingUserGroups() {
+  return {
+    type: FETCHING_USER_GROUPS,
+    group: []
   };
 }
 
@@ -20,6 +30,13 @@ export function setUserGroups(group) {
   return {
     type: SET_USER_GROUPS,
     group
+  };
+}
+
+export function fetchUserGroupsFailure(error) {
+  return {
+    type: FETCH_USER_GROUPS_FAILURE,
+    error
   };
 }
 
@@ -48,5 +65,3 @@ export function setNewGroupActive(userId) {
     });
   };
 }
-
-

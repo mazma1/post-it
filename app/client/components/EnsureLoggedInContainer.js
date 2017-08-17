@@ -1,13 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Route } from 'react-router-dom';
+import MessageBoard from './message-board/MessageBoard';
 import { addFlashMessage } from '../actions/flashMessageAction';
 
 /**
  * Component that checks if a user is logged in
  * before rendering child component
- **/
+ */
 class EnsureLoggedIn extends React.Component {
 
   /**
@@ -36,7 +37,7 @@ class EnsureLoggedIn extends React.Component {
   render() {
     const { isLoggedIn } = this.props;
     if (isLoggedIn) {
-      return this.props.children;
+      return <Route path='/message_board' component={MessageBoard}/>;
     }
     return null;
   }

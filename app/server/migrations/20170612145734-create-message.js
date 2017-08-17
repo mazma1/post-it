@@ -25,6 +25,12 @@ module.exports = {
           key: 'id'
         }
       },
+      priority: {
+        type: Sequelize.TEXT
+      },
+      read_by: {
+        type: Sequelize.TEXT
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

@@ -1,13 +1,14 @@
-const express = require('express');
-const groupController = require('../controllers/groupController');
-const tokenAuth = require('../middlewares/tokenAuth.js');
+import express from 'express';
+import groupController from '../controllers/groupController';
+import tokenAuth from '../middlewares/tokenAuth';
 
 const router = express.Router();
 
-router.route('/api/group').post(tokenAuth, groupController.createGroup);
-router.route('/api/group/:group_id/user').post(tokenAuth, groupController.addUserToGroup);
-router.route('/api/group/:group_id/message').post(tokenAuth, groupController.postMessageToGroup);
-router.route('/api/group/:group_id/messages').get(tokenAuth, groupController.getGroupMessages);
-router.route('/api/group/:group_id/members').get(tokenAuth, groupController.getGroupMembers);
+router.post('/api/group', tokenAuth, groupController.createGroup);
+router.post('/api/group/:group_id/user', tokenAuth, groupController.addUserToGroup);
+router.post('/api/group/:group_id/message', tokenAuth, groupController.postMessageToGroup);
+router.get('/api/group/:group_id/messages', tokenAuth, groupController.getGroupMessages);
+router.get('/api/group/:group_id/members', tokenAuth, groupController.getGroupMembers);
+router.patch('/api/group/message/read', groupController.updateMessageReadStatus);
 
-module.exports = router;
+export default router;

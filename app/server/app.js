@@ -1,17 +1,17 @@
-const express = require('express');
-const logger = require('morgan');
-const bodyParser = require('body-parser');
-const userRoute = require('./routes/user');
-const groupRoute = require('./routes/group');
+import express from 'express';
+import bodyParser from 'body-parser';
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
+import config from '../../webpack.config';
+import userRoute from './routes/user';
+import groupRoute from './routes/group';
+
 require('dotenv').config();
 const path = require('path');
 
 // Set up the express app
 const app = express();
-
-if (process.env.NODE_ENV !== 'test') {
-  app.use(logger('dev'));  // Log requests to the console.
-}
 
 // Parse incoming requests data
 app.use(bodyParser.json());
@@ -22,19 +22,13 @@ app.use('/', userRoute);
 app.use('/', groupRoute);
 
 if (process.env.NODE_ENV !== 'production') {
-  const webpack = require('webpack');
-  const webpackDevMiddleware = require('webpack-dev-middleware');
-  const webpackHotMiddleware = require('webpack-hot-middleware');
-  const config = require('../../webpack.config.js');
   const compiler = webpack(config);
 
   app.use(webpackDevMiddleware(compiler, {
     noInfo: true,
     publicPath: '/dist/'
   }));
-  app.use(webpackHotMiddleware(compiler, {
-    // log: false
-  }));
+  app.use(webpackHotMiddleware(compiler));
 }
 
 app.use('/dist', express.static(path.join(__dirname, '../client/dist/')));
@@ -43,5 +37,4 @@ app.get('*', (req, res) => res.status(200).sendFile(
   path.resolve(__dirname, '../client/dist/index.html')
 ));
 
-
-module.exports = app;
+export default app;

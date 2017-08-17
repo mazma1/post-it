@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { postNewMessage } from '../../actions/groupMessagesAction';
@@ -18,10 +19,12 @@ class MsgForm extends React.Component {
 
     this.state = {
       messageInput: '',
+      priority: 'normal',
       errors: {}
     };
 
     this.onChange = this.onChange.bind(this);
+    this.onSelect = this.onSelect.bind(this);
     this.onMessageSend = this.onMessageSend.bind(this);
   }
 
@@ -35,6 +38,15 @@ class MsgForm extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+   /**
+   * Handles change event of Priority Select input
+   * Updates messageInput state
+   * @param {SyntheticEvent} e
+   * @returns {void}
+   */
+  onSelect(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
 
   /**
    * Handles Message Send event
@@ -44,19 +56,42 @@ class MsgForm extends React.Component {
    */
   onMessageSend(e) {
     e.preventDefault();
-    const { groupId, userId } = this.props;
+    const { groupId, username } = this.props;
     if (groupId && this.state.messageInput !== '') {
-      this.props.postNewMessage({
-        message: this.state.messageInput,
-        group_id: groupId
-      }).then(() => {
-        this.setState({ messageInput: '' });
-      }).catch(() => {
-        this.props.addFlashMessage({
-          type: 'error',
-          text: 'Unable to send message, please try again'
+      const userMessage = this.state.messageInput;
+      const validFlag = ['urgent', 'normal', 'critical'];
+      const priority = userMessage.split(' ').shift().slice(1);
+
+      if (validFlag.includes(priority)) {
+        const messageBody = userMessage.slice(priority.length + 1);
+        this.props.postNewMessage({
+          message: messageBody,
+          priority,
+          group_id: groupId,
+          read_by: username
+        }).then(() => {
+          this.setState({ messageInput: '' });
+        }).catch(() => {
+          this.props.addFlashMessage({
+            type: 'error',
+            text: 'Unable to send message, please try again'
+          });
         });
-      });
+      } else {
+        this.props.postNewMessage({
+          message: this.state.messageInput,
+          priority: this.state.priority,
+          group_id: groupId,
+          read_by: username
+        }).then(() => {
+          this.setState({ messageInput: '' });
+        }).catch(() => {
+          this.props.addFlashMessage({
+            type: 'error',
+            text: 'Unable to send message, please try again'
+          });
+        });
+      }
     }
   }
 
@@ -65,12 +100,15 @@ class MsgForm extends React.Component {
    * @returns {ReactElement} Message Input Form markup
    */
   render() {
+    if (isEmpty(this.props.selectedGroup)) {
+      return null;
+    }
     return (
       <footer className="footer">
         <div className="footer-container">
-          <form className="form-horizontal">
+          <form className="form-horizontal" onSubmit={this.onMessageSend}>
             <div className="form-group">
-              <div className="col-lg-11 col-md-10 col-sm-11 col-xs-11">
+              <div className="col-lg-8 col-md-10 col-sm-11 col-xs-11 msg-form-container">
                 <input
                   className="form-control"
                   type="text"
@@ -78,7 +116,17 @@ class MsgForm extends React.Component {
                   value={this.state.messageInput}
                   onChange={this.onChange}
                   placeholder="Enter your message..."
+                  autoComplete="off"
                 />
+              </div>
+
+              <div className="col-lg-3 col-md-10 col-sm-11 col-xs-11 priority-container">
+                <label>Priority</label>
+                <select className="browser-default" name="priority" onChange={this.onSelect} value={this.state.priority}>
+                  <option value="normal">Normal</option>
+                  <option value="urgent">Urgent</option>
+                  <option value="critical">Critical</option>
+                </select>
               </div>
 
               <div className="col-lg-1 col-md-2 col-sm-1 col-xs-1 msg-send-btn">
@@ -107,7 +155,8 @@ class MsgForm extends React.Component {
 function mapStateToProps(state) {
   return {
     groupId: state.selectedGroup.id,
-    userId: state.signedInUser.id
+    username: state.signedInUser.user.username,
+    selectedGroup: state.selectedGroup
   };
 }
 

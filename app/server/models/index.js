@@ -5,11 +5,14 @@ const Sequelize = require('sequelize');
 
 const basename = path.basename(module.filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(`${__dirname}/../config/config.json`)[env];
+const config = require(`${__dirname}/../config/config.js`)[env];
 const db = {};
 
 let sequelize;
 if (config.use_env_variable) {
+  if (process.env.NODE_ENV === 'test') {
+    sequelize = new Sequelize(process.env[config.use_env_variable], { dialect: 'postgres', logging: false });
+  }
   sequelize = new Sequelize(process.env[config.use_env_variable]);
 } else if (process.env.NODE_ENV === 'test') {
   sequelize = new Sequelize(

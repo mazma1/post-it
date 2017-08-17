@@ -1,17 +1,17 @@
-const Group = require('../models').Group;
-const Group_member = require('../models').Group_member;
-const Message= require('../models').Message;
-const User = require('../models').User;
-
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import nodemailer from 'nodemailer';
+import smtpTransport from 'nodemailer-smtp-transport';
+import includes from 'lodash/includes';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import models from '../models';
 
 const saltRounds = 7;
 const salt = bcrypt.genSaltSync(saltRounds);
+const Nexmo = require('nexmo');
 
-module.exports = {
+export default {
   // Method to create a new group
-  createGroup: (req, res) => {
+  createGroup(req, res) {
     let error = '';
     // res.send(req.decoded); --JSON that contains details of the token owner.
     const userId = req.decoded.data.id;
@@ -23,7 +23,7 @@ module.exports = {
       error = 'Group name is required';
       res.status(400).send({ error });
     } else {
-      Group.findOne({
+      models.Group.findOne({
         where: {
           group_name: req.body.group_name
         },
@@ -33,9 +33,9 @@ module.exports = {
           error = 'Group already exists';
           res.status(400).send({ error });
         } else {
-          Group.create(groupData)
-          .then(group => {
-            Group_member.create({
+          models.Group.create(groupData)
+          .then((group) => {
+            models.Group_member.create({
               group_id: group.id,
               user_id: userId
             })
@@ -55,21 +55,21 @@ module.exports = {
   },
 
   // Method to add user to a group
-  addUserToGroup: (req, res) => {
+  addUserToGroup(req, res) {
     let error = '';
 
     if (!req.body.identifier) {
       error = 'Username or email is required';
       res.status(400).send({ error });
     } else {
-      User.findOne({
+      models.User.findOne({
         where: {
           $or: [{ username: req.body.identifier }, { email: req.body.identifier }]
         },
       })
       .then((user) => {
         if (user) {
-          Group_member.findOne({
+          models.Group_member.findOne({
             where: {
               $and: [{ user_id: user.id }, { group_id: req.params.group_id }]
             },
@@ -83,7 +83,7 @@ module.exports = {
                 group_id: req.params.group_id,
                 user_id: user.id
               };
-              Group_member.create(details)
+              models.Group_member.create(details)
               .then(groupMember => res.status(201).send({
                 success: true,
                 message: 'User successfully added to group',
@@ -100,7 +100,7 @@ module.exports = {
   },
 
   // Method to post message to a group
-  postMessageToGroup: (req, res) => {
+  postMessageToGroup(req, res) {
     if (!req.body.message) {
       res.send({ status: false, message: 'Message is required.' });
     } else {
@@ -108,37 +108,89 @@ module.exports = {
       const messageDetail = {
         body: req.body.message,
         group_id: req.params.group_id,
-        user_id: userId
+        user_id: userId,
+        priority: req.body.priority,
+        read_by: req.body.read_by
       };
-      Message.create(messageDetail)
-      .then(message => res.status(201).send({
-        success: true,
-        message: 'Message was successfully sent',
-        timeSent: message.createdAt,
-        messageBody: message.body
-      }))
-      .catch(error => res.status(400).send(error));
+      models.Message.create(messageDetail)
+      .then((message) => {
+        res.status(201).send({
+          success: true,
+          message: 'Message was successfully sent',
+          timeSent: message.createdAt,
+          messageBody: message.body
+        });
+        if (req.body.priority === 'urgent' || req.body.priority === 'critical') {
+          const transporter = nodemailer.createTransport(smtpTransport({
+            service: 'gmail',
+            port: 465,
+            auth: {
+              user: 'mazi.mary.o@gmail.com',
+              pass: process.env.EMAIL_PASSWORD
+            }
+          }));
+          // get users email and send email
+          models.Group.findOne({
+            where: { id: messageDetail.group_id },
+            attributes: ['group_name'],
+            include: [{
+              model: models.User,
+              as: 'members',
+              attributes: ['email', 'mobile'],
+              through: { attributes: [] }
+            }]
+          }).then((members) => {
+            const priority = messageDetail.priority;
+            const uppercasePriority = priority.toUpperCase();
+            members.members.map((member) => {
+              const mailOptions = {
+                from: 'mazi.mary.o@gmail.com',
+                to: member.email,
+                subject: `${uppercasePriority} message in ${members.group_name}`,
+                text: `${messageDetail.body}`
+              };
+
+              transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                  console.log(error);
+                } else {
+                  console.log(`Email sent:${info.response}`);
+                }
+              });
+
+              // get users number and send sms
+              if (req.body.priority === 'critical') {
+                const nexmo = new Nexmo({
+                  apiKey: process.env.NEXMO_KEY,
+                  apiSecret: process.env.NEXMO_SECRET
+                });
+
+                const from = 'Post It';
+                const to = member.mobile;
+                const text = `${uppercasePriority} message in ${members.group_name}\n\n${messageDetail.body}`;
+
+                nexmo.message.sendSms(from, to, text);
+              }
+            });
+          });
+        }
+      })
+      .catch(error => res.status(400).send(error.message));
     }
   },
 
   // Method to get messages posted to a group
-  getGroupMessages: (req, res) => {
+  getGroupMessages(req, res) {
     if (req.params.group_id) {
-      Message.findAll({ // User is associated to message
+      models.Message.findAll({ // User is associated to message
         where: { group_id: req.params.group_id },
-        attributes: ['group_id', ['id', 'message_id'], ['body', 'message'], ['created_at', 'sent_at']],
+        attributes: ['group_id', ['id', 'message_id'], ['body', 'message'], 'priority', 'read_by', ['created_at', 'sent_at']],
         include: [{
-          model: User,
+          model: models.User,
           as: 'sent_by',
           attributes: ['username'],
         }]
       })
-      // User.findAll({
-      //   include: [{
-      //     model: Message,
-      //     where: { '$group.id$': req.params.group_id }
-      //   }]
-      // })
       .then((message) => {
         if (message) {
           res.status(200).send(message);
@@ -150,14 +202,36 @@ module.exports = {
     }
   },
 
+  // Method that updates users that have read a message
+  updateMessageReadStatus(req, res) {
+    const username = req.body.username,
+      readBy = req.body.read_by,
+      messageId = req.body.message_id,
+      updatedReadBy = `${readBy},${username}`;
+
+    if (!includes(readBy, username)) {
+      models.Message.update({
+        read_by: updatedReadBy,
+      }, {
+        where: { id: messageId }
+      })
+      .then((update) => {
+        res.status(201).send('Message read status updated successfully');
+      })
+      .catch(error => res.status(400).send(error.message));
+    } else {
+      res.status(200).send('User has already been recorded to have seen this message');
+    }
+  },
+
   // Method to get the groups a user belongs to
-  getGroupMembers: (req, res) => {
+  getGroupMembers(req, res) {
     if (req.params.group_id) {
-      Group.findOne({
+      models.Group.findOne({
         where: { id: req.params.group_id },
         attributes: ['group_name'],
         include: [{
-          model: User,
+          model: models.User,
           as: 'members',
           attributes: ['id', 'firstname', 'lastname', 'username', 'email'],
           through: { attributes: [] }

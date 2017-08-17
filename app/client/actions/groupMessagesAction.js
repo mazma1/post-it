@@ -5,6 +5,14 @@ import {
   FETCH_GROUP_MESSAGES_FAILURE } from '../actions/types';
 
 
+export function getGroupMessagesForCount(groupId) {
+  const request = axios.get(`/api/group/${groupId}/messages`); // Returns a promise
+
+  return (dispatch) => {
+    return request;
+  };
+}
+
 export function getGroupMessages(groupId) {
   if (!groupId) {
     return (dispatch) => {
@@ -24,6 +32,17 @@ export function getGroupMessages(groupId) {
       dispatch(fetchGroupMessagesFailure(ex));
     });
   };
+}
+
+export function updateReadStatus(messageDetails) {
+  const groupId = messageDetails.group_id;
+  const request = axios.patch('/api/group/message/read', messageDetails);
+
+  return dispatch => request.then((res) => {
+    if (groupId) {
+      dispatch(getGroupMessages(groupId));
+    }
+  });
 }
 
 export function postNewMessage(message) {
@@ -57,7 +76,3 @@ export function fetchGroupMessagesFailure(ex) {
     ex
   };
 }
-
-
-
-

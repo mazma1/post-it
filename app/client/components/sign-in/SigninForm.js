@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import TextField from '../common/FormTextField';
 import validateInput from '../../validations/signinValidation';
@@ -95,6 +95,7 @@ class SigninForm extends React.Component {
               onChange={this.onChange}
               value={this.state.identifier}
               field='identifier'
+              autocomplete='off'
             />
           </div>
         </div>
@@ -109,18 +110,20 @@ class SigninForm extends React.Component {
               value={this.state.password}
               field='password'
               type='password'
+              autocomplete='off'
             />
           </div>
         </div>
 
         <div className="row">
           <div className="input-field col s12">
-            <a href="#" className="btn auth-btn waves-effect waves-light col s12" onClick={this.onSigninClick}>Sign In</a>
+            <a className="btn auth-btn waves-effect waves-light col s12" onClick={this.onSigninClick}>Sign In</a>
           </div>
         </div>
 
         <div className="center call-to-sign-in">
-          <p className="center">Don't have an account? <a href="/signup">Sign Up</a></p>
+          <p className="center">Don't have an account? <Link to="/signup">Sign Up</Link></p>
+          <p className="center"><Link to="/reset_password">Forgot Password?</Link></p>
         </div>
 
         <div className="form-padding-bottom"></div>
