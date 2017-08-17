@@ -33,14 +33,10 @@ The application requires a PostgreSql database to handle it's data. The model, m
 #### To run the seeds:
 The seed files have to be run in the folowing order to avoid running into model dependency errors:
 
-`sequelize db:seed --seed <user-seed>`
+`sequelize db:seed:all`
 
-`sequelize db:seed --seed <group-seed>`
 
-`sequelize db:seed --seed <message-seed>`
-
-`sequelize db:seed --seed <group-member-seed>`
-
+The following login details will be available for testing the application after seeding:
 
 | Username      | Password  |
 | ------------- |:---------:| 
@@ -48,21 +44,6 @@ The seed files have to be run in the folowing order to avoid running into model 
 | clare         | 1234      | 
 | chyke         | 1234      | 
 
-
-### Seed Data Glitch
-The seeds are meant to provide dummy data for faster testing of the application. However, if on successful seeding you are unable to sign in with any of the above dummy username and password (I encountered this problem), you can try this workaround:
-
-> Revert all migrations ran:
-> `sequelize db:migrate:undo:all`
->
-> Run migrations again:
-> `sequelize db:migrate`
->
-> Manually create at least 3 users using the sign up form
->
-> Run the group-seed, message-seed and group-member-seed files in this order using the seed commands specified above.
-
-Otherwise, you can leave out the seeding process entirely. Run just the migrations and enter your test data using the availble forms on the client.
 
 
 ## Available Functionalities on Client
