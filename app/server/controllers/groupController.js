@@ -1,13 +1,8 @@
-import nodemailer from 'nodemailer';
-import smtpTransport from 'nodemailer-smtp-transport';
 import includes from 'lodash/includes';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import Nexmo from 'nexmo';
 import models from '../models';
+import transporter from '../../client/utils/emailTransporter';
 
-const saltRounds = 7;
-const salt = bcrypt.genSaltSync(saltRounds);
-const Nexmo = require('nexmo');
 
 export default {
   // Method to create a new group
@@ -121,14 +116,6 @@ export default {
           messageBody: message.body
         });
         if (req.body.priority === 'urgent' || req.body.priority === 'critical') {
-          const transporter = nodemailer.createTransport(smtpTransport({
-            service: 'gmail',
-            port: 465,
-            auth: {
-              user: 'mazi.mary.o@gmail.com',
-              pass: process.env.EMAIL_PASSWORD
-            }
-          }));
           // get users email and send email
           models.Group.findOne({
             where: { id: messageDetail.group_id },

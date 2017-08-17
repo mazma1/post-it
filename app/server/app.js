@@ -31,7 +31,7 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(webpackHotMiddleware(compiler));
 }
 
-app.use(express.static('../client/dist'));  
+app.use('/dist', express.static(path.join(__dirname, '../client/dist/')));
 
 app.get('*', (req, res) => res.status(200).sendFile(
   path.resolve(__dirname, '../client/dist/index.html')
