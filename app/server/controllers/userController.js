@@ -2,15 +2,13 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import validator from 'validator';
 import isEmpty from 'lodash/isEmpty';
-import nodemailer from 'nodemailer';
-import smtpTransport from 'nodemailer-smtp-transport';
 import crypto from 'crypto';
 import models from '../models';
 import validateInput from '../../client/validations/signupValidation';
+import transporter from '../../client/utils/emailTransporter';
 
 const saltRounds = 7;
 const salt = bcrypt.genSaltSync(saltRounds);
-
 
 export default {
   // Method to signup a user
@@ -142,14 +140,7 @@ export default {
         if (user) {
           const resetPasswordHash = crypto.randomBytes(20).toString('hex');
           const resetPasswordExpires = Date.now() + 3600000;
-          const transporter = nodemailer.createTransport(smtpTransport({
-            service: 'gmail',
-            port: 465,
-            auth: {
-              user: 'mazi.mary.o@gmail.com',
-              pass: process.env.EMAIL_PASSWORD
-            }
-          }));
+        
           const mailOptions = {
             from: 'mazi.mary.o@gmail.com',
             to: user.email,
