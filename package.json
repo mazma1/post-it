@@ -21,7 +21,7 @@
     "test-on-travis": "NODE_ENV=test npm run test && npm run coverage && npm run coveralls",
     "coverage": "NODE_ENV=test node node_modules/.bin/istanbul cover _mocha --compilers js:babel-register --require babel-polyfill test/*.test.js",
     "coveralls": "cat ./coverage/lcov.info | node node_modules/.bin/coveralls",
-    "reset_db": "NODE_ENV=production sequelize db:migrate:undo:all && NODE_ENV=production sequelize db:migrate:all"
+    "reset_db": "NODE_ENV=production sequelize db:migrate:undo:all && NODE_ENV=production sequelize db:migrate"
   },
   "babel": {
     "presets": [
