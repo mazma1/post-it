@@ -7,22 +7,17 @@
     "test": "test"
   },
   "scripts": {
-    "postinstall": "webpack -p --config ./webpack.prod.config.js",
-    "start": "npm run reset_db & npm run postinstall & babel-node -- app/server/bin/www",
-    "build": "webpack --config webpack.prod.config.js -p --progress --colors",
+    "start": "node -- app/server/bin/www",
     "start:dev": "nodemon --exec babel-node ./app/server/bin/www --ignore ./app/client",
-    "create": "webpack",
-    "create:dev": "webpack-dev-server --open",
-    "babel-build": "babel --presets es2015 app/template/js/src -d app/template/js/dist",
     "rebuild:testdb": "NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate",
-    "run:test": "nyc --reporter=html --reporter=text ./node_modules/.bin/mocha --compilers js:babel-register --require babel-polyfill --timeout 10000 test/*.test.js",
-    "test:server": "NODE_ENV=test PORT=4000 npm run run:test",
+    "seed:testdb": "NODE_ENV=test sequelize db:seed:all",
+    "create:testdb": "npm run rebuild:testdb && npm run seed:testdb",
+    "run:test": "NODE_ENV=test nyc --reporter=html --reporter=text ./node_modules/.bin/mocha --compilers js:babel-register --timeout 10000 test/*.test.js",
     "test:client": "jest __test__/  --verbose",
-    "test": "NODE_ENV=test npm run test:server",
+    "test": "npm run create:testdb && npm run run:test",
     "test-on-travis": "NODE_ENV=test npm run test && npm run coverage && npm run coveralls",
-    "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "reset_db": "NODE_ENV=production sequelize db:migrate:undo:all && NODE_ENV=production sequelize db:migrate"
+    "reset_db": "NODE_ENV=production sequelize db:migrate:undo:all && NODE_ENV=production sequelize db:migrate && NODE_ENV=production sequelize db:seed:all"
   },
   "babel": {
     "presets": [
