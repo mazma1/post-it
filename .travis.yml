@@ -1,7 +1,4 @@
 language: node_js
-branches:
-  only:
-    - development
 node_js:
   - 6
 script:
