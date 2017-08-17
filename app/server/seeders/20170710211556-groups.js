@@ -1,8 +1,6 @@
-'use strict';
-
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('Groups', [
+  up: (queryInterface, Sequelize) =>
+    queryInterface.bulkInsert('Groups', [
       {
         group_name: 'Jasmine',
         user_id: 2,
@@ -33,10 +31,8 @@ module.exports = {
         created_at: new Date(),
         updated_at: new Date()
       },
-    ], {});
-  },
+    ], {}),
 
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('Groups', null, {});
-  }
+  down: (queryInterface, Sequelize) =>
+    queryInterface.bulkDelete('Groups', null, {})
 };
