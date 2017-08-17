@@ -1,20 +1,8 @@
+sudo: required
+dist: trusty
 language: node_js
-branches:
-  only:
-    - development
 node_js:
-  - 6
-after_success: npm run coveralls
-services:
-  - postgresql
-cache:
-  - npm install
-before_script:
-  - psql -c 'create database postit_test;' -U postgres
-  - npm install -g mocha
-  - npm install -g sequelize-cli
-script:
-  - npm test
-after_script:
+  - "stable"
+after_success:
   - npm run coverage
 
