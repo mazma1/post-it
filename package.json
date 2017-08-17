@@ -40,7 +40,6 @@
   },
   "homepage": "https://github.com/mazma1/post-it#readme",
   "devDependencies": {
-    "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-preset-react-hmre": "^1.1.1",
     "bootstrap-css": "^4.0.0-alpha.5",
@@ -69,6 +68,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
+    "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.0",
     "babel-preset-env": "^1.5.2",
