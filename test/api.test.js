@@ -5,7 +5,6 @@ import bcrypt from 'bcryptjs';
 import models from '../app/server/models';
 import app from '../app/server/app';
 
-
 const should = chai.should();
 const saltRounds = 7;
 const salt = bcrypt.genSaltSync(saltRounds);

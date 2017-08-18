@@ -19,7 +19,7 @@ describe('User groups action creators tests', () => {
       expect(actions.fetchingUserGroups()).toEqual(expectedAction);
     });
 
-    it('should create an action to set returned user groups', () => {
+    it('should create an action to set returned user\'s groups', () => {
       const group = [
         {
           id: 1,
@@ -59,26 +59,26 @@ describe('User groups action creators tests', () => {
       });
     });
 
-    // it('makes request to submit new group', () => {
-    //   const userId = 1;
-    //   nock('http://localhost')
-    //     .post(`/api/user/${userId}/groups`)
-    //     .reply(201, { data: { group: [{ id: 1, name: 'Cohort 29' }] } });
-    //   const newGroup = {
-    //     id: 1,
-    //     name: 'Cohort 29'
-    //   };
-    //   const expectedAction = {
-    //     type: types.SET_USER_GROUPS,
-    //     newGroup
-    //   };
-    //   const store = mockStore();
+    it('makes request to submit new group', () => {
+      const userId = 1;
+      nock('http://localhost')
+        .post(`/api/user/${userId}/groups`)
+        .reply(201, { data: { group: [{ id: 1, name: 'Cohort 29' }] } });
+      const newGroup = {
+        id: 1,
+        name: 'Cohort 29'
+      };
+      const expectedAction = {
+        type: types.SET_USER_GROUPS,
+        newGroup
+      };
+      const store = mockStore();
 
-    //   store.dispatch(actions.getUserGroups(userId)).then((newGroup) => {
-    //     // return of async actions
-    //     expect(store.getActions()).toEqual(expectedAction);
-    //   });
-    // });
+      store.dispatch(actions.getUserGroups(userId)).then((newGroup) => {
+        // return of async actions
+        expect(store.getActions()).toEqual(expectedAction);
+      });
+    });
   });
 });
 
