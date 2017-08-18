@@ -23,6 +23,7 @@ module.exports = {
         body: 'We are popping. How is you?',
         group_id: 1,
         user_id: 3,
+        priority: 'urgent',
         read_by: 'chyke',
         created_at: new Date(),
         updated_at: new Date()
@@ -31,6 +32,7 @@ module.exports = {
         body: 'Anyone going for the excursion next week?',
         group_id: 1,
         user_id: 2,
+        priority: 'critical',
         read_by: 'clare',
         created_at: new Date(),
         updated_at: new Date()
@@ -39,6 +41,7 @@ module.exports = {
         body: 'Welcome dear, how is you? *In Jenefa\'s voice*',
         group_id: 2,
         user_id: 1,
+        priority: 'urgent',
         read_by: 'mazma',
         created_at: new Date(),
         updated_at: new Date()
@@ -47,6 +50,7 @@ module.exports = {
         body: 'I have a meetup on the same day!',
         group_id: 1,
         user_id: 3,
+        priority: 'normal',
         read_by: 'chyke',
         created_at: new Date(),
         updated_at: new Date()
@@ -55,6 +59,7 @@ module.exports = {
         body: '*Strolling by...',
         group_id: 2,
         user_id: 1,
+        priority: 'normal',
         read_by: 'mazma',
         created_at: new Date(),
         updated_at: new Date()
