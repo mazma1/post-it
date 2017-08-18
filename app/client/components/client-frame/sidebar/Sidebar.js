@@ -191,21 +191,22 @@ class Sidebar extends React.Component {
           this.props.setSelectedGroup({});
         } else {
           this.props.setSelectedGroup(this.props.userGroups.groups[0]);
-          this.props.getGroupMessages(this.props.userGroups.groups[0].id).then(
-            () => {
-              if (!isEmpty(this.props.messages)) {
-                this.props.messages.map((message) => {
-                  const messageDetails = {
-                    message_id: message.message_id,
-                    username: this.props.signedInUser.user.username,
-                    read_by: message.read_by,
-                    group_id: this.props.userGroups.groups[0].id
-                  };
-                  return this.props.updateReadStatus(messageDetails);
-                });
-              }
-            }
-          );
+          this.props.getGroupMessages(this.props.userGroups.groups[0].id);
+          // .then(
+          //   () => {
+          //     if (!isEmpty(this.props.messages)) {
+          //       this.props.messages.map((message) => {
+          //         const messageDetails = {
+          //           message_id: message.message_id,
+          //           username: this.props.signedInUser.user.username,
+          //           read_by: message.read_by,
+          //           group_id: this.props.userGroups.groups[0].id
+          //         };
+          //         return this.props.updateReadStatus(messageDetails);
+          //       });
+          //     }
+          //   }
+          // );
           this.props.getGroupMembers(this.props.userGroups.groups[0].id);
         }
       }
@@ -227,16 +228,16 @@ class Sidebar extends React.Component {
     this.props.getGroupMessages(group.id);
     this.props.getGroupMembers(group.id);
 
-    this.props.messages.map((message) => {
-      this.props.updateReadStatus({
-        message_id: message.message_id,
-        username: this.props.signedInUser.user.username,
-        read_by: message.read_by,
-        group_id: group.id
-      });
-      return message;
-    });
-    this.getUnreadCount();
+    // this.props.messages.map((message) => {
+    //   this.props.updateReadStatus({
+    //     message_id: message.message_id,
+    //     username: this.props.signedInUser.user.username,
+    //     read_by: message.read_by,
+    //     group_id: group.id
+    //   });
+    //   return message;
+    // });
+    // this.getUnreadCount();
   }
   /**
    * Render

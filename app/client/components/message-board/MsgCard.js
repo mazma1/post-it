@@ -1,15 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
-import classnames from 'classnames';
-import moment from 'moment';
 import { updateReadStatus } from '../../actions/groupMessagesAction';
-import ModalFrame from '../modal/ModalFrame';
-import {
-  ModalHeader,
-  ModalFooter,
-  CloseButton } from '../modal/SubModals';
-import ReadByTable from '../tables/ReadByTable';
+import MessageBody from '../message-board/MessageBody';
+import MessageItem from '../message-board/MessageItem';
 
 /** MessageCard component for message board */
 class MessageCard extends React.Component {
@@ -18,12 +12,16 @@ class MessageCard extends React.Component {
 
     this.state = {
       isOpen: false,
-      messageId: ''
+      messageId: '',
+      clickedMessageId: '',
+      messageOpen: false
     };
 
     this.setMessageId = this.setMessageId.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.onMessageClick = this.onMessageClick.bind(this);
+    this.closeMessageBody = this.closeMessageBody.bind(this);
   }
 
 
@@ -48,6 +46,20 @@ class MessageCard extends React.Component {
     });
   }
 
+  closeMessageBody(e) {
+    e.preventDefault();
+    this.setState({ messageOpen: false });
+  }
+
+  onMessageClick(id) {
+    // e.preventDefault();
+    const clickedMessageId = id;
+    this.setState({
+      clickedMessageId,
+      messageOpen: true
+    });
+  }
+
   /**
    * Render
    * @prop {boolean} hasGroup If a signed in user belongs to a group
@@ -55,6 +67,7 @@ class MessageCard extends React.Component {
    * @prop {array} messages Group messages
    * @returns {ReactElement} MessageCard markup
    */
+
   render() {
     const hasGroup = this.props.userGroups.hasGroup;
     const messageLoading = this.props.message.isLoading;
@@ -63,6 +76,13 @@ class MessageCard extends React.Component {
     const divPadding = {
       paddingLeft: '20px',
       paddingTop: '20px'
+    };
+    const props = {
+      messages: this.props.message.messages,
+      onMessageClick: this.onMessageClick,
+      onReadByClick: this.setMessageId,
+      clickedMessageId: this.state.clickedMessageId,
+      state: this.state
     };
 
     if (messageLoading) {
@@ -86,73 +106,16 @@ class MessageCard extends React.Component {
         return <div></div>;
       }
     }
-
-    const messageItem = messages.map((message, index) => {
-      let normalPriority;
-      let urgentPriority;
-      let criticalPriority;
-
-      if (message.priority === 'normal') {
-        normalPriority = true;
-      } else if (message.priority === 'urgent') {
-        urgentPriority = true;
-      } else if (message.priority === 'critical') {
-        criticalPriority = true;
-      }
-
-      const time = moment(message.sent_at).format('ddd, MMM Do. h:mm a');
-      const onReadByClick = () => this.setMessageId(message.message_id);
-      return (
-        <div key={index}>
-          <div className="card-panel row" key={message.message_id}>
-            <div className="col s12 m4 l11">
-              <span className="blue-text text-darken-2"><b>@{message.sent_by.username}</b></span>
-              <span className="blue-text text-darken-2"> {time}</span>
-              <span className={
-                classnames('label',
-                            'priority-label',
-                            { 'label-default': normalPriority },
-                            { 'label-warning': urgentPriority },
-                            { 'label-danger': criticalPriority })}>{message.priority}</span>
-            </div>
-
-            <div className="col s12 m4 l1">
-              <ul>
-                <li role="presentation" className="dropdown">
-                  <a className="dropdown-toggle options" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    Options <span className="caret"></span>
-                  </a>
-                  <ul className="dropdown-menu msg-read-by">
-                    <li><a
-                      data-toggle="modal" data-target="#readBy"
-                      onClick={onReadByClick}
-                      href="#">Read by</a></li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-            <p className="msg_body">{message.message}</p>
-          </div>
-
-          {/* Read By Modal */}
-          <ModalFrame id='readBy'>
-            <ModalHeader header='Message Read By' onClose={this.closeModal}/>
-
-            <div className="modal-body">
-              <ReadByTable messageId={this.state.messageId}/>
-            </div>
-
-            <ModalFooter>
-              <CloseButton onClick={this.closeModal} />
-            </ModalFooter>
-        </ModalFrame>
-        </div>
-      );
-    });
-
     return (
       <div>
-        { messageItem }
+        { this.state.messageOpen ?
+        <MessageBody
+          closeMessage={this.closeMessageBody}
+          clickedMessageId={this.state.clickedMessageId}
+          closeModal={this.closeModal}
+          openModal={this.openModal}
+          messages={this.props.message.messages}/>
+        : <MessageItem {...props} /> }
       </div>
     );
   }

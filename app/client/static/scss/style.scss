@@ -888,7 +888,9 @@ select.browser-default {
 } 
 
 .msg-read-by {
-  margin-left: -100px;
+  // margin-left: -100px;
+  right: 0px;
+  left: 612px;
 }
 
 .not-found {
@@ -904,6 +906,27 @@ select.browser-default {
   padding-bottom: 20px;
 }
 
+.message-card .card .card-content {
+  padding-bottom: 60px;
+}
+
+div.row .message-card {
+  padding-top: 30px;
+}
+
+.card .card-content .card-title {
+  display: inline-block;
+}
+
+.message-content {
+  padding-top: 10px;
+}
+
+.message-card div.card li.message-options {
+  text-align: right;
+  padding-bottom: 30px;
+  padding-right: 30px;
+}
 
 
 
