@@ -2,8 +2,8 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import models from '../app/server/models';
-import app from '../app/server/app';
+import models from '../models';
+import app from '../app';
 
 const should = chai.should();
 const saltRounds = 7;

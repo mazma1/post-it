@@ -1,6 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
-import isAuthReducer from '../../app/client/reducers/reducer_authenticatedUser';
-import * as types from '../../app/client/actions/types';
+import isAuthReducer from '../../../client/reducers/reducer_authenticatedUser';
+import * as types from '../../actions/types';
 
 
 describe('isAuthenticated reducer', () => {

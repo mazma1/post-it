@@ -12,9 +12,9 @@
     "rebuild:testdb": "NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate",
     "seed:testdb": "NODE_ENV=test sequelize db:seed:all",
     "create:testdb": "npm run rebuild:testdb && npm run seed:testdb",
-    "run:test": "NODE_ENV=test nyc --reporter=html --reporter=text ./node_modules/.bin/mocha --compilers js:babel-core/register --timeout 10000 test/*.test.js",
+    "run:test": "NODE_ENV=test nyc --reporter=html --reporter=text ./node_modules/.bin/mocha --compilers js:babel-core/register --timeout 10000 ./app/server/test/*.test.js",
     "test": "npm run create:testdb && npm run run:test",
-    "test:client": "jest __test__/  --verbose",
+    "test:client": "jest .app/client/test/  --verbose",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "reset_db": "NODE_ENV=production sequelize db:migrate:undo:all && NODE_ENV=production sequelize db:migrate && NODE_ENV=production sequelize db:seed:all"
   },

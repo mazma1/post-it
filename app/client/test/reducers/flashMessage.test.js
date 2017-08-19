@@ -1,5 +1,5 @@
-import flashMsgReducer from '../../app/client/reducers/reducer_flashMessage';
-import * as types from '../../app/client/actions/types';
+import flashMsgReducer from '../../../client/reducers/reducer_flashMessage';
+import * as types from '../../actions/types';
 
 
 describe('flashMessage reducer', () => {
