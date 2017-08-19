@@ -1,8 +1,7 @@
-const validator = require('validator');
 const isEmpty = require('lodash/isEmpty');
 
 export default function validateInput(data) {
-  let errors = {};
+  const errors = {};
 
   if (!data.identifier) {
     errors.identifier = 'This field is required';

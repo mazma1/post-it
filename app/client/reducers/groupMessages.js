@@ -2,13 +2,9 @@ import {
   SET_GROUP_MESSAGES,
   FETCHING_GROUP_MESSAGES,
   FETCH_GROUP_MESSAGES_FAILURE } from '../actions/types';
+import initialState from '../utils/initialState';
 
-const initialState = {
-  isLoading: false,
-  messages: []
-};
-
-export default (state = initialState, action = {}) => {
+export default (state = initialState.groupMessages, action = {}) => {
   switch (action.type) {
     case FETCHING_GROUP_MESSAGES:
       return {

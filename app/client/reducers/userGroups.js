@@ -1,12 +1,8 @@
 import isEmpty from 'lodash/isEmpty';
 import { SET_USER_GROUPS, FETCHING_USER_GROUPS, FETCH_USER_GROUPS_FAILURE } from '../actions/types';
+import initialState from '../utils/initialState.js';
 
-const initialState = {
-  isLoading: false,
-  groups: []
-};
-
-export default (state = initialState, action = {}) => {
+export default (state = initialState.userGroups, action = {}) => {
   switch (action.type) {
     case FETCHING_USER_GROUPS:
       return {
