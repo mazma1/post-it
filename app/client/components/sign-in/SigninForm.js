@@ -33,7 +33,7 @@ class SigninForm extends React.Component {
    * Handles input validation on client
    * @returns {boolean} If an input is valid or not
    */
-  valid() {
+  validateInput() {
     const { errors, valid } = validateInput(this.state);
 
     if (!valid) {
@@ -64,7 +64,7 @@ class SigninForm extends React.Component {
   onSigninClick(e) {
     e.preventDefault();
 
-    if (this.valid()) {
+    if (this.validateInput()) {
       this.setState({ errors: {} });
       this.props.userSigninRequest(this.state).then(
         () => {

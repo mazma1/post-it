@@ -41,13 +41,13 @@ class MessageItem extends React.Component {
     const filteredMessages = [];
     messages.map(message => {
       const readbyArray = split(message.read_by, ',');
-      
+
       if (this.state.messageStatus === 'unread') {
         if (!includes(readbyArray, this.props.authenticatedUsername)) {
           filteredMessages.push(message);
         }
       }
-      
+
       if (this.state.messageStatus === 'archived') {
         if (includes(readbyArray, this.props.authenticatedUsername)) {
           filteredMessages.push(message);
