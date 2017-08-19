@@ -1,12 +1,11 @@
 import React from 'react';
 import classnames from 'classnames';
 import { withRouter } from 'react-router-dom';
+import toastr from 'toastr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import TextField from '../common/FormTextField';
-import { addFlashMessage } from '../../actions/flashMessage';
-import FlashMessageList from '../flash-message/FlashMessagesList';
 import { validateResetPasswordToken, updatePassword } from '../../actions/resetPassword';
 
 
@@ -37,10 +36,7 @@ class NewPasswordForm extends React.Component {
       token
     }).then(
       () => {
-        this.props.addFlashMessage({
-          type: 'success',
-          text: 'Password has been successfully changed. Please log in with new detail'
-        });
+        toastr.success('Password has been successfully changed. Please log in with new detail');
         this.props.history.push('/signin');
       },
       ({ response }) => this.setState({ errors: response.data })
@@ -56,7 +52,6 @@ class NewPasswordForm extends React.Component {
           // DO nothing, mount component if token is valid
         },
         ({ response }) => {
-          console.log(response)
           let flashErrorMsg = '';
           if (response.data === 'Token has expired') {
             flashErrorMsg = 'Reset link has expired';
@@ -64,10 +59,7 @@ class NewPasswordForm extends React.Component {
             flashErrorMsg = 'Reset link has expired';
           }
           // Redirect to forgot password page
-          this.props.addFlashMessage({
-            type: 'error',
-            text: `${flashErrorMsg}. Enter your email to receive a valid link`
-          });
+          toastr.error(`${flashErrorMsg}. Enter your email to receive a valid link`);
           this.props.history.push('/reset_password');
         }
       );
@@ -133,7 +125,6 @@ class NewPasswordForm extends React.Component {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     validateResetPasswordToken,
-    addFlashMessage,
     updatePassword
   }, dispatch);
 }

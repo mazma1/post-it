@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { withRouter, Link } from 'react-router-dom';
+import toastr from 'toastr';
 import PropTypes from 'prop-types';
 import TextField from '../common/FormTextField';
 import validateInput from '../../validations/signinValidation';
@@ -67,10 +68,7 @@ class SigninForm extends React.Component {
       this.setState({ errors: {} });
       this.props.userSigninRequest(this.state).then(
         () => {
-          this.props.addFlashMessage({
-            type: 'success',
-            text: 'Sign in was successful. Welcome back!'
-          });
+          toastr.success('Sign in was successful. Welcome back!');
           this.props.history.push('/message_board');
         },
         ({ response }) => this.setState({ errors: response.data })
@@ -85,7 +83,7 @@ class SigninForm extends React.Component {
   render() {
     const { errors } = this.state;
     return (
-      <form className="col s12 auth-form">
+      <form className="col s12 auth-form" onSubmit={this.onSigninClick}>
         <div className="row">
           <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': errors.identifier })}>
             <TextField

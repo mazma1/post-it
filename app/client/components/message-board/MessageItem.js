@@ -97,7 +97,7 @@ class MessageItem extends React.Component {
                         { 'label-default': normalPriority },
                         { 'label-warning': urgentPriority },
                         { 'label-danger': criticalPriority })}>{message.priority}</span>
-                    <span>  <b>|</b> <i>{ includes(readByArray, authenticatedUsername) ? 'Read' : 'Unread' }</i></span>
+                    <span>  <b>|</b> { includes(readByArray, authenticatedUsername) ? 'Read' : 'Unread' }</span>
                   <p className="msg_body">{message.message}</p>
                 </div>
               </div>

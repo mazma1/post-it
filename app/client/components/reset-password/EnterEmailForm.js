@@ -2,11 +2,11 @@ import React from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import TextField from '../common/FormTextField';
 import { addFlashMessage } from '../../actions/flashMessage';
-import FlashMessageList from '../flash-message/FlashMessagesList';
 import { resetLinkRequest } from '../../actions/resetPassword';
 
 
@@ -32,10 +32,7 @@ class EnterEmailForm extends React.Component {
     this.setState({ error: '' });
     this.props.resetLinkRequest({ email: this.state.email }).then(
       () => {
-        this.props.addFlashMessage({
-          type: 'success',
-          text: `An email has been sent to ${this.state.email} with further instructions`
-        });
+        toastr.success(`An email has been sent to ${this.state.email} with further instructions`);
         this.setState({ email: '' });
       },
       ({ response }) => this.setState({ error: response.data })
@@ -47,8 +44,6 @@ class EnterEmailForm extends React.Component {
     return (
       <div className="background">
         <div className="container">
-          <FlashMessageList />
-
           <div className="row">
             <div className="card-panel col s12 m8 offset-m2 l6 offset-l3 z-depth-5 signin-card">
               <header className="auth-header pwd-reset-auth-header">

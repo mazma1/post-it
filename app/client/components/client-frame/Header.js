@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import $ from 'jquery';
 import isEmpty from 'lodash/isEmpty';
 import { logout } from '../../actions/signin';
@@ -11,7 +12,6 @@ import { setGroupMessages } from '../../actions/groupMessages';
 import { addFlashMessage } from '../../actions/flashMessage';
 import { submitNewUser } from '../../actions/groupMembers';
 import ModalFrame from '../modal/ModalFrame';
-import MessageFilter from '../message-filter/Filter';
 import {
   ModalHeader,
   ModalBody,
@@ -163,10 +163,7 @@ class Header extends React.Component {
       identifier: this.state.newUser
     }).then(
       () => {
-        this.props.addFlashMessage({
-          type: 'success',
-          text: 'User has been successfully added to group'
-        });
+        toastr.success('User has been successfully added to group');
         $('[data-dismiss=modal]').trigger({ type: 'click' });
       },
       ({ response }) => { this.setState({ error: response.data, isLoading: false }); }

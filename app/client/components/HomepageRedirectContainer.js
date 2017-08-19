@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import HomePage from './home-page/HomePage';
 import { addFlashMessage } from '../actions/flashMessage';
 
@@ -18,10 +19,7 @@ class HomepageRedirect extends React.Component {
  */
   componentWillMount() {
     if (this.props.isAuthenticated) {
-      this.props.addFlashMessage({
-        type: 'success',
-        text: 'Welcome back!'
-      });
+      toastr.success('Welcome back!');
       this.props.history.push('/message_board');
     }
   }

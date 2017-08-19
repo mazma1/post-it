@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import toastr from 'toastr';
 import { withRouter, Link } from 'react-router-dom';
 import validateInput from '../../validations/signupValidation';
 import TextField from '../common/FormTextField';
@@ -75,10 +76,7 @@ class SignupForm extends React.Component {
             password: this.state.password
           })
             .then(() => {
-              this.props.addFlashMessage({
-                type: 'success',
-                text: 'Sign up was successful. Welcome to Post It!'
-              });
+              toastr.success('Sign up was successful. Welcome to Post It!');
               this.props.history.push('/message_board');
             },
             ({ response }) => this.setState({ errors: response.data })
@@ -97,7 +95,7 @@ class SignupForm extends React.Component {
   render() {
     const { errors } = this.state;
     return (
-      <form className="col s12 auth-form">
+      <form className="col s12 auth-form" onSubmit={this.onSignupClick}>
         <div className="row">
           <div className={classnames('input-field', 'auth-field', 'col m6 s12', { 'has-error': errors.firstname })}>
             <TextField

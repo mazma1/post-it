@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
 import GroupList from './GroupList';
@@ -18,7 +19,6 @@ import {
   ModalFooter,
   CancelButton,
   SubmitButton } from '../../modal/SubModals';
-import getUnreadCount from '../../../../utils/getUnreadCount';
 
 const Brand = (props) => {
   return (
@@ -169,10 +169,7 @@ class Sidebar extends React.Component {
       userId: this.props.signedInUser.user.id
     }).then(
       () => {
-        this.props.addFlashMessage({
-          type: 'success',
-          text: 'Your group has been successfully created'
-        });
+        toastr.success('Your group has been successfully created');
         $('[data-dismiss=modal]').trigger({ type: 'click' });
         this.setState({ isLoading: false });
       },
