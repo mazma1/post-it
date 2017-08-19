@@ -1,5 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
-import isAuthReducer from '../../../client/reducers/reducer_authenticatedUser';
+import isAuthReducer from '../../../client/reducers/authenticatedUser';
 import * as types from '../../actions/types';
 
 

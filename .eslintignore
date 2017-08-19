@@ -1,0 +1,6 @@
+/node_modules/**
+app/server/test/*
+app/client/test/**
+webpack.config.dev.js
+webpack.config.prod.js
+app/server/app.js

@@ -1,4 +1,4 @@
-import * as actions from '../../actions/setSelectedGroupAction';
+import * as actions from '../../actions/setSelectedGroup';
 import * as types from '../../actions/types';
 
 describe('Set selected group action creator', () => {

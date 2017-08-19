@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { postNewMessage } from '../../actions/groupMessagesAction';
-import { addFlashMessage } from '../../actions/flashMessageAction';
+import { postNewMessage } from '../../actions/groupMessages';
+import { addFlashMessage } from '../../actions/flashMessage';
 
 /**
  * Message Input Form component for message board

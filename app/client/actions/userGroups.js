@@ -1,8 +1,8 @@
 import axios from 'axios';
 import last from 'lodash/last';
-import { setSelectedGroup } from '../actions/setSelectedGroupAction';
-import { getGroupMessages } from '../actions/groupMessagesAction';
-import { getGroupMembers } from '../actions/groupMembersAction';
+import { setSelectedGroup } from '../actions/setSelectedGroup';
+import { getGroupMessages } from '../actions/groupMessages';
+import { getGroupMembers } from '../actions/groupMembers';
 import { SET_USER_GROUPS, FETCHING_USER_GROUPS, FETCH_USER_GROUPS_FAILURE } from '../actions/types';
 
 export function getUserGroups(userId) {

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import HomePage from './home-page/HomePage';
-import { addFlashMessage } from '../actions/flashMessageAction';
+import { addFlashMessage } from '../actions/flashMessage';
 
 
 /** HomepageRedirect Component */

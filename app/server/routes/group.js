@@ -1,5 +1,5 @@
 import express from 'express';
-import groupController from '../controllers/groupController';
+import groupController from '../controllers/group';
 import tokenAuth from '../middlewares/tokenAuth';
 
 const router = express.Router();

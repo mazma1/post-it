@@ -5,11 +5,11 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import $ from 'jquery';
 import isEmpty from 'lodash/isEmpty';
-import { logout } from '../../actions/signinAction';
-import { setSelectedGroup } from '../../actions/setSelectedGroupAction';
-import { setGroupMessages } from '../../actions/groupMessagesAction';
-import { addFlashMessage } from '../../actions/flashMessageAction';
-import { submitNewUser } from '../../actions/groupMembersAction';
+import { logout } from '../../actions/signin';
+import { setSelectedGroup } from '../../actions/setSelectedGroup';
+import { setGroupMessages } from '../../actions/groupMessages';
+import { addFlashMessage } from '../../actions/flashMessage';
+import { submitNewUser } from '../../actions/groupMembers';
 import ModalFrame from '../modal/ModalFrame';
 import MessageFilter from '../message-filter/Filter';
 import {

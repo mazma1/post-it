@@ -6,7 +6,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import jwt from 'jsonwebtoken';
 import rootReducer from './reducers/rootReducer';
 import setAuthorizationToken from './utils/setAuthorizationToken';
-import { setCurrentUser } from './actions/signinAction';
+import { setCurrentUser } from './actions/signin';
 import Client from './components/Client';
 
 require('bootstrap-loader');

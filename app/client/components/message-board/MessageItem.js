@@ -5,7 +5,7 @@ import moment from 'moment';
 import split from 'lodash/split';
 import mapKeys from 'lodash/mapKeys';
 import includes from 'lodash/includes';
-import { getGroupMessagesForCount } from '../../actions/groupMessagesAction';
+import { getGroupMessagesForCount } from '../../actions/groupMessages';
 
 class MessageItem extends React.Component {
 

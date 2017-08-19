@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import TextField from '../common/FormTextField';
-import { addFlashMessage } from '../../actions/flashMessageAction';
+import { addFlashMessage } from '../../actions/flashMessage';
 import FlashMessageList from '../flash-message/FlashMessagesList';
-import { resetLinkRequest } from '../../actions/resetPasswordAction';
+import { resetLinkRequest } from '../../actions/resetPassword';
 
 
 class EnterEmailForm extends React.Component {

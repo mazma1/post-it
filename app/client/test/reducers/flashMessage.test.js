@@ -1,4 +1,4 @@
-import flashMsgReducer from '../../../client/reducers/reducer_flashMessage';
+import flashMsgReducer from '../../../client/reducers/flashMessage';
 import * as types from '../../actions/types';
 
 

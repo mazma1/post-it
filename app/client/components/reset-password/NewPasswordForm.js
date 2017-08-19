@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import TextField from '../common/FormTextField';
-import { addFlashMessage } from '../../actions/flashMessageAction';
+import { addFlashMessage } from '../../actions/flashMessage';
 import FlashMessageList from '../flash-message/FlashMessagesList';
-import { validateResetPasswordToken, updatePassword } from '../../actions/resetPasswordAction';
+import { validateResetPasswordToken, updatePassword } from '../../actions/resetPassword';
 
 
 class NewPasswordForm extends React.Component {

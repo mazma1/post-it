@@ -6,11 +6,11 @@ import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
 import GroupList from './GroupList';
 import $ from 'jquery';
-import { getUserGroups, submitNewGroup } from '../../../actions/userGroupsAction';
-import { setSelectedGroup } from '../../../actions/setSelectedGroupAction';
-import { getGroupMessages, updateReadStatus, getGroupMessagesForCount } from '../../../actions/groupMessagesAction';
-import { getGroupMembers } from '../../../actions/groupMembersAction';
-import { addFlashMessage } from '../../../actions/flashMessageAction';
+import { getUserGroups, submitNewGroup } from '../../../actions/userGroups';
+import { setSelectedGroup } from '../../../actions/setSelectedGroup';
+import { getGroupMessages, updateReadStatus, getGroupMessagesForCount } from '../../../actions/groupMessages';
+import { getGroupMembers } from '../../../actions/groupMembers';
+import { addFlashMessage } from '../../../actions/flashMessage';
 import ModalFrame from '../../modal/ModalFrame';
 import {
   ModalHeader,

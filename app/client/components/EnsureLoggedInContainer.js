@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withRouter, Route } from 'react-router-dom';
 import MessageBoard from './message-board/MessageBoard';
-import { addFlashMessage } from '../actions/flashMessageAction';
+import { addFlashMessage } from '../actions/flashMessage';
 
 /**
  * Component that checks if a user is logged in

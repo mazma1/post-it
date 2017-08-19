@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SigninForm from './SigninForm';
-import { userSigninRequest } from '../../actions/signinAction';
-import { addFlashMessage } from '../../actions/flashMessageAction';
+import { userSigninRequest } from '../../actions/signin';
+import { addFlashMessage } from '../../actions/flashMessage';
 import FlashMessageList from '../flash-message/FlashMessagesList';
 
 

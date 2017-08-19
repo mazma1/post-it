@@ -1,5 +1,5 @@
 import express from 'express';
-import userController from '../controllers/userController';
+import userController from '../controllers/user';
 import tokenAuth from '../middlewares/tokenAuth';
 
 const router = express.Router();
