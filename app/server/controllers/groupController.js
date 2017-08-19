@@ -207,7 +207,7 @@ export default {
       })
       .catch(error => res.status(400).send(error.message));
     } else {
-      res.status(200).send('User has already been recorded to have seen this message');
+      res.status(200).send('User has read message');
     }
   },
 

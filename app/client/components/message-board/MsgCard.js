@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
-import { updateReadStatus } from '../../actions/groupMessagesAction';
+import { updateReadStatus, getGroupMessages } from '../../actions/groupMessagesAction';
 import MessageBody from '../message-board/MessageBody';
 import MessageItem from '../message-board/MessageItem';
 
@@ -46,20 +46,27 @@ class MessageCard extends React.Component {
     });
   }
 
-  closeMessageBody(e) {
-    e.preventDefault();
+  closeMessageBody(groupId) {
+    // e.preventDefault();
+    this.props.getGroupMessages(groupId);
     this.setState({ messageOpen: false });
   }
 
-  onMessageClick(id) {
+  onMessageClick(clickedMsgProps) {
     // e.preventDefault();
-    const clickedMessageId = id;
+    const clickedMessageId = clickedMsgProps.id;
     this.setState({
       clickedMessageId,
       messageOpen: true
     });
+    const messageDetails = {
+      message_id: clickedMessageId,
+      username: this.props.authenticatedUsername,
+      read_by: clickedMsgProps.read_by,
+      group_id: this.props.userGroups.groups[0].id
+    };
+    return this.props.updateReadStatus(messageDetails);
   }
-
   /**
    * Render
    * @prop {boolean} hasGroup If a signed in user belongs to a group
@@ -73,6 +80,7 @@ class MessageCard extends React.Component {
     const messageLoading = this.props.message.isLoading;
     const messageLoadingError = this.props.message.error;
     const messages = this.props.message.messages;
+    console.log('MsgCard', messages);
     const divPadding = {
       paddingLeft: '20px',
       paddingTop: '20px'
@@ -82,7 +90,7 @@ class MessageCard extends React.Component {
       onMessageClick: this.onMessageClick,
       onReadByClick: this.setMessageId,
       clickedMessageId: this.state.clickedMessageId,
-      state: this.state
+      authenticatedUsername: this.props.authenticatedUsername
     };
 
     if (messageLoading) {
@@ -97,6 +105,7 @@ class MessageCard extends React.Component {
           </div>
         );
       } else if (hasGroup && messageLoadingError) {
+        console.log(messageLoadingError);
         return (
           <div style={divPadding}>
             <p>Unable to load messages. Please try again later</p>
@@ -114,7 +123,8 @@ class MessageCard extends React.Component {
           clickedMessageId={this.state.clickedMessageId}
           closeModal={this.closeModal}
           openModal={this.openModal}
-          messages={this.props.message.messages}/>
+          messages={this.props.message.messages}
+          state={this.state}/>
         : <MessageItem {...props} /> }
       </div>
     );
@@ -134,4 +144,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { updateReadStatus })(MessageCard);
+export default connect(mapStateToProps, { updateReadStatus, getGroupMessages })(MessageCard);

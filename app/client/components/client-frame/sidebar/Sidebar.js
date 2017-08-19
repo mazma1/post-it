@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
+import mapKeys from 'lodash/mapKeys';
 import GroupList from './GroupList';
 import $ from 'jquery';
 import { getUserGroups, submitNewGroup } from '../../../actions/userGroupsAction';
@@ -17,6 +18,7 @@ import {
   ModalFooter,
   CancelButton,
   SubmitButton } from '../../modal/SubModals';
+import getUnreadCount from '../../../../utils/getUnreadCount';
 
 const Brand = (props) => {
   return (
@@ -116,6 +118,10 @@ class Sidebar extends React.Component {
 
   getUnreadCount() {
     const groupsWithNotification = [];
+    const mappedMessages = mapKeys(this.props.messages, 'message_id');
+    console.log(mappedMessages);
+    // const readBy = mappedMessages[message.id].read_by;
+    // const readByArray = split(readBy, ',');
 
     this.props.getUserGroups(this.props.signedInUser.user.id).then(
       () => {
@@ -192,21 +198,6 @@ class Sidebar extends React.Component {
         } else {
           this.props.setSelectedGroup(this.props.userGroups.groups[0]);
           this.props.getGroupMessages(this.props.userGroups.groups[0].id);
-          // .then(
-          //   () => {
-          //     if (!isEmpty(this.props.messages)) {
-          //       this.props.messages.map((message) => {
-          //         const messageDetails = {
-          //           message_id: message.message_id,
-          //           username: this.props.signedInUser.user.username,
-          //           read_by: message.read_by,
-          //           group_id: this.props.userGroups.groups[0].id
-          //         };
-          //         return this.props.updateReadStatus(messageDetails);
-          //       });
-          //     }
-          //   }
-          // );
           this.props.getGroupMembers(this.props.userGroups.groups[0].id);
         }
       }
@@ -227,17 +218,6 @@ class Sidebar extends React.Component {
     this.props.setSelectedGroup(group);
     this.props.getGroupMessages(group.id);
     this.props.getGroupMembers(group.id);
-
-    // this.props.messages.map((message) => {
-    //   this.props.updateReadStatus({
-    //     message_id: message.message_id,
-    //     username: this.props.signedInUser.user.username,
-    //     read_by: message.read_by,
-    //     group_id: group.id
-    //   });
-    //   return message;
-    // });
-    // this.getUnreadCount();
   }
   /**
    * Render

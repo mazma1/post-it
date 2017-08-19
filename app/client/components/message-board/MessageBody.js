@@ -1,5 +1,6 @@
 import React from 'react';
 import mapKeys from 'lodash/mapKeys';
+
 import {
   ModalHeader,
   ModalFooter,
@@ -10,6 +11,8 @@ import ModalFrame from '../modal/ModalFrame';
 function MessageBody(props) {
   const { clickedMessageId, messages } = props;
   const mappedMessages = mapKeys(messages, 'message_id');
+  const groupId = Object.keys(mappedMessages)[0];
+  const closeMessage = () => props.closeMessage(groupId);
   return (
     <div>
       <div className="row">
@@ -17,7 +20,7 @@ function MessageBody(props) {
           <div className="card">
             <div className="card-content">
               <span className="card-title">{mappedMessages[clickedMessageId].sent_by.username}</span>
-              <button onClick={props.closeMessage} className="close"><span>&times;</span></button>
+              <button onClick={closeMessage} className="close"><span>&times;</span></button>
               <hr />
               <h6 className="message-content">{mappedMessages[clickedMessageId].message}</h6>
             </div>
