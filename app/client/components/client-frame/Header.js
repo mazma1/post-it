@@ -11,6 +11,7 @@ import { setGroupMessages } from '../../actions/groupMessagesAction';
 import { addFlashMessage } from '../../actions/flashMessageAction';
 import { submitNewUser } from '../../actions/groupMembersAction';
 import ModalFrame from '../modal/ModalFrame';
+import MessageFilter from '../message-filter/Filter';
 import {
   ModalHeader,
   ModalBody,
@@ -202,6 +203,8 @@ class Header extends React.Component {
             <div className="row">
 
               <GroupName selectedGroup={selectedGroup} openModal={this.openModal}/>
+
+              {/* <MessageFilter /> */}
 
               <div className="col-md-8 col-sm-7 col-xs-9 lg-stack">
                 <ul className='cta'>
