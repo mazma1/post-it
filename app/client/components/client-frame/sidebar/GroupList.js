@@ -1,11 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 import mapKeys from 'lodash/mapKeys';
-import { getGroupMessagesForCount } from '../../../actions/groupMessagesAction';
-import { getUserGroups } from '../../../actions/userGroupsAction';
 
 /**
  *Functional component that renders a list of groups a user belongs to on the message board
@@ -89,17 +85,4 @@ function GroupList(props) {
   );
 }
 
-function mapStateToProps(state) {
-  return {
-    groupLoading: state.groupMessages.isLoading
-  };
-}
-
-GroupList.propTypes = {
-  userGroups: PropTypes.object.isRequired,
-  selectedGroup: PropTypes.object.isRequired,
-  onGroupSelect: PropTypes.func.isRequired,
-  openModal: PropTypes.func.isRequired
-};
-
-export default connect(mapStateToProps, { getGroupMessagesForCount, getUserGroups })(GroupList);
+export default GroupList;
