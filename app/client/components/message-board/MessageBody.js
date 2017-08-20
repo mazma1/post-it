@@ -19,10 +19,10 @@ function MessageBody(props) {
         <div className="col s12 m10 offset-m1 message-card">
           <div className="card">
             <div className="card-content">
-              <span className="card-title">{mappedMessages[clickedMessageId].sent_by.username}</span>
+              <span className="card-title">@{mappedMessages[clickedMessageId].sent_by.username}:</span>
               <button onClick={closeMessage} className="close"><span>&times;</span></button>
               <hr />
-              <h6 className="message-content">{mappedMessages[clickedMessageId].message}</h6>
+              <h6 className="message-content full-msg">{mappedMessages[clickedMessageId].message}</h6>
             </div>
 
             <ul>

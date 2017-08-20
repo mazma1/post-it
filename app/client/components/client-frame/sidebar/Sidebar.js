@@ -9,7 +9,7 @@ import GroupList from './GroupList';
 import $ from 'jquery';
 import { getUserGroups, submitNewGroup } from '../../../actions/userGroups';
 import { setSelectedGroup } from '../../../actions/setSelectedGroup';
-import { getGroupMessages, updateReadStatus, getGroupMessagesForCount } from '../../../actions/groupMessages';
+import { getGroupMessages, updateReadStatus, getGroupMessagesCount } from '../../../actions/groupMessages';
 import { getGroupMembers } from '../../../actions/groupMembers';
 import { addFlashMessage } from '../../../actions/flashMessage';
 import ModalFrame from '../../modal/ModalFrame';
@@ -130,7 +130,7 @@ class Sidebar extends React.Component {
 
           if (!isEmpty(groups)) {
             groups.map((group) => {
-              this.props.getGroupMessagesForCount(group.id).then(
+              this.props.getGroupMessagesCount(group.id).then(
                 (res) => {
                   // map returned message array
                   let unreadCount = 0;
@@ -296,7 +296,7 @@ function mapDispatchToProps(dispatch) {
     submitNewGroup,
     addFlashMessage,
     updateReadStatus,
-    getGroupMessagesForCount
+    getGroupMessagesCount
   }, dispatch);
 }
 

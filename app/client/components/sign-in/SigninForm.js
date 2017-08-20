@@ -131,8 +131,7 @@ class SigninForm extends React.Component {
 }
 
 SigninForm.propTypes = {
-  userSigninRequest: PropTypes.func.isRequired,
-  addFlashMessage: PropTypes.func.isRequired
+  userSigninRequest: PropTypes.func.isRequired
 };
 
 export default withRouter(SigninForm);
