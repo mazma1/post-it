@@ -1,7 +1,7 @@
 import includes from 'lodash/includes';
 import Nexmo from 'nexmo';
 import models from '../models';
-import transporter from '../../client/utils/emailTransporter';
+import sendEmail from '../../utils/sendEmail';
 
 
 export default {
@@ -26,7 +26,7 @@ export default {
       .then((group) => {
         if (group) {
           error = 'Group already exists';
-          res.status(400).send({ error });
+          res.status(409).send({ error });
         } else {
           models.Group.create(groupData)
           .then((group) => {
@@ -40,12 +40,12 @@ export default {
               groupName: group.group_name,
               groupOwner: group.user_id
             }))
-            .catch(err => res.status(400).send(err));
+            .catch(err => res.status(500).send(err));
           })
-          .catch(err => res.status(400).send(err));
+          .catch(err => res.status(500).send(err));
         }
       })
-      .catch(err => res.status(400).send(err));
+      .catch(err => res.status(500).send(err));
     }
   },
 
@@ -72,7 +72,7 @@ export default {
           .then((member) => {
             if (member) {
               error = 'User has already been added to group';
-              res.status(400).send({ error });
+              res.status(409).send({ error });
             } else {
               const details = {
                 group_id: req.params.group_id,
@@ -83,7 +83,7 @@ export default {
                 success: true,
                 message: 'User successfully added to group',
               }))
-              .catch(err => res.status(400).send(err));
+              .catch(err => res.status(500).send(err));
             }
           });
         } else {
@@ -97,9 +97,10 @@ export default {
   // Method to post message to a group
   postMessageToGroup(req, res) {
     if (!req.body.message) {
-      res.send({ status: false, message: 'Message is required.' });
+      res.status(400).send({ error: 'Message is required.' });
     } else {
       const userId = req.decoded.data.id;
+      const userEmail = req.decoded.data.email;
       const messageDetail = {
         body: req.body.message,
         group_id: req.params.group_id,
@@ -130,20 +131,14 @@ export default {
             const priority = messageDetail.priority;
             const uppercasePriority = priority.toUpperCase();
             members.members.map((member) => {
-              const mailOptions = {
-                from: 'mazi.mary.o@gmail.com',
-                to: member.email,
+              const emailParams = {
+                senderAddress: member.email,
+                recepientAddress: userEmail,
+                groupName: members.group_name,
                 subject: `${uppercasePriority} message in ${members.group_name}`,
-                text: `${messageDetail.body}`
+                emailBody: messageDetail.body
               };
-
-              transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                  console.log(error);
-                } else {
-                  console.log(`Email sent:${info.response}`);
-                }
-              });
+              sendEmail(emailParams);
 
               // get users number and send sms
               if (req.body.priority === 'critical') {
@@ -162,7 +157,7 @@ export default {
           });
         }
       })
-      .catch(error => res.status(400).send(error.message));
+      .catch(error => res.status(500).send(error.message));
     }
   },
 
@@ -181,11 +176,10 @@ export default {
       .then((message) => {
         if (message) {
           res.status(200).send(message);
-        } else if (JSON.stringify(message) === '{}') {
-          res.status(404).send({ message: 'No message was found for the specified group' });
         }
+        res.status(404).send({ message: 'No message was found for the specified group' });
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(500).send(error));
     }
   },
 
@@ -205,10 +199,9 @@ export default {
       .then((update) => {
         res.status(201).send('Message read status updated successfully');
       })
-      .catch(error => res.status(400).send(error.message));
-    } else {
-      res.status(200).send('User has read message');
+      .catch(error => res.status(500).send(error.message));
     }
+    res.status(200).send('User has read message');
   },
 
   // Method to get the groups a user belongs to
@@ -225,9 +218,9 @@ export default {
         }]
       })
       .then((group) => {
-        res.status(201).send(group);
+        res.status(200).send(group);
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(500).send(error));
     }
   }
 };

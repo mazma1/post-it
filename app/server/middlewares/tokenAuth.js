@@ -18,9 +18,9 @@ module.exports = (req, res, next) => {
     jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
       if (err) {
         if (err.message === 'jwt expired') {
-          res.send({ success: false, message: 'Access token has expired' });
+          res.status(401).send({ error: 'Access token has expired' });
         } else {
-          res.send({ success: false, message: 'Token validation failed.' });
+          res.status(401).send({ error: 'Access token has expired' });
         }
       } else {
         // if everything is good, send details of token for use in other routes
@@ -29,9 +29,6 @@ module.exports = (req, res, next) => {
       }
     });
   } else {
-    res.status(403).send({
-      success: false,
-      message: 'No token provided.'
-    });
+    res.status(403).send({ error: 'No token provided.' });
   }
 };

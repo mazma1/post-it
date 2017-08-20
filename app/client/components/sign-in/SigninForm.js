@@ -4,7 +4,7 @@ import { withRouter, Link } from 'react-router-dom';
 import toastr from 'toastr';
 import PropTypes from 'prop-types';
 import TextField from '../common/FormTextField';
-import validateInput from '../../validations/signinValidation';
+import validateInput from '../../../utils/signinValidation';
 
 
 /**

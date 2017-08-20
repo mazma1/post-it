@@ -1,5 +1,5 @@
 import { SET_GROUP_MEMBERS, FETCHING_GROUP_MEMBERS } from '../actions/types';
-import initialState from '../utils/initialState';
+import initialState from '../../utils/initialState';
 
 
 export default (state = initialState.groupMembers, action = {}) => {

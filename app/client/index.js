@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import jwt from 'jsonwebtoken';
 import configureStore from './store/configureStore';
-import setAuthorizationToken from './utils/setAuthorizationToken';
+import setAuthorizationToken from '../utils/setAuthorizationToken';
 import { setCurrentUser } from './actions/signin';
 import Client from './components/Client';
 

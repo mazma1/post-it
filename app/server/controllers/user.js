@@ -4,8 +4,8 @@ import validator from 'validator';
 import isEmpty from 'lodash/isEmpty';
 import crypto from 'crypto';
 import models from '../models';
-import validateInput from '../../client/validations/signupValidation';
-import transporter from '../../client/utils/emailTransporter';
+import validateInput from '../../utils/signupValidation';
+import sendEmail from '../../utils/sendEmail';
 
 const saltRounds = 7;
 const salt = bcrypt.genSaltSync(saltRounds);
@@ -38,7 +38,7 @@ export default {
           }
 
           if (!isEmpty(errors)) {
-            res.status(400).send(errors);
+            res.status(409).send(errors);
           } else {
             const userData = {
               firstname: req.body.firstname,
@@ -50,13 +50,19 @@ export default {
             };
             models.User.create(userData)
             .then((user) => {
-              const token = jwt.sign({ data: { id: user.id, username: user.username } }, process.env.TOKEN_SECRET);
+              const token = jwt.sign({
+                data: {
+                  id: user.id,
+                  username: user.username,
+                  email: user.email
+                }
+              }, process.env.TOKEN_SECRET);
               res.status(201).send({ success: true, message: 'Signup was successful', token });
             })
-            .catch(error => res.status(400).send(error.message));
+            .catch(error => res.status(500).send(error.message));
           }
         })
-        .catch(err => res.status(400).send(err.message));
+        .catch(err => res.status(500).send(err.message));
       });
     }
   },
@@ -67,13 +73,13 @@ export default {
     if (!req.body.identifier && !req.body.password) {
       errors.identifier = 'This field is required';
       errors.password = 'This field is required';
-      res.status(401).send(errors);
+      res.status(400).send(errors);
     } else if (!req.body.identifier) {
       errors.identifier = 'This field is required';
-      res.status(401).send(errors);
+      res.status(400).send(errors);
     } else if (!req.body.password) {
       errors.password = 'This field is required';
-      res.status(401).send(errors);
+      res.status(400).send(errors);
     } else {
       models.User.findOne({
         where: {
@@ -87,9 +93,15 @@ export default {
           res.status(401).send(errors);
         } else if (user) {
           if (bcrypt.compareSync(req.body.password, user.password)) {
-            const token = jwt.sign({ data: { id: user.id, username: user.username } }, process.env.TOKEN_SECRET);
+            const token = jwt.sign({
+              data: {
+                id: user.id,
+                username: user.username,
+                email: user.email
+              }
+            }, process.env.TOKEN_SECRET);
 
-            res.status(201).send({
+            res.status(200).send({
               success: true,
               message: 'User successfully logged in',
               token
@@ -100,7 +112,7 @@ export default {
           }
         }
       })
-      .catch(err => res.status(400).send(err.message));
+      .catch(err => res.status(500).send(err.message));
     }
   },
 
@@ -118,9 +130,9 @@ export default {
         }]
       })
       .then((user) => {
-        res.status(201).send(user);
+        res.status(200).send(user);
       })
-      .catch(err => res.status(400).send(err.message));
+      .catch(err => res.status(500).send(err.message));
     }
   },
 
@@ -129,7 +141,7 @@ export default {
     let error = '';
     if (!req.body.email) {
       error = 'Email field is required';
-      res.status(401).send(error);
+      res.status(400).send(error);
     } else if (!validator.isEmail(req.body.email)) {
       error = 'Invalid email address';
       res.status(401).send(error);
@@ -140,18 +152,19 @@ export default {
         if (user) {
           const resetPasswordHash = crypto.randomBytes(20).toString('hex');
           const resetPasswordExpires = Date.now() + 3600000;
-        
-          const mailOptions = {
-            from: 'mazi.mary.o@gmail.com',
-            to: user.email,
+
+          const emailParams = {
+            senderAddress: process.env.ADMIN_EMAIL,
+            recepientAddress: user.email,
             subject: 'Reset your Post It Password',
-            html: `Hello ${user.firstname} ${user.lastname}, 
+            emailBody: `Hello ${user.firstname} ${user.lastname}, 
             <br><br>You recently made a request to reset your Post It password. 
             Please click the link below to complete the process. 
             <br><br><a href='http://${req.headers.host}/newpassword/${resetPasswordHash}'>Reset now ></a>
             <br><br>----------------------<br>
             The Post It Team`
           };
+
           models.ForgotPassword.findOne({
             where: { user_id: user.id }
           }).then((userAlreadyRequested) => {
@@ -163,13 +176,7 @@ export default {
                 where: { user_id: user.id }
               }).then(() => {
                 // send email
-                transporter.sendMail(mailOptions, (err, info) => {
-                  if (err) {
-                    console.log(err);
-                  } else {
-                    console.log(`Email sent:${info.response}`);
-                  }
-                });
+                sendEmail(emailParams);
                 res.status(200).send('Email sent');
               }).catch(err => res.status(400).send(err.message));
             } else {
@@ -180,23 +187,17 @@ export default {
               })
               .then(() => {
                 // send email
-                transporter.sendMail(mailOptions, (err, info) => {
-                  if (err) {
-                    console.log(err);
-                  } else {
-                    console.log(`Email sent:${info.response}`);
-                  }
-                });
-                res.status(200).send('Email sent');
+                sendEmail(emailParams);
+                res.status(201).send('Email sent');
               });
             }
           })
-          .catch(err => res.status(400).send(err.message));
+          .catch(err => res.status(500).send(err.message));
         } else {
           res.status(404).send('User does not exist');
         }
       })
-      .catch(err => res.status(400).send(err.message));
+      .catch(err => res.status(500).send(err.message));
     }
   },
 
@@ -210,14 +211,14 @@ export default {
     }).then((user) => {
       if (user) {
         if (Date.now() > user.expiry_time) {
-          res.status(400).send('Token has expired');
+          res.status(401).send('Token has expired');
         } else {
           res.status(200).send('Token is valid');
         }
       } else {
         res.status(404).send('Token does not exist');
       }
-    }).catch(err => res.status(400).send(err.message));
+    }).catch(err => res.status(500).send(err.message));
   },
 
   updateUserPassword(req, res) {
@@ -225,16 +226,16 @@ export default {
     if (!req.body.password && !req.body.confirm_password) {
       errors.password = 'New password is required';
       errors.confirm_password = 'Confirm new password is required';
-      res.status(401).send(errors);
+      res.status(400).send(errors);
     } else if (!req.body.password) {
       errors.password = 'New password is required';
-      res.status(401).send(errors);
+      res.status(400).send(errors);
     } else if (!req.body.confirm_password) {
       errors.confirm_password = 'Confirm new password is required';
-      res.status(401).send(errors);
+      res.status(400).send(errors);
     } else if (!validator.equals(req.body.password, req.body.confirm_password)) {
       errors.confirm_password = 'Passwords must match';
-      res.status(401).send(errors);
+      res.status(400).send(errors);
     } else {
       const hashedNewPassword = bcrypt.hashSync(req.body.password, salt);
       const token = req.params.token;
@@ -246,7 +247,7 @@ export default {
           { password: hashedNewPassword }, { where: { id: result.user_id } }
         );
         res.status(200).send('Password successfully updated');
-      }).catch(err => res.status(400).send(err.message));
+      }).catch(err => res.status(500).send(err.message));
     }
   }
 };
