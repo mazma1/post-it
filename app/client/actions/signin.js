@@ -1,7 +1,7 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import { SET_CURRENT_USER, DELETE_CURRENT_USER } from './types';
-import setAuthorizationToken from '../utils/setAuthorizationToken';
+import setAuthorizationToken from '../../utils/setAuthorizationToken';
 
 
 export function deleteCurrentUser() {

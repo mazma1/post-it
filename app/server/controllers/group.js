@@ -176,8 +176,9 @@ export default {
       .then((message) => {
         if (message) {
           res.status(200).send(message);
+        } else {
+          res.status(404).send({ message: 'No message was found for the specified group' });
         }
-        res.status(404).send({ message: 'No message was found for the specified group' });
       })
       .catch(error => res.status(500).send(error));
     }

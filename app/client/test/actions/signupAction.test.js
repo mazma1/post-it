@@ -2,7 +2,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import nock from 'nock';
 // import expect from 'expect';
-import { userSigninRequest } from '../../../client/actions/signinAction';
+import { userSigninRequest } from '../../../client/actions/signin';
 import * as types from '../../actions/types';
 
 const middlewares = [thunk];
