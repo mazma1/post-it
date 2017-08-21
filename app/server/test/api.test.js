@@ -894,28 +894,12 @@ describe('API ENDPOINT TESTS', () => {
 
   // Get group Members
   describe('GET /api/group/:group_id/members', () => {
-    it('returns status 200 when message read staus is updated', (done) => {
-      const username = 'temi',
-        readBy = 'mazma';
-      const details = {
-        messageId: 1,
-        updatedReadBy: `${readBy},${username}`
-      };
-      chai.request(app).get('/api/group/message/read')
+    it('returns status 200 when group members are fetched', (done) => {
+      chai.request(app).get('/api/group/1/members')
         .send(details)
         .end((err, res) => {
           res.status.should.equal(200);
-          res.body.should.be.a('object');
-          done();
-        });
-    });
-
-    it('successfully fetches messages of specified group', (done) => {
-      chai.request(app).get('/api/group/2/messages')
-        .set('x-access-token', token)
-        .end((err, res) => {
-          res.status.should.equal(200);
-          res.body.should.be.a('array');
+          res.body.should.have.property('group');
           done();
         });
     });
