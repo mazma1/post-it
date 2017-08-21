@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SigninForm from './SigninForm';
-import { userSigninRequest } from '../../actions/signinAction';
-import { addFlashMessage } from '../../actions/flashMessageAction';
-import FlashMessageList from '../flash-message/FlashMessagesList';
+import { userSigninRequest } from '../../actions/signin';
 
 
 /**
@@ -19,7 +17,7 @@ class SignIn extends React.Component {
    * @returns {ReactElement} SignIn page markup
    */
   render() {
-    const { userSigninRequest, addFlashMessage } = this.props;
+    const { userSigninRequest } = this.props;
     return (
       <div className="background">
         <div className="container">
@@ -29,9 +27,7 @@ class SignIn extends React.Component {
                 <h5 className="center">Sign In | Post It</h5>
               </header>
 
-              <FlashMessageList/>
-
-              <SigninForm userSigninRequest={userSigninRequest} addFlashMessage={addFlashMessage}/>
+              <SigninForm userSigninRequest={userSigninRequest}/>
             </div>
           </div>
         </div>
@@ -49,14 +45,12 @@ class SignIn extends React.Component {
  */
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    userSigninRequest,
-    addFlashMessage
+    userSigninRequest
   }, dispatch);
 }
 
 SignIn.propTypes = {
-  userSigninRequest: PropTypes.func.isRequired,
-  addFlashMessage: PropTypes.func.isRequired
+  userSigninRequest: PropTypes.func.isRequired
 };
 
 export default connect(null, mapDispatchToProps)(SignIn);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
-import { updateReadStatus, getGroupMessages } from '../../actions/groupMessagesAction';
+import { updateReadStatus, getGroupMessages } from '../../actions/groupMessages';
 import MessageBody from '../message-board/MessageBody';
 import MessageItem from '../message-board/MessageItem';
 
@@ -104,7 +104,6 @@ class MessageCard extends React.Component {
           </div>
         );
       } else if (hasGroup && messageLoadingError) {
-        console.log(messageLoadingError)
         return (
           <div style={divPadding}>
             <p>Unable to load messages. Please try again later</p>
@@ -122,8 +121,7 @@ class MessageCard extends React.Component {
           clickedMessageId={this.state.clickedMessageId}
           closeModal={this.closeModal}
           openModal={this.openModal}
-          messages={this.props.message.messages}
-          state={this.state}/>
+          messages={this.props.message.messages}/>
         : <MessageItem {...props} /> }
       </div>
     );

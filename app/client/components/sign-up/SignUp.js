@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import SignupForm from './SignupForm';
-import { userSignupRequest } from '../../actions/signupActions';
-import { userSigninRequest } from '../../actions/signinAction';
-import { addFlashMessage } from '../../actions/flashMessageAction';
+import { userSignupRequest } from '../../actions/signup';
+import { userSigninRequest } from '../../actions/signin';
+import { addFlashMessage } from '../../actions/flashMessage';
 
 /**
  * SignUp Page Component

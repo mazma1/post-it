@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import toastr from 'toastr';
 import { withRouter, Route } from 'react-router-dom';
 import MessageBoard from './message-board/MessageBoard';
-import { addFlashMessage } from '../actions/flashMessageAction';
+import { addFlashMessage } from '../actions/flashMessage';
 
 /**
  * Component that checks if a user is logged in
@@ -22,10 +23,7 @@ class EnsureLoggedIn extends React.Component {
     const { isLoggedIn } = this.props;
 
     if (!isLoggedIn) {
-      this.props.addFlashMessage({
-        type: 'error',
-        text: 'You need to sign in to access this page'
-      });
+      toastr.error('You need to sign in to access this page');
       this.props.history.push('/signin');
     }
   }

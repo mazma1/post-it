@@ -5,7 +5,7 @@ import {
   FETCH_GROUP_MESSAGES_FAILURE } from '../actions/types';
 
 
-export function getGroupMessagesForCount(groupId) {
+export function getGroupMessagesCount(groupId) {
   const request = axios.get(`/api/group/${groupId}/messages`); // Returns a promise
 
   return (dispatch) => {

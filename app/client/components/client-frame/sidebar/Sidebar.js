@@ -2,15 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import $ from 'jquery';
+import toastr from 'toastr';
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
 import GroupList from './GroupList';
-import $ from 'jquery';
-import { getUserGroups, submitNewGroup } from '../../../actions/userGroupsAction';
-import { setSelectedGroup } from '../../../actions/setSelectedGroupAction';
-import { getGroupMessages, updateReadStatus, getGroupMessagesForCount } from '../../../actions/groupMessagesAction';
-import { getGroupMembers } from '../../../actions/groupMembersAction';
-import { addFlashMessage } from '../../../actions/flashMessageAction';
+import { getUserGroups, submitNewGroup } from '../../../actions/userGroups';
+import { setSelectedGroup } from '../../../actions/setSelectedGroup';
+import { getGroupMessages, updateReadStatus, getGroupMessagesCount } from '../../../actions/groupMessages';
+import { getGroupMembers } from '../../../actions/groupMembers';
+import { addFlashMessage } from '../../../actions/flashMessage';
 import ModalFrame from '../../modal/ModalFrame';
 import {
   ModalHeader,
@@ -18,7 +19,6 @@ import {
   ModalFooter,
   CancelButton,
   SubmitButton } from '../../modal/SubModals';
-import getUnreadCount from '../../../../utils/getUnreadCount';
 
 const Brand = (props) => {
   return (
@@ -58,6 +58,7 @@ class Sidebar extends React.Component {
      * @prop {string} newGroup Name of new group to be created
      * @prop {boolean} isLoading Tells if the request to create new group has been completed or not
      * @prop {string} error Error message if the group was not created successfully
+     * * @prop {array} groups Groups with their notification counts
      */
     this.state = {
       isOpen: false,
@@ -116,12 +117,14 @@ class Sidebar extends React.Component {
     });
   }
 
+  /**
+   * Function that gets count of messages unread by a user
+   * @param {void} null
+   * @returns {void} null
+   */
   getUnreadCount() {
     const groupsWithNotification = [];
     const mappedMessages = mapKeys(this.props.messages, 'message_id');
-    console.log(mappedMessages);
-    // const readBy = mappedMessages[message.id].read_by;
-    // const readByArray = split(readBy, ',');
 
     this.props.getUserGroups(this.props.signedInUser.user.id).then(
       () => {
@@ -130,7 +133,7 @@ class Sidebar extends React.Component {
 
           if (!isEmpty(groups)) {
             groups.map((group) => {
-              this.props.getGroupMessagesForCount(group.id).then(
+              this.props.getGroupMessagesCount(group.id).then(
                 (res) => {
                   // map returned message array
                   let unreadCount = 0;
@@ -149,6 +152,11 @@ class Sidebar extends React.Component {
       });
   }
 
+  /**
+   * getUnreadCount gets called when the component mounts
+   * @param {void} null
+   * @returns {void} null
+   */
   componentDidMount() {
     this.getUnreadCount();
   }
@@ -169,10 +177,7 @@ class Sidebar extends React.Component {
       userId: this.props.signedInUser.user.id
     }).then(
       () => {
-        this.props.addFlashMessage({
-          type: 'success',
-          text: 'Your group has been successfully created'
-        });
+        toastr.success('Your group has been successfully created');
         $('[data-dismiss=modal]').trigger({ type: 'click' });
         this.setState({ isLoading: false });
       },
@@ -299,7 +304,7 @@ function mapDispatchToProps(dispatch) {
     submitNewGroup,
     addFlashMessage,
     updateReadStatus,
-    getGroupMessagesForCount
+    getGroupMessagesCount
   }, dispatch);
 }
 

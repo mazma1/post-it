@@ -1,11 +1,8 @@
 import { SET_GROUP_MEMBERS, FETCHING_GROUP_MEMBERS } from '../actions/types';
+import initialState from '../../utils/initialState';
 
-const initialState = {
-  isLoading: false,
-  members: []
-};
 
-export default (state = initialState, action = {}) => {
+export default (state = initialState.groupMembers, action = {}) => {
   switch (action.type) {
     case FETCHING_GROUP_MEMBERS:
       return {

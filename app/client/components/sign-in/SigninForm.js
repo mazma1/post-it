@@ -1,9 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
 import { withRouter, Link } from 'react-router-dom';
+import toastr from 'toastr';
 import PropTypes from 'prop-types';
 import TextField from '../common/FormTextField';
-import validateInput from '../../validations/signinValidation';
+import validateInput from '../../../utils/signinValidation';
 
 
 /**
@@ -32,7 +33,7 @@ class SigninForm extends React.Component {
    * Handles input validation on client
    * @returns {boolean} If an input is valid or not
    */
-  valid() {
+  validateInput() {
     const { errors, valid } = validateInput(this.state);
 
     if (!valid) {
@@ -63,14 +64,11 @@ class SigninForm extends React.Component {
   onSigninClick(e) {
     e.preventDefault();
 
-    if (this.valid()) {
+    if (this.validateInput()) {
       this.setState({ errors: {} });
       this.props.userSigninRequest(this.state).then(
         () => {
-          this.props.addFlashMessage({
-            type: 'success',
-            text: 'Sign in was successful. Welcome back!'
-          });
+          toastr.success('Sign in was successful. Welcome back!');
           this.props.history.push('/message_board');
         },
         ({ response }) => this.setState({ errors: response.data })
@@ -85,7 +83,7 @@ class SigninForm extends React.Component {
   render() {
     const { errors } = this.state;
     return (
-      <form className="col s12 auth-form">
+      <form className="col s12 auth-form" onSubmit={this.onSigninClick}>
         <div className="row">
           <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': errors.identifier })}>
             <TextField
@@ -133,8 +131,7 @@ class SigninForm extends React.Component {
 }
 
 SigninForm.propTypes = {
-  userSigninRequest: PropTypes.func.isRequired,
-  addFlashMessage: PropTypes.func.isRequired
+  userSigninRequest: PropTypes.func.isRequired
 };
 
 export default withRouter(SigninForm);

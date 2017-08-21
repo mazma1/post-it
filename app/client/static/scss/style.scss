@@ -3,6 +3,7 @@ $sidebar-bkground: #C0C0C0;
 $pixel0: 0;
 $pixel8: 8px;
 $pixel16: 16px;
+$pixel18: 18px;
 $pixel20: 20px;
 $pixel21: 21px;
 $pixel22: 22px;
@@ -367,6 +368,8 @@ section.cards {
 
   .msg_body {
     padding-top: 8px;
+    font-size: 15px;
+    padding: 5px;
   }
 
   .card-panel {
@@ -936,4 +939,14 @@ div.row .message-card {
   height: 30px;
 }
 
+.full-msg {
+  font-size: 15px;
+  line-height: 1.3;
+  text-align: justify;
+  padding: 10px;
+}
+
+.font18 {
+  font-size: $pixel16;
+}
 

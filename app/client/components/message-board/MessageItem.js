@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import moment from 'moment';
-import split from 'lodash/split';
+import lodashSplit from 'lodash/split';
 import mapKeys from 'lodash/mapKeys';
 import includes from 'lodash/includes';
-import { getGroupMessagesForCount } from '../../actions/groupMessagesAction';
+import { getGroupMessagesCount } from '../../actions/groupMessages';
 
 class MessageItem extends React.Component {
 
@@ -19,16 +19,25 @@ class MessageItem extends React.Component {
 
     this.onSelect = this.onSelect.bind(this);
     this.filterMessages = this.filterMessages.bind(this);
+    this.checkMessageLength = this.checkMessageLength.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const mappedMessages = mapKeys(this.props.messages, 'message_id');
     const groupId = Object.keys(mappedMessages)[0];
-    this.props.getGroupMessagesForCount(groupId).then(
-      res => {
-        const filtered = this.filterMessages(res.data);
-        console.log(this.state);
-        console.log(groupId);
+    this.props.getGroupMessagesCount(groupId).then(
+      (res) => {
+        this.filterMessages(res.data);
+      }
+    );
+  }
+
+  componentDidUpdate() {
+    const mappedMessages = mapKeys(this.props.messages, 'message_id');
+    const groupId = Object.keys(mappedMessages)[0];
+    this.props.getGroupMessagesCount(groupId).then(
+      (res) => {
+        this.filterMessages(res.data);
       }
     );
   }
@@ -39,40 +48,40 @@ class MessageItem extends React.Component {
 
   filterMessages(messages) {
     const filteredMessages = [];
-    messages.map(message => {
-      const readbyArray = split(message.read_by, ',');
-      
+
+    messages.map((message) => {
+      const readbyArray = lodashSplit(message.read_by, ',');
+
       if (this.state.messageStatus === 'unread') {
-        if (!includes(readbyArray, this.props.authenticatedUsername)) {
-          filteredMessages.push(message);
-        }
+        console.log('Unread:', this.state.messageStatus);
       }
-      
-      if (this.state.messageStatus === 'archived') {
-        if (includes(readbyArray, this.props.authenticatedUsername)) {
-          filteredMessages.push(message);
-        }
+
+      if (this.state.messageStatus === 'read') {
+        console.log('Read:', this.state.messageStatus);
       }
     });
-    console.log(filteredMessages);
-    this.setState({ filteredMessages });
+  }
+
+  checkMessageLength(message) {
+    if (message.length > 300) {
+      return `${message.substring(0, 299)}...`;
+    }
+    return message;
   }
 
   render() {
     const { messages, authenticatedUsername } = this.props;
-    // console.log(this.filterMessages(this.props.messages));
-
     return (
       <div>
-          <select className="browser-default msg-filter" name="messageStatus" onChange={this.onSelect} value={this.state.messageStatus}>
+           {/* <select className="browser-default msg-filter" name="messageStatus" onChange={this.onSelect} value={this.state.messageStatus}>
             <option value="unread">Unread</option>
             <option value="archived">Archived</option>
-          </select>
+          </select> */}
         {
           messages.map((message, index) => {
             const time = moment(message.sent_at).format('ddd, MMM Do. h:mm a');
             const readBy = message.read_by;
-            const readByArray = split(readBy, ',');
+            const readByArray = lodashSplit(readBy, ',');
 
             let normalPriority;
             let urgentPriority;
@@ -88,8 +97,8 @@ class MessageItem extends React.Component {
             return (
               <div key={index} onClick={() => this.props.onMessageClick({ id: message.message_id, read_by: message.read_by })}>
                 <div className="card-panel row" key={message.message_id}>
-                    <span className="blue-text text-darken-2"><b>@{message.sent_by.username}</b></span>
-                    <span className="blue-text text-darken-2"> {time}</span>
+                    <span className="blue-text text-darken-2 font18"><b>@{message.sent_by.username}</b></span>
+                    <span className="blue-text text-darken-2 font18"> {time}</span>
                     <span className={
                       classnames(
                         'label',
@@ -97,8 +106,8 @@ class MessageItem extends React.Component {
                         { 'label-default': normalPriority },
                         { 'label-warning': urgentPriority },
                         { 'label-danger': criticalPriority })}>{message.priority}</span>
-                    <span>  <b>|</b> <i>{ includes(readByArray, authenticatedUsername) ? 'Read' : 'Unread' }</i></span>
-                  <p className="msg_body">{message.message}</p>
+                    <span className='font18'>  <b>|</b> { includes(readByArray, authenticatedUsername) ? 'Read' : 'Unread' }</span>
+                  <p className="msg_body">{this.checkMessageLength(message.message)}</p>
                 </div>
               </div>
             );
@@ -109,4 +118,4 @@ class MessageItem extends React.Component {
   }
 }
 
-export default connect(null, { getGroupMessagesForCount })(MessageItem);
+export default connect(null, { getGroupMessagesCount })(MessageItem);
