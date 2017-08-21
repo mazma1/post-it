@@ -9,7 +9,6 @@ import isEmpty from 'lodash/isEmpty';
 import { logout } from '../../actions/signin';
 import { setSelectedGroup } from '../../actions/setSelectedGroup';
 import { setGroupMessages } from '../../actions/groupMessages';
-import { addFlashMessage } from '../../actions/flashMessage';
 import { submitNewUser } from '../../actions/groupMembers';
 import ModalFrame from '../modal/ModalFrame';
 import {
@@ -44,6 +43,12 @@ const GroupName = (props) => {
     return <div className="col-md-4 col-sm-5 col-xs-3"></div>;
   }
 
+  /**
+   * Function that truncates the name of a group
+   * if it is longer than 13
+   * @param {string} groupName Name of a group
+   * @returns {string} groupName
+   */
   function checkGroupnameLength(groupName) {
     if (groupName.length > 13) {
       return `${groupName.substring(0, 13)}...`;
@@ -300,8 +305,7 @@ function mapDispatchToProps(dispatch) {
     logout,
     setSelectedGroup,
     setGroupMessages,
-    submitNewUser,
-    addFlashMessage
+    submitNewUser
   }, dispatch);
 }
 
@@ -310,7 +314,6 @@ Header.propTypes = {
   setSelectedGroup: PropTypes.func.isRequired,
   setGroupMessages: PropTypes.func.isRequired,
   submitNewUser: PropTypes.func.isRequired,
-  addFlashMessage: PropTypes.func.isRequired,
   selectedGroup: PropTypes.object,
   username: PropTypes.string.isRequired,
   membersLoading: PropTypes.bool.isRequired
