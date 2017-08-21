@@ -72,7 +72,7 @@ describe('API ENDPOINT TESTS', () => {
 
   // Sign up test
   describe('POST /api/user/signup Route', () => {
-    it('returns successfully signed up user', (done) => {
+    it('returns successfully signed up user when parameters are complete', (done) => {
       const user = {
         firstname: 'Mary1',
         lastname: 'Mazi1',
@@ -97,6 +97,90 @@ describe('API ENDPOINT TESTS', () => {
     });
 
     // describe('status 400', () => {
+    it('returns status 400 for missing first name', (done) => {
+      const user = {
+        lastname: 'Mazi3',
+        username: 'maryx',
+        phone: '08068668100',
+        password: '1234',
+        confirm_password: '1234'
+      };
+      chai.request(app)
+        .post('/api/user/signup')
+        .type('form')
+        .send(user)
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('firstname').eql('This field is required');
+          done();
+        });
+    });
+
+    it('returns status 400 if first name is an empty string', (done) => {
+      const user = {
+        firstname: '   ',
+        lastname: 'Mazi3',
+        username: 'maryx',
+        email: ' ',
+        phone: '08068668100',
+        password: '1234',
+        confirm_password: '1234'
+      };
+      chai.request(app)
+        .post('/api/user/signup')
+        .type('form')
+        .send(user)
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('firstname').eql('First name cannot be empty');
+          done();
+        });
+    });
+
+    it('returns status 400 for missing last name', (done) => {
+      const user = {
+        firstname: 'Larry',
+        username: 'maryx',
+        phone: '08068668100',
+        password: '1234',
+        confirm_password: '1234'
+      };
+      chai.request(app)
+        .post('/api/user/signup')
+        .type('form')
+        .send(user)
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('lastname').eql('This field is required');
+          done();
+        });
+    });
+
+    it('returns status 400 if last name is an empty string', (done) => {
+      const user = {
+        firstname: 'Larry',
+        lastname: '   ',
+        username: 'maryx',
+        email: ' ',
+        phone: '08068668100',
+        password: '1234',
+        confirm_password: '1234'
+      };
+      chai.request(app)
+        .post('/api/user/signup')
+        .type('form')
+        .send(user)
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('lastname').eql('Last name cannot be empty');
+          done();
+        });
+    });
+
     it('returns status 400 for incorrect email syntax', (done) => {
       const user = {
         firstname: 'Mary2',
@@ -140,6 +224,50 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
+    it('returns status 400 if email is an empty string', (done) => {
+      const user = {
+        firstname: 'Mary3',
+        lastname: 'Mazi3',
+        username: 'maryx',
+        email: ' ',
+        phone: '08068668100',
+        password: '1234',
+        confirm_password: '1234'
+      };
+      chai.request(app)
+        .post('/api/user/signup')
+        .type('form')
+        .send(user)
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('email').eql('Invalid email');
+          done();
+        });
+    });
+
+    it('returns status 409 for existing email', (done) => {
+      const user = {
+        firstname: 'Mary3',
+        lastname: 'Mazi3',
+        username: 'maryx',
+        phone: '08068668100',
+        email: 'mary@gmail.com',
+        password: '1234',
+        confirm_password: '1234'
+      };
+      chai.request(app)
+        .post('/api/user/signup')
+        .type('form')
+        .send(user)
+        .end((err, res) => {
+          res.status.should.equal(409);
+          res.body.should.be.a('object');
+          res.body.should.have.property('email').eql('Email already exists');
+          done();
+        });
+    });
+
     it('returns status 400 for missing username', (done) => {
       const user = {
         firstname: 'Mary4',
@@ -161,6 +289,50 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
+    it('returns status 400 if username is an empty string', (done) => {
+      const user = {
+        firstname: 'Mary3',
+        lastname: 'Mazi3',
+        username: '  ',
+        email: 'mary.mazi@gmail.com',
+        phone: '08068668100',
+        password: '1234',
+        confirm_password: '1234'
+      };
+      chai.request(app)
+        .post('/api/user/signup')
+        .type('form')
+        .send(user)
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('username').eql('Username cannot be empty');
+          done();
+        });
+    });
+
+    it('returns status 409 for existing username', (done) => {
+      const user = {
+        firstname: 'Mary3',
+        lastname: 'Mazi3',
+        username: 'maryx',
+        phone: '08068668100',
+        email: 'maryoo@gmail.com',
+        password: '1234',
+        confirm_password: '1234'
+      };
+      chai.request(app)
+        .post('/api/user/signup')
+        .type('form')
+        .send(user)
+        .end((err, res) => {
+          res.status.should.equal(409);
+          res.body.should.be.a('object');
+          res.body.should.have.property('username').eql('Username already exists');
+          done();
+        });
+    });
+
     it('returns status 400 for missing password', (done) => {
       const user = {
         firstname: 'Mary5',
@@ -177,6 +349,93 @@ describe('API ENDPOINT TESTS', () => {
           res.status.should.equal(400);
           res.body.should.be.a('object');
           res.body.should.have.property('password').eql('This field is required');
+          done();
+        });
+    });
+
+    it('returns status 400 if password is an empty string', (done) => {
+      const user = {
+        firstname: 'Larry',
+        lastname: 'Potter',
+        username: 'maryx',
+        email: 'larry@gmail.com',
+        phone: '08068668100',
+        password: '   ',
+        confirm_password: '1234'
+      };
+      chai.request(app)
+        .post('/api/user/signup')
+        .type('form')
+        .send(user)
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('password').eql('Password cannot be empty');
+          done();
+        });
+    });
+
+    it('returns status 400 for missing confirm password', (done) => {
+      const user = {
+        firstname: 'Mary5',
+        lastname: 'Mazi5',
+        phone: '08068668100',
+        email: 'maryx@gmail.com',
+        username: 'maryx',
+        password: '1234'
+      };
+      chai.request(app)
+        .post('/api/user/signup')
+        .type('form')
+        .send(user)
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('confirm_password').eql('This field is required');
+          done();
+        });
+    });
+
+    it('returns status 400 if confirm password is an empty string', (done) => {
+      const user = {
+        firstname: 'Larry',
+        lastname: 'Potter',
+        username: 'maryx',
+        email: 'larry@gmail.com',
+        phone: '08068668100',
+        password: '1234',
+        confirm_password: '   '
+      };
+      chai.request(app)
+        .post('/api/user/signup')
+        .type('form')
+        .send(user)
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('confirm_password').eql('Confirm password cannot be empty');
+          done();
+        });
+    });
+
+    it('returns status 400 if password and confirm password do not match', (done) => {
+      const user = {
+        firstname: 'Larry',
+        lastname: 'Potter',
+        username: 'maryx',
+        email: 'larry@gmail.com',
+        phone: '08068668100',
+        password: '12345',
+        confirm_password: '1234'
+      };
+      chai.request(app)
+        .post('/api/user/signup')
+        .type('form')
+        .send(user)
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('confirm_password').eql('Passwords must match');
           done();
         });
     });
@@ -224,6 +483,28 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
+    it('returns status 400 if phone number is an empty string', (done) => {
+      const user = {
+        firstname: 'Mary3',
+        lastname: 'Mazi3',
+        username: 'maryx',
+        email: 'xyz@yahoo.com',
+        phone: '',
+        password: '1234',
+        confirm_password: '1234'
+      };
+      chai.request(app)
+        .post('/api/user/signup')
+        .type('form')
+        .send(user)
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('phone').eql('This field is required');
+          done();
+        });
+    });
+
     it('returns status 400 when all required fields are missing', (done) => {
       const user = {
         firstname: '',
@@ -264,7 +545,7 @@ describe('API ENDPOINT TESTS', () => {
         .type('form')
           .send(user)
           .end((err, res) => {
-            res.status.should.equal(201);
+            res.status.should.equal(200);
             res.body.should.be.a('object');
             res.body.should.have.property('message').eql('User successfully logged in');
             res.body.should.have.property('token');
@@ -307,7 +588,7 @@ describe('API ENDPOINT TESTS', () => {
           });
     });
 
-    it('returns status 401 for no identifier (email or username) or password', (done) => {
+    it('returns status 400 for no identifier (email or username) or password', (done) => {
       const user = {
         identifier: '',
         password: ''
@@ -316,12 +597,96 @@ describe('API ENDPOINT TESTS', () => {
         .post('/api/user/signin')
           .send(user)
           .end((err, res) => {
-            res.status.should.equal(401);
+            res.status.should.equal(400);
             res.body.should.be.a('object');
             res.body.should.have.property('identifier').eql('This field is required');
             res.body.should.have.property('password').eql('This field is required');
             done();
           });
+    });
+  });
+
+  // Password reset link test
+  describe('POST /api/user/reset_password Route', () => {
+    it('returns status 400 for missing email', (done) => {
+      chai.request(app)
+        .post('/api/user/reset_password')
+        .type('form')
+        .send()
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
+
+    it('returns status 401 for invalid email', (done) => {
+      chai.request(app)
+        .post('/api/user/reset_password')
+        .type('form')
+        .send({email: 'xyz'})
+        .end((err, res) => {
+          res.status.should.equal(401);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
+    
+  });
+
+  // Update password test
+  describe('POST /api/user/updatepassword/:token Route', () => {
+    it('returns status 400 if password and confirm password fields are missing', (done) => {
+      chai.request(app)
+        .post('/api/user/updatepassword/:token')
+        .type('form')
+        .send()
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('password').eql('New password is required');
+          res.body.should.have.property('confirm_password').eql('Confirm new password is required');
+          done();
+        });
+    });
+
+    it('returns status 400 if password field is missing', (done) => {
+      chai.request(app)
+        .post('/api/user/updatepassword/:token')
+        .type('form')
+        .send({ confirm_password: '1234' })
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('password').eql('New password is required');
+          done();
+        });
+    });
+
+    it('returns status 400 if confirm password field is missing', (done) => {
+      chai.request(app)
+        .post('/api/user/updatepassword/:token')
+        .type('form')
+        .send({ password: '1234' })
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('confirm_password').eql('Confirm new password is required');
+          done();
+        });
+    });
+
+    it('returns status 400 if passwords don\'t match', (done) => {
+      chai.request(app)
+        .post('/api/user/updatepassword/:token')
+        .type('form')
+        .send({ password: '1234', confirm_password: '12' })
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('confirm_password').eql('Passwords must match');
+          done();
+        });
     });
   });
 
@@ -336,7 +701,7 @@ describe('API ENDPOINT TESTS', () => {
         .end((err, res) => {
           res.status.should.equal(403);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('No token provided.');
+          res.body.should.have.property('error').eql('No token provided.');
           done();
         });
     });
@@ -358,7 +723,7 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 if group name already exists', (done) => {
+    it('returns status 409 if group name already exists', (done) => {
       const group = {
         group_name: 'Test Group 2'
       };
@@ -366,7 +731,7 @@ describe('API ENDPOINT TESTS', () => {
         .set('x-access-token', token)
         .send(group)
         .end((err, res) => {
-          res.status.should.equal(400);
+          res.status.should.equal(409);
           res.body.should.be.a('object');
           res.body.should.have.property('error').eql('Group already exists');
           done();
@@ -398,7 +763,7 @@ describe('API ENDPOINT TESTS', () => {
         .end((err, res) => {
           res.status.should.equal(403);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('No token provided.');
+          res.body.should.have.property('error').eql('No token provided.');
           done();
         });
     });
@@ -446,7 +811,7 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 when user already exists in group', (done) => {
+    it('returns status 409 when user already exists in group', (done) => {
       const identifier = {
         identifier: 'temi'
       };
@@ -454,7 +819,7 @@ describe('API ENDPOINT TESTS', () => {
         .set('x-access-token', token)
         .send(identifier)
         .end((err, res) => {
-          res.status.should.equal(400);
+          res.status.should.equal(409);
           res.body.should.be.a('object');
           res.body.should.have.property('error').eql('User has already been added to group');
           done();
@@ -471,7 +836,7 @@ describe('API ENDPOINT TESTS', () => {
         .end((err, res) => {
           res.status.should.equal(403);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('No token provided.');
+          res.body.should.have.property('error').eql('No token provided.');
           done();
         });
     });
@@ -482,14 +847,16 @@ describe('API ENDPOINT TESTS', () => {
         .send({ })
         .end((err, res) => {
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Message is required.');
+          res.body.should.have.property('error').eql('Message is required.');
           done();
         });
     });
 
     it('successfully send specified message to group', (done) => {
       const message = {
-        message: 'Test Message'
+        message: 'Test Message',
+        read_by: 'mazma',
+        priority: 'normal'
       };
       chai.request(app).post('/api/group/2/message')
         .set('x-access-token', token)
@@ -503,13 +870,77 @@ describe('API ENDPOINT TESTS', () => {
   });
 
   // Get group messages
-  describe('POST /api/group/:group_id/messages Route', () => {
+  describe('GET /api/group/:group_id/messages Route', () => {
     it('returns status 403 when user is not logged in (no token is provided)', (done) => {
       chai.request(app).get('/api/group/2/messages')
         .end((err, res) => {
           res.status.should.equal(403);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('No token provided.');
+          res.body.should.have.property('error').eql('No token provided.');
+          done();
+        });
+    });
+
+    it('successfully fetches messages of specified group', (done) => {
+      chai.request(app).get('/api/group/2/messages')
+        .set('x-access-token', token)
+        .end((err, res) => {
+          res.status.should.equal(200);
+          res.body.should.be.a('array');
+          done();
+        });
+    });
+  });
+
+  // Update read message status
+  describe('PATCH /api/group/message/read Route', () => {
+    it('returns status 200 when message read staus is updated', (done) => {
+      const username = 'temi',
+        readBy = 'mazma';
+      const details = {
+        messageId: 1,
+        updatedReadBy: `${readBy},${username}`
+      };
+      chai.request(app).get('/api/group/message/read')
+        .send(details)
+        .end((err, res) => {
+          res.status.should.equal(200);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
+
+    it('returns status 200 when message read staus is updated', (done) => {
+      const username = 'mazma',
+        readBy = 'mazma';
+      const details = {
+        messageId: 1,
+        updatedReadBy: `${readBy},${username}`
+      };
+      chai.request(app).get('/api/group/message/read')
+        .send(details)
+        .end((err, res) => {
+          res.status.should.equal(200);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
+  });   
+
+  // Get group Members
+  describe('GET /api/group/:group_id/members', () => {
+    it('returns status 200 when message read staus is updated', (done) => {
+      const username = 'temi',
+        readBy = 'mazma';
+      const details = {
+        messageId: 1,
+        updatedReadBy: `${readBy},${username}`
+      };
+      chai.request(app).get('/api/group/message/read')
+        .send(details)
+        .end((err, res) => {
+          res.status.should.equal(200);
+          res.body.should.be.a('object');
           done();
         });
     });

@@ -73,10 +73,10 @@ class MessageItem extends React.Component {
     const { messages, authenticatedUsername } = this.props;
     return (
       <div>
-          <select className="browser-default msg-filter" name="messageStatus" onChange={this.onSelect} value={this.state.messageStatus}>
+          {/* <select className="browser-default msg-filter" name="messageStatus" onChange={this.onSelect} value={this.state.messageStatus}>
             <option value="unread">Unread</option>
             <option value="archived">Archived</option>
-          </select>
+          </select> */}
         {
           messages.map((message, index) => {
             const time = moment(message.sent_at).format('ddd, MMM Do. h:mm a');

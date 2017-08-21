@@ -178,7 +178,7 @@ export default {
                 // send email
                 sendEmail(emailParams);
                 res.status(200).send('Email sent');
-              }).catch(err => res.status(400).send(err.message));
+              }).catch(err => res.status(500).send(err.message));
             } else {
               models.ForgotPassword.create({
                 user_id: user.id,
@@ -188,7 +188,7 @@ export default {
               .then(() => {
                 // send email
                 sendEmail(emailParams);
-                res.status(201).send('Email sent');
+                res.status(200).send('Email sent');
               });
             }
           })
