@@ -891,16 +891,4 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
   }); 
-
-  // Get group Members
-  describe('GET /api/group/:group_id/members', () => {
-    it('returns status 200 when group members are fetched', (done) => {
-      chai.request(app).get('/api/group/1/members')
-        .end((err, res) => {
-          res.status.should.equal(200);
-          res.body.should.have.property('group');
-          done();
-        });
-    });
-  });
 });
