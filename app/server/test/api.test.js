@@ -890,42 +890,7 @@ describe('API ENDPOINT TESTS', () => {
           done();
         });
     });
-  });
-
-  // Update read message status
-  describe('PATCH /api/group/message/read Route', () => {
-    it('returns status 200 when message read staus is updated', (done) => {
-      const username = 'temi',
-        readBy = 'mazma';
-      const details = {
-        messageId: 1,
-        updatedReadBy: `${readBy},${username}`
-      };
-      chai.request(app).get('/api/group/message/read')
-        .send(details)
-        .end((err, res) => {
-          res.status.should.equal(200);
-          res.body.should.be.a('object');
-          done();
-        });
-    });
-
-    it('returns status 200 when message read staus is updated', (done) => {
-      const username = 'mazma',
-        readBy = 'mazma';
-      const details = {
-        messageId: 1,
-        updatedReadBy: `${readBy},${username}`
-      };
-      chai.request(app).get('/api/group/message/read')
-        .send(details)
-        .end((err, res) => {
-          res.status.should.equal(200);
-          res.body.should.be.a('object');
-          done();
-        });
-    });
-  });   
+  }); 
 
   // Get group Members
   describe('GET /api/group/:group_id/members', () => {
