@@ -21,7 +21,7 @@ export default (state = initialState.groupMessages, action = {}) => {
     case FETCH_GROUP_MESSAGES_FAILURE:
       return {
         isLoading: false,
-        error: action.ex
+        error: action.error
       };
 
     default:

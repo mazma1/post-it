@@ -820,9 +820,9 @@ input[type=number]:not(.browser-default):focus:not([readonly]) + label {
   padding-left: 13px;
 }
 
-.modal {
-  background-color: transparent;
-}
+// .modal {
+//   background-color: transparent;
+// }
 @media (min-width: 768px) {
   .modal-dialog {
      width: 100%;
@@ -937,6 +937,10 @@ div.row .message-card {
   width: 97%;
   margin-left: 12px;
   height: 30px;
+}
+
+select.browser-default.msg-filter {
+  height: 1.9rem;
 }
 
 .full-msg {

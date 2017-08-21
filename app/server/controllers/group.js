@@ -171,7 +171,10 @@ export default {
           model: models.User,
           as: 'sent_by',
           attributes: ['username'],
-        }]
+        }],
+        order: [
+          ['created_at', 'DESC'],
+        ]
       })
       .then((message) => {
         if (message) {

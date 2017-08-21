@@ -14,11 +14,11 @@ import ModalFrame from '../modal/ModalFrame';
  *@param {object} props All the properties received from the parent
  *@prop {object} props.closeMessage  Function that closes the component
  *@prop {object} props.clickedMessageId Id of clicked message
- *@prop {function} props.messages Called when a group name is clicked
- *@prop {function} props.openModal Updates the parent component state when modal is open
- *@returns {JSX} Unordered list of a user's groups (if any)
- *@returns {JSX} Defined 'emptyGroup' constant if a user belongs to no group
- *@returns {JSX} A 'Loading...' indicator when the groups are still being fetched
+ *@prop {function} props.messages Array of messages in a group
+ *@prop {function} props.openModal Handles the event to open modal that
+ contains users that have read a message
+ *@prop {function} props.closeModal Closes the modal that contains users that have read a message
+ *@returns {JSX} Markup for the full message body
   */
 function MessageBody(props) {
   const { clickedMessageId, messages } = props;

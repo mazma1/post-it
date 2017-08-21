@@ -4,6 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 import { updateReadStatus, getGroupMessages } from '../../actions/groupMessages';
 import MessageBody from '../message-board/MessageBody';
 import MessageItem from '../message-board/MessageItem';
+import MessageForm from './MsgForm';
 
 /** MessageCard component for message board */
 class MessageCard extends React.Component {
@@ -122,7 +123,12 @@ class MessageCard extends React.Component {
           closeModal={this.closeModal}
           openModal={this.openModal}
           messages={this.props.message.messages}/>
-        : <MessageItem {...props} /> }
+        :
+        <div>
+          <MessageItem {...props} />
+          <MessageForm/>
+        </div>
+        }
       </div>
     );
   }

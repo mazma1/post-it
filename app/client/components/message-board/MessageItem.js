@@ -32,7 +32,8 @@ class MessageItem extends React.Component {
     );
   }
 
-  componentDidUpdate() {
+  onSelect(e) {
+    this.setState({ [e.target.name]: e.target.value });
     const mappedMessages = mapKeys(this.props.messages, 'message_id');
     const groupId = Object.keys(mappedMessages)[0];
     this.props.getGroupMessagesCount(groupId).then(
@@ -42,24 +43,23 @@ class MessageItem extends React.Component {
     );
   }
 
-  onSelect(e) {
-    this.setState({ [e.target.name]: e.target.value });
-  }
-
   filterMessages(messages) {
     const filteredMessages = [];
-
-    messages.map((message) => {
+    messages.map(message => {
       const readbyArray = lodashSplit(message.read_by, ',');
-
       if (this.state.messageStatus === 'unread') {
-        console.log('Unread:', this.state.messageStatus);
+        if (!includes(readbyArray, this.props.authenticatedUsername)) {
+          filteredMessages.push(message);
+        }
       }
 
-      if (this.state.messageStatus === 'read') {
-        console.log('Read:', this.state.messageStatus);
+      if (this.state.messageStatus === 'archived') {
+        if (includes(readbyArray, this.props.authenticatedUsername)) {
+          filteredMessages.push(message);
+        }
       }
     });
+    this.setState({ filteredMessages });
   }
 
   checkMessageLength(message) {
@@ -70,15 +70,15 @@ class MessageItem extends React.Component {
   }
 
   render() {
-    const { messages, authenticatedUsername } = this.props;
+    const { authenticatedUsername } = this.props;
     return (
       <div>
-           {/* <select className="browser-default msg-filter" name="messageStatus" onChange={this.onSelect} value={this.state.messageStatus}>
+           <select className="browser-default msg-filter" name="messageStatus" onChange={this.onSelect} value={this.state.messageStatus}>
             <option value="unread">Unread</option>
             <option value="archived">Archived</option>
-          </select> */}
+          </select>
         {
-          messages.map((message, index) => {
+          this.state.filteredMessages.map((message, index) => {
             const time = moment(message.sent_at).format('ddd, MMM Do. h:mm a');
             const readBy = message.read_by;
             const readByArray = lodashSplit(readBy, ',');

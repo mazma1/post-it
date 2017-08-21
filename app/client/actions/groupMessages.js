@@ -28,8 +28,8 @@ export function getGroupMessages(groupId) {
     return request.then((res) => {
       const messages = res.data;
       dispatch(setGroupMessages(messages));
-    }).catch((ex) => {
-      dispatch(fetchGroupMessagesFailure(ex));
+    }).catch((error) => {
+      dispatch(fetchGroupMessagesFailure(error));
     });
   };
 }
