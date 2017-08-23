@@ -13,7 +13,7 @@ describe('Sign up async action', () => {
     nock.cleanAll();
   });
 
-  it('creates SET_CURRENT_USER when signin is successful', () => {
+  it('should create SET_CURRENT_USER when signin is successful', () => {
     nock('http://localhost')
       .post('/api/user/signup')
       .reply(201, { data: { token: '1234tycngsgu67890plkm' } });

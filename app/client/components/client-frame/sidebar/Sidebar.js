@@ -11,7 +11,6 @@ import { getUserGroups, submitNewGroup } from '../../../actions/userGroups';
 import { setSelectedGroup } from '../../../actions/setSelectedGroup';
 import { getGroupMessages, updateReadStatus, getGroupMessagesCount } from '../../../actions/groupMessages';
 import { getGroupMembers } from '../../../actions/groupMembers';
-import { addFlashMessage } from '../../../actions/flashMessage';
 import ModalFrame from '../../modal/ModalFrame';
 import {
   ModalHeader,
@@ -143,6 +142,7 @@ class Sidebar extends React.Component {
                     }
                   });
                   groupsWithNotification.push({ id: group.id, name: group.name, unreadCount });
+                  console.log(groupsWithNotification);
                   this.setState({ groups: groupsWithNotification });
                 }
               );
@@ -302,7 +302,6 @@ function mapDispatchToProps(dispatch) {
     getGroupMessages,
     getGroupMembers,
     submitNewGroup,
-    addFlashMessage,
     updateReadStatus,
     getGroupMessagesCount
   }, dispatch);
@@ -314,7 +313,6 @@ Sidebar.propTypes = {
   userGroups: PropTypes.object.isRequired,
   setSelectedGroup: PropTypes.func.isRequired,
   selectedGroup: PropTypes.object,
-  addFlashMessage: PropTypes.func.isRequired,
   submitNewGroup: PropTypes.func.isRequired,
   getGroupMembers: PropTypes.func.isRequired,
   getGroupMessages: PropTypes.func.isRequired

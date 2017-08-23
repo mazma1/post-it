@@ -1,7 +1,6 @@
 import React from 'react';
 import ClientFrame from '../client-frame/ClientFrame';
 import MessageCard from './MsgCard';
-import MessageForm from './MsgForm';
 
 /**
  * MessageBoard Component

@@ -7,9 +7,8 @@ import * as types from '../../actions/types';
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-
-describe('Sign in action creators tests', () => {
-  describe('Sync action creators', () => {
+describe('Sign in', () => {
+  describe('sync action creators', () => {
     it('should create an action to set current user', () => {
       const user = {
         data: {
@@ -37,12 +36,12 @@ describe('Sign in action creators tests', () => {
     });
   });
 
-  describe('Async action creators', () => {
+  describe('async action creators', () => {
     afterEach(() => {
       nock.cleanAll();
     });
 
-    it('creates SET_CURRENT_USER when signin is successful', () => {
+    it('should create SET_CURRENT_USER when signin is successful', () => {
       nock('http://localhost')
         .post('/api/user/signin')
         .reply(201, { data: { token: '1234tycngsgu67890plkm' } });

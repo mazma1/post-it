@@ -44,13 +44,15 @@ describe('User groups action creators tests', () => {
         .post('/api/user/1/groups')
         .reply(201, { data: { group: [{ id: 1, name: 'Cohort 29' }] } });
 
-      const expectedAction = {
-        type: types.SET_CURRENT_USER,
-        group: [{
-          id: 1,
-          name: 'Cohort 29'
-        }]
-      };
+      const expectedAction = [
+        { type: types.FETCHING_USER_GROUPS },
+        { type: types.SET_CURRENT_USER,
+          group: [{
+            id: 1,
+            name: 'Cohort 29'
+          }]
+        }  
+      ];
       const store = mockStore();
 
       store.dispatch(actions.getUserGroups(1)).then(() => {

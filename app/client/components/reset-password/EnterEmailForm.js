@@ -6,7 +6,6 @@ import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import TextField from '../common/FormTextField';
-import { addFlashMessage } from '../../actions/flashMessage';
 import { resetLinkRequest } from '../../actions/resetPassword';
 
 
@@ -90,4 +89,4 @@ class EnterEmailForm extends React.Component {
   }
 }
 
-export default connect(null, { resetLinkRequest, addFlashMessage })(EnterEmailForm);
+export default connect(null, { resetLinkRequest })(EnterEmailForm);

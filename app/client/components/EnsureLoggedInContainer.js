@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import toastr from 'toastr';
 import { withRouter, Route } from 'react-router-dom';
 import MessageBoard from './message-board/MessageBoard';
-import { addFlashMessage } from '../actions/flashMessage';
 
 /**
  * Component that checks if a user is logged in
@@ -54,9 +53,8 @@ function mapStateToProps(state) {
 
 
 EnsureLoggedIn.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-  addFlashMessage: PropTypes.func.isRequired
+  isLoggedIn: PropTypes.bool.isRequired
 };
 
-export default withRouter(connect(mapStateToProps, { addFlashMessage })(EnsureLoggedIn));
+export default withRouter(connect(mapStateToProps)(EnsureLoggedIn));
 

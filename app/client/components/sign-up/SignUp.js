@@ -6,7 +6,6 @@ import { bindActionCreators } from 'redux';
 import SignupForm from './SignupForm';
 import { userSignupRequest } from '../../actions/signup';
 import { userSigninRequest } from '../../actions/signin';
-import { addFlashMessage } from '../../actions/flashMessage';
 
 /**
  * SignUp Page Component
@@ -19,7 +18,7 @@ class SignUp extends React.Component {
    * @returns {ReactElement} SignUp page markup
    */
   render() {
-    const { userSignupRequest, userSigninRequest, addFlashMessage } = this.props;
+    const { userSignupRequest, userSigninRequest } = this.props;
     return (
       <div className="background">
         <div className="container">
@@ -32,7 +31,6 @@ class SignUp extends React.Component {
               <SignupForm
                 userSignupRequest={userSignupRequest}
                 userSigninRequest={userSigninRequest}
-                addFlashMessage={addFlashMessage}
               />
             </div>
           </div>
@@ -52,15 +50,13 @@ class SignUp extends React.Component {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     userSignupRequest,
-    userSigninRequest,
-    addFlashMessage
+    userSigninRequest
   }, dispatch);
 }
 
 SignUp.propTypes = {
   userSignupRequest: PropTypes.func.isRequired,
-  userSigninRequest: PropTypes.func.isRequired,
-  addFlashMessage: PropTypes.func.isRequired
+  userSigninRequest: PropTypes.func.isRequired
 };
 
 

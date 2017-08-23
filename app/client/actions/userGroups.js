@@ -9,7 +9,7 @@ export function getUserGroups(userId) {
   const request = axios.get(`/api/user/${userId}/groups`); // Returns a response
 
   return (dispatch) => {
-    dispatch(fetchingUserGroups({}));
+    dispatch(fetchingUserGroups());
     return request.then((res) => {
       const group = res.data.group;
       dispatch(setUserGroups(group));

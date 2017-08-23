@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
+import toastr from 'toastr';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { postNewMessage } from '../../actions/groupMessages';
-import { addFlashMessage } from '../../actions/flashMessage';
 
 /**
  * Message Input Form component for message board
@@ -72,10 +72,7 @@ class MsgForm extends React.Component {
         }).then(() => {
           this.setState({ messageInput: '' });
         }).catch(() => {
-          this.props.addFlashMessage({
-            type: 'error',
-            text: 'Unable to send message, please try again'
-          });
+          toastr.error('Unable to send message, please try again');
         });
       } else {
         this.props.postNewMessage({
@@ -86,10 +83,7 @@ class MsgForm extends React.Component {
         }).then(() => {
           this.setState({ messageInput: '' });
         }).catch(() => {
-          this.props.addFlashMessage({
-            type: 'error',
-            text: 'Unable to send message, please try again'
-          });
+          toastr.error('Unable to send message, please try again');
         });
       }
     }
@@ -170,8 +164,7 @@ function mapStateToProps(state) {
  */
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    postNewMessage,
-    addFlashMessage
+    postNewMessage
   }, dispatch);
 }
 
@@ -179,8 +172,7 @@ function mapDispatchToProps(dispatch) {
 MsgForm.propTypes = {
   userId: PropTypes.number,
   groupId: PropTypes.number,
-  postNewMessage: PropTypes.func.isRequired,
-  addFlashMessage: PropTypes.func.isRequired
+  postNewMessage: PropTypes.func.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MsgForm);

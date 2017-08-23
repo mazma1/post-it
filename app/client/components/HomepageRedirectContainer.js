@@ -4,7 +4,6 @@ import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import toastr from 'toastr';
 import HomePage from './home-page/HomePage';
-import { addFlashMessage } from '../actions/flashMessage';
 
 
 /** HomepageRedirect Component */
@@ -45,9 +44,8 @@ function mapStateToProps(state) {
 }
 
 HomepageRedirect.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-  addFlashMessage: PropTypes.func.isRequired
+  isAuthenticated: PropTypes.bool.isRequired
 };
 
-export default connect(mapStateToProps, { addFlashMessage })(HomepageRedirect);
+export default connect(mapStateToProps)(HomepageRedirect);
 
