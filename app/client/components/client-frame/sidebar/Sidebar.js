@@ -153,7 +153,6 @@ class Sidebar extends React.Component {
       () => {
         if (!this.props.userGroups.isLoading) {
           const groups = this.props.userGroups.groups;
-          console.log('working - up:', groupsWithNotification);
           if (!isEmpty(groups)) {
             groups.map((group) => {
               this.props.getGroupMessagesCount(group.id).then(
