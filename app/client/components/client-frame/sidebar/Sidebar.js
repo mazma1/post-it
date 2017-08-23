@@ -76,6 +76,30 @@ class Sidebar extends React.Component {
   }
 
   /**
+   * Defines what must be executed before sidebar component mounts
+   * It dispatches getUserGroups action to fetch the groups a signed in user belongs to
+   * If no group was found, it dispatches setSelectedGroup with an empty object
+   * If groups were found:
+   * it sets the first group from the returned groups as active
+   * it fetches the messages and members belonging to the first group
+   * @returns {void}
+   */
+  componentWillMount() {
+    const userId = this.props.signedInUser.user.id;  // signedInUser.user.data{id, firstname,....}
+    this.props.getUserGroups(userId).then(
+      () => {
+        if (this.props.userGroups.hasGroup === false) {
+          this.props.setSelectedGroup({});
+        } else {
+          this.props.setSelectedGroup(this.props.userGroups.groups[0]);
+          this.props.getGroupMessages(this.props.userGroups.groups[0].id);
+          this.props.getGroupMembers(this.props.userGroups.groups[0].id);
+        }
+      }
+    );
+  }
+
+  /**
    * Handles Open Modal event
    * Updates isOpen state
    * @param {SyntheticEvent} e
@@ -129,7 +153,7 @@ class Sidebar extends React.Component {
       () => {
         if (!this.props.userGroups.isLoading) {
           const groups = this.props.userGroups.groups;
-
+          console.log('working - up:', groupsWithNotification);
           if (!isEmpty(groups)) {
             groups.map((group) => {
               this.props.getGroupMessagesCount(group.id).then(
@@ -142,7 +166,7 @@ class Sidebar extends React.Component {
                     }
                   });
                   groupsWithNotification.push({ id: group.id, name: group.name, unreadCount });
-                  console.log(groupsWithNotification);
+                  console.log('working', groupsWithNotification);
                   this.setState({ groups: groupsWithNotification });
                 }
               );
@@ -182,30 +206,6 @@ class Sidebar extends React.Component {
         this.setState({ isLoading: false });
       },
       ({ response }) => { this.setState({ error: response.data, isLoading: false }); }
-    );
-  }
-
-  /**
-   * Defines what must be executed before sidebar component mounts
-   * It dispatches getUserGroups action to fetch the groups a signed in user belongs to
-   * If no group was found, it dispatches setSelectedGroup with an empty object
-   * If groups were found:
-   * it sets the first group from the returned groups as active
-   * it fetches the messages and members belonging to the first group
-   * @returns {void}
-   */
-  componentWillMount() {
-    const userId = this.props.signedInUser.user.id;  // signedInUser.user.data{id, firstname,....}
-    this.props.getUserGroups(userId).then(
-      () => {
-        if (this.props.userGroups.hasGroup === false) {
-          this.props.setSelectedGroup({});
-        } else {
-          this.props.setSelectedGroup(this.props.userGroups.groups[0]);
-          this.props.getGroupMessages(this.props.userGroups.groups[0].id);
-          this.props.getGroupMembers(this.props.userGroups.groups[0].id);
-        }
-      }
     );
   }
 

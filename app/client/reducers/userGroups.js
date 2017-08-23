@@ -13,13 +13,13 @@ export default (state = initialState.userGroups, action = {}) => {
   switch (action.type) {
     case FETCHING_USER_GROUPS:
       return {
-        ...state,
         isLoading: true
       };
 
     case SET_USER_GROUPS:
       return {
         ...state,
+        isLoading: false,
         hasGroup: !isEmpty(action.group),
         groups: action.group
       };
