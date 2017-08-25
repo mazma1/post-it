@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import moment from 'moment';
+import toastr from 'toastr';
 import lodashSplit from 'lodash/split';
 import mapKeys from 'lodash/mapKeys';
 import includes from 'lodash/includes';
-import { getGroupMessagesCount } from '../../actions/groupMessages';
+import { getGroupMessagesCount, archiveMessage } from '../../actions/groupMessages';
 
 class MessageItem extends React.Component {
 
@@ -18,6 +19,7 @@ class MessageItem extends React.Component {
     };
 
     this.onSelect = this.onSelect.bind(this);
+    this.archiveMessageRequest = this.archiveMessageRequest.bind(this);
     this.filterMessages = this.filterMessages.bind(this);
     this.checkMessageLength = this.checkMessageLength.bind(this);
   }
@@ -45,16 +47,15 @@ class MessageItem extends React.Component {
 
   filterMessages(messages) {
     const filteredMessages = [];
-    messages.map(message => {
-      const readbyArray = lodashSplit(message.read_by, ',');
+    messages.map((message) => {
       if (this.state.messageStatus === 'unread') {
-        if (!includes(readbyArray, this.props.authenticatedUsername)) {
+        if (!includes(message.isArchived, this.props.authenticatedUsername)) {
           filteredMessages.push(message);
         }
       }
 
       if (this.state.messageStatus === 'archived') {
-        if (includes(readbyArray, this.props.authenticatedUsername)) {
+        if (includes(message.isArchived, this.props.authenticatedUsername)) {
           filteredMessages.push(message);
         }
       }
@@ -69,8 +70,28 @@ class MessageItem extends React.Component {
     return message;
   }
 
+  archiveMessageRequest(groupId) {
+    this.props.archiveMessage(groupId).then(
+      (res) => {
+        toastr.success('Message successfully archived');
+      }
+    );
+  }
+
   render() {
     const { authenticatedUsername } = this.props;
+    const ArchiveBtn = (props) => {
+      if (!includes(props.message.isArchived, this.props.authenticatedUsername)) {
+        return (
+          <i className="material-icons pull-right archive-btn"
+            data-toggle="tooltip" data-placement="left" title="Archive Message"
+            onClick={() => this.archiveMessageRequest({ messageId: props.message.message_id })}>
+            archive
+          </i>
+        );
+      }
+      return null;
+    };
     return (
       <div>
            <select className="browser-default msg-filter" name="messageStatus" onChange={this.onSelect} value={this.state.messageStatus}>
@@ -95,7 +116,7 @@ class MessageItem extends React.Component {
             }
 
             return (
-              <div key={index} onClick={() => this.props.onMessageClick({ id: message.message_id, read_by: message.read_by })}>
+              <div key={index}>
                 <div className="card-panel row" key={message.message_id}>
                     <span className="blue-text text-darken-2 font18"><b>@{message.sent_by.username}</b></span>
                     <span className="blue-text text-darken-2 font18"> {time}</span>
@@ -106,8 +127,14 @@ class MessageItem extends React.Component {
                         { 'label-default': normalPriority },
                         { 'label-warning': urgentPriority },
                         { 'label-danger': criticalPriority })}>{message.priority}</span>
-                    <span className='font18'>  <b>|</b> { includes(readByArray, authenticatedUsername) ? 'Read' : 'Unread' }</span>
-                  <p className="msg_body">{this.checkMessageLength(message.message)}</p>
+                    <span className='font18'> { includes(readByArray, authenticatedUsername) ? <ArchiveBtn message={message}/> : ' | Unread' }</span>
+                  <p className="msg_body"
+                    onClick={() => this.props.onMessageClick({
+                      id: message.message_id,
+                      read_by: message.read_by }
+                    )}>
+                    {this.checkMessageLength(message.message)}
+                  </p>
                 </div>
               </div>
             );
@@ -118,4 +145,4 @@ class MessageItem extends React.Component {
   }
 }
 
-export default connect(null, { getGroupMessagesCount })(MessageItem);
+export default connect(null, { getGroupMessagesCount, archiveMessage })(MessageItem);

@@ -31,6 +31,9 @@ module.exports = {
       read_by: {
         type: Sequelize.TEXT
       },
+      isArchived: {
+        type: Sequelize.ARRAY(Sequelize.TEXT)
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

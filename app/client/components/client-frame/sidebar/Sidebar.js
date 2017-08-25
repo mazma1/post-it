@@ -165,7 +165,6 @@ class Sidebar extends React.Component {
                     }
                   });
                   groupsWithNotification.push({ id: group.id, name: group.name, unreadCount });
-                  console.log('working', groupsWithNotification);
                   this.setState({ groups: groupsWithNotification });
                 }
               );
