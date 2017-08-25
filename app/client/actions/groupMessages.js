@@ -6,7 +6,7 @@ import {
 
 
 export function getGroupMessagesCount(groupId) {
-  const request = axios.get(`/api/group/${groupId}/messages`); // Returns a promise
+  const request = axios.get(`/api/group/${groupId}/messages`);
 
   return (dispatch) => {
     return request;
@@ -20,7 +20,7 @@ export function getGroupMessages(groupId) {
     };
   }
 
-  const request = axios.get(`/api/group/${groupId}/messages`); // Returns a promise
+  const request = axios.get(`/api/group/${groupId}/messages`);
 
   return (dispatch) => {
     dispatch(fetchingGroupMessages({}));
@@ -37,6 +37,12 @@ export function getGroupMessages(groupId) {
 export function updateReadStatus(messageDetails) {
   const groupId = messageDetails.group_id;
   const request = axios.patch('/api/group/message/read', messageDetails);
+
+  return dispatch => request;
+}
+
+export function archiveMessage(messageId) {
+  const request = axios.patch('/api/group/message/archive', messageId);
 
   return dispatch => request;
 }

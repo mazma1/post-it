@@ -7,6 +7,7 @@ module.exports = {
         user_id: 1,
         priority: 'normal',
         read_by: 'mazma',
+        isArchived: [''],
         created_at: new Date(),
         updated_at: new Date()
       },
@@ -16,6 +17,7 @@ module.exports = {
         user_id: 3,
         priority: 'urgent',
         read_by: 'chyke',
+        isArchived: [''],
         created_at: new Date(),
         updated_at: new Date()
       },
@@ -25,6 +27,7 @@ module.exports = {
         user_id: 3,
         priority: 'urgent',
         read_by: 'chyke',
+        isArchived: [''],
         created_at: new Date(),
         updated_at: new Date()
       },
@@ -34,6 +37,7 @@ module.exports = {
         user_id: 2,
         priority: 'critical',
         read_by: 'clare',
+        isArchived: [''],
         created_at: new Date(),
         updated_at: new Date()
       },
@@ -43,6 +47,7 @@ module.exports = {
         user_id: 1,
         priority: 'urgent',
         read_by: 'mazma',
+        isArchived: [''],
         created_at: new Date(),
         updated_at: new Date()
       },
@@ -52,6 +57,7 @@ module.exports = {
         user_id: 3,
         priority: 'normal',
         read_by: 'chyke',
+        isArchived: [''],
         created_at: new Date(),
         updated_at: new Date()
       },
@@ -61,6 +67,7 @@ module.exports = {
         user_id: 1,
         priority: 'normal',
         read_by: 'mazma',
+        isArchived: [''],
         created_at: new Date(),
         updated_at: new Date()
       },

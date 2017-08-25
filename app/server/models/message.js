@@ -4,7 +4,8 @@ export default (sequelize, DataTypes) => {
     group_id: DataTypes.INTEGER,
     user_id: DataTypes.INTEGER,
     priority: DataTypes.TEXT,
-    read_by: DataTypes.TEXT
+    read_by: DataTypes.TEXT,
+    isArchived: DataTypes.ARRAY(DataTypes.STRING),
   }, { underscored: true });
   Message.associate = (models) => {
     Message.belongsTo(models.Group, { foreignKey: 'group_id' });

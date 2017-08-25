@@ -106,7 +106,8 @@ export default {
         group_id: req.params.group_id,
         user_id: userId,
         priority: req.body.priority,
-        read_by: req.body.read_by
+        read_by: req.body.read_by,
+        isArchived: ['']
       };
       models.Message.create(messageDetail)
       .then((message) => {
@@ -166,7 +167,7 @@ export default {
     if (req.params.group_id) {
       models.Message.findAll({ // User is associated to message
         where: { group_id: req.params.group_id },
-        attributes: ['group_id', ['id', 'message_id'], ['body', 'message'], 'priority', 'read_by', ['created_at', 'sent_at']],
+        attributes: ['group_id', ['id', 'message_id'], ['body', 'message'], 'priority', 'read_by', 'isArchived', ['created_at', 'sent_at']],
         include: [{
           model: models.User,
           as: 'sent_by',
@@ -226,5 +227,21 @@ export default {
       })
       .catch(error => res.status(500).send(error));
     }
+  },
+
+  archiveMessage(req, res) {
+    models.Message.findOne({
+      where: {
+        id: req.body.messageId
+      }
+    })
+    .then((message) => {
+      const username = req.decoded.data.username;
+      console.log('req body =>', req.body);
+      message.isArchived.push(username);
+      message.update({ isArchived: message.isArchived });
+      res.status(200).send(message);
+    })
+    .catch(error => res.status(500).send(error.message));
   }
 };

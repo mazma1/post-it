@@ -370,6 +370,7 @@ section.cards {
     padding-top: 8px;
     font-size: 15px;
     padding: 5px;
+    cursor: pointer;
   }
 
   .card-panel {
@@ -954,3 +955,7 @@ select.browser-default.msg-filter {
   font-size: $pixel16;
 }
 
+.material-icons.archive-btn {
+  padding-top: 0;
+  cursor: pointer;
+}
