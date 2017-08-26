@@ -10,5 +10,6 @@ router.get('/api/user/:user_id/groups', tokenAuth, userController.getUserGroups)
 router.post('/api/user/reset_password', userController.sendResetPasswordLink);
 router.post('/api/user/newpassword', userController.validateResetPasswordToken);
 router.post('/api/user/updatepassword/:token', userController.updateUserPassword);
+router.post('/api/user/search', userController.searchForUser);
 
 export default router;

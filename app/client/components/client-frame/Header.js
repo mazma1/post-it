@@ -210,7 +210,13 @@ class Header extends React.Component {
 
               <div className="col-md-8 col-sm-7 col-xs-9 lg-stack">
                 <ul className='cta'>
-                  <li className="username"><i className="glyphicon glyphicon-user"></i> @{username}</li>
+                  <li>
+                    <Link to="/search"><i className="glyphicon glyphicon-search pointer"></i></Link>
+                  </li>
+                  <li className="username">
+                    <i className="glyphicon glyphicon-user pr6"></i>
+                     @{username}
+                  </li>
                   <AddUserBtn selectedGroup={selectedGroup} openModal={this.openModal}/>
                   <li>
                     <Link
@@ -226,7 +232,11 @@ class Header extends React.Component {
 
               <div className="col-md-9 col-sm-7 col-xs-8 mobile-stack">
                 <ul className='cta'>
-                  <li className="username"><i className="glyphicon glyphicon-user"></i> @{username}</li>
+                  <li><span className="search-icon"><i className="material-icons">search</i></span></li>
+                  <li className="username">
+                    <i className="glyphicon glyphicon-user"></i>
+                     @{username}
+                  </li>
                   <li role="presentation" className="dropdown">
                     <a className="dropdown-toggle options" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                       Options <span className="caret"></span>

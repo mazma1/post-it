@@ -68,7 +68,7 @@ export const SubmitButton = props => (
   <button
     type="button"
     disabled={props.isLoading}
-    className="btn waves-effect waves-light blue lighten-1"
+    className="btn waves-effect waves-light blue lighten-1 search-submit-btn"
     onClick={props.onSubmit}>
     Submit
   </button>

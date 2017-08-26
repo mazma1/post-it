@@ -9,7 +9,7 @@ const ClientFrame = props => ({
         <Sidebar />
         <main id="content-area">
           <Header />
-          {props.children}
+          {this.props.children}
         </main>
       </div>
     );
