@@ -249,5 +249,38 @@ export default {
         res.status(200).send('Password successfully updated');
       }).catch(err => res.status(500).send(err.message));
     }
+  },
+
+  searchForUser(req, res) {
+    if (req.body.searchKeyword) {
+      models.User.findAll({
+        where: {
+          $or: [
+            { firstname: { $like: `%${req.body.searchKeyword}%` } },
+            { lastname: { $like: `%${req.body.searchKeyword}%` } },
+            { username: { $like: `%${req.body.searchKeyword}%` } },
+            { email: { $like: `%${req.body.searchKeyword}%` } }
+          ]
+        },
+        attributes: ['id', 'firstname', 'lastname', 'username', 'email', 'mobile'],
+        include: [{
+          model: models.Group,
+          as: 'group',
+          attributes: ['id', 'group_name'],
+          through: { attributes: [] }
+        }],
+      })
+        .then((users) => {
+          if (!isEmpty(users)) {
+            res.status(200).send({ users });
+          }
+          res.status(404).send({ error: 'User was not found' });
+        })
+        .catch((error) => {
+          res.status(500).send({ error: error.message });
+        });
+    } else {
+      res.status(401).send({ error: 'A search keyword is required' });
+    }
   }
 };

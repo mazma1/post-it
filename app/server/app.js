@@ -10,8 +10,10 @@ import groupRoute from './routes/group';
 require('dotenv').config();
 const path = require('path');
 
-// Set up the express app
 const app = express();
+
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
 // Parse incoming requests data
 app.use(bodyParser.json());

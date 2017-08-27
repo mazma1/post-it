@@ -7,6 +7,7 @@ import HomePageRedirect from '../components/HomepageRedirectContainer';
 import PageNotFound from '../components/PageNotFound';
 import ResetPassword from '../components/reset-password/EnterEmailForm';
 import NewPassword from '../components/reset-password/NewPasswordForm';
+import SearchUser from '../components/search/SearchForm';
 
 if (module.hot) {
   module.hot.accept();
@@ -24,6 +25,7 @@ function Client() {
         <Route exact path="/signup" component={SignUp}/>
         <Route exact path="/signin" component={SignIn}/>
         <Route exact path="/message_board" component={EnsureUserLoggedIn}/>
+        <Route exact path="/search" component={SearchUser}/>
         <Route path="/reset_password" component={ResetPassword}/>
         <Route path="/newpassword/:token" component={NewPassword}/>
         <Route component={PageNotFound} />

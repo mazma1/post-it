@@ -1,6 +1,7 @@
 $blue : #31708f;
 $sidebar-bkground: #C0C0C0;
 $pixel0: 0;
+$pixel6: 6px;
 $pixel8: 8px;
 $pixel16: 16px;
 $pixel18: 18px;
@@ -17,7 +18,9 @@ $pixel300: 300px;
 $tablet-width: 767px;
 
 
-
+.pr6 {
+  padding-right: $pixel6;
+}
 body {
   overflow-x: hidden;
   height: 100%;
@@ -958,4 +961,21 @@ select.browser-default.msg-filter {
 .material-icons.archive-btn {
   padding-top: 0;
   cursor: pointer;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.search-form {
+  padding-top: 60px;
+
+  .search-card {
+    height: 300px;
+  }
+}
+
+.search-submit-btn {
+  float: right;
+  margin-right: 4%;
 }
