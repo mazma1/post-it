@@ -18,7 +18,6 @@ export default (state = initialState.userGroups, action = {}) => {
 
     case SET_USER_GROUPS:
       return {
-        ...state,
         isLoading: false,
         hasGroup: !isEmpty(action.group),
         groups: action.group
@@ -26,7 +25,6 @@ export default (state = initialState.userGroups, action = {}) => {
 
     case FETCH_USER_GROUPS_FAILURE:
       return {
-        ...state,
         isLoading: false,
         error: action.error
       };

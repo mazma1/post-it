@@ -33,7 +33,9 @@ function GroupList(props) {
     backgroundColor: '#eae5e5' // #ece6e6. #eae0e0, #e2d1ff;
   };
 
-  if (!groupsArray) { // undefined
+  let groupItems;
+
+  if (props.userGroups.isLoading === true) { // undefined
     return <div style={divPadding}>Loading...</div>;
   }
 
@@ -60,20 +62,22 @@ function GroupList(props) {
     </li>
   );
 
-  const groupItems = groupsArray.map((group) => {
-    const id = group.id;
-    const isSelected = props.selectedGroup.id === group.id;
-    const onGroupClick = () => onGroupSelect({ id: group.id, name: group.name });
+  if (groupsArray) {
+    groupItems = groupsArray.map((group) => {
+      const id = group.id;
+      const isSelected = props.selectedGroup.id === group.id;
+      const onGroupClick = () => onGroupSelect({ id: group.id, name: group.name });
 
-    return (
-      <li role="presentation" onClick={onGroupClick} key={group.id} className={classnames({ 'active': isSelected })}>
-        <NavLink to="#">
-          {group.name}
-          { mappedUnreadCount[id] && mappedUnreadCount[id].unreadCount > 0 ? <span className="new badge">{mappedUnreadCount[id].unreadCount}</span> : null}
-        </NavLink>
-      </li>
-    );
-  });
+      return (
+        <li role="presentation" onClick={onGroupClick} key={group.id} className={classnames({ 'active': isSelected })}>
+          <NavLink to="#">
+            {group.name}
+            { mappedUnreadCount[id] && mappedUnreadCount[id].unreadCount > 0 ? <span className="new badge">{mappedUnreadCount[id].unreadCount}</span> : null}
+          </NavLink>
+        </li>
+      );
+    });
+  }  
 
   return (
     <div>

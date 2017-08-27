@@ -100,12 +100,13 @@ class MsgForm extends React.Component {
     return (
       <footer className="footer">
         <div className="footer-container">
-          <form className="form-horizontal" onSubmit={this.onMessageSend}>
+          <form className="form-horizontal" id="chatform" onSubmit={this.onMessageSend}>
             <div className="form-group">
               <div className="col-lg-8 col-md-10 col-sm-11 col-xs-11 msg-form-container">
                 <input
                   className="form-control"
                   type="text"
+                  id="m"
                   name="messageInput"
                   value={this.state.messageInput}
                   onChange={this.onChange}

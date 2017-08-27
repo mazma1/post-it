@@ -95,6 +95,9 @@ class Sidebar extends React.Component {
           this.props.getGroupMessages(this.props.userGroups.groups[0].id);
           this.props.getGroupMembers(this.props.userGroups.groups[0].id);
         }
+      },
+      (error) => {
+        console.log(error)
       }
     );
   }
