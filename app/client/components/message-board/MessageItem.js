@@ -6,6 +6,7 @@ import toastr from 'toastr';
 import lodashSplit from 'lodash/split';
 import mapKeys from 'lodash/mapKeys';
 import includes from 'lodash/includes';
+import MessageForm from './MsgForm';
 import { getGroupMessagesCount, archiveMessage } from '../../actions/groupMessages';
 
 class MessageItem extends React.Component {
@@ -15,13 +16,16 @@ class MessageItem extends React.Component {
 
     this.state = {
       messageStatus: 'unread',
-      filteredMessages: []
+      filteredMessages: [],
+      currentPage: 1,
+      messagesPerPage: 5
     };
 
     this.onSelect = this.onSelect.bind(this);
     this.archiveMessageRequest = this.archiveMessageRequest.bind(this);
     this.filterMessages = this.filterMessages.bind(this);
     this.checkMessageLength = this.checkMessageLength.bind(this);
+    this.updatePageNumber = this.updatePageNumber.bind(this);
   }
 
   componentDidMount() {
@@ -43,6 +47,10 @@ class MessageItem extends React.Component {
         this.filterMessages(res.data);
       }
     );
+  }
+
+  updatePageNumber(event) {
+    this.setState({ currentPage: Number(event.target.id) });
   }
 
   filterMessages(messages) {
@@ -92,14 +100,36 @@ class MessageItem extends React.Component {
       }
       return null;
     };
+
+    // render page numbers
+    const pageNumbers = [];
+    const { filteredMessages, messagesPerPage, currentPage, messageStatus } = this.state;
+    for (let i = 1; i <= Math.ceil(filteredMessages.length / messagesPerPage); i += 1) {
+      pageNumbers.push(i);
+    }
+    const renderPagination = pageNumbers.map(number => {
+      return (
+        <li className={classnames({
+          active: this.state.currentPage === number
+        })} key={number} onClick={this.updatePageNumber}>
+          <a href="#" id={number}>{number}</a>
+        </li>
+      );
+    });
+
+    // pagination logic
+    const lastMessageIndex = currentPage * messagesPerPage;
+    const firstMessageIndex = lastMessageIndex - messagesPerPage;
+    const currentMessages = filteredMessages.slice(firstMessageIndex, lastMessageIndex);
     return (
       <div>
-           <select className="browser-default msg-filter" name="messageStatus" onChange={this.onSelect} value={this.state.messageStatus}>
-            <option value="unread">Unread</option>
-            <option value="archived">Archived</option>
-          </select>
+        <select className="browser-default msg-filter" name="messageStatus" onChange={this.onSelect} value={this.state.messageStatus}>
+          <option value="unread">Unread / Read</option>
+          <option value="archived">Archived</option>
+        </select>
+
         {
-          this.state.filteredMessages.map((message, index) => {
+          currentMessages.map((message, index) => {
             const time = moment(message.sent_at).format('ddd, MMM Do. h:mm a');
             const readBy = message.read_by;
             const readByArray = lodashSplit(readBy, ',');
@@ -140,6 +170,21 @@ class MessageItem extends React.Component {
             );
           })
         }
+
+        {
+          messageStatus === 'unread' ?
+          <div>
+            <div className="msg_card_bottom_padding"></div>
+            <MessageForm />
+          </div>
+          : null
+        }
+
+        <div className="col s12">
+          <ul className="pagination center-align">
+            { pageNumbers.length > 1 ? renderPagination : null }
+          </ul>
+        </div>
       </div>
     );
   }
