@@ -6,11 +6,11 @@ const DIST_DIR = path.resolve(__dirname, './app/client/dist');
 
 module.exports = {
   entry: [
-    './app/client/index.js'
+    './app/client/index.jsx'
   ],
   output: {
     path: DIST_DIR,
-    filename: 'index_bundle.js',
+    filename: 'bundle.js',
     publicPath: '/dist/'
   },
   module: {

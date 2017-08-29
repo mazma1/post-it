@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import { updateReadStatus, getGroupMessages } from '../../actions/groupMessages';
-import MessageBody from '../message-board/MessageBody';
-import MessageItem from '../message-board/MessageItem';
-import MessageForm from './MsgForm';
+import MessageBody from '../message-board/MessageBody.jsx';
+import MessageItem from '../message-board/MessageItem.jsx';
+import MessageForm from './MsgForm.jsx';
 
 /** MessageCard component for message board */
 class MessageCard extends React.Component {

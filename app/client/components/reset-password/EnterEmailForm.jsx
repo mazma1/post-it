@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
-import TextField from '../common/FormTextField';
+import TextField from '../common/FormTextField.jsx';
 import { resetLinkRequest } from '../../actions/resetPassword';
 
 

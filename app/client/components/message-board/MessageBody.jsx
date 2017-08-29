@@ -4,9 +4,9 @@ import mapKeys from 'lodash/mapKeys';
 import {
   ModalHeader,
   ModalFooter,
-  CloseButton } from '../modal/SubModals';
-import ReadByTable from '../tables/ReadByTable';
-import ModalFrame from '../modal/ModalFrame';
+  CloseButton } from '../modal/SubModals.jsx';
+import ReadByTable from '../tables/ReadByTable.jsx';
+import ModalFrame from '../modal/ModalFrame.jsx';
 
 
 /**

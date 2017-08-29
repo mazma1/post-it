@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class MessageFilter extends Component {
+class MessageFilter extends React.Component {
   render() {
     return (
       // <div>

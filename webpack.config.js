@@ -8,11 +8,11 @@ module.exports = {
   entry: [
     'webpack/hot/dev-server', // HMR works without this
     'webpack-hot-middleware/client?noInfo=true',
-    '../post-it/app/client/index.js'
+    '../post-it/app/client/index.jsx'
   ],
   output: {
     path: '/',
-    filename: 'index_bundle.js',
+    filename: 'bundle.js',
     publicPath: '/dist/'
   },
   module: {

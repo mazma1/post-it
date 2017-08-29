@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import toastr from 'toastr';
 import { withRouter, Route } from 'react-router-dom';
-import MessageBoard from './message-board/MessageBoard';
+import MessageBoard from './message-board/MessageBoard.jsx';
 
 /**
  * Component that checks if a user is logged in

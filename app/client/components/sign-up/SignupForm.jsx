@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import toastr from 'toastr';
 import { withRouter, Link } from 'react-router-dom';
 import validateInput from '../../../utils/signupValidation';
-import TextField from '../common/FormTextField';
+import TextField from '../common/FormTextField.jsx';
 
 /**
  * SignupForm component

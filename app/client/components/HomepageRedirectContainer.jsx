@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import toastr from 'toastr';
-import HomePage from './home-page/HomePage';
+import HomePage from './home-page/HomePage.jsx';
 
 
 /** HomepageRedirect Component */

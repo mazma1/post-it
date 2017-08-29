@@ -1,6 +1,6 @@
 import React from 'react';
-import Sidebar from '../client-frame/sidebar/Sidebar';
-import Header from './Header';
+import Sidebar from '../client-frame/sidebar/Sidebar.jsx';
+import Header from './Header.jsx';
 
 const ClientFrame = props => ({
   render() {

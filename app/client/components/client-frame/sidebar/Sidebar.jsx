@@ -6,18 +6,18 @@ import $ from 'jquery';
 import toastr from 'toastr';
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
-import GroupList from './GroupList';
+import GroupList from './GroupList.jsx';
 import { getUserGroups, submitNewGroup } from '../../../actions/userGroups';
 import { setSelectedGroup } from '../../../actions/setSelectedGroup';
 import { getGroupMessages, updateReadStatus, getGroupMessagesCount } from '../../../actions/groupMessages';
 import { getGroupMembers } from '../../../actions/groupMembers';
-import ModalFrame from '../../modal/ModalFrame';
+import ModalFrame from '../../modal/ModalFrame.jsx';
 import {
   ModalHeader,
   ModalBody,
   ModalFooter,
   CancelButton,
-  SubmitButton } from '../../modal/SubModals';
+  SubmitButton } from '../../modal/SubModals.jsx';
 
 const Brand = (props) => {
   return (

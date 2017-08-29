@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import ClientFrame from '../client-frame/ClientFrame';
-import TextField from '../common/FormTextField';
-import SearchResult from '../search/SearchResult';
+import ClientFrame from '../client-frame/ClientFrame.jsx';
+import TextField from '../common/FormTextField.jsx';
+import SearchResult from '../search/SearchResult.jsx';
 import { searchUser, resetSearch } from '../../actions/SearchUser';
-import { SubmitButton } from '../modal/SubModals';
+import { SubmitButton } from '../modal/SubModals.jsx';
 
 class SearchForm extends Component {
   constructor(props) {

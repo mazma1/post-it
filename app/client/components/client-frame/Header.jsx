@@ -10,15 +10,15 @@ import { logout } from '../../actions/signin';
 import { setSelectedGroup } from '../../actions/setSelectedGroup';
 import { setGroupMessages } from '../../actions/groupMessages';
 import { submitNewUser } from '../../actions/groupMembers';
-import ModalFrame from '../modal/ModalFrame';
+import ModalFrame from '../modal/ModalFrame.jsx';
 import {
   ModalHeader,
   ModalBody,
   ModalFooter,
   CloseButton,
   CancelButton,
-  SubmitButton } from '../modal/SubModals';
-import GroupMembersTable from '../tables/GroupMembersTable';
+  SubmitButton } from '../modal/SubModals.jsx';
+import GroupMembersTable from '../tables/GroupMembersTable.jsx';
 
 const noMarginBottom = {
   marginBottom: 0
