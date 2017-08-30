@@ -13,7 +13,6 @@ const MessageBoard = () => (
 
       <MessageCard />
 
-      <div className="msg_card_bottom_padding"></div>
     </section>
   </ClientFrame>
 );
