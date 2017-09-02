@@ -5,12 +5,13 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import toastr from 'toastr';
 import $ from 'jquery';
-import isEmpty from 'lodash/isEmpty';
+import ModalFrame from '../modal/ModalFrame.jsx';
+import GroupMembersTable from '../tables/GroupMembersTable.jsx';
 import { logout } from '../../actions/signin';
 import { setSelectedGroup } from '../../actions/setSelectedGroup';
 import { setGroupMessages } from '../../actions/groupMessages';
 import { submitNewUser } from '../../actions/groupMembers';
-import ModalFrame from '../modal/ModalFrame.jsx';
+import { AddUserBtn, GroupName } from '../misc/HeaderMisc.jsx';
 import {
   ModalHeader,
   ModalBody,
@@ -18,65 +19,6 @@ import {
   CloseButton,
   CancelButton,
   SubmitButton } from '../modal/SubModals.jsx';
-import GroupMembersTable from '../tables/GroupMembersTable.jsx';
-
-const noMarginBottom = {
-  marginBottom: 0
-};
-
-const AddUserBtn = (props) => {
-  if (isEmpty(props.selectedGroup)) {
-    return null;
-  }
-  return (
-    <button
-      className="btn waves-effect waves-light blue lighten-1"
-      data-toggle="modal" data-target="#addUser"
-      onClick={props.openModal}>
-      Add User
-    </button>
-  );
-};
-
-const GroupName = (props) => {
-  if (isEmpty(props.selectedGroup)) {
-    return <div className="col-md-4 col-sm-5 col-xs-3"></div>;
-  }
-
-  /**
-   * Function that truncates the name of a group
-   * if it is longer than 13
-   * @param {string} groupName Name of a group
-   * @returns {string} groupName
-   */
-  function checkGroupnameLength(groupName) {
-    if (groupName.length > 13) {
-      return `${groupName.substring(0, 13)}...`;
-    }
-    return groupName;
-  }
-
-  return (
-    <div className="col-md-4 col-sm-5 col-xs-3 brand">
-      <ul style={noMarginBottom}>
-        <h4 className="group-name">{checkGroupnameLength(props.selectedGroup.name)}</h4>
-        <li role="presentation" className="dropdown">
-          <a className="dropdown-toggle options" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-            <span className="caret"></span>
-          </a>
-          <ul className="dropdown-menu group-members-dropdown">
-            <li><a
-              data-toggle="modal" data-target="#groupMembers"
-              onClick={props.openModal}
-              href="#">
-              View Group Members
-            </a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  );
-};
 
 /**
  * Header component for message board
@@ -95,7 +37,8 @@ class Header extends React.Component {
      * @type {object}
      * @prop {boolean} isOpen Tells if a modal is open or not
      * @prop {string} newUser Email/Username of user to be added to group
-     * @prop {boolean} isLoading Tells if the request to add user has been completed or not
+     * @prop {boolean} isLoading Tells if the request to add user has
+     * been completed or not
      * @prop {string} error Error message if the user was not added successfully
      */
     this.state = {
@@ -109,16 +52,17 @@ class Header extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.onChange = this.onChange.bind(this);
     this.newUserSubmit = this.newUserSubmit.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
    /**
    * Handles Open Modal event
    * Updates isOpen state
-   * @param {SyntheticEvent} e
+   * @param {SyntheticEvent} event
    * @returns {void}
    */
-  openModal(e) {
-    e.stopPropagation();
+  openModal(event) {
+    event.stopPropagation();
     this.setState({
       isOpen: true
     });
@@ -127,11 +71,11 @@ class Header extends React.Component {
    /**
    * Handles Close Modal event
    * Updates isOpen, newUser and error states
-   * @param {SyntheticEvent} e
+   * @param {SyntheticEvent} event
    * @returns {void}
    */
-  closeModal(e) {
-    e.preventDefault();
+  closeModal(event) {
+    event.preventDefault();
     this.setState({
       isOpen: false,
       newUser: '',
@@ -141,14 +85,14 @@ class Header extends React.Component {
 
   /**
    * Handles change event of New User input form
-   * Updates isOpen and newUser states
-   * @param {SyntheticEvent} e
+   * Updates newUser state
+   * @param {SyntheticEvent} event
    * @returns {void}
    */
-  onChange(e) {
+  onChange(event) {
     this.setState({
       error: '',
-      [e.target.name]: e.target.value
+      [event.target.name]: event.target.value
     });
   }
 
@@ -157,12 +101,12 @@ class Header extends React.Component {
    * Dispatches submitNewUser action to add the new user record to the DB
    * If the submission was successful, it adds a success flash message
    * If submission was not successful, it returns the appropriate error message
-   * @param {SyntheticEvent} e
+   * @param {SyntheticEvent} event
    * @returns {void}
    */
-  newUserSubmit(e) {
+  newUserSubmit(event) {
     this.setState({ error: '', isLoading: true });
-    e.preventDefault();
+    event.preventDefault();
     this.props.submitNewUser({
       groupId: this.props.selectedGroup.id,
       identifier: this.state.newUser
@@ -171,7 +115,12 @@ class Header extends React.Component {
         toastr.success('User has been successfully added to group');
         $('[data-dismiss=modal]').trigger({ type: 'click' });
       },
-      ({ response }) => { this.setState({ error: response.data, isLoading: false }); }
+      ({ response }) => {
+        this.setState({
+          error: response.data,
+          isLoading: false
+        });
+      }
     );
   }
 
@@ -180,11 +129,11 @@ class Header extends React.Component {
    * Dispatches logout action
    * Deletes selected group and group messages from the state
    * Redirects to the sign in page
-   * @param {SyntheticEvent} e
+   * @param {SyntheticEvent} event
    * @returns {void}
    */
-  logout(e) {
-    e.preventDefault();
+  logout(event) {
+    event.preventDefault();
     this.props.logout();
     this.props.setSelectedGroup({});
     this.props.setGroupMessages({});
@@ -204,25 +153,25 @@ class Header extends React.Component {
           <div className="nav-container">
             <div className="row">
 
-              <GroupName selectedGroup={selectedGroup} openModal={this.openModal}/>
-
-              {/* <MessageFilter /> */}
+              <GroupName selectedGroup={selectedGroup} openModal={this.openModal} />
 
               <div className="col-md-8 col-sm-7 col-xs-9 lg-stack">
-                <ul className='cta'>
+                <ul className="cta">
                   <li>
-                    <Link to="/search"><i className="glyphicon glyphicon-search pointer"></i></Link>
+                    <Link to="/search">
+                      <i className="glyphicon glyphicon-search pointer" />
+                    </Link>
                   </li>
                   <li className="username">
-                    <i className="glyphicon glyphicon-user pr6"></i>
+                    <i className="glyphicon glyphicon-user pr6" />
                      @{username}
                   </li>
-                  <AddUserBtn selectedGroup={selectedGroup} openModal={this.openModal}/>
+                  <AddUserBtn selectedGroup={selectedGroup} openModal={this.openModal} />
                   <li>
                     <Link
                       to="/signin"
                       className="btn waves-effect waves-light red darken-2"
-                      onClick={this.logout.bind(this)}
+                      onClick={this.logout}
                     >
                       Sign Out
                     </Link>
@@ -232,34 +181,46 @@ class Header extends React.Component {
 
               <div className="col-md-9 col-sm-7 col-xs-8 mobile-stack">
                 <ul className='cta'>
-                  <li><span className="search-icon"><i className="material-icons">search</i></span></li>
+                  <li>
+                    <span className="search-icon">
+                      <i className="material-icons">search</i>
+                    </span>
+                  </li>
                   <li className="username">
-                    <i className="glyphicon glyphicon-user"></i>
+                    <i className="glyphicon glyphicon-user" />
                      @{username}
                   </li>
                   <li role="presentation" className="dropdown">
-                    <a className="dropdown-toggle options" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                      Options <span className="caret"></span>
+                    <a className="dropdown-toggle options" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      Options <span className="caret" />
                     </a>
                     <ul className="dropdown-menu">
-                      <li><a onClick={this.openModal} data-toggle="modal" data-target="#addUser">Add User</a></li>
-                      <li><a href="#" onClick={this.logout.bind(this)}>Log Out</a></li>
+                      <li>
+                        <a
+                          onClick={this.openModal}
+                          data-toggle="modal"
+                          data-target="#addUser"
+                        >
+                          Add User
+                        </a>
+                      </li>
+                      <li><a onClick={this.logout}>Log Out</a></li>
                     </ul>
                   </li>
                 </ul>
               </div>
-            
+
             </div>
           </div>
         </section>
 
         {/*Add User Modal*/}
-        <ModalFrame id='addUser' show={this.state.isOpen}>
-          <ModalHeader header='Add New User' onClose={this.closeModal}/>
+        <ModalFrame id="addUser" show={this.state.isOpen}>
+          <ModalHeader header="Add New User" onClose={this.closeModal} />
 
           <ModalBody
-            label='Username or Email'
-            field='newUser'
+            label="Username or Email"
+            field="newUser"
             onChange={this.onChange}
             value={this.state.newUser}
             errors={this.state.error}
@@ -268,13 +229,16 @@ class Header extends React.Component {
 
           <ModalFooter>
             <CancelButton onClick={this.closeModal} />
-            <SubmitButton onSubmit={this.newUserSubmit} isLoading={this.state.isLoading}/>
+            <SubmitButton
+              onSubmit={this.newUserSubmit}
+              isLoading={this.state.isLoading}
+            />
           </ModalFooter>
         </ModalFrame>
 
         {/*Group Members Modal*/}
-        <ModalFrame id='groupMembers' membersLoading={this.props.membersLoading}>
-          <ModalHeader header='Group Members' onClose={this.closeModal}/>
+        <ModalFrame id="groupMembers" membersLoading={this.props.membersLoading}>
+          <ModalHeader header="Group Members" onClose={this.closeModal} />
 
           <div className="modal-body">
             <GroupMembersTable />

@@ -7,13 +7,13 @@ import MessageBoard from './message-board/MessageBoard.jsx';
 
 /**
  * Component that checks if a user is logged in
- * before rendering child component
+ * before rendering message board component
  */
 class EnsureLoggedIn extends React.Component {
 
   /**
    * Defines what must be executed after component mounts
-   * If a user is authenticated, it renders child component
+   * If a user is authenticated, it renders message board component
    * If user is not authenticated, it redirects to sign in page
    * with an error flash message
    * @returns {void}
@@ -29,12 +29,12 @@ class EnsureLoggedIn extends React.Component {
 
   /**
    * Render
-   * @returns {ReactElement} child component markup
+   * @returns {ReactElement} message board component markup
    */
   render() {
     const { isLoggedIn } = this.props;
     if (isLoggedIn) {
-      return <Route path='/message_board' component={MessageBoard}/>;
+      return <Route path='/message_board' component={MessageBoard} />;
     }
     return null;
   }

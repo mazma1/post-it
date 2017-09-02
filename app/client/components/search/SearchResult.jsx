@@ -1,14 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import SearchResultTable from '../tables/SearchResultTable.jsx';
 
-class SearchResult extends Component {
-  render() {
-    return (
-      <div>
-        <SearchResultTable />
-      </div>
-    );
-  }
-}
+const SearchResult = () => (
+  <div>
+    <SearchResultTable />
+  </div>
+);
 
 export default SearchResult;

@@ -9,7 +9,7 @@ import MessageCard from './MsgCard.jsx';
 const MessageBoard = () => (
   <ClientFrame>
     <section className="cards card-panel-wrapper">
-      <div className="msg_card_padding"></div>
+      <div className="msg_card_padding" />
 
       <MessageCard />
 

@@ -34,11 +34,11 @@ class SignupForm extends React.Component {
 
    /**
    * Handles change event of sign up input fields
-   * @param {SyntheticEvent} e
+   * @param {SyntheticEvent} event
    * @returns {void}
    */
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
+  onChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
   }
 
   /**
@@ -61,17 +61,17 @@ class SignupForm extends React.Component {
    * If sign up request is successful, it equally signs user up and
    * redirects to the message board with a success flash message
    * If sign up was not successful, it returns the appropriate error message(s)
-   * @param {SyntheticEvent} e
+   * @param {SyntheticEvent} event
    * @returns {void}
    */
-  onSignupClick(e) {
-    e.preventDefault();
+  onSignupClick(event) {
+    event.preventDefault();
 
     if (this.valid()) {
       this.setState({ errors: {} });
-      this.props.userSignupRequest(this.state).then(  // Sign up user
+      this.props.userSignupRequest(this.state).then(
         () => {
-          this.props.userSigninRequest({  // Then proceed to sign user in
+          this.props.userSigninRequest({
             identifier: this.state.username,
             password: this.state.password
           })
@@ -97,123 +97,180 @@ class SignupForm extends React.Component {
     return (
       <form className="col s12 auth-form" onSubmit={this.onSignupClick}>
         <div className="row">
-          <div className={classnames('input-field', 'auth-field', 'col m6 s12', { 'has-error': errors.firstname })}>
+          <div
+            className={classnames(
+              'input-field',
+              'auth-field',
+              'col m6 s12',
+              { 'has-error': errors.firstname }
+            )}
+          >
             <TextField
-              icon='perm_identity'
+              icon="perm_identity"
               error={errors.firstname}
-              label='First Name'
+              label="First Name"
               onChange={this.onChange}
               value={this.state.firstname}
-              field='firstname'
-              autocomplete='off'
+              field="firstname"
+              autocomplete="off"
             />
           </div>
 
-          <div className={classnames('input-field', 'auth-field', 'col m6 s12', { 'has-error': errors.lastname })}>
+          <div
+            className={classnames(
+              'input-field',
+              'auth-field',
+              'col m6 s12',
+              { 'has-error': errors.lastname }
+            )}
+          >
             <TextField
-              icon='perm_identity'
+              icon="perm_identity"
               error={errors.lastname}
-              label='Last Name'
+              label="Last Name"
               onChange={this.onChange}
               value={this.state.lastname}
-              field='lastname'
-              autocomplete='off'
+              field="lastname"
+              autocomplete="off"
             />
           </div>
         </div>
 
         <div className="row">
-          <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': errors.username })}>
+          <div
+            className={classnames(
+              'input-field',
+              'auth-field',
+              'col s12',
+              { 'has-error': errors.username }
+            )}
+          >
             <TextField
-              icon='perm_identity'
+              icon="perm_identity"
               error={errors.username}
-              label='Username'
+              label="Username"
               onChange={this.onChange}
               value={this.state.username}
-              field='username'
-              autocomplete='off'
-            />  
+              field="username"
+              autocomplete="off"
+            />
           </div>
         </div>
 
         <div className="row">
-          <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': errors.phone })}>
+          <div
+            className={classnames(
+              'input-field',
+              'auth-field',
+              'col s12',
+              { 'has-error': errors.phone }
+            )}
+          >
             <TextField
-              icon='phone'
+              icon="phone"
               error={errors.phone}
-              label='Phone Number'
+              label="Phone Number"
               onChange={this.onChange}
               value={this.state.phone}
-              field='phone'
-              type='number'
-              autocomplete='off'
+              field="phone"
+              type="number"
+              autocomplete="off"
             />
           </div>
         </div>
 
         <div className="row">
-          <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': errors.email })}>
+          <div
+            className={classnames(
+              'input-field',
+              'auth-field',
+              'col s12',
+              { 'has-error': errors.email }
+            )}
+          >
             <TextField
-              icon='email'
+              icon="email"
               error={errors.email}
-              label='Email'
+              label="Email"
               onChange={this.onChange}
               value={this.state.email}
-              field='email'
-              type='email'
-              autocomplete='off'
+              field="email"
+              type="email"
+              autocomplete="off"
             />
           </div>
         </div>
 
         <div className="row">
-          <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': errors.password })}>
+          <div
+            className={classnames(
+              'input-field',
+              'auth-field',
+              'col s12',
+              { 'has-error': errors.password }
+            )}
+          >
             <TextField
-              icon='https'
+              icon="https"
               error={errors.password}
-              label='Password'
+              label="Password"
               onChange={this.onChange}
               value={this.state.password}
-              field='password'
-              type='password'
-              autocomplete='off'
+              field="password"
+              type="password"
+              autocomplete="off"
             />
           </div>
         </div>
 
         <div className="row">
-          <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': errors.confirm_password })}>
+          <div
+            className={classnames(
+              'input-field',
+              'auth-field',
+              'col s12',
+              { 'has-error': errors.confirm_password }
+            )}
+          >
             <TextField
-              icon='https'
+              icon="https"
               error={errors.confirm_password}
-              label='Confirm Password'
+              label="Confirm Password"
               onChange={this.onChange}
               value={this.state.confirm_password}
-              field='confirm_password'
-              type='password'
-              autocomplete='off'
+              field="confirm_password"
+              type="password"
+              autocomplete="off"
             />
           </div>
         </div>
 
         <div className="row">
           <div className="input-field col s12">
-            <a className="auth-btn btn waves-effect waves-light col s12" onClick={this.onSignupClick}>Sign Up</a>
+            <a
+              className="auth-btn btn waves-effect waves-light col s12"
+              onClick={this.onSignupClick}
+            >
+              Sign Up
+            </a>
           </div>
         </div>
 
         <div className="call-to-sign-in">
-          <p className="center">Already have an account? <Link to="/signin">Sign In</Link></p>
+          <p className="center">
+            Already have an account? <Link to="/signin">Sign In</Link>
+          </p>
         </div>
 
-        <div className="form-padding-bottom"></div>
+        <div className="form-padding-bottom" />
       </form>
     );
   }
 }
 
 SignupForm.propTypes = {
-  userSignupRequest: PropTypes.func.isRequired
+  userSignupRequest: PropTypes.func.isRequired,
+  userSigninRequest: PropTypes.func.isRequired
 };
 
 export default withRouter(SignupForm);

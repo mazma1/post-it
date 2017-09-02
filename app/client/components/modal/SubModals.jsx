@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import { PropTypes } from 'prop-types';
 
 export const ModalHeader = props => (
   <div className="modal-header">
@@ -15,6 +16,11 @@ export const ModalHeader = props => (
   </div>
 );
 
+ModalHeader.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  header: PropTypes.string.isRequired
+};
+
 export const ModalBody = (props) => {
   const error = props.errors.error;
   return (
@@ -22,10 +28,17 @@ export const ModalBody = (props) => {
       <div className="row">
         <form className="col s12" onSubmit={props.onSubmit}>
           <div className="row">
-            <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': error })}>
+            <div
+              className={classnames(
+                'input-field',
+                'auth-field',
+                'col s12',
+                { 'has-error': error }
+              )}
+            >
               <input
                 type="text"
-                className={ classnames('validate', { 'invalid': error })}
+                className={classnames('validate', { invalid: error })}
                 name={props.field}
                 value={props.value}
                 onChange={props.onChange}
@@ -41,6 +54,15 @@ export const ModalBody = (props) => {
   );
 };
 
+ModalBody.propTypes = {
+  errors: PropTypes.object,
+  onSubmit: PropTypes.func.isRequired,
+  field: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+};
+
 export const CloseButton = props => (
   <button
     type="button"
@@ -52,6 +74,9 @@ export const CloseButton = props => (
   </button>
 );
 
+CloseButton.propTypes = {
+  onClick: PropTypes.func.isRequired
+};
 
 export const CancelButton = props => (
   <button
@@ -64,6 +89,10 @@ export const CancelButton = props => (
   </button>
 );
 
+CancelButton.propTypes = {
+  onClick: PropTypes.func.isRequired
+};
+
 export const SubmitButton = props => (
   <button
     type="button"
@@ -73,6 +102,11 @@ export const SubmitButton = props => (
     Submit
   </button>
 );
+
+SubmitButton.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool
+};
 
 export const ModalFooter = props => (
   <div className="modal-footer">

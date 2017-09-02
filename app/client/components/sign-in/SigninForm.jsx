@@ -85,46 +85,69 @@ class SigninForm extends React.Component {
     return (
       <form className="col s12 auth-form" onSubmit={this.onSigninClick}>
         <div className="row">
-          <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': errors.identifier })}>
+          <div
+            className={classnames(
+              'input-field',
+              'auth-field',
+              'col s12',
+              { 'has-error': errors.identifier }
+            )}
+          >
             <TextField
-              icon='perm_identity'
+              icon="perm_identity"
               error={errors.identifier}
-              label='Username or Email'
+              label="Username or Email"
               onChange={this.onChange}
               value={this.state.identifier}
-              field='identifier'
-              autocomplete='off'
+              field="identifier"
+              autocomplete="off"
             />
           </div>
         </div>
 
         <div className="row">
-          <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': errors.password })}>
+          <div
+            className={classnames(
+              'input-field',
+              'auth-field',
+              'col s12',
+              { 'has-error': errors.password }
+            )}
+          >
             <TextField
-              icon='https'
+              icon="https"
               error={errors.password}
-              label='Password'
+              label="Password"
               onChange={this.onChange}
               value={this.state.password}
-              field='password'
-              type='password'
-              autocomplete='off'
+              field="password"
+              type="password"
+              autocomplete="off"
             />
           </div>
         </div>
 
         <div className="row">
           <div className="input-field col s12">
-            <a className="btn auth-btn waves-effect waves-light col s12" onClick={this.onSigninClick}>Sign In</a>
+            <a
+              className="btn auth-btn waves-effect waves-light col s12"
+              onClick={this.onSigninClick}
+            >
+              Sign In
+            </a>
           </div>
         </div>
 
         <div className="center call-to-sign-in">
-          <p className="center">Don't have an account? <Link to="/signup">Sign Up</Link></p>
-          <p className="center"><Link to="/reset_password">Forgot Password?</Link></p>
+          <p className="center">{ "Don't have an account? " }
+            <Link to="/signup">Sign Up</Link>
+          </p>
+          <p className="center">
+            <Link to="/reset_password">Forgot Password?</Link>
+          </p>
         </div>
 
-        <div className="form-padding-bottom"></div>
+        <div className="form-padding-bottom" />
       </form>
     );
   }

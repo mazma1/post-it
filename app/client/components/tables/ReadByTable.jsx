@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import split from 'lodash/split';
 import mapKeys from 'lodash/mapKeys';
 
-/** Group members table component */
+/** Table of users that have read a message */
 class ReadByTable extends React.Component {
 
   /**
@@ -46,7 +46,7 @@ class ReadByTable extends React.Component {
 /**
  * Maps pieces of the redux state to props
  * @param {object} state Redux state
- * @returns {object} Members of a selected group
+ * @returns {object} A specified group's messages
  */
 function mapStateToProps(state) {
   return {
@@ -55,7 +55,8 @@ function mapStateToProps(state) {
 }
 
 ReadByTable.propTypes = {
-  readBy: PropTypes.string
+  messageId: PropTypes.number.isRequired,
+  messages: PropTypes.array.isRequired
 };
 
 export default connect(mapStateToProps)(ReadByTable);

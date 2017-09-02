@@ -2,20 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-const FormTextField = ({ field, value, label, error, type, onChange, icon, autocomplete }) => (
+const FormTextField = props => (
   <div>
-    <i className="material-icons prefix">{icon}</i>
+    <i className="material-icons prefix">{props.icon}</i>
     <input
       id="icon_prefix"
-      type={type}
-      className={ classnames('validate', { 'invalid': error })}
-      name={field}
-      value={value}
-      onChange={onChange}
-      autoComplete={autocomplete}
+      type={props.type}
+      className={classnames('validate', { invalid: props.error })}
+      name={props.field}
+      value={props.value}
+      onChange={props.onChange}
+      autoComplete={props.autocomplete}
     />
-    <label htmlFor="icon_prefix">{label}</label>
-    {error && <span className="help-block">{error}</span>}
+    <label htmlFor="icon_prefix">{props.label}</label>
+    {props.error && <span className="help-block">{props.error}</span>}
   </div>
 );
 

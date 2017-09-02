@@ -1,12 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
-import { updateReadStatus, getGroupMessages } from '../../actions/groupMessages';
 import MessageBody from '../message-board/MessageBody.jsx';
 import MessageItem from '../message-board/MessageItem.jsx';
+import {
+  updateReadStatus,
+  getGroupMessages } from '../../actions/groupMessages';
 
 /** MessageCard component for message board */
 class MessageCard extends React.Component {
+  /**
+   * Constructor
+   * @param {object} props
+   */
   constructor(props) {
     super(props);
 
@@ -17,43 +25,58 @@ class MessageCard extends React.Component {
       messageOpen: false
     };
 
-    this.setMessageId = this.setMessageId.bind(this);
+    // this.setMessageId = this.setMessageId.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.onMessageClick = this.onMessageClick.bind(this);
     this.closeMessageBody = this.closeMessageBody.bind(this);
   }
 
-
-  openModal(e) {
-    e.stopPropagation();
+  /**
+   * Handles Open Modal event
+   * Updates isOpen state
+   * @param {SyntheticEvent} event
+   * @returns {void} null
+   */
+  openModal(event) {
+    event.stopPropagation();
     this.setState({
       isOpen: true
     });
   }
 
-  closeModal(e) {
-    e.preventDefault();
+  /**
+   * Handles Close Modal event
+   * Updates isOpen state
+   * @param {SyntheticEvent} event
+   * @returns {void}
+   */
+  closeModal(event) {
+    event.preventDefault();
     this.setState({
       isOpen: false
     });
   }
 
-  setMessageId(id) {
-    // e.preventDefault();
-    this.setState({
-      messageId: id
-    });
-  }
-
+  /**
+   * Closes the message body when the close button is clicked
+   * It also dispatches getGroupMessages to get updated list of users that
+   * have viewed a message
+   * @param {integer} groupId active group id
+   * @returns {void}
+   */
   closeMessageBody(groupId) {
-    // e.preventDefault();
     this.props.getGroupMessages(groupId);
     this.setState({ messageOpen: false });
   }
 
+   /**
+   * Updates the read status of a message when clicked
+   * @param {object} clickedMsgProps id and read_status of
+   clicked message
+   * @returns {func} request to update read status
+   */
   onMessageClick(clickedMsgProps) {
-    // e.preventDefault();
     const clickedMessageId = clickedMsgProps.id;
     this.setState({
       clickedMessageId,
@@ -67,19 +90,16 @@ class MessageCard extends React.Component {
     };
     return this.props.updateReadStatus(messageDetails);
   }
+
   /**
    * Render
-   * @prop {boolean} hasGroup If a signed in user belongs to a group
-   * @prop {boolean} messageLoading if group messages are still being fetched
-   * @prop {array} messages Group messages
    * @returns {ReactElement} MessageCard markup
    */
-
   render() {
-    const hasGroup = this.props.userGroups.hasGroup;
+    const { hasGroup } = this.props.userGroups;
+    const { messages } = this.props.message;
     const messageLoading = this.props.message.isLoading;
     const messageLoadingError = this.props.message.error;
-    const messages = this.props.message.messages;
     const divPadding = {
       paddingLeft: '20px',
       paddingTop: '20px'
@@ -87,7 +107,6 @@ class MessageCard extends React.Component {
     const props = {
       messages: this.props.message.messages,
       onMessageClick: this.onMessageClick,
-      onReadByClick: this.setMessageId,
       clickedMessageId: this.state.clickedMessageId,
       authenticatedUsername: this.props.authenticatedUsername
     };
@@ -110,22 +129,23 @@ class MessageCard extends React.Component {
           </div>
         );
       } else if (!hasGroup) {
-        return <div></div>;
+        return <div />;
       }
     }
     return (
       <div>
         { this.state.messageOpen ?
-        <MessageBody
-          closeMessage={this.closeMessageBody}
-          clickedMessageId={this.state.clickedMessageId}
-          closeModal={this.closeModal}
-          openModal={this.openModal}
-          messages={this.props.message.messages}/>
+          <MessageBody
+            closeMessage={this.closeMessageBody}
+            clickedMessageId={this.state.clickedMessageId}
+            closeModal={this.closeModal}
+            openModal={this.openModal}
+            messages={this.props.message.messages}
+          />
         :
-        <div>
-          <MessageItem {...props} />
-        </div>
+          <div>
+            <MessageItem {...props} />
+          </div>
         }
       </div>
     );
@@ -135,7 +155,8 @@ class MessageCard extends React.Component {
 /**
  * Maps pieces of the redux state to props
  * @param {object} state Redux state
- * @returns {object} Details of active group messages and groups a user belongs to
+ * @returns {object} Username, messages and groups of
+ * logged in user
  */
 function mapStateToProps(state) {
   return {
@@ -145,4 +166,26 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { updateReadStatus, getGroupMessages })(MessageCard);
+/**
+ * Maps action creators to redux dispatch function
+ * Action creators bound will be available as props
+ * Actions generated by the action creators flows though all the reducers
+ * @param {function} dispatch Redux dispatch function
+ * @returns {function} Action cretaors bound to redux dispatch function
+ */
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    updateReadStatus,
+    getGroupMessages
+  }, dispatch);
+}
+
+MessageCard.propTypes = {
+  getGroupMessages: PropTypes.func.isRequired,
+  updateReadStatus: PropTypes.func.isRequired,
+  authenticatedUsername: PropTypes.string.isRequired,
+  userGroups: PropTypes.object,
+  message: PropTypes.object
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MessageCard);

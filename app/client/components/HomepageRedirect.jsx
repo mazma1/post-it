@@ -11,6 +11,7 @@ class HomepageRedirect extends React.Component {
 
 /**
  * Defines what must be executed before component mounts
+ * Checks a userr's authentication status when accessing the index page
  * If user's session is still active (user is still authenticated),
  * user is redirected to the message board
  * If user's session has expired, the index page is rendered
@@ -28,7 +29,7 @@ class HomepageRedirect extends React.Component {
  * @returns {ReactElement} ComposedComponent
  */
   render() {
-    return <Route path='/' component={HomePage}/>;
+    return <Route path="/" component={HomePage} />;
   }
 }
 

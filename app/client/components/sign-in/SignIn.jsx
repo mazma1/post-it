@@ -27,7 +27,7 @@ class SignIn extends React.Component {
                 <h5 className="center">Sign In | Post It</h5>
               </header>
 
-              <SigninForm userSigninRequest={userSigninRequest}/>
+              <SigninForm userSigninRequest={userSigninRequest} />
             </div>
           </div>
         </div>

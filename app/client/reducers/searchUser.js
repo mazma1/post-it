@@ -13,6 +13,7 @@ export default (state = {}, action = {}) => {
 
     case FETCH_SEARCHED_USER_SUCCESS:
       return {
+        ...state,
         isLoading: false,
         users: action.result
       };

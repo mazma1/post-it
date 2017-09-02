@@ -1,13 +1,21 @@
 import React from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
+import { PropTypes } from 'prop-types';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
 import TextField from '../common/FormTextField.jsx';
 import { resetLinkRequest } from '../../actions/resetPassword';
 
-
+/**
+ * Form for submiting email for password reset
+ */
 class EnterEmailForm extends React.Component {
+
+  /**
+   * Constructor
+   * @param {object} props
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -19,13 +27,27 @@ class EnterEmailForm extends React.Component {
     this.onRequestResetSubmit = this.onRequestResetSubmit.bind(this);
   }
 
-  onChange(e) {
+  /**
+   * Handles change event of email input form
+   * Updates error and email states
+   * @param {SyntheticEvent} event
+   * @returns {void} null
+   */
+  onChange(event) {
     this.setState({ error: '' });
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({ [event.target.name]: event.target.value });
   }
 
-  onRequestResetSubmit(e) {
-    e.preventDefault();
+  /**
+   * Handles password reset request event
+   * Dispatches resetLinkRequest action with provided email
+   * If the submission was successful, it adds a success flash message
+   * If submission was not successful, it returns the appropriate error message
+   * @param {SyntheticEvent} event
+   * @returns {void}
+   */
+  onRequestResetSubmit(event) {
+    event.preventDefault();
     this.setState({ error: '' });
     this.props.resetLinkRequest({ email: this.state.email }).then(
       () => {
@@ -33,9 +55,15 @@ class EnterEmailForm extends React.Component {
         this.setState({ email: '' });
       },
       ({ response }) => this.setState({ error: response.data })
-    ).catch();
+    ).catch(() => {
+      toastr.error('Unable to submit request, please try again');
+    });
   }
 
+  /**
+   * Render
+   * @returns {ReactElement} Email Form markup
+   */
   render() {
     const { error } = this.state;
     return (
@@ -49,23 +77,30 @@ class EnterEmailForm extends React.Component {
 
               <form className="col s10 offset-s1 auth-form" onSubmit={this.onRequestResetSubmit}>
                 <div className="row">
-                  <div className={classnames('input-field', 'auth-field', 'col s12', { 'has-error': error })}>
+                  <div
+                    className={classnames(
+                      'input-field',
+                      'auth-field',
+                      'col s12',
+                      { 'has-error': error }
+                    )}
+                  >
                     <TextField
-                      icon='email'
-                      label='Email'
+                      icon="email"
+                      label="Email"
                       error={error}
                       onChange={this.onChange}
                       value={this.state.email}
-                      field='email'
-                      type='email'
-                      autocomplete='off'
+                      field="email"
+                      type="email"
+                      autocomplete="off"
                     />
                   </div>
                 </div>
 
                 <div className="row">
                   <div className="input-field col s12">
-                    <a href="#"
+                    <a
                       className="btn auth-btn waves-effect waves-light col s12"
                       onClick={this.onRequestResetSubmit}>
                       Request Reset
@@ -74,10 +109,12 @@ class EnterEmailForm extends React.Component {
                 </div>
 
                 <div className="center call-to-sign-in">
-                  <p className="center">Remember your password?<Link to="/signin"> Sign In</Link></p>
+                  <p className="center">Remember your password?
+                    <Link to="/signin"> Sign In</Link>
+                  </p>
                 </div>
 
-                <div className="pwd-reset-form-padding-bottom"></div>
+                <div className="pwd-reset-form-padding-bottom" />
               </form>
             </div>
           </div>
@@ -86,5 +123,9 @@ class EnterEmailForm extends React.Component {
     );
   }
 }
+
+EnterEmailForm.propTypes = {
+  resetLinkRequest: PropTypes.func.isRequired,
+};
 
 export default connect(null, { resetLinkRequest })(EnterEmailForm);

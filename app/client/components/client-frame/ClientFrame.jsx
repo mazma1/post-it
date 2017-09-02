@@ -2,7 +2,7 @@ import React from 'react';
 import Sidebar from '../client-frame/sidebar/Sidebar.jsx';
 import Header from './Header.jsx';
 
-const ClientFrame = props => ({
+const ClientFrame = () => ({
   render() {
     return (
       <div>

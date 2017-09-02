@@ -31,31 +31,31 @@ class MsgForm extends React.Component {
   /**
    * Handles change event of New Group input form
    * Updates messageInput state
-   * @param {SyntheticEvent} e
+   * @param {SyntheticEvent} event
    * @returns {void}
    */
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
+  onChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
   }
 
    /**
    * Handles change event of Priority Select input
    * Updates messageInput state
-   * @param {SyntheticEvent} e
+   * @param {SyntheticEvent} event
    * @returns {void}
    */
-  onSelect(e) {
-    this.setState({ [e.target.name]: e.target.value });
+  onSelect(event) {
+    this.setState({ [event.target.name]: event.target.value });
   }
 
   /**
    * Handles Message Send event
    * Dispatches PostNewMessage action if a group exists and message is not empty
-   * @param {SyntheticEvent} e
+   * @param {SyntheticEvent} event
    * @returns {void}
    */
-  onMessageSend(e) {
-    e.preventDefault();
+  onMessageSend(event) {
+    event.preventDefault();
     const { groupId, username } = this.props;
     if (groupId && this.state.messageInput !== '') {
       const userMessage = this.state.messageInput;
@@ -117,7 +117,12 @@ class MsgForm extends React.Component {
 
               <div className="col-lg-3 col-md-10 col-sm-11 col-xs-11 priority-container">
                 <label>Priority</label>
-                <select className="browser-default" name="priority" onChange={this.onSelect} value={this.state.priority}>
+                <select
+                  className="browser-default"
+                  name="priority"
+                  onChange={this.onSelect}
+                  value={this.state.priority}
+                >
                   <option value="normal">Normal</option>
                   <option value="urgent">Urgent</option>
                   <option value="critical">Critical</option>
@@ -126,7 +131,6 @@ class MsgForm extends React.Component {
 
               <div className="col-lg-1 col-md-2 col-sm-1 col-xs-1 msg-send-btn">
                 <a
-                  href='#'
                   type="submit"
                   onClick={this.onMessageSend}
                   className="btn waves-effect waves-light blue lighten-1">
@@ -171,9 +175,10 @@ function mapDispatchToProps(dispatch) {
 
 
 MsgForm.propTypes = {
-  userId: PropTypes.number,
   groupId: PropTypes.number,
-  postNewMessage: PropTypes.func.isRequired
+  postNewMessage: PropTypes.func.isRequired,
+  selectedGroup: PropTypes.object,
+  username: PropTypes.string.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MsgForm);

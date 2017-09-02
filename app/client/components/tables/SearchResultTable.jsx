@@ -3,15 +3,20 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 
-
+/** Table of search result */
 class SearchResultTable extends React.Component {
+
+  /**
+   * Render
+   * @returns {ReactElement} Search table markup
+   */
   render() {
     const users = this.props.searchResult.users;
     let searchResultRow;
 
     if (!isEmpty(users)) {
-      searchResultRow = users.map((user, index) => (
-        <tr key={index}>
+      searchResultRow = users.map((user) => (
+        <tr key={user.id}>
           <td>
             {user.firstname}
           </td>
@@ -41,8 +46,8 @@ class SearchResultTable extends React.Component {
           <thead>
             <tr><h5>Search Result</h5></tr>
             <tr>
-              <th width='20%'>First Name</th>
-              <th width='20%'>Last Name</th>
+              <th width="20%">First Name</th>
+              <th width="20%">Last Name</th>
               <th>Email</th>
               <th>Phone Number</th>
               <th>Groups</th>
@@ -57,6 +62,11 @@ class SearchResultTable extends React.Component {
   }
 }
 
+/**
+ * Maps pieces of the redux state to props
+ * @param {object} state Redux state
+ * @returns {object} Search result
+ */
 function mapStateToProps(state) {
   return {
     searchResult: state.searchResult

@@ -22,10 +22,11 @@ const HomePage = () => (
               <Link to="/signup">Sign Up</Link> to get started!
             </h5>
             <h5 className="index-desc index-line-height">
-              Already have an account? <br/><Link to="/signin">Sign In</Link> to continue enjoying Post It.
+              Already have an account? <br />
+              <Link to="/signin">Sign In</Link> to continue enjoying Post It.
             </h5>
           </div>
-          <div className="background-img-hack"></div>
+          <div className="background-img-hack" />
         </div>
       </div>
     </div>
