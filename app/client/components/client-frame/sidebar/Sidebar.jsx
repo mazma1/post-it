@@ -26,7 +26,7 @@ import {
  * Sidebar component for message board
  * Child components: GroupList and Create Group modal
  */
-class Sidebar extends React.Component {
+export class Sidebar extends React.Component {
 
   /**
    * Constructor
@@ -245,8 +245,8 @@ class Sidebar extends React.Component {
         </aside>
 
         {/*Create Group Modal*/}
-        <ModalFrame id='createGroup' show={this.state.isOpen}>
-          <ModalHeader header='Group Name' onClose={this.closeModal}/>
+        <ModalFrame id="createGroup" show={this.state.isOpen}>
+          <ModalHeader header="Group Name" onClose={this.closeModal} />
 
           <ModalBody
             label="Group Name"

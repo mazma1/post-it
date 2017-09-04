@@ -57,6 +57,7 @@ function GroupList(props) {
   const createGroup = (
     <li role="presentation" style={newGroup}>
       <a
+        id="createNewGroup"
         href="#createGroup"
         data-toggle="modal" data-target="#createGroup"
         onClick={props.openModal}>
@@ -76,6 +77,7 @@ function GroupList(props) {
 
       return (
         <li
+          id="singleGroup"
           role="presentation"
           onClick={onGroupClick}
           key={group.id}

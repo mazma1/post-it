@@ -1,8 +1,8 @@
 import * as actions from '../../actions/setSelectedGroup';
 import * as types from '../../actions/types';
 
-describe('Set selected group action creator', () => {
-  it('should create an action to set the selected group as active', () => {
+describe('Set Selected Group Action', () => {
+  it('should set a selected group as active', () => {
     const selectedGroup = {
       id: 1,
       name: 'Cohort 29'

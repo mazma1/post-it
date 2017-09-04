@@ -45,11 +45,11 @@ class SigninForm extends React.Component {
 
   /**
    * Handles change event of sign in input fields
-   * @param {SyntheticEvent} e
-   * @returns {void}
+   * @param {SyntheticEvent} event
+   * @returns {void} null
    */
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
+  onChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
   }
 
   /**
@@ -58,11 +58,11 @@ class SigninForm extends React.Component {
    * If sign in request was successful, it redirects to the message board
    * with a success flash message.
    * If sign in was not successful, it returns the appropriate error message(s)
-   * @param {SyntheticEvent} e
+   * @param {SyntheticEvent} event
    * @returns {void}
    */
-  onSigninClick(e) {
-    e.preventDefault();
+  onSigninClick(event) {
+    event.preventDefault();
 
     if (this.validateInput()) {
       this.setState({ errors: {} });

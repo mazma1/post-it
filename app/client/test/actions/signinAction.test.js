@@ -7,9 +7,9 @@ import * as types from '../../actions/types';
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-describe('Sign in', () => {
-  describe('sync action creators', () => {
-    it('should create an action to set current user', () => {
+describe('Sign In Actions', () => {
+  describe('#setCurrentUser', () => {
+    it('should set current user details with given data', () => {
       const user = {
         data: {
           id: 1,
@@ -25,8 +25,10 @@ describe('Sign in', () => {
       };
       expect(actions.setCurrentUser(user)).toEqual(expectedAction);
     });
+  });
 
-    it('should create an action to delete current user', () => {
+  describe('#deleteCurrentUser', () => {
+    it('should delete a user\'s data after log out', () => {
       const user = {};
       const expectedAction = {
         type: types.SET_CURRENT_USER,
@@ -36,12 +38,12 @@ describe('Sign in', () => {
     });
   });
 
-  describe('async action creators', () => {
+  describe('#userSigninRequest', () => {
     afterEach(() => {
       nock.cleanAll();
     });
 
-    it('should create SET_CURRENT_USER when signin is successful', () => {
+    it('should create SET_CURRENT_USER after successful sign in', () => {
       nock('http://localhost')
         .post('/api/user/signin')
         .reply(201, { data: { token: '1234tycngsgu67890plkm' } });
@@ -52,11 +54,13 @@ describe('Sign in', () => {
       };
       const store = mockStore();
 
-      store.dispatch(actions.userSigninRequest({ username: 'mazma', password: 1234 })).then(() => {
+      store.dispatch(actions.userSigninRequest({
+        username: 'mazma',
+        password: 1234
+      })).then(() => {
         // return of async actions
         expect(store.getActions()).toEqual(expectedAction);
       });
     });
   });
 });
-

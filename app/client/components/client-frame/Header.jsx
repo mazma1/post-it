@@ -24,7 +24,7 @@ import {
  * Header component for message board
  * Child components: GroupName Add User modal and Group members modals
  */
-class Header extends React.Component {
+export class Header extends React.Component {
 
   /**
    * Constructor
@@ -180,7 +180,7 @@ class Header extends React.Component {
               </div>
 
               <div className="col-md-9 col-sm-7 col-xs-8 mobile-stack">
-                <ul className='cta'>
+                <ul className="cta">
                   <li>
                     <span className="search-icon">
                       <i className="material-icons">search</i>
@@ -241,7 +241,7 @@ class Header extends React.Component {
           <ModalHeader header="Group Members" onClose={this.closeModal} />
 
           <div className="modal-body">
-            <GroupMembersTable />
+            <GroupMembersTable groupMembers={this.props.groupMembers} />
           </div>
 
           <ModalFooter>
@@ -263,7 +263,8 @@ function mapStateToProps(state) {
   return {
     username: state.signedInUser.user.username,
     selectedGroup: state.selectedGroup,
-    membersLoading: state.groupMembers.isLoading
+    membersLoading: state.groupMembers.isLoading,
+    groupMembers: state.groupMembers.members
   };
 }
 
@@ -290,7 +291,8 @@ Header.propTypes = {
   submitNewUser: PropTypes.func.isRequired,
   selectedGroup: PropTypes.object,
   username: PropTypes.string.isRequired,
-  membersLoading: PropTypes.bool.isRequired
+  membersLoading: PropTypes.bool.isRequired,
+  groupMembers: PropTypes.array.isRequired
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
