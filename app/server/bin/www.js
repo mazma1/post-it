@@ -1,6 +1,21 @@
-// This will be our application entry. We'll setup our server here.
-const app = require('../index'); // The express app we just created on index.js
+import app from '../app';
 
-app.listen(3000, () => {
-  console.log('Server started on port 3000');
+const port = process.env.PORT || 3000;
+
+// app.listen(port, () => {
+//   console.log(`Server started on port ${port}`);
+// });
+
+const io = require('socket.io').listen(app.listen(port));
+
+io.on('connection', function (socket) {
+  console.log('a user connected');
+
+  socket.on('chat message', function (msg) {
+    console.log('message: ' + msg);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
 });

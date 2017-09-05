@@ -1,0 +1,989 @@
+$blue : #31708f;
+$sidebar-bkground: #C0C0C0;
+$pixel0: 0;
+$pixel6: 6px;
+$pixel8: 8px;
+$pixel16: 16px;
+$pixel18: 18px;
+$pixel20: 20px;
+$pixel21: 21px;
+$pixel22: 22px;
+$pixel24: 24px;
+$pixel26: 26px;
+$pixel32: 32px;
+$pixel40: 40px;
+$pixel72: 72px;
+$pixel280: 280px;
+$pixel300: 300px;
+$tablet-width: 767px;
+
+
+.pr6 {
+  padding-right: $pixel6;
+}
+body {
+  overflow-x: hidden;
+  height: 100%;
+}
+
+// Start: Mobile Sidebar Navigation
+// aside.navbar-default.mobile-navbar {
+  #sidebar {
+    width: $pixel280;
+    position: fixed;
+    top: 0;
+    height:100%;
+    background: $sidebar-bkground;
+    overflow: auto;
+  }
+
+  #brand-name {
+    font-size: $pixel26;
+    padding-top: $pixel22;
+    padding-bottom: $pixel21;
+    text-align: center;
+    box-shadow: 0 4px 6px -6px black;
+  }
+
+  @media (max-width: $tablet-width) {
+    #sidebar {
+      position: relative;
+      width: 100%;
+    }
+  
+    #brand-name {
+      text-align: left !important;
+      font-size: 22px;
+      padding: 5px 20px;
+      line-height: 50px !important;
+      display: inline-block;
+    }
+
+    #sidebar .mobile-nav-btn {
+      margin-top: 13px;
+    }
+
+    .mobile-navbar {  
+      top: 0;
+      border-width: 0 0 1px;
+      position: fixed;
+      right: 0;
+      left: 0;
+      z-index: 1030;
+    }
+  }
+// }
+
+.navbar-collapse {
+  padding-right: $pixel0;
+}
+
+ul#menu-content li.active {
+  color: #fff;
+  background-color: #337ab7;
+}
+// End: Mobile Sidebar Navigation
+
+
+
+// Start: Content Area
+#content-area {
+  // padding-top: 70px; // msg _card_padding
+  width: 76%;
+  position:relative;
+  left: $pixel300; // width of your side box.
+
+  
+}
+
+@media screen and (max-width: 850px) and (min-width: 769px) {
+  #content-area {
+    width: 74%;
+  } 
+}   
+
+@media screen and (max-width: 767px)  {
+  #content-area {
+    left: 0;
+    width: 98%;
+  }
+}  
+
+@media screen and (min-width: 561px) {
+  main#content-area.col-md-9 {
+    padding-right: 0;
+  }
+}
+// End: Content Area
+ 
+
+
+ section.nav-bar {
+  border-bottom : 1px solid grey;
+  .brand {
+    padding-top: $pixel8;
+  }
+  ul.cta {
+    list-style: none;
+    text-align: right;
+    // padding-top: $pt24;
+  }
+  li {
+    display: inline-block;
+    padding: 5px 10px;
+  }
+  li.username {
+    color: $blue;
+    font-size: $pixel16;
+  }
+  @media screen and (max-width: 560px)  {
+    li.username {
+      font-size: 14px;
+    }
+  } 
+
+  @media screen and (max-width: 384px)  {
+    li {
+      padding: 3px;
+    }
+
+    li.username {
+      font-size: 13px;
+    } 
+
+    li>a.options {
+      font-size: 13px;
+    } 
+  } 
+
+  @media screen and (max-width: 920px) and (min-width: 768px) {
+    li.username  {
+      display: none;
+    }
+    ul {
+      // padding-right: 40px;
+    }
+  }  
+ }
+
+   
+@media screen and (max-width: 768px) {
+  .btn {
+    letter-spacing: 0;
+    padding: 0 1rem;
+  }
+} 
+
+@media screen and (max-width: 767px) {
+  .row {
+    margin-bottom: 0;
+  }
+}
+
+// Group Name
+@media screen and (max-width: 560px) {
+  .col-xs-3 {
+    width: 32%;
+  } 
+}
+
+@media screen and (max-width: 773px) and (min-width: 768px) {
+  .col-sm-5 {
+    width: 30%;
+  } 
+}   
+
+
+// Start: Large VS Mobile Stack
+.mobile-stack {
+  display: none;
+}
+
+@media screen and (max-width: 560px)  {
+  .lg-stack {
+    display: none;
+  }
+  .mobile-stack {
+    display: inline-block;
+    padding-top: 24px;
+  }
+  .dropdown-menu {
+    left: -80px;
+  } 
+  .col-md-9 {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}  
+
+@media screen and (min-width: 768px)  {
+  .lg-stack {
+    padding-top: 15px;
+    padding-bottom: 9px;
+  }
+}  
+
+@media screen and (max-width: 767px)  {
+  .lg-stack {
+    padding-top: 24px;
+  }
+}  
+
+@media screen and (max-width: 384px)  {
+  .dropdown-menu {
+    left: -95px;
+  } 
+}  
+
+// Lg Stack Unordered List
+@media screen and (max-width: 773px) and (min-width: 768px) {
+  .col-sm-7 {
+    width: 70%;
+  }
+}  
+// End: Large VS Mobile Stack
+
+
+
+// Start: Desktop Side Navbar
+section.nav-bar {
+  border-bottom : 1px solid grey;
+  position: absolute; 
+  top:0px; 
+  height: 100px; 
+  overflow: hidden; 
+  // left: 0px; 
+  // width: 100%; 
+  // background-color: #aabbff; 
+  
+  .nav-container {
+    width: 76%;
+    position: fixed;
+    background-color: #ffffff;
+    z-index: 99;
+    box-shadow: 0 4px 6px -6px black;
+  } 
+
+  .group-name {
+    display: inline-block;
+  }
+
+  @media screen and (max-width: 1263px) and (min-width: 1153px) {
+    .nav-container {
+      width: 76%;
+    }
+  }  
+
+  @media screen and (max-width: 1152px) and (min-width: 1080px) {
+    .nav-container {
+      width: 74%;
+    }
+  }
+
+  @media screen and (max-width: 1212px) and (min-width: 1080px) {
+    .group-name {
+      font-size: 1.8rem;
+      margin-top: 1.5rem;
+    }
+  } 
+
+  @media screen and (max-width: 1079px) and (min-width: 768px) {
+    .nav-container {
+      // width: 64%;
+    }
+    .group-name {
+      font-size: 1.5rem;
+      margin-top: 1.5rem;
+    }
+  }  
+
+  @media screen and (max-width: 768px) and (min-width: 426px) {
+    .nav-container {
+      width: 64%;
+    }
+  } 
+  
+  @media screen and (max-width: 1024px) and (min-width: 769px) {
+    .nav-container {
+      width: 70.5%;
+    }
+  }  
+
+   @media screen and (min-width: 768px)  {
+    .nav-container div.row {
+      margin-bottom: 0;
+    }  
+  } 
+
+  @media screen and (max-width: 767px)  {
+    .nav-container {
+      width: 98%;
+      padding-top: 45px;
+    }
+    .group-name {
+      font-size: 1.5rem;
+      margin-top: 2rem;
+    }
+  }  
+
+  @media screen and (max-width: 628px)  {
+    .group-name {
+      font-size: 1.3rem;
+      margin-top: 2.2rem;
+    }
+  } 
+
+  @media screen and (max-width: 560px)  {
+    .group-name {
+      font-size: 1.1rem;
+      margin-top: 1.5rem;
+    }
+  }  
+
+  .brand {
+    padding-top: $pixel8;
+  }
+}
+// End: Desktop Side Navbar
+
+// .card-panel-wrapper {
+//   width: 100%;
+//   margin: 0 auto;
+// }
+
+// Start: Message Card
+section.cards {
+  
+  .msg_card_padding {
+    padding-top: 100px;
+  }
+
+  .msg_card_bottom_padding {
+    padding-bottom: 90px;
+  }
+
+  .msg_card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 24px;
+  }
+
+  .msg_body {
+    padding-top: 8px;
+    font-size: 15px;
+    padding: 5px;
+    cursor: pointer;
+  }
+
+  .card-panel {
+      padding: 10px;
+      margin: 1.5rem 1rem 1rem 1rem;
+  }
+  // .card-panel {
+  //   padding: 10px;
+  //   margin: 1.5rem 1rem 1rem 1rem;
+  // } 
+  @media screen and (max-width: 1263px) and (min-width: 1153px) {
+    .card-panel {
+      width: 94%;
+    }
+  }  
+  @media screen and (max-width: 1152px) and (min-width: 1080px) {
+    .card-panel {
+      width: 93%;
+    }
+  } 
+
+  @media screen and (max-width: 1079px) and (min-width: 768px) {
+    .card-panel {
+      width: 89%;
+    }
+  }  
+
+  @media screen and (max-width: 920px) and (min-width: 769px) {
+    .card-panel {
+      width: 83%;
+    }
+  }
+
+  @media screen and (max-width: 960px) and (min-width: 991px) {
+    .card-panel {
+      width: 89%;
+    }
+  } 
+
+  @media screen and (max-width: 990px) and (min-width: 935px) {
+    .card-panel {
+      width: 88%;
+    }
+  } 
+
+  @media screen and (max-width: 850px) and (min-width: 769px) {
+    .card-panel {
+      width: 79%;
+    }  
+  }  
+
+  @media screen and (max-width: 768px) and (min-width: 426px) {
+    .card-panel {
+      width: 92%;
+    }  
+  }  
+
+  @media screen and (max-width: 767px) and (min-width: 561px) {
+    .msg_card_padding {
+      padding-top: 115px;
+    }
+  }  
+
+  @media screen and (min-width: 768px)  {
+    .msg_card_padding {
+      padding-top: 65px;
+    }
+  }
+
+  @media screen and (max-width: 384px) and (min-width: 376px)   {
+    .msg_card_bottom_padding {
+      padding-bottom: 60px;
+    }
+  }  
+
+  @media screen and (max-width: 375px) {
+  .msg_card_bottom_padding {
+    padding-bottom: 80px;
+  }
+}
+
+  @media screen and (max-width: 1079px) and (min-width: 1024px)  {
+    .card-panel {
+      width: 94%;
+    }
+  } 
+}  
+//End: Message Card
+
+
+// Start: Message Input Form
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 76%;
+  /*right: 0;*/
+  padding-bottom: 8px;
+  padding-right: 65px;
+  margin-right: 10px;
+  background-color: white;
+  box-shadow: 0 -4px 6px -6px black;
+}
+
+.footer-container{
+  padding-left: 24px;
+}
+
+// .auth {
+//   background-color: #5b7dde;
+// }
+
+.msg-send-btn {
+  padding-left: 0;
+  padding-top: 18px;
+}
+
+.msg-form input[type=text]:focus {
+  border-bottom: 1px solid #42a5f5;
+  box-shadow: 0 1px 0 0 #42a5f5;
+}
+
+.msg-form input:not([type]):focus:not([readonly]), input[type=text]:not(.browser-default):focus:not([readonly]) {
+  border-bottom: 1px solid #42a5f5;
+  box-shadow: 0 1px 0 0 #42a5f5;
+}
+
+.msg-form input[type=text]:not(.browser-default) {
+  margin: 0 0 10px 0;
+}
+
+@media screen and (max-width: 1317px) and (min-width: 1285px) {
+  .footer {
+    padding-right: 90px;
+  }
+} 
+
+@media screen and (max-width: 1284px) and (min-width: 1200px) {
+  .footer {
+    width: 75%;
+  }
+  .col-lg-11 {
+    width: 92%;
+  }
+  .col-lg-1 {
+    width: 8%;
+  }
+} 
+
+@media screen and (max-width: 1119px) and (min-width: 1071px) {
+  .footer {
+    width: 71%;
+  }
+  .col-md-10 {
+    width: 90%;
+  }
+  .col-md-2 {
+    width: 10%;
+  }
+} 
+
+@media screen and (max-width: 1070px) and (min-width: 992px) {
+  .footer {
+    width: 69%;
+  }
+  .col-md-10 {
+    width: 88%;
+  }
+  .col-md-2 {
+    width: 12%;
+  }
+} 
+
+@media screen and (max-width: 810px) and (min-width: 801px) {
+  .footer {
+    width: 61%;
+  }
+}
+
+@media screen and (max-width: 850px) and (min-width: 811px) {
+  .footer {
+    width: 62%;
+  }
+}
+
+@media screen and (max-width: 800px) and (min-width: 768px) {
+  .footer {
+    width: 62%;
+  }
+}
+
+@media screen and (max-width: 920px) and (min-width: 851px) {
+  .footer {
+    width: 64%;
+  }
+}
+
+@media screen and (max-width: 991px) and (min-width: 921px) {
+  .footer {
+    width: 67%;
+  }
+
+  .col-sm-11 {
+    width: 88%;
+  }
+
+  .col-sm-1 {
+    width: 12%;
+  }
+}
+
+@media screen and (max-width: 767px) and (min-width: 561px) {
+  .footer {
+    width: 95%;
+  }
+}
+
+@media screen and (max-width: 767px)  {
+  .footer {
+    width: 98%;
+  }
+}  
+
+@media screen and (max-width: 773px) and (min-width: 768px) {
+  .col-sm-5 {
+    width: 30%;
+  }
+
+  .col-sm-7 {
+    width: 70%;
+  }
+} 
+
+@media screen and (max-width: 991px) and (min-width: 921px) {
+  .col-sm-5 {
+    width: 30%;
+  }
+
+  .col-sm-7 {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 384px)  {
+  .footer {
+    padding-bottom: 0;
+  }
+}  
+
+@media screen and (max-width: 767px) and (min-width: 629px) {
+  .footer {
+    width: 96%;
+  }
+}  
+
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+  .footer {
+    width: 70.5%;
+    padding-right: 55px;
+  }
+}  
+
+@media screen and (max-width: 768px) and (min-width: 426px) {
+  .footer {
+    width: 64%;
+  }
+}  
+//End: Message Input Form
+
+
+
+// Start: Index Page
+html, body, #clientApp, #clientApp>div {
+  height: 100%;
+}
+
+.background {
+  background: #098cf5 url("/dist/img/index-bg.png");
+  min-height: 100%;
+  height: 100vh; 
+  overflow-y: auto;
+ 
+  .index-header {
+    padding-top: 130px;
+  }   
+
+  .index-desc {
+    padding-top: 20px;
+  }
+
+  .index-line-height {
+    line-height: 1.3;
+  }
+
+  .index-desc a {
+    color: #82012f;
+  }
+
+  .index-color {
+    color: #f1f1f1;
+  }
+
+
+  @media screen and (max-width: 592px) and (min-width: 445px) {
+    .index-header {
+      padding-top: 120px;
+    }
+  }
+
+  @media screen and (max-width: 444px) {
+    .index-header {
+      padding-top: 70px;  //100px
+    }
+  }
+
+  @media screen and (max-width: 592px) {
+    .index-header h2 {
+      font-size: 40px;
+    }
+
+    div.auth h4 {
+      font-size: 25px;
+    }
+
+    div.auth h5 {
+      font-size: 20px;
+    }
+  }
+}
+// End: Index Page
+
+
+// Start: Signup and Signin
+.material-icons {
+  padding-top: 12px;
+}
+
+.auth-form div.row {
+  margin-bottom: 0;
+}
+
+.auth-form input[type=text]:not(.browser-default) {
+  height: 2.6rem;
+}
+
+.auth-form input[type=email]:not(.browser-default) {
+  height: 2.6rem;
+}
+
+.auth-form input[type=password]:not(.browser-default) {
+  height: 2.6rem;
+}
+
+.auth-header {
+  padding-top: 40px;
+}
+
+form.col.s12.auth-form {
+  padding: 20px;
+}
+
+.form-padding-bottom {
+  padding-bottom: 30px;
+}
+
+.call-to-sign-in {
+  padding-top: 16px; 
+}
+
+.signin-card {
+  margin-top: 120px;
+}
+
+@media screen and (max-width: 425px) {
+  .signin-card {
+    margin-top: 50px;
+  }
+}
+
+input[type=email]:not(.browser-default):focus:not([readonly]) {
+    border-bottom: 1px solid #2196f3;
+    box-shadow: 0 1px 0 0 #2196f3; 
+}
+
+input[type=password]:not(.browser-default):focus:not([readonly]) {
+    border-bottom: 1px solid #2196f3; 
+    box-shadow: 0 1px 0 0 #2196f3; 
+}
+
+input[type=number]:not(.browser-default):focus:not([readonly]) {
+    border-bottom: 1px solid #2196f3; 
+    box-shadow: 0 1px 0 0 #2196f3; 
+}
+
+.input-field .prefix.active {
+  color: #2196f3; 
+}
+
+input[type=text]:not(.browser-default):focus:not([readonly]) + label {
+  color: #2196f3; 
+}
+
+input[type=email]:not(.browser-default):focus:not([readonly]) + label {
+  color: #2196f3; 
+}
+
+input[type=password]:not(.browser-default):focus:not([readonly]) + label {
+  color: #2196f3; 
+}
+
+input[type=number]:not(.browser-default):focus:not([readonly]) + label {
+  color: #2196f3; 
+}
+
+.auth-btn.btn {
+  background-color: #2196f3;
+}
+
+.auth-btn.btn:hover, .auth-btn.btn-large:hover {
+  background-color: #42a5f5;
+}
+
+.signup-panel {
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 767px) {
+  .signin-card div.input-field {
+    padding-bottom: 20px;
+  }
+}  
+
+// End: Signup and Signin
+
+.help-block {
+    padding-left: 45px;
+    font-size: 13px;
+    margin-top: -15px;
+}
+
+.has-error .help-block {
+  color: #f44336;
+}
+
+.flash-msg {
+  padding-top: 22px;
+  margin-bottom: -10px;
+  padding-right: 15px;
+  padding-left: 13px;
+}
+
+.modal {
+  background-color: transparent;
+}
+@media (min-width: 768px) {
+  .modal-dialog {
+     width: 100%;
+    margin: 0; 
+  }
+
+  .modal-dialog {
+    margin: 0; 
+  }
+}  
+
+modal-open .modal {
+  overflow-y: hidden; 
+}
+
+.modal-dialog {
+  margin: 0;
+}
+
+.modal.fade.in  {
+  padding-right: 0 !important;
+  // height: 360px;
+}
+
+.modal .modal-footer .btn, 
+.modal .modal-footer .btn-large, 
+.modal .modal-footer .btn-flat {
+  margin: 6px 5px;
+}   
+
+.help-block.modal-help-block {
+  padding-left: 0;
+}
+
+
+@media screen and (max-width: 425px) and (min-width: 376px) {
+  ul.group-members-dropdown {
+    margin-left: 22px;
+  }
+}  
+
+@media screen and (max-width: 375px) {
+  ul.group-members-dropdown {
+    margin-left: 37px;
+  }
+}
+
+select.browser-default {
+  height: 1.5rem;
+}
+
+.priority-container {
+  padding-top: 10px;
+}
+
+.msg-form-container {
+  padding-top: 10px;
+}
+
+.priority-label {
+  margin-left: 10px;
+}
+
+.card-panel .col {
+  padding: 0;
+} 
+
+.msg-read-by {
+  // margin-left: -100px;
+  right: 0px;
+  left: 612px;
+}
+
+.not-found {
+  margin-top: 30px;
+  margin-left: 30px;
+}
+
+.pwd-reset-form-padding-bottom {
+  padding-bottom: 60px;
+}
+
+.pwd-reset-auth-header {
+  padding-bottom: 20px;
+}
+
+.message-card .card .card-content {
+  padding-bottom: 60px;
+}
+
+div.row .message-card {
+  padding-top: 30px;
+}
+
+.card .card-content .card-title {
+  display: inline-block;
+}
+
+.message-content {
+  padding-top: 10px;
+}
+
+.message-card div.card li.message-options {
+  text-align: right;
+  padding-bottom: 30px;
+  padding-right: 30px;
+}
+
+.msg-filter {
+  padding-top: 90px;
+  margin-top: 17px;
+  width: 97%;
+  margin-left: 12px;
+  height: 30px;
+}
+
+select.browser-default.msg-filter {
+  height: 1.9rem;
+}
+
+.full-msg {
+  font-size: 15px;
+  line-height: 1.3;
+  text-align: justify;
+  padding: 10px;
+}
+
+.font18 {
+  font-size: $pixel16;
+}
+
+.material-icons.archive-btn {
+  padding-top: 0;
+  cursor: pointer;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.search-form {
+  padding-top: 60px;
+
+  .search-card {
+    height: 300px;
+  }
+}
+
+.search-submit-btn {
+  float: right;
+  margin-right: 4%;
+}
+~
+.pagination>.active>a {
+  z-index: 0;
+}
+
+// ul:not(.browser-default) {
+//   padding-left: 17px;
+// }  
