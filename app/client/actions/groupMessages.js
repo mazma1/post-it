@@ -41,8 +41,8 @@ export function updateReadStatus(messageDetails) {
   return dispatch => request;
 }
 
-export function archiveMessage(messageId) {
-  const request = axios.patch('/api/group/message/archive', messageId);
+export function archiveMessage({ messageId }) {
+  const request = axios.patch(`/api/group/${messageId}/archive`, messageId);
 
   return dispatch => request;
 }

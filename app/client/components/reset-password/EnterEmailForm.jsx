@@ -20,7 +20,7 @@ class EnterEmailForm extends React.Component {
     super(props);
     this.state = {
       email: '',
-      error: ''
+      error: {}
     };
 
     this.onChange = this.onChange.bind(this);
@@ -34,7 +34,7 @@ class EnterEmailForm extends React.Component {
    * @returns {void} null
    */
   onChange(event) {
-    this.setState({ error: '' });
+    this.setState({ error: {} });
     this.setState({ [event.target.name]: event.target.value });
   }
 
@@ -48,13 +48,15 @@ class EnterEmailForm extends React.Component {
    */
   onRequestResetSubmit(event) {
     event.preventDefault();
-    this.setState({ error: '' });
+    this.setState({ error: {} });
     this.props.resetLinkRequest({ email: this.state.email }).then(
       () => {
         toastr.success(`An email has been sent to ${this.state.email} with further instructions`);
         this.setState({ email: '' });
       },
-      ({ response }) => this.setState({ error: response.data })
+      ({ response }) => {
+        this.setState({ error: response.data });
+      }
     ).catch(() => {
       toastr.error('Unable to submit request, please try again');
     });
@@ -82,13 +84,13 @@ class EnterEmailForm extends React.Component {
                       'input-field',
                       'auth-field',
                       'col s12',
-                      { 'has-error': error }
+                      { 'has-error': error.email }
                     )}
                   >
                     <TextField
                       icon="email"
                       label="Email"
-                      error={error}
+                      error={error.email}
                       onChange={this.onChange}
                       value={this.state.email}
                       field="email"

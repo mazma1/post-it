@@ -55,7 +55,7 @@ export const ModalBody = (props) => {
 };
 
 ModalBody.propTypes = {
-  errors: PropTypes.object,
+  error: PropTypes.object,
   onSubmit: PropTypes.func.isRequired,
   field: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,

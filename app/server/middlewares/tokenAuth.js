@@ -1,4 +1,3 @@
-const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
@@ -14,21 +13,19 @@ module.exports = (req, res, next) => {
             req.headers['x-access-token'];
   }
   if (token) {
-    // verifies secret and checks exp
     jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
       if (err) {
         if (err.message === 'jwt expired') {
           res.status(401).send({ error: 'Access token has expired' });
         } else {
-          res.status(401).send({ error: 'Access token has expired' });
+          res.status(401).send({ error: 'Invalid access token' });
         }
       } else {
-        // if everything is good, send details of token for use in other routes
         req.decoded = decoded;
         next();
       }
     });
   } else {
-    res.status(403).send({ error: 'No token provided.' });
+    res.status(401).send({ error: 'No token provided.' });
   }
 };

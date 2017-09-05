@@ -14,7 +14,7 @@ export function validateResetPasswordToken(token) {
 
 export function updatePassword(newPasswordDetails) {
   const token = newPasswordDetails.token;
-  const request = axios.post(`/api/user/updatepassword/${token}`, newPasswordDetails);
+  const request = axios.patch(`/api/user/updatepassword/${token}`, newPasswordDetails);
 
   return dispatch => request;
 }

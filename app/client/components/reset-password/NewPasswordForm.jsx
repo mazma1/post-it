@@ -44,9 +44,9 @@ class NewPasswordForm extends React.Component {
         () => {},
         ({ response }) => {
           let flashErrorMsg = '';
-          if (response.data === 'Token has expired') {
+          if (response.data.message === 'Token has expired') {
             flashErrorMsg = 'Reset link has expired';
-          } else if (response.data === 'Token does not exist') {
+          } else if (response.data.message === 'Token does not exist') {
             flashErrorMsg = 'Reset link has expired';
           }
           toastr.error(`${flashErrorMsg}. Enter your email to receive a valid link`);

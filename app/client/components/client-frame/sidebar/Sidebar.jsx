@@ -49,7 +49,7 @@ export class Sidebar extends React.Component {
       isOpen: false,
       newGroup: '',
       isLoading: false,
-      error: '',
+      error: {},
       groups: []
     };
 
@@ -123,7 +123,7 @@ export class Sidebar extends React.Component {
     this.setState({
       isOpen: false,
       newGroup: '',
-      error: ''
+      error: {}
     });
   }
 
@@ -135,7 +135,7 @@ export class Sidebar extends React.Component {
    */
   onChange(event) {
     this.setState({
-      error: '',
+      error: {},
       [event.target.name]: event.target.value
     });
   }
@@ -188,7 +188,7 @@ export class Sidebar extends React.Component {
    * @returns {void}
    */
   newGroupSubmit(event) {
-    this.setState({ error: '', isLoading: true });
+    this.setState({ error: {}, isLoading: true });
     event.preventDefault();
     this.props.submitNewGroup({
       group_name: this.state.newGroup,
