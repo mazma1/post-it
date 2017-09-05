@@ -14,7 +14,7 @@ export function searchUser(searchKeyword) {
     return request.then((res) => {
       const searchResult = res.data.users;
       dispatch(fetchSearchedUserSuccess(searchResult));
-    }).catch(error => {
+    }).catch((error) => {
       dispatch(fetchSearchedUserFailure(error.response.data.error));
     });
   };

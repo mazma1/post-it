@@ -4,90 +4,100 @@ import validator from 'validator';
 import isEmpty from 'lodash/isEmpty';
 import crypto from 'crypto';
 import models from '../models';
-import validateInput from '../../utils/signupValidation';
+import validateSignup from '../../utils/signupValidation';
 import sendEmail from '../../utils/sendEmail';
 
 const saltRounds = 7;
 const salt = bcrypt.genSaltSync(saltRounds);
 
 export default {
-  // Method to signup a user
+  /**
+   * Creates a new user
+   * Route: POST: /api/user/signup
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {response} response object
+   */
   signup(req, res) {
-    const { errors, valid } = validateInput(req.body);
+    const { errors, valid } = validateSignup(req.body);
 
     if (!valid) {
       res.status(400).send(errors);
     } else {
       models.User.findOne({
         where: {
-          username: req.body.username
+          $or: [{ username: req.body.username }, { email: req.body.email }]
         },
       })
-      .then((existingUsername, err) => {
-        if (existingUsername) {
-          errors.username = 'Username already exists';
-        }
-        models.User.findOne({
-          where: {
-            email: req.body.email
-          },
-        })
-        .then((existingUser, err) => {
-          if (existingUser) {
+      .then((existingUser, err) => {
+        if (existingUser) {
+          if (existingUser.username === req.body.username) {
+            errors.username = 'Username already exists';
+          }
+          if (existingUser.email === req.body.email) {
             errors.email = 'Email already exists';
           }
-
           if (!isEmpty(errors)) {
             res.status(409).send(errors);
-          } else {
-            const userData = {
-              firstname: req.body.firstname,
-              lastname: req.body.lastname,
-              username: req.body.username,
-              mobile: `234${req.body.phone.slice(1)}`,
-              email: req.body.email,
-              password: bcrypt.hashSync(req.body.password, salt)
-            };
-            models.User.create(userData)
-            .then((user) => {
-              const token = jwt.sign({
-                data: {
-                  id: user.id,
-                  username: user.username,
-                  email: user.email
-                }
-              }, process.env.TOKEN_SECRET);
-              res.status(201).send({ success: true, message: 'Signup was successful', token });
-            })
-            .catch(error => res.status(500).send(error.message));
           }
-        })
-        .catch(err => res.status(500).send(err.message));
-      });
+        } else {
+          const userData = {
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            username: req.body.username,
+            mobile: `234${req.body.phone.slice(1)}`,
+            email: req.body.email,
+            password: bcrypt.hashSync(req.body.password, salt)
+          };
+          models.User.create(userData)
+          .then((user) => {
+            const token = jwt.sign({
+              data: {
+                id: user.id,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                username: user.username,
+                email: user.email
+              }
+            }, process.env.TOKEN_SECRET);
+            res.status(201).send({ message: 'Signup was successful', token });
+          })
+          .catch(error => res.status(500).send(error.message));
+        }
+      })
+      .catch(error => res.status(500).send(error.message));
     }
   },
 
-  // Method to sign in a user
+   /**
+   * Authenticates and logs a user in
+   * Route: POST: /api/user/signin
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {response} response object
+   */
   signin(req, res) {
     const errors = {};
-    if (!req.body.identifier && !req.body.password) {
-      errors.identifier = 'This field is required';
-      errors.password = 'This field is required';
-      res.status(400).send(errors);
-    } else if (!req.body.identifier) {
-      errors.identifier = 'This field is required';
-      res.status(400).send(errors);
-    } else if (!req.body.password) {
-      errors.password = 'This field is required';
+    if (!req.body.identifier || !req.body.password) {
+      if (!req.body.identifier) {
+        errors.identifier = 'This field is required';
+      }
+      if (!req.body.password) {
+        errors.password = 'This field is required';
+      }
       res.status(400).send(errors);
     } else {
       models.User.findOne({
         where: {
-          $or: [{ username: req.body.identifier }, { email: req.body.identifier }]
+          $or: [
+            { username: req.body.identifier },
+            { email: req.body.identifier }
+          ]
         },
       })
-      .then((user, err) => {
-        if (err) throw err;
+      .then((user) => {
         if (!user) {
           errors.identifier = 'Invalid username or password';
           res.status(401).send(errors);
@@ -96,13 +106,14 @@ export default {
             const token = jwt.sign({
               data: {
                 id: user.id,
+                firstname: user.firstname,
+                lastname: user.lastname,
                 username: user.username,
                 email: user.email
               }
             }, process.env.TOKEN_SECRET);
 
             res.status(200).send({
-              success: true,
               message: 'User successfully logged in',
               token
             });
@@ -116,12 +127,19 @@ export default {
     }
   },
 
-  // Method to get the groups a user belongs to
+  /**
+   * Fetches the groups a user belongs to
+   * Route: GET: /api/user/:user_id/groups
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {response} response object
+   */
   getUserGroups(req, res) {
-    if (req.params.user_id) {
+    if (req.params.user_id && !isNaN(req.params.user_id)) {
       models.User.findOne({
         where: { id: req.params.user_id },
-        attributes: [['id', 'user_id'], 'firstname', 'lastname', 'email'],
+        attributes: [['id', 'userId'], 'firstname', 'lastname', 'email'],
         include: [{
           model: models.Group,
           as: 'group',
@@ -129,26 +147,39 @@ export default {
           through: { attributes: [] }
         }]
       })
-      .then((user) => {
-        res.status(200).send(user);
+      .then((userGroups) => {
+        if (userGroups) {
+          res.status(200).send(userGroups);
+        } else {
+          res.status(404).send({ message: 'Group does not exist' });
+        }
       })
-      .catch(err => res.status(500).send(err.message));
+      .catch(error => res.status(500).send(error.message));
+    } else {
+      res.status(400).send({ message: 'Invalid group id' });
     }
   },
 
-   // Method to send password reset link
+  /**
+   * Sends reset password link on request
+   * Route: POST: /api/user/reset_password
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {response} response object
+   */
   sendResetPasswordLink(req, res) {
-    let error = '';
+    const errors = {};
     if (!req.body.email) {
-      error = 'Email field is required';
-      res.status(400).send(error);
-    } else if (!validator.isEmail(req.body.email)) {
-      error = 'Invalid email address';
-      res.status(401).send(error);
+      errors.email = 'Email field is required';
+      res.status(400).send(errors);
+    } if (!validator.isEmail(req.body.email)) {
+      errors.email = 'Invalid email address';
+      res.status(401).send(errors);
     } else {
       models.User.findOne({
         where: { email: req.body.email }
-      }).then(user => {
+      }).then((user) => {
         if (user) {
           const resetPasswordHash = crypto.randomBytes(20).toString('hex');
           const resetPasswordExpires = Date.now() + 3600000;
@@ -174,11 +205,12 @@ export default {
                 expiry_time: Date.now() + 3600000
               }, {
                 where: { user_id: user.id }
-              }).then(() => {
-                // send email
+              })
+              .then(() => {
                 sendEmail(emailParams);
-                res.status(200).send('Email sent');
-              }).catch(err => res.status(500).send(err.message));
+                res.status(200).send({ message: 'Email sent' });
+              })
+              .catch(error => res.status(500).send(error.message));
             } else {
               models.ForgotPassword.create({
                 user_id: user.id,
@@ -186,41 +218,55 @@ export default {
                 expiry_time: resetPasswordExpires
               })
               .then(() => {
-                // send email
                 sendEmail(emailParams);
-                res.status(200).send('Email sent');
+                res.status(200).send({ message: 'Email sent' });
               });
             }
           })
-          .catch(err => res.status(500).send(err.message));
+          .catch(error => res.status(500).send(error.message));
         } else {
-          res.status(404).send('User does not exist');
+          res.status(404).send({ message: 'User does not exist' });
         }
       })
-      .catch(err => res.status(500).send(err.message));
+      .catch(error => res.status(500).send(error.message));
     }
   },
 
-  // Method to check validity of reset password token
+  /**
+   * Checks the validity of reset password token
+   * Route: POST: /api/user/newpassword
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {response} response object
+   */
   validateResetPasswordToken(req, res) {
     const token = req.body.token;
     models.ForgotPassword.findOne({
       where: {
         hash: token
       },
-    }).then((user) => {
-      if (user) {
-        if (Date.now() > user.expiry_time) {
-          res.status(401).send('Token has expired');
+    }).then((hash) => {
+      if (hash) {
+        if (Date.now() > hash.expiry_time) {
+          res.status(401).send({ message: 'Token has expired' });
         } else {
-          res.status(200).send('Token is valid');
+          res.status(200).send({ message: 'Token is valid' });
         }
       } else {
-        res.status(404).send('Token does not exist');
+        res.status(400).send({ message: 'Reset password token is required' });
       }
-    }).catch(err => res.status(500).send(err.message));
+    }).catch(error => res.status(500).send(error.message));
   },
 
+  /**
+   * Updates a user's password
+   * Route: PATCH: /api/user/newpassword
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {response} response object
+   */
   updateUserPassword(req, res) {
     const errors = {};
     if (!req.body.password && !req.body.confirm_password) {
@@ -240,17 +286,33 @@ export default {
       const hashedNewPassword = bcrypt.hashSync(req.body.password, salt);
       const token = req.params.token;
 
-      models.ForgotPassword.findOne({
-        where: { hash: token }
-      }).then((result) => {
-        models.User.update(
-          { password: hashedNewPassword }, { where: { id: result.user_id } }
-        );
-        res.status(200).send('Password successfully updated');
-      }).catch(err => res.status(500).send(err.message));
+      if (token) {
+        models.ForgotPassword.findOne({
+          where: { hash: token }
+        }).then((result) => {
+          if (result) {
+            models.User.update(
+              { password: hashedNewPassword }, { where: { id: result.user_id } }
+            );
+            res.status(200).send({ message: 'Password successfully updated' });
+          } else {
+            res.status(404).send({ message: 'Token does not exist' });
+          }
+        }).catch(err => res.status(500).send(err.message));
+      } else {
+        res.status(400).send({ message: 'Reset password token is required' });
+      }
     }
   },
 
+  /**
+   * Search for registered user
+   * Route: POST: /api/user/search'
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {response} response object
+   */
   searchForUser(req, res) {
     if (req.body.searchKeyword) {
       models.User.findAll({
@@ -280,7 +342,7 @@ export default {
           res.status(500).send({ error: error.message });
         });
     } else {
-      res.status(401).send({ error: 'A search keyword is required' });
+      res.status(400).send({ error: 'A search keyword is required' });
     }
   }
 };

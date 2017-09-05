@@ -5,7 +5,14 @@ import sendEmail from '../../utils/sendEmail';
 
 
 export default {
-  // Method to create a new group
+  /**
+   * Creates a new group
+   * Route: POST: /api/group
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {response} response object
+   */
   createGroup(req, res) {
     let error = '';
     // res.send(req.decoded); --JSON that contains details of the token owner.
@@ -29,27 +36,33 @@ export default {
           res.status(409).send({ error });
         } else {
           models.Group.create(groupData)
-          .then((group) => {
+          .then((newGroup) => {
             models.Group_member.create({
-              group_id: group.id,
+              group_id: newGroup.id,
               user_id: userId
             })
             .then(groupMember => res.status(201).send({
-              success: true,
               message: 'Group was successfully created and you have been added to it',
-              groupName: group.group_name,
-              groupOwner: group.user_id
+              groupName: newGroup.group_name,
+              groupOwner: newGroup.user_id
             }))
-            .catch(err => res.status(500).send(err));
+            .catch(err => res.status(500).send(err.message));
           })
-          .catch(err => res.status(500).send(err));
+          .catch(err => res.status(500).send(err.message));
         }
       })
-      .catch(err => res.status(500).send(err));
+      .catch(err => res.status(500).send(err.message));
     }
   },
 
-  // Method to add user to a group
+  /**
+   * Adds a user to a group
+   * Route: POST: /api/group
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {response} response object
+   */
   addUserToGroup(req, res) {
     let error = '';
 
@@ -80,7 +93,6 @@ export default {
               };
               models.Group_member.create(details)
               .then(groupMember => res.status(201).send({
-                success: true,
                 message: 'User successfully added to group',
               }))
               .catch(err => res.status(500).send(err));
@@ -94,7 +106,14 @@ export default {
     }
   },
 
-  // Method to post message to a group
+  /**
+   * Post message to a group
+   * Route: POST: /api/group/:group_id/message
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {response} response object
+   */
   postMessageToGroup(req, res) {
     if (!req.body.message) {
       res.status(400).send({ error: 'Message is required.' });
@@ -112,7 +131,6 @@ export default {
       models.Message.create(messageDetail)
       .then((message) => {
         res.status(201).send({
-          success: true,
           message: 'Message was successfully sent',
           timeSent: message.createdAt,
           messageBody: message.body
@@ -162,12 +180,27 @@ export default {
     }
   },
 
-  // Method to get messages posted to a group
+  /**
+   * Get messages posted to a group
+   * Route: GET: /api/group/:group_id/messages
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {response} response object
+   */
   getGroupMessages(req, res) {
     if (req.params.group_id) {
       models.Message.findAll({ // User is associated to message
         where: { group_id: req.params.group_id },
-        attributes: ['group_id', ['id', 'message_id'], ['body', 'message'], 'priority', 'read_by', 'isArchived', ['created_at', 'sent_at']],
+        attributes: [
+          'group_id',
+          ['id', 'message_id'],
+          ['body', 'message'],
+          'priority',
+          'read_by',
+          'isArchived',
+          ['created_at', 'sent_at']
+        ],
         include: [{
           model: models.User,
           as: 'sent_by',
@@ -188,7 +221,14 @@ export default {
     }
   },
 
-  // Method that updates users that have read a message
+   /**
+   * Updates a user that have read a message
+   * Route: PATCH: /api/group/message/read
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {response} response object
+   */
   updateMessageReadStatus(req, res) {
     const username = req.body.username,
       readBy = req.body.read_by,
@@ -202,14 +242,23 @@ export default {
         where: { id: messageId }
       })
       .then((update) => {
-        res.status(201).send('Message read status updated successfully');
+        res.status(201).send({
+          message: 'Message read status updated successfully'
+        });
       })
       .catch(error => res.status(500).send(error.message));
     }
     res.status(200).send('User has read message');
   },
 
-  // Method to get the groups a user belongs to
+   /**
+   * Get the groups a user belongs to
+   * Route: GET: /api/group/:group_id/members
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {response} response object
+   */
   getGroupMembers(req, res) {
     if (req.params.group_id) {
       models.Group.findOne({
@@ -229,15 +278,22 @@ export default {
     }
   },
 
+  /**
+   * Archives a given message
+   * Route: PATCH: /api/group/:message_id/archive
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {response} response object
+   */
   archiveMessage(req, res) {
     models.Message.findOne({
       where: {
-        id: req.body.messageId
+        id: req.params.message_id
       }
     })
     .then((message) => {
       const username = req.decoded.data.username;
-      console.log('req body =>', req.body);
       message.isArchived.push(username);
       message.update({ isArchived: message.isArchived });
       res.status(200).send(message);

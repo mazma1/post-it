@@ -10,6 +10,6 @@ router.post('/api/group/:group_id/message', tokenAuth, groupController.postMessa
 router.get('/api/group/:group_id/messages', tokenAuth, groupController.getGroupMessages);
 router.get('/api/group/:group_id/members', tokenAuth, groupController.getGroupMembers);
 router.patch('/api/group/message/read', tokenAuth, groupController.updateMessageReadStatus);
-router.patch('/api/group/message/archive', tokenAuth, groupController.archiveMessage);
+router.patch('/api/group/:message_id/archive', tokenAuth, groupController.archiveMessage);
 
 export default router;

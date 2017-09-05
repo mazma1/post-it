@@ -72,15 +72,15 @@ describe('API ENDPOINT TESTS', () => {
 
   // Sign up test
   describe('POST /api/user/signup Route', () => {
-    it('returns successfully signed up user when parameters are complete', (done) => {
+    it('should return successfully signed up user when parameters are complete', (done) => {
       const user = {
-        firstname: 'Mary1',
-        lastname: 'Mazi1',
+        firstname: 'Mary',
+        lastname: 'Mazi',
         username: 'maryx',
         phone: '08068668100',
         email: 'maryx@gmail.com',
-        password: '1234',
-        confirm_password: '1234'
+        password: '123456',
+        confirm_password: '123456'
       };
       chai.request(app)
         .post('/api/user/signup')
@@ -97,13 +97,13 @@ describe('API ENDPOINT TESTS', () => {
     });
 
     // describe('status 400', () => {
-    it('returns status 400 for missing first name', (done) => {
+    it('should return status 400 for missing first name', (done) => {
       const user = {
         lastname: 'Mazi3',
         username: 'maryx',
         phone: '08068668100',
-        password: '1234',
-        confirm_password: '1234'
+        password: '123456',
+        confirm_password: '123456'
       };
       chai.request(app)
         .post('/api/user/signup')
@@ -117,15 +117,15 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 if first name is an empty string', (done) => {
+    it('should return status 400 if first name is an empty string', (done) => {
       const user = {
         firstname: '   ',
         lastname: 'Mazi3',
         username: 'maryx',
         email: ' ',
         phone: '08068668100',
-        password: '1234',
-        confirm_password: '1234'
+        password: '123456',
+        confirm_password: '123456'
       };
       chai.request(app)
         .post('/api/user/signup')
@@ -139,13 +139,13 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 for missing last name', (done) => {
+    it('should return status 400 for missing last name', (done) => {
       const user = {
         firstname: 'Larry',
         username: 'maryx',
         phone: '08068668100',
-        password: '1234',
-        confirm_password: '1234'
+        password: '123456',
+        confirm_password: '123456'
       };
       chai.request(app)
         .post('/api/user/signup')
@@ -159,15 +159,15 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 if last name is an empty string', (done) => {
+    it('should return status 400 if last name is an empty string', (done) => {
       const user = {
         firstname: 'Larry',
         lastname: '   ',
         username: 'maryx',
         email: ' ',
         phone: '08068668100',
-        password: '1234',
-        confirm_password: '1234'
+        password: '123456',
+        confirm_password: '123456'
       };
       chai.request(app)
         .post('/api/user/signup')
@@ -181,15 +181,15 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 for incorrect email syntax', (done) => {
+    it('should return status 400 for incorrect email syntax', (done) => {
       const user = {
         firstname: 'Mary2',
         lastname: 'Mazi2',
         username: 'maryx1',
         phone: '08068668100',
         email: 'maryxgmail.com',
-        password: '1234',
-        confirm_password: '1234'
+        password: '123456',
+        confirm_password: '123456'
       };
       chai.request(app)
         .post('/api/user/signup')
@@ -203,14 +203,14 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 for missing email', (done) => {
+    it('should return status 400 for missing email', (done) => {
       const user = {
         firstname: 'Mary3',
         lastname: 'Mazi3',
         username: 'maryx',
         phone: '08068668100',
-        password: '1234',
-        confirm_password: '1234'
+        password: '123456',
+        confirm_password: '123456'
       };
       chai.request(app)
         .post('/api/user/signup')
@@ -224,15 +224,15 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 if email is an empty string', (done) => {
+    it('should return status 400 if email is an empty string', (done) => {
       const user = {
         firstname: 'Mary3',
         lastname: 'Mazi3',
         username: 'maryx',
         email: ' ',
         phone: '08068668100',
-        password: '1234',
-        confirm_password: '1234'
+        password: '123456',
+        confirm_password: '123456'
       };
       chai.request(app)
         .post('/api/user/signup')
@@ -246,15 +246,15 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 409 for existing email', (done) => {
+    it('should return status 409 for existing email', (done) => {
       const user = {
-        firstname: 'Mary3',
-        lastname: 'Mazi3',
+        firstname: 'Maryyy',
+        lastname: 'Maziii',
         username: 'maryx',
         phone: '08068668100',
         email: 'mary@gmail.com',
-        password: '1234',
-        confirm_password: '1234'
+        password: '123456',
+        confirm_password: '123456'
       };
       chai.request(app)
         .post('/api/user/signup')
@@ -268,14 +268,14 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 for missing username', (done) => {
+    it('should return status 400 for missing username', (done) => {
       const user = {
         firstname: 'Mary4',
         lastname: 'Mazi4',
         phone: '08068668100',
         email: 'maryx@gmail.com',
-        password: '1234',
-        confirm_password: '1234'
+        password: '123456',
+        confirm_password: '123456'
       };
       chai.request(app)
         .post('/api/user/signup')
@@ -289,15 +289,15 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 if username is an empty string', (done) => {
+    it('should return status 400 if username is an empty string', (done) => {
       const user = {
         firstname: 'Mary3',
         lastname: 'Mazi3',
         username: '  ',
         email: 'mary.mazi@gmail.com',
         phone: '08068668100',
-        password: '1234',
-        confirm_password: '1234'
+        password: '123456',
+        confirm_password: '123456'
       };
       chai.request(app)
         .post('/api/user/signup')
@@ -311,15 +311,15 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 409 for existing username', (done) => {
+    it('should return status 409 for existing username', (done) => {
       const user = {
-        firstname: 'Mary3',
-        lastname: 'Mazi3',
+        firstname: 'Maryyy',
+        lastname: 'Maziii',
         username: 'maryx',
         phone: '08068668100',
         email: 'maryoo@gmail.com',
-        password: '1234',
-        confirm_password: '1234'
+        password: '123456',
+        confirm_password: '123456'
       };
       chai.request(app)
         .post('/api/user/signup')
@@ -333,7 +333,7 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 for missing password', (done) => {
+    it('should return status 400 for missing password', (done) => {
       const user = {
         firstname: 'Mary5',
         lastname: 'Mazi5',
@@ -353,7 +353,7 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 if password is an empty string', (done) => {
+    it('should return status 400 if password is an empty string', (done) => {
       const user = {
         firstname: 'Larry',
         lastname: 'Potter',
@@ -375,14 +375,14 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 for missing confirm password', (done) => {
+    it('should return status 400 for missing confirm password', (done) => {
       const user = {
         firstname: 'Mary5',
         lastname: 'Mazi5',
         phone: '08068668100',
         email: 'maryx@gmail.com',
         username: 'maryx',
-        password: '1234'
+        password: '123456'
       };
       chai.request(app)
         .post('/api/user/signup')
@@ -396,14 +396,14 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 if confirm password is an empty string', (done) => {
+    it('should return status 400 if confirm password is an empty string', (done) => {
       const user = {
         firstname: 'Larry',
         lastname: 'Potter',
         username: 'maryx',
         email: 'larry@gmail.com',
         phone: '08068668100',
-        password: '1234',
+        password: '123456',
         confirm_password: '   '
       };
       chai.request(app)
@@ -418,14 +418,14 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 if password and confirm password do not match', (done) => {
+    it('should return status 400 if password and confirm password do not match', (done) => {
       const user = {
         firstname: 'Larry',
         lastname: 'Potter',
         username: 'maryx',
         email: 'larry@gmail.com',
         phone: '08068668100',
-        password: '12345',
+        password: '123456',
         confirm_password: '1234'
       };
       chai.request(app)
@@ -440,14 +440,14 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 for missing phone number', (done) => {
+    it('should return status 400 for missing phone number', (done) => {
       const user = {
         firstname: 'Mary5',
         lastname: 'Mazi5',
         email: 'maryx@gmail.com',
         username: 'maryx',
-        password: '1234',
-        confirm_password: '1234'
+        password: '123456',
+        confirm_password: '123456'
       };
       chai.request(app)
         .post('/api/user/signup')
@@ -461,15 +461,15 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 if length of phone number is not 11 digits', (done) => {
+    it('should return status 400 if length of phone number is not 11 digits', (done) => {
       const user = {
         firstname: 'Mary5',
         lastname: 'Mazi5',
         email: 'maryx@gmail.com',
         phone: '0809876',
         username: 'maryx',
-        password: '1234',
-        confirm_password: '1234'
+        password: '123456',
+        confirm_password: '123456'
       };
       chai.request(app)
         .post('/api/user/signup')
@@ -483,15 +483,15 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 if phone number is an empty string', (done) => {
+    it('should return status 400 if phone number is an empty string', (done) => {
       const user = {
         firstname: 'Mary3',
         lastname: 'Mazi3',
         username: 'maryx',
         email: 'xyz@yahoo.com',
         phone: '',
-        password: '1234',
-        confirm_password: '1234'
+        password: '123456',
+        confirm_password: '123456'
       };
       chai.request(app)
         .post('/api/user/signup')
@@ -505,7 +505,7 @@ describe('API ENDPOINT TESTS', () => {
         });
     });
 
-    it('returns status 400 when all required fields are missing', (done) => {
+    it('should return status 400 when all required fields are missing', (done) => {
       const user = {
         firstname: '',
         lastname: '',
@@ -535,7 +535,7 @@ describe('API ENDPOINT TESTS', () => {
 
   // Sign in test
   describe('POST /api/user/signin Route', () => {
-    it('returns a token on successful sign in', (done) => {
+    it('should return a token on successful sign in', (done) => {
       const user = {
         identifier: 'mary',
         password: '1234'
@@ -554,10 +554,10 @@ describe('API ENDPOINT TESTS', () => {
     });
 
     // describe('status 401', () => {
-    it('returns status 401 for invalid identifier (email or username)', (done) => {
+    it('should return status 401 for invalid identifier (email or username)', (done) => {
       const user = {
         identifier: 'mary1',
-        password: '1234'
+        password: '123456'
       };
       chai.request(app)
         .post('/api/user/signin')
@@ -571,7 +571,7 @@ describe('API ENDPOINT TESTS', () => {
           });
     });
 
-    it('returns status 401 for invalid password', (done) => {
+    it('should return status 401 for invalid password', (done) => {
       const user = {
         identifier: 'mary',
         password: '123456'
@@ -588,7 +588,7 @@ describe('API ENDPOINT TESTS', () => {
           });
     });
 
-    it('returns status 400 for no identifier (email or username) or password', (done) => {
+    it('should return status 400 for no identifier (email or username) or password', (done) => {
       const user = {
         identifier: '',
         password: ''
@@ -608,7 +608,7 @@ describe('API ENDPOINT TESTS', () => {
 
   // Password reset link test
   describe('POST /api/user/reset_password Route', () => {
-    it('returns status 400 for missing email', (done) => {
+    it('should return status 400 for missing email', (done) => {
       chai.request(app)
         .post('/api/user/reset_password')
         .type('form')
@@ -616,6 +616,7 @@ describe('API ENDPOINT TESTS', () => {
         .end((err, res) => {
           res.status.should.equal(400);
           res.body.should.be.a('object');
+          res.body.should.have.property('email').eql('Email field is required');
           done();
         });
     });
@@ -624,21 +625,21 @@ describe('API ENDPOINT TESTS', () => {
       chai.request(app)
         .post('/api/user/reset_password')
         .type('form')
-        .send({email: 'xyz'})
+        .send({ email: 'xyz' })
         .end((err, res) => {
           res.status.should.equal(401);
           res.body.should.be.a('object');
+          res.body.should.have.property('email').eql('Invalid email address');
           done();
         });
     });
-    
   });
 
   // Update password test
   describe('POST /api/user/updatepassword/:token Route', () => {
     it('returns status 400 if password and confirm password fields are missing', (done) => {
       chai.request(app)
-        .post('/api/user/updatepassword/:token')
+        .patch('/api/user/updatepassword/:token')
         .type('form')
         .send()
         .end((err, res) => {
@@ -652,9 +653,9 @@ describe('API ENDPOINT TESTS', () => {
 
     it('returns status 400 if password field is missing', (done) => {
       chai.request(app)
-        .post('/api/user/updatepassword/:token')
+        .patch('/api/user/updatepassword/:token')
         .type('form')
-        .send({ confirm_password: '1234' })
+        .send({ confirm_password: '123456' })
         .end((err, res) => {
           res.status.should.equal(400);
           res.body.should.be.a('object');
@@ -665,9 +666,9 @@ describe('API ENDPOINT TESTS', () => {
 
     it('returns status 400 if confirm password field is missing', (done) => {
       chai.request(app)
-        .post('/api/user/updatepassword/:token')
+        .patch('/api/user/updatepassword/:token')
         .type('form')
-        .send({ password: '1234' })
+        .send({ password: '123456' })
         .end((err, res) => {
           res.status.should.equal(400);
           res.body.should.be.a('object');
@@ -678,9 +679,9 @@ describe('API ENDPOINT TESTS', () => {
 
     it('returns status 400 if passwords don\'t match', (done) => {
       chai.request(app)
-        .post('/api/user/updatepassword/:token')
+        .patch('/api/user/updatepassword/:token')
         .type('form')
-        .send({ password: '1234', confirm_password: '12' })
+        .send({ password: '123456', confirm_password: '12' })
         .end((err, res) => {
           res.status.should.equal(400);
           res.body.should.be.a('object');
@@ -690,16 +691,33 @@ describe('API ENDPOINT TESTS', () => {
     });
   });
 
+  // Search for User
+  describe('POST /api/user/search Route', () => {
+    it('returns status 401 if user is not logged in', (done) => {
+      chai.request(app)
+        .post('/api/user/search')
+        .type('form')
+        .send({ searchKeyword: '' })
+        .end((err, res) => {
+          res.status.should.equal(401);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('No token provided.');
+          done();
+        });
+    });
+  });
+
+
   // Create group test
   describe('POST /api/group Route', () => {
-    it('returns status 403 when user is not logged in (no token is provided)', (done) => {
+    it('returns status 401 when user is not logged in (no token is provided)', (done) => {
       const group = {
         group_name: 'Test Group 4'
       };
       chai.request(app).post('/api/group')
         .send(group)
         .end((err, res) => {
-          res.status.should.equal(403);
+          res.status.should.equal(401);
           res.body.should.be.a('object');
           res.body.should.have.property('error').eql('No token provided.');
           done();
@@ -756,12 +774,12 @@ describe('API ENDPOINT TESTS', () => {
 
   // Add User to group
   describe('POST /api/group/:group_id/user Route', () => {
-    it('returns status 403 when user is not logged in (no token is provided)', (done) => {
+    it('returns status 401 when user is not logged in (no token is provided)', (done) => {
       const identifier = 'temi';
       chai.request(app).post('/api/group/2/user')
         .send(identifier)
         .end((err, res) => {
-          res.status.should.equal(403);
+          res.status.should.equal(401);
           res.body.should.be.a('object');
           res.body.should.have.property('error').eql('No token provided.');
           done();
@@ -829,12 +847,12 @@ describe('API ENDPOINT TESTS', () => {
 
   // Post Message to group
   describe('POST /api/group/:group_id/message Route', () => {
-    it('returns status 403 when user is not logged in (no token is provided)', (done) => {
+    it('returns status 401 when user is not logged in (no token is provided)', (done) => {
       const message = '';
       chai.request(app).post('/api/group/2/message')
         .send(message)
         .end((err, res) => {
-          res.status.should.equal(403);
+          res.status.should.equal(401);
           res.body.should.be.a('object');
           res.body.should.have.property('error').eql('No token provided.');
           done();
@@ -864,6 +882,7 @@ describe('API ENDPOINT TESTS', () => {
         .end((err, res) => {
           res.body.should.be.a('object');
           res.body.should.have.property('message').eql('Message was successfully sent');
+          res.body.should.have.property('messageBody').eql('Test Message');
           done();
         });
     });
@@ -871,10 +890,10 @@ describe('API ENDPOINT TESTS', () => {
 
   // Get group messages
   describe('GET /api/group/:group_id/messages Route', () => {
-    it('returns status 403 when user is not logged in (no token is provided)', (done) => {
+    it('returns status 401 when user is not logged in (no token is provided)', (done) => {
       chai.request(app).get('/api/group/2/messages')
         .end((err, res) => {
-          res.status.should.equal(403);
+          res.status.should.equal(401);
           res.body.should.be.a('object');
           res.body.should.have.property('error').eql('No token provided.');
           done();
@@ -890,5 +909,5 @@ describe('API ENDPOINT TESTS', () => {
           done();
         });
     });
-  }); 
+  });
 });
