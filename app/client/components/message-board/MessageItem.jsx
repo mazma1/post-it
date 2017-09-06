@@ -48,7 +48,7 @@ class MessageItem extends React.Component {
    * @returns {void} null
    */
   componentDidMount() {
-    const mappedMessages = mapKeys(this.props.messages, 'message_id');
+    const mappedMessages = mapKeys(this.props.messages, 'group_id');
     const groupId = Object.keys(mappedMessages)[0];
     this.props.getGroupMessagesCount(groupId).then(
       (response) => {
@@ -67,7 +67,7 @@ class MessageItem extends React.Component {
    */
   onSelect(event) {
     this.setState({ [event.target.name]: event.target.value });
-    const mappedMessages = mapKeys(this.props.messages, 'message_id');
+    const mappedMessages = mapKeys(this.props.messages, 'group_id');
     const groupId = Object.keys(mappedMessages)[0];
     this.props.getGroupMessagesCount(groupId).then(
       (response) => {
@@ -130,7 +130,7 @@ class MessageItem extends React.Component {
    * @returns {void} null
    */
   archiveMessageRequest(messageId) {
-    const mappedMessages = mapKeys(this.props.messages, 'message_id');
+    const mappedMessages = mapKeys(this.props.messages, 'group_id');
     const groupId = Object.keys(mappedMessages)[0];
     this.props.archiveMessage(messageId).then(
       () => {
@@ -293,6 +293,18 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
+/**
+ * Maps pieces of the redux state to props
+ * Whatever is returned will show up as props in Headbar
+ * @param {object} state Redux state
+ * @returns {object} Username, selected group and member's loading status
+ */
+function mapStateToProps(state) {
+  return {
+    selectedGroup: state.selectedGroup
+  };
+}
+
 MessageItem.propTypes = {
   getGroupMessagesCount: PropTypes.func.isRequired,
   messages: PropTypes.array,
@@ -301,4 +313,4 @@ MessageItem.propTypes = {
   archiveMessage: PropTypes.func.isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(MessageItem);
+export default connect(mapStateToProps, mapDispatchToProps)(MessageItem);

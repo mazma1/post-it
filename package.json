@@ -37,7 +37,8 @@
     "test": "npm run create:testdb && npm run run:test",
     "test:client": "jest .app/client/test/  --verbose",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "reset_db": "NODE_ENV=production sequelize db:migrate:undo:all && NODE_ENV=production sequelize db:migrate && NODE_ENV=production sequelize db:seed:all"
+    "reset_db": "NODE_ENV=production sequelize db:migrate:undo:all && NODE_ENV=production sequelize db:migrate && NODE_ENV=production sequelize db:seed:all",
+    "db:migrate": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all"
   },
   "babel": {
     "presets": [

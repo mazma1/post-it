@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import MessageBody from '../message-board/MessageBody.jsx';
 import MessageItem from '../message-board/MessageItem.jsx';
+import MessageForm from './MsgForm.jsx';
 import {
   updateReadStatus,
   getGroupMessages } from '../../actions/groupMessages';
@@ -120,6 +121,9 @@ class MessageCard extends React.Component {
         return (
           <div style={divPadding}>
             <p>This group currently has no messages</p>
+
+            <div className="msg_card_bottom_padding" />
+            <MessageForm />
           </div>
         );
       } else if (hasGroup && messageLoadingError) {
