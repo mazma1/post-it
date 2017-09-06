@@ -62,7 +62,7 @@ class SearchForm extends Component {
   resetSearch(event) {
     event.preventDefault();
     this.props.resetSearch();
-    this.props.history.push('/message_board');
+    this.props.history.push('/message-board');
   }
 
   /**

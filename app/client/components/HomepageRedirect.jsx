@@ -20,7 +20,7 @@ class HomepageRedirect extends React.Component {
   componentWillMount() {
     if (this.props.isAuthenticated) {
       toastr.success('Welcome back!');
-      this.props.history.push('/message_board');
+      this.props.history.push('/message-board');
     }
   }
 

@@ -77,7 +77,7 @@ class SignupForm extends React.Component {
           })
             .then(() => {
               toastr.success('Sign up was successful. Welcome to Post It!');
-              this.props.history.push('/message_board');
+              this.props.history.push('/message-board');
             },
             ({ response }) => this.setState({ errors: response.data })
           );

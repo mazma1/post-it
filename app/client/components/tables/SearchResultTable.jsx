@@ -41,10 +41,10 @@ class SearchResultTable extends React.Component {
     }
 
     return (
-      <div className="col-sm-12 col-md-10 col-md-offset-1">
+      <div className="col-sm-12 col-md-10 col-md-offset-1 search-result">
+        <h5>Search Result</h5>
         <table className="striped">
           <thead>
-            <tr><h5>Search Result</h5></tr>
             <tr>
               <th width="20%">First Name</th>
               <th width="20%">Last Name</th>

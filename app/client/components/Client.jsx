@@ -24,7 +24,7 @@ function Client() {
         <Route exact path="/" component={HomePageRedirect} />
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/signin" component={SignIn} />
-        <Route exact path="/message_board" component={EnsureUserLoggedIn} />
+        <Route exact path="/message-board" component={EnsureUserLoggedIn} />
         <Route exact path="/search" component={SearchUser} />
         <Route path="/reset_password" component={ResetPassword} />
         <Route path="/newpassword/:token" component={NewPassword} />

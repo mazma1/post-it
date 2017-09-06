@@ -34,7 +34,7 @@ class EnsureLoggedIn extends React.Component {
   render() {
     const { isLoggedIn } = this.props;
     if (isLoggedIn) {
-      return <Route path='/message_board' component={MessageBoard} />;
+      return <Route path="/message-board" component={MessageBoard} />;
     }
     return null;
   }

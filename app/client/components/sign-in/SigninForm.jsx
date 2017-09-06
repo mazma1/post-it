@@ -69,7 +69,7 @@ class SigninForm extends React.Component {
       this.props.userSigninRequest(this.state).then(
         () => {
           toastr.success('Sign in was successful. Welcome back!');
-          this.props.history.push('/message_board');
+          this.props.history.push('/message-board');
         },
         ({ response }) => this.setState({ errors: response.data })
       );

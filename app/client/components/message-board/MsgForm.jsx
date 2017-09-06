@@ -70,7 +70,7 @@ class MsgForm extends React.Component {
           group_id: groupId,
           read_by: username
         }).then(() => {
-          this.setState({ messageInput: '' });
+          // this.setState({ messageInput: '' });
         }).catch(() => {
           toastr.error('Unable to send message, please try again');
         });
@@ -81,7 +81,7 @@ class MsgForm extends React.Component {
           group_id: groupId,
           read_by: username
         }).then(() => {
-          this.setState({ messageInput: '' });
+          // this.setState({ messageInput: '' });
         }).catch(() => {
           toastr.error('Unable to send message, please try again');
         });
