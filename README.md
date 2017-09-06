@@ -17,33 +17,13 @@ Post it is a simple React application that consumes a Node REST API on an Expre
 
 
 ## To get started
-1. Clone the repository and run `npm install`. 
-2. To start app, navigate to the root directory of the app and run  `node run start:dev`.
-This will fire up the app, with *nodemon* that watches the app for any changes.
-
-Ideally, the server should serve the client on port 3000. So visiting `localhost:3000` on your browser will take you to the index page where you are expected to sign up as a new user. If you are a returning user, you will either have to sign in or be redirected to your message board (if your session has not expired).
-
-
-## Database Setup
-The application requires a PostgreSql database to handle it's data. The model, migration and seed files are available in their respective folders in the server directory. 
-
-#### To run the migrations:
-`sequelize db:migrate`
-
-#### To run the seeds:
-The seed files have to be run in the folowing order to avoid running into model dependency errors:
-
-`sequelize db:seed:all`
-
-
-The following login details will be available for testing the application after seeding:
-
-| Username      | Password  |
-| ------------- |:---------:| 
-| mazma         | 1234      | 
-| clare         | 1234      | 
-| chyke         | 1234      | 
-
+1. Clone the repository: `git clone https://github.com/mazma1/post-it`
+2. Navigate into the app's root directory: `cd post-it`
+3. Ensure you have installed NodeJS and Postgres
+4. Install all dependencies: `npm install`
+5. Run tests to ensure the app is not broken: `npm test`
+6. Run `npm run db:migrate` to populate your database with initial user data
+7. Start the app: `npm run start:dev`
 
 
 ## Available Functionalities on Client
@@ -60,15 +40,22 @@ The following login details will be available for testing the application after 
 
 ## API End Points
 
-| Feature          | Endpoint                  | Required Parameters                                                  |
-| ---------------- |:-------------------------:| --------------------------------------------------------------------:|
-| Sign Up          | `POST: api/user/signup`   | `firstname, lastname, username, email, password and confirm_password`|
-| Sign In          | `POST: api/user/signin`   |  `username or email, password`                                       |
-| Create New Group | `POST: api/group`         |  `group_name`                                                        |
-| Add User to Group| `POST: api/group/<group id>/user`|  `username`                                                   |
-| Post Message to Group| `POST: api/group/<group id>/message`|  `message`                                             |
-| Retrieve Messages to Group| `GET: api/group/<group id>/messages`|  NIL                                              |
-| Retrieve a User's Groups| `GET: api/user/<user id>/groups`|  NIL                                                    |
-| Retrieve Members in a Group| `GET: api/group/<group id>/members`|  NIL                                              |
+Access to endpoints are restricted based on the authorization token assigned to the user. This token is generated when a new user signs up, and when a returning user signs in.
+
+For more of the api, [go here.](http://docs.postit9.apiary.io/)
 
 
+## Limitations
+
+1. Users are added to the group one at a time.
+2. Chat messages are not real-time. You have to refresh your browser to view new messages.
+
+
+## Contributing
+
+This project is open for contributions. To do so:
+
+1. Raise an issue in the app's repo
+2. Fork the repository
+3. Implement the said feature
+4. Raise a pull request to the development branch
