@@ -11,8 +11,8 @@ export function getUserGroups(userId) {
   return (dispatch) => {
     dispatch(fetchingUserGroups());
     return request.then((res) => {
-      const group = res.data.group;
-      dispatch(setUserGroups(group));
+      const groups = res.data.groups;
+      dispatch(setUserGroups(groups));
     }).catch((error) => {
       dispatch(fetchUserGroupsFailure(error));
     });
@@ -40,9 +40,9 @@ export function fetchUserGroupsFailure(error) {
   };
 }
 
-export function submitNewGroup(group_name) {
-  const userId = group_name.userId;
-  const request = axios.post('/api/group', group_name);
+export function submitNewGroup({ groupName, userId }) {
+  const reqBody = { groupName };
+  const request = axios.post('/api/v1/groups', reqBody);
 
   return (dispatch) => {
     return request.then((res) => {
@@ -56,9 +56,9 @@ export function setNewGroupActive(userId) {
 
   return (dispatch) => {
     return request.then((res) => {
-      const group = res.data.group;
-      const lastGroup = last(group);
-      dispatch(setUserGroups(group));
+      const groups = res.data.groups;
+      const lastGroup = last(groups);
+      dispatch(setUserGroups(groups));
       dispatch(setSelectedGroup(lastGroup));
       dispatch(getGroupMessages(lastGroup.id));
       dispatch(getGroupMembers(lastGroup.id));

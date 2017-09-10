@@ -2,6 +2,7 @@ import includes from 'lodash/includes';
 import Nexmo from 'nexmo';
 import models from '../models';
 import sendEmail from '../../utils/sendEmail';
+import validateGroupMember from '../../utils/validateGroupMember';
 
 
 export default {
@@ -18,16 +19,16 @@ export default {
     // res.send(req.decoded); --JSON that contains details of the token owner.
     const userId = req.decoded.data.id;
     const groupData = {
-      group_name: req.body.group_name,
+      group_name: req.body.groupName,
       user_id: userId
     };
-    if (!req.body.group_name) {
+    if (!req.body.groupName) {
       error = 'Group name is required';
       res.status(400).send({ error });
     } else {
       models.Group.findOne({
         where: {
-          group_name: req.body.group_name
+          group_name: req.body.groupName
         },
       })
       .then((group) => {
@@ -115,64 +116,89 @@ export default {
    * @returns {response} response object
    */
   postMessageToGroup(req, res) {
-    if (!req.body.message) {
-      res.status(400).send({ error: 'Message is required.' });
+    const userId = req.decoded.data.id;
+    if (isNaN(req.params.group_id)) {
+      res.status(400).send({ error: 'Invalid group id' });
+    } else if (!req.body.message) {
+      res.status(400).send({ error: 'Message is required' });
     } else {
-      const userId = req.decoded.data.id;
-      const userEmail = req.decoded.data.email;
-      const messageDetail = {
-        body: req.body.message,
-        group_id: req.params.group_id,
-        user_id: userId,
-        priority: req.body.priority,
-        read_by: req.body.read_by,
-        isArchived: ['']
-      };
-      models.Message.create(messageDetail)
-      .then((message) => {
-        res.status(201).send({
-          message: 'Message was successfully sent',
-          timeSent: message.createdAt,
-          messageBody: message.body
-        });
-        if (req.body.priority === 'urgent' || req.body.priority === 'critical') {
-          // get users email and send email
-          models.Group.findOne({
-            where: { id: messageDetail.group_id },
-            attributes: ['group_name'],
-            include: [{
-              model: models.User,
-              as: 'members',
-              attributes: ['email', 'mobile'],
-              through: { attributes: [] }
-            }]
-          }).then((members) => {
-            const priority = messageDetail.priority;
-            const uppercasePriority = priority.toUpperCase();
-            members.members.map((member) => {
-              const emailParams = {
-                senderAddress: member.email,
-                recepientAddress: userEmail,
-                groupName: members.group_name,
-                subject: `${uppercasePriority} message in ${members.group_name}`,
-                emailBody: messageDetail.body
+      models.Group.findOne({
+        where: { id: req.params.group_id }
+      }).then((group) => {
+        if (!group) {
+          res.status(404).send({ error: 'Group does not exist' });
+        } else if (group) {
+          models.Group_member.findOne({
+            where: {
+              $and: [{ user_id: userId }, { group_id: group.id }]
+            },
+          })
+          .then((member) => {
+            if (!member) {
+              res.status(401).send({ error:
+                'You must belong to a group to post a message'
+              });
+            } else {
+              const userEmail = req.decoded.data.email;
+              const messageDetail = {
+                body: req.body.message,
+                group_id: req.params.group_id,
+                user_id: userId,
+                priority: req.body.priority,
+                read_by: req.body.read_by,
+                isArchived: ['']
               };
-              sendEmail(emailParams);
+              models.Message.create(messageDetail)
+                .then((message) => {
+                  res.status(201).send({
+                    message: 'Message was successfully sent',
+                    timeSent: message.createdAt,
+                    messageBody: message.body
+                  });
+                  if (req.body.priority === 'urgent' || req.body.priority === 'critical') {
+                    // get users email and send email
+                    models.Group.findOne({
+                      where: { id: messageDetail.group_id },
+                      attributes: ['group_name'],
+                      include: [{
+                        model: models.User,
+                        as: 'members',
+                        attributes: ['email', 'mobile'],
+                        through: { attributes: [] }
+                      }]
+                    }).then((members) => {
+                      const priority = messageDetail.priority;
+                      const uppercasePriority = priority.toUpperCase();
+                      members.members.map((member) => {
+                        const emailParams = {
+                          senderAddress: member.email,
+                          recepientAddress: userEmail,
+                          groupName: members.group_name,
+                          subject: `${uppercasePriority} message in ${members.group_name}`,
+                          emailBody: messageDetail.body
+                        };
+                        sendEmail(emailParams);
 
-              // get users number and send sms
-              if (req.body.priority === 'critical') {
-                const nexmo = new Nexmo({
-                  apiKey: process.env.NEXMO_KEY,
-                  apiSecret: process.env.NEXMO_SECRET
-                });
+                        // get users number and send sms
+                        if (req.body.priority === 'critical') {
+                          const nexmo = new Nexmo({
+                            apiKey: process.env.NEXMO_KEY,
+                            apiSecret: process.env.NEXMO_SECRET
+                          });
 
-                const from = 'Post It';
-                const to = member.mobile;
-                const text = `${uppercasePriority} message in ${members.group_name}\n\n${messageDetail.body}`;
+                          const from = 'Post It';
+                          const to = member.mobile;
+                          const text = `${uppercasePriority} message in ${members.group_name}\n\n${messageDetail.body}`;
 
-                nexmo.message.sendSms(from, to, text);
-              }
-            });
+                          nexmo.message.sendSms(from, to, text);
+                        }
+                      });
+                    })
+                    .catch(err => res.status(500).send(err.message));
+                  }
+                })
+                .catch(err => res.status(500).send(err.message));
+            }
           });
         }
       })
@@ -193,26 +219,25 @@ export default {
       models.Message.findAll({ // User is associated to message
         where: { group_id: req.params.group_id },
         attributes: [
-          'group_id',
-          ['id', 'message_id'],
+          'id',
           ['body', 'message'],
           'priority',
           'read_by',
           'isArchived',
-          ['created_at', 'sent_at']
+          ['created_at', 'sentAt']
         ],
         include: [{
           model: models.User,
-          as: 'sent_by',
+          as: 'sentBy',
           attributes: ['username'],
         }],
         order: [
           ['created_at', 'DESC'],
         ]
       })
-      .then((message) => {
-        if (message) {
-          res.status(200).send(message);
+      .then((messages) => {
+        if (messages) {
+          res.status(200).send({ messages });
         } else {
           res.status(404).send({ message: 'No message was found for the specified group' });
         }

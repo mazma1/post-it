@@ -139,10 +139,10 @@ export default {
     if (req.params.user_id && !isNaN(req.params.user_id)) {
       models.User.findOne({
         where: { id: req.params.user_id },
-        attributes: [['id', 'userId'], 'firstname', 'lastname', 'email'],
+        attributes: [],
         include: [{
           model: models.Group,
-          as: 'group',
+          as: 'groups',
           attributes: ['id', ['group_name', 'name']],
           through: { attributes: [] }
         }]
@@ -151,12 +151,12 @@ export default {
         if (userGroups) {
           res.status(200).send(userGroups);
         } else {
-          res.status(404).send({ message: 'Group does not exist' });
+          res.status(404).send({ message: 'User does not exist' });
         }
       })
       .catch(error => res.status(500).send(error.message));
     } else {
-      res.status(400).send({ message: 'Invalid group id' });
+      res.status(400).send({ message: 'Invalid user id' });
     }
   },
 
@@ -314,20 +314,21 @@ export default {
    * @returns {response} response object
    */
   searchForUser(req, res) {
-    if (req.body.searchKeyword) {
+    if (req.query.q) {
+      const searchQuery = req.query.q;
       models.User.findAll({
         where: {
           $or: [
-            { firstname: { $like: `%${req.body.searchKeyword}%` } },
-            { lastname: { $like: `%${req.body.searchKeyword}%` } },
-            { username: { $like: `%${req.body.searchKeyword}%` } },
-            { email: { $like: `%${req.body.searchKeyword}%` } }
+            { firstname: { $like: `%${searchQuery}%` } },
+            { lastname: { $like: `%${searchQuery}%` } },
+            { username: { $like: `%${searchQuery}%` } },
+            { email: { $like: `%${searchQuery}%` } }
           ]
         },
         attributes: ['id', 'firstname', 'lastname', 'username', 'email', 'mobile'],
         include: [{
           model: models.Group,
-          as: 'group',
+          as: 'groups',
           attributes: ['id', 'group_name'],
           through: { attributes: [] }
         }],

@@ -27,7 +27,7 @@ export function logout() {
 }
 
 export function userSigninRequest(userData) {
-  const request = axios.post('/api/user/signin', userData); // Returns a response
+  const request = axios.post('/api/v1/users/signin', userData);
 
   return (dispatch) => {
     return request.then((res) => {

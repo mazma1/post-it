@@ -6,8 +6,8 @@ import {
   RESET_SEARCH
 } from '../actions/types';
 
-export function searchUser(searchKeyword) {
-  const request = axios.post('/api/user/search', searchKeyword); // Returns a response
+export function searchUser(searchQuery) {
+  const request = axios.get(`/api/v1/users/search?q=${searchQuery}`); // Returns a response
 
   return (dispatch) => {
     dispatch(fetchingSearchedUser());

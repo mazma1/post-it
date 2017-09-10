@@ -191,7 +191,7 @@ export class Sidebar extends React.Component {
     this.setState({ error: {}, isLoading: true });
     event.preventDefault();
     this.props.submitNewGroup({
-      group_name: this.state.newGroup,
+      groupName: this.state.newGroup,
       userId: this.props.signedInUser.user.id
     }).then(
       () => {

@@ -49,7 +49,7 @@ export function archiveMessage({ messageId }) {
 
 export function postNewMessage(message) {
   const groupId = message.group_id;
-  const request = axios.post(`/api/group/${groupId}/message`, message);
+  const request = axios.post(`/api/v1/groups/${groupId}/message`, message);
 
   return (dispatch) => {
     return request.then((res) => {
