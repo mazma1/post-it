@@ -9,36 +9,53 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       body: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        allowNull: false,
+        validate: {
+          notEmpty: true
+        }
       },
-      group_id: {
+      groupId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: true
+        },
         references: {
           model: 'Groups',
           key: 'id'
         }
       },
-      user_id: {
+      userId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: true
+        },
         references: {
           model: 'Users',
           key: 'id'
         }
       },
       priority: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        defaultValue: 'normal',
+        allowNull: false,
+        validate: {
+          isIn: [['normal', 'urgent', 'critical']]
+        }
       },
-      read_by: {
+      readBy: {
         type: Sequelize.TEXT
       },
       isArchived: {
         type: Sequelize.ARRAY(Sequelize.TEXT)
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       }

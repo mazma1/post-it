@@ -1,8 +1,14 @@
 export default (sequelize, DataTypes) => {
   const ForgotPassword = sequelize.define('ForgotPassword', {
-    user_id: DataTypes.INTEGER,
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
+    },
     hash: DataTypes.STRING,
-    expiry_time: DataTypes.DATE
-  }, { underscored: true });
+    expiryTime: DataTypes.DATE
+  });
   return ForgotPassword;
 };
