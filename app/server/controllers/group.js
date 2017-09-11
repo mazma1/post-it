@@ -16,36 +16,34 @@ export default {
    */
   createGroup(req, res) {
     let error = '';
-    // res.send(req.decoded); --JSON that contains details of the token owner.
     const userId = req.decoded.data.id;
+    const { groupName } = req.body;
     const groupData = {
-      group_name: req.body.groupName,
-      user_id: userId
+      groupName,
+      userId
     };
-    if (!req.body.groupName) {
+    if (!groupName) {
       error = 'Group name is required';
       res.status(400).send({ error });
     } else {
       models.Group.findOne({
-        where: {
-          group_name: req.body.groupName
-        },
+        where: { groupName },
       })
-      .then((group) => {
-        if (group) {
+      .then((existingGroup) => {
+        if (existingGroup) {
           error = 'Group already exists';
           res.status(409).send({ error });
         } else {
           models.Group.create(groupData)
           .then((newGroup) => {
-            models.Group_member.create({
-              group_id: newGroup.id,
-              user_id: userId
+            models.GroupMember.create({
+              groupId: newGroup.id,
+              userId
             })
             .then(groupMember => res.status(201).send({
               message: 'Group was successfully created and you have been added to it',
-              groupName: newGroup.group_name,
-              groupOwner: newGroup.user_id
+              groupName: newGroup.groupName,
+              groupOwner: newGroup.userId
             }))
             .catch(err => res.status(500).send(err.message));
           })
@@ -117,93 +115,86 @@ export default {
    */
   postMessageToGroup(req, res) {
     const userId = req.decoded.data.id;
+    const { username } = req.decoded.data;
     if (isNaN(req.params.group_id)) {
-      res.status(400).send({ error: 'Invalid group id' });
-    } else if (!req.body.message) {
-      res.status(400).send({ error: 'Message is required' });
-    } else {
-      models.Group.findOne({
-        where: { id: req.params.group_id }
-      }).then((group) => {
+      return res.status(400).send({ error: 'Invalid group id' });
+    }
+    if (!req.body.message) {
+      return res.status(400).send({ error: 'Message is required' });
+    }
+    models.Group.findOne({
+      where: { id: req.params.group_id }
+    })
+      .then((group) => {
         if (!group) {
-          res.status(404).send({ error: 'Group does not exist' });
-        } else if (group) {
-          models.Group_member.findOne({
-            where: {
-              $and: [{ user_id: userId }, { group_id: group.id }]
-            },
-          })
-          .then((member) => {
-            if (!member) {
-              res.status(401).send({ error:
-                'You must belong to a group to post a message'
+          return res.status(404).send({ error: 'Group does not exist' });
+        }
+        if (group) {
+          const ghghgh = validateGroupMember({ res, userId, group, GroupMember: models.GroupMember });
+          if (!ghghgh) {
+            return res.status(401).send({ error: 'You don\'t belong to this group' });
+          }
+          // if (ghghgh) {}
+          const userEmail = req.decoded.data.email;
+          const { message, priority } = req.body;
+          const messageDetail = {
+            userId,
+            priority,
+            body: message,
+            groupId: req.params.group_id,
+            readBy: username,
+            isArchived: ['']
+          };
+          models.Message.create(messageDetail)
+            .then((sentMessage) => {
+              res.status(201).send({
+                message: 'Message was successfully sent',
+                timeSent: sentMessage.createdAt,
+                messageBody: sentMessage.body
               });
-            } else {
-              const userEmail = req.decoded.data.email;
-              const messageDetail = {
-                body: req.body.message,
-                group_id: req.params.group_id,
-                user_id: userId,
-                priority: req.body.priority,
-                read_by: req.body.read_by,
-                isArchived: ['']
-              };
-              models.Message.create(messageDetail)
-                .then((message) => {
-                  res.status(201).send({
-                    message: 'Message was successfully sent',
-                    timeSent: message.createdAt,
-                    messageBody: message.body
-                  });
-                  if (req.body.priority === 'urgent' || req.body.priority === 'critical') {
-                    // get users email and send email
-                    models.Group.findOne({
-                      where: { id: messageDetail.group_id },
-                      attributes: ['group_name'],
-                      include: [{
-                        model: models.User,
-                        as: 'members',
-                        attributes: ['email', 'mobile'],
-                        through: { attributes: [] }
-                      }]
-                    }).then((members) => {
-                      const priority = messageDetail.priority;
-                      const uppercasePriority = priority.toUpperCase();
-                      members.members.map((member) => {
-                        const emailParams = {
-                          senderAddress: member.email,
-                          recepientAddress: userEmail,
-                          groupName: members.group_name,
-                          subject: `${uppercasePriority} message in ${members.group_name}`,
-                          emailBody: messageDetail.body
-                        };
-                        sendEmail(emailParams);
+              if (priority === 'urgent' || priority === 'critical') {
+                // get users email and send email
+                models.Group.findOne({
+                  where: { id: messageDetail.groupId },
+                  attributes: ['groupName'],
+                  include: [{
+                    model: models.User,
+                    as: 'members',
+                    attributes: ['email', 'phoneNumber'],
+                    through: { attributes: [] }
+                  }]
+                }).then((members) => {
+                  const uppercasePriority = priority.toUpperCase();
+                  members.members.map((member) => {
+                    const emailParams = {
+                      senderAddress: member.email,
+                      recepientAddress: userEmail,
+                      groupName: members.groupName,
+                      subject: `${uppercasePriority} message in ${members.groupName}`,
+                      emailBody: messageDetail.body
+                    };
+                    sendEmail(emailParams);
 
-                        // get users number and send sms
-                        if (req.body.priority === 'critical') {
-                          const nexmo = new Nexmo({
-                            apiKey: process.env.NEXMO_KEY,
-                            apiSecret: process.env.NEXMO_SECRET
-                          });
-
-                          const from = 'Post It';
-                          const to = member.mobile;
-                          const text = `${uppercasePriority} message in ${members.group_name}\n\n${messageDetail.body}`;
-
-                          nexmo.message.sendSms(from, to, text);
-                        }
+                    // get users number and send sms
+                    if (req.body.priority === 'critical') {
+                      const nexmo = new Nexmo({
+                        apiKey: process.env.NEXMO_KEY,
+                        apiSecret: process.env.NEXMO_SECRET
                       });
-                    })
-                    .catch(err => res.status(500).send(err.message));
-                  }
+
+                      const from = 'Post It';
+                      const to = member.mobile;
+                      const text = `${uppercasePriority} message in ${members.group_name}\n\n${messageDetail.body}`;
+
+                      nexmo.message.sendSms(from, to, text);
+                    }
+                  });
                 })
                 .catch(err => res.status(500).send(err.message));
-            }
-          });
+              }
+            });
         }
-      })
-      .catch(error => res.status(500).send(error.message));
-    }
+      }).catch();
   },
 
   /**
@@ -217,14 +208,14 @@ export default {
   getGroupMessages(req, res) {
     if (req.params.group_id) {
       models.Message.findAll({ // User is associated to message
-        where: { group_id: req.params.group_id },
+        where: { groupId: req.params.group_id },
         attributes: [
           'id',
           ['body', 'message'],
           'priority',
-          'read_by',
+          'readBy',
           'isArchived',
-          ['created_at', 'sentAt']
+          ['createdAt', 'sentAt']
         ],
         include: [{
           model: models.User,
@@ -232,7 +223,7 @@ export default {
           attributes: ['username'],
         }],
         order: [
-          ['created_at', 'DESC'],
+          ['createdAt', 'DESC'],
         ]
       })
       .then((messages) => {
@@ -262,7 +253,7 @@ export default {
 
     if (!includes(readBy, username)) {
       models.Message.update({
-        read_by: updatedReadBy,
+        readBy: updatedReadBy,
       }, {
         where: { id: messageId }
       })
@@ -288,18 +279,22 @@ export default {
     if (req.params.group_id) {
       models.Group.findOne({
         where: { id: req.params.group_id },
-        attributes: ['group_name'],
+        attributes: ['groupName'],
         include: [{
           model: models.User,
           as: 'members',
-          attributes: ['id', 'firstname', 'lastname', 'username', 'email'],
+          attributes: ['id', 'firstName', 'lastName', 'username', 'email'],
           through: { attributes: [] }
         }]
       })
       .then((group) => {
-        res.status(200).send(group);
+        if (group) {
+          res.status(200).send(group);
+        } else {
+          res.status(404).send({ message: 'Group does not exist' });
+        }
       })
-      .catch(error => res.status(500).send(error));
+      .catch(error => res.status(500).send(error.message));
     }
   },
 

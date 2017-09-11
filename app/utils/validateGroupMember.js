@@ -1,18 +1,15 @@
-import isEmpty from 'lodash/isEmpty';
 import models from '../server/models';
 
-export default function validateGroupMember({ userId, group_id }) {
-  let error;
-
-  models.Group_member.findOne({
+export default function validateGroupMember({ res, userId, group, GroupMember }) {
+  GroupMember.findOne({
     where: {
-      $and: [{ user_id: userId }, { group_id }]
+      $and: [{ userId }, { groupId: group.id }]
     },
-  }).then((member) => {
-    if (!member) {
-      error = 'You must belong to a group to post a message';
+  })
+  .then((member) => {
+    console.log(member)
+    if (member === null) {
+      return false;
     }
-    return error;
   });
-  console.log(error);
 }

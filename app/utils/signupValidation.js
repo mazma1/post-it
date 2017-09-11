@@ -11,32 +11,32 @@ export default function validateInput(data) {
   const errors = {};
   const lettersRegex = /^[A-Za-z]+$/;
 
-  if (!data.firstname) {
-    errors.firstname = 'This field is required';
-  } else if (data.firstname.trim().length === 0) {
-    errors.firstname = 'First name cannot be empty';
-  } else if (!isNaN(data.firstname)) {
-    errors.firstname = 'First name cannot be a number';
-  } else if (!data.firstname.match(lettersRegex)) {
-    errors.firstname = 'First name must contain only alphabets';
-  } else if (data.firstname.length < 3) {
-    errors.firstname = 'First name must be more than two letters';
-  } else if (data.firstname.length > 20) {
-    errors.firstname = 'First name must not be more than twenty letters';
+  if (!data.firstName) {
+    errors.firstName = 'This field is required';
+  } else if (data.firstName.trim().length === 0) {
+    errors.firstName = 'First name cannot be empty';
+  } else if (!isNaN(data.firstName)) {
+    errors.firstName = 'First name cannot be a number';
+  } else if (!data.firstName.match(lettersRegex)) {
+    errors.firstName = 'First name must contain only alphabets';
+  } else if (data.firstName.length < 3) {
+    errors.firstName = 'First name must be more than two letters';
+  } else if (data.firstName.length > 20) {
+    errors.firstName = 'First name must not be more than twenty letters';
   }
 
-  if (!data.lastname) {
-    errors.lastname = 'This field is required';
-  } else if (data.lastname.trim().length === 0) {
-    errors.lastname = 'Last name cannot be empty';
-  } else if (!isNaN(data.lastname)) {
-    errors.lastname = 'Last name cannot be a number';
-  } else if (!data.lastname.match(lettersRegex)) {
-    errors.lastname = 'Last name must contain only alphabets';
-  } else if (data.lastname.length < 3) {
-    errors.lastname = 'Last name must be more than two letters';
-  } else if (data.lastname.length > 20) {
-    errors.lastname = 'Last name must not be more than twenty letters';
+  if (!data.lastName) {
+    errors.lastName = 'This field is required';
+  } else if (data.lastName.trim().length === 0) {
+    errors.lastName = 'Last name cannot be empty';
+  } else if (!isNaN(data.lastName)) {
+    errors.lastName = 'Last name cannot be a number';
+  } else if (!data.lastName.match(lettersRegex)) {
+    errors.lastName = 'Last name must contain only alphabets';
+  } else if (data.lastName.length < 3) {
+    errors.lastName = 'Last name must be more than two letters';
+  } else if (data.lastName.length > 20) {
+    errors.lastName = 'Last name must not be more than twenty letters';
   }
 
   if (!data.email) {
@@ -45,16 +45,16 @@ export default function validateInput(data) {
     errors.email = 'Invalid email';
   }
 
-  if (!data.phone) {
-    errors.phone = 'This field is required';
-  } else if (isNaN(data.phone)) {
-    errors.phone = 'Phone number must contain only numbers';
+  if (!data.phoneNumber) {
+    errors.phoneNumber = 'This field is required';
+  } else if (isNaN(data.phoneNumber)) {
+    errors.phoneNumber = 'Phone number must contain only numbers';
   } else {
-    if (data.phone.length !== 11) {
-      errors.phone = 'Phone number must be 11 digits';
+    if (data.phoneNumber.length !== 11) {
+      errors.phoneNumber = 'Phone number must be 11 digits';
     }
-    if (data.phone.trim().length === 0) {
-      errors.phone = 'Phone number cannot be empty';
+    if (data.phoneNumber.trim().length === 0) {
+      errors.phoneNumber = 'Phone number cannot be empty';
     }
   }
 
@@ -72,14 +72,14 @@ export default function validateInput(data) {
     errors.password = 'Password must be six characters or more';
   }
 
-  if (!data.confirm_password) {
-    errors.confirm_password = 'This field is required';
+  if (!data.confirmPassword) {
+    errors.confirmPassword = 'This field is required';
   } else {
-    if (!validator.equals(data.password, data.confirm_password)) {
-      errors.confirm_password = 'Passwords must match';
+    if (!validator.equals(data.password, data.confirmPassword)) {
+      errors.confirmPassword = 'Passwords must match';
     }
-    if (data.confirm_password.trim().length === 0) {
-      errors.confirm_password = 'Confirm password cannot be empty';
+    if (data.confirmPassword.trim().length === 0) {
+      errors.confirmPassword = 'Confirm password cannot be empty';
     }
   }
 
