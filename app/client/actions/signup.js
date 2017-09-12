@@ -1,9 +1,16 @@
 import axios from 'axios';
 
-export function userSignupRequest(userData) {
-  const request = axios.post('/api/v1/users/signup', userData); // Returns a response
+/**
+  * Makes request to sign up a user
 
+  * @param {object} userData user's required credentials
+
+  * @returns {response} request response
+  */
+export default function userSignupRequest(userData) {
   return (dispatch) => {
-    return request;
+    return axios.post('/api/v1/users/signup', userData)
+      .then()
+      .catch();
   };
 }

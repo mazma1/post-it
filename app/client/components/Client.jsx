@@ -26,8 +26,8 @@ function Client() {
         <Route exact path="/signin" component={SignIn} />
         <Route exact path="/message-board" component={EnsureUserLoggedIn} />
         <Route exact path="/search" component={SearchUser} />
-        <Route path="/reset_password" component={ResetPassword} />
-        <Route path="/newpassword/:token" component={NewPassword} />
+        <Route path="/reset-password" component={ResetPassword} />
+        <Route path="/new-password/:token" component={NewPassword} />
         <Route component={PageNotFound} />
       </Switch>
     </BrowserRouter>

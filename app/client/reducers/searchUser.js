@@ -15,7 +15,7 @@ export default (state = {}, action = {}) => {
       return {
         ...state,
         isLoading: false,
-        users: action.result
+        users: action.searchResult
       };
 
     case FETCH_SEARCHED_USER_FAILURE:

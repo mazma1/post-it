@@ -7,8 +7,8 @@ import toastr from 'toastr';
 import $ from 'jquery';
 import ModalFrame from '../modal/ModalFrame.jsx';
 import GroupMembersTable from '../tables/GroupMembersTable.jsx';
-import { logout } from '../../actions/signin';
-import { setSelectedGroup } from '../../actions/setSelectedGroup';
+import { logout } from '../../actions/signIn';
+import setSelectedGroup from '../../actions/setSelectedGroup';
 import { setGroupMessages } from '../../actions/groupMessages';
 import { submitNewUser } from '../../actions/groupMembers';
 import { AddUserBtn, GroupName } from '../misc/HeaderMisc.jsx';
@@ -62,7 +62,7 @@ export class Header extends React.Component {
    * @returns {void}
    */
   openModal(event) {
-    event.stopPropagation();
+    event.preventDefault();
     this.setState({
       isOpen: true
     });
@@ -153,7 +153,10 @@ export class Header extends React.Component {
           <div className="nav-container">
             <div className="row">
 
-              <GroupName selectedGroup={selectedGroup} openModal={this.openModal} />
+              <GroupName
+                selectedGroup={selectedGroup}
+                openModal={this.openModal}
+              />
 
               <div className="col-md-8 col-sm-7 col-xs-9 lg-stack">
                 <ul className="cta">
@@ -166,7 +169,10 @@ export class Header extends React.Component {
                     <i className="glyphicon glyphicon-user pr6" />
                      @{username}
                   </li>
-                  <AddUserBtn selectedGroup={selectedGroup} openModal={this.openModal} />
+                  <AddUserBtn
+                    selectedGroup={selectedGroup}
+                    openModal={this.openModal}
+                  />
                   <li>
                     <Link
                       to="/signin"
@@ -191,7 +197,12 @@ export class Header extends React.Component {
                      @{username}
                   </li>
                   <li role="presentation" className="dropdown">
-                    <a className="dropdown-toggle options" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <a
+                      className="dropdown-toggle options"
+                      data-toggle="dropdown" role="button"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
                       Options <span className="caret" />
                     </a>
                     <ul className="dropdown-menu">

@@ -6,7 +6,7 @@ import {
 
 
 export function getGroupMessagesCount(groupId) {
-  const request = axios.get(`/api/group/${groupId}/messages`);
+  const request = axios.get(`/api/v1/groups/${groupId}/messages`);
 
   return (dispatch) => {
     return request;
@@ -19,37 +19,34 @@ export function getGroupMessages(groupId) {
       dispatch(setGroupMessages({}));
     };
   }
-
-  const request = axios.get(`/api/group/${groupId}/messages`);
-
   return (dispatch) => {
     dispatch(fetchingGroupMessages({}));
-
-    return request.then((res) => {
-      const messages = res.data;
-      dispatch(setGroupMessages(messages));
-    }).catch((error) => {
-      dispatch(fetchGroupMessagesFailure(error));
-    });
+    return axios.get(`/api/v1/groups/${groupId}/messages`)
+      .then((res) => {
+        const { messages } = res.data;
+        dispatch(setGroupMessages(messages));
+      }).catch((error) => {
+        dispatch(fetchGroupMessagesFailure(error));
+      });
   };
 }
 
 export function updateReadStatus(messageDetails) {
-  const groupId = messageDetails.group_id;
-  const request = axios.patch('/api/group/message/read', messageDetails);
+  const { groupId, messageId } = messageDetails;
+  const request = axios.patch(`/api/v1/groups/${messageId}/read`, messageDetails);
 
   return dispatch => request;
 }
 
 export function archiveMessage({ messageId }) {
-  const request = axios.patch(`/api/group/${messageId}/archive`, messageId);
+  const request = axios.patch(`/api/v1/groups/${messageId}/archive`, messageId);
 
   return dispatch => request;
 }
 
-export function postNewMessage(message) {
-  const groupId = message.group_id;
-  const request = axios.post(`/api/v1/groups/${groupId}/message`, message);
+export function postNewMessage({ priority, groupId, message, readBy }) {
+  const reqBody = { priority, groupId, message, readBy };
+  const request = axios.post(`/api/v1/groups/${groupId}/message`, reqBody);
 
   return (dispatch) => {
     return request.then((res) => {

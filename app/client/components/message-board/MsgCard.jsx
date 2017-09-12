@@ -79,15 +79,16 @@ class MessageCard extends React.Component {
    */
   onMessageClick(clickedMsgProps) {
     const clickedMessageId = clickedMsgProps.id;
+    console.log(clickedMessageId)
     this.setState({
       clickedMessageId,
       messageOpen: true
     });
     const messageDetails = {
-      message_id: clickedMessageId,
+      messageId: clickedMessageId,
       username: this.props.authenticatedUsername,
-      read_by: clickedMsgProps.read_by,
-      group_id: this.props.userGroups.groups[0].id
+      readBy: clickedMsgProps.read_by,
+      groupId: this.props.userGroups.groups[0].id
     };
     return this.props.updateReadStatus(messageDetails);
   }

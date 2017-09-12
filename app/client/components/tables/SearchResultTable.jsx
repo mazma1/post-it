@@ -15,24 +15,24 @@ class SearchResultTable extends React.Component {
     let searchResultRow;
 
     if (!isEmpty(users)) {
-      searchResultRow = users.map((user) => (
+      searchResultRow = users.map(user => (
         <tr key={user.id}>
           <td>
-            {user.firstname}
+            {user.firstName}
           </td>
           <td>
-            {user.lastname}
+            {user.lastName}
           </td>
           <td>
             {user.email}
           </td>
           <td>
-            {user.mobile}
+            {user.phoneNumber}
           </td>
           <td>
-            {user.group.map(group => (
+            {user.groups.map(group => (
               <ul key={group.id}>
-                <li>{group.group_name}</li>
+                <li>{group.groupName}</li>
               </ul>
             ))}
           </td>

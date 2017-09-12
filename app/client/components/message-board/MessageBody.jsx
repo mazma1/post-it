@@ -23,7 +23,7 @@ import {
   */
 function MessageBody(props) {
   const { clickedMessageId, messages } = props;
-  const mappedMessages = mapKeys(messages, 'message_id');
+  const mappedMessages = mapKeys(messages, 'id');
   const clickedMessage = mappedMessages[clickedMessageId];
   const groupId = Object.keys(mappedMessages)[0];
   const closeMessage = () => props.closeMessage(groupId);
@@ -35,7 +35,7 @@ function MessageBody(props) {
           <div className="card">
             <div className="card-content">
               <span className="card-title">
-                @{clickedMessage.sent_by.username}:
+                @{clickedMessage.sentBy.username}:
               </span>
               <button
                 onClick={closeMessage}

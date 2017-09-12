@@ -11,7 +11,7 @@ import validateInput from '../../../utils/signinValidation';
  * SigninForm component
  * Parent component: SignIn.js
  */
-class SigninForm extends React.Component {
+class SignInForm extends React.Component {
 
   /**
    * Constructor
@@ -54,7 +54,7 @@ class SigninForm extends React.Component {
 
   /**
    * Handles Sign In event
-   * Dispatches userSigninRequest action
+   * Dispatches userSignInRequest action
    * If sign in request was successful, it redirects to the message board
    * with a success flash message.
    * If sign in was not successful, it returns the appropriate error message(s)
@@ -66,7 +66,7 @@ class SigninForm extends React.Component {
 
     if (this.validateInput()) {
       this.setState({ errors: {} });
-      this.props.userSigninRequest(this.state).then(
+      this.props.userSignInRequest(this.state).then(
         () => {
           toastr.success('Sign in was successful. Welcome back!');
           this.props.history.push('/message-board');
@@ -153,9 +153,9 @@ class SigninForm extends React.Component {
   }
 }
 
-SigninForm.propTypes = {
-  userSigninRequest: PropTypes.func.isRequired
+SignInForm.propTypes = {
+  userSignInRequest: PropTypes.func.isRequired
 };
 
-export default withRouter(SigninForm);
+export default withRouter(SignInForm);
 

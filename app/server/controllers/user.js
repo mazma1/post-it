@@ -193,7 +193,7 @@ export default {
             emailBody: `Hello ${user.firstName} ${user.lastName}, 
             <br><br>You recently made a request to reset your Post It password. 
             Please click the link below to complete the process. 
-            <br><br><a href='http://${req.headers.host}/newpassword/${resetPasswordHash}'>Reset now ></a>
+            <br><br><a href='http://${req.headers.host}/new-password/${resetPasswordHash}'>Reset now ></a>
             <br><br>----------------------<br>
             The Post It Team`
           };

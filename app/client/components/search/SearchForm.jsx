@@ -6,7 +6,7 @@ import { PropTypes } from 'prop-types';
 import ClientFrame from '../client-frame/ClientFrame.jsx';
 import TextField from '../common/FormTextField.jsx';
 import SearchResult from '../search/SearchResult.jsx';
-import { searchUser, resetSearch } from '../../actions/SearchUser';
+import { searchUser, resetSearch } from '../../actions/searchUser';
 import { SubmitButton } from '../modal/SubModals.jsx';
 
 /** Form for searching for registered users */
@@ -20,7 +20,7 @@ class SearchForm extends Component {
     super(props);
 
     this.state = {
-      searchKeyword: ''
+      searchQuery: ''
     };
 
     this.onChange = this.onChange.bind(this);
@@ -30,7 +30,7 @@ class SearchForm extends Component {
 
   /**
    * Handles change event of new password form
-   * Updates searchKeyword state
+   * Updates searchQuery state
    * @param {SyntheticEvent} event
    * @returns {void} null
    */
@@ -40,14 +40,14 @@ class SearchForm extends Component {
 
   /**
    * Handles search request submit event
-   * Dispatches search user action with provided search keyword
+   * Dispatches search user action with provided search query
    * @param {SyntheticEvent} event
    * @returns {void} null
    */
   onSearchSubmit(event) {
     event.preventDefault();
     this.props.searchUser({
-      searchKeyword: this.state.searchKeyword
+      searchQuery: this.state.searchQuery
     }).catch(() => {
       toastr.error('Unable to search for user, please try again');
     });
@@ -96,11 +96,11 @@ class SearchForm extends Component {
                     >
                       <TextField
                         icon="perm_identity"
-                        label="Enter Search Keyword"
+                        label="Enter Search Query"
                         onChange={this.onChange}
                         error={error}
-                        value={this.state.searchKeyword}
-                        field="searchKeyword"
+                        value={this.state.searchQuery}
+                        field="searchQuery"
                         autocomplete="off"
                       />
                     </div>
@@ -112,7 +112,7 @@ class SearchForm extends Component {
           </div>
         </div>
 
-        {searchResult.isLoading === false && !error ? <SearchResult /> : null }
+        { searchResult.isLoading === false && !error ? <SearchResult /> : null }
       </ClientFrame>
     );
   }

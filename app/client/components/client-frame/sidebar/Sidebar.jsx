@@ -9,7 +9,7 @@ import GroupList from './GroupList.jsx';
 import ModalFrame from '../../modal/ModalFrame.jsx';
 import { Brand, MobileToggleBtn } from '../../misc/SidebarMisc.jsx'
 import { getUserGroups, submitNewGroup } from '../../../actions/userGroups';
-import { setSelectedGroup } from '../../../actions/setSelectedGroup';
+import setSelectedGroup from '../../../actions/setSelectedGroup';
 import { getGroupMembers } from '../../../actions/groupMembers';
 import {
   getGroupMessages,
@@ -147,9 +147,9 @@ export class Sidebar extends React.Component {
    */
   getUnreadCount() {
     const groupsWithNotification = [];
-    const username = this.props.signedInUser.user.username;
+    const { id, username } = this.props.signedInUser.user;
 
-    this.props.getUserGroups(this.props.signedInUser.user.id).then(
+    this.props.getUserGroups(id).then(
       () => {
         if (!this.props.userGroups.isLoading) {
           const groups = this.props.userGroups.groups;
@@ -157,10 +157,9 @@ export class Sidebar extends React.Component {
             groups.map((group) => {
               this.props.getGroupMessagesCount(group.id).then(
                 (res) => {
-                  // map returned message array
                   let unreadCount = 0;
-                  res.data.map((message) => {
-                    if (!message.read_by.split(',').includes(username)) {
+                  res.data.messages.map((message) => {
+                    if (!message.readBy.split(',').includes(username)) {
                       unreadCount += 1;
                     }
                   });

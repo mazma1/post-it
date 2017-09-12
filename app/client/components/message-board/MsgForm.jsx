@@ -65,21 +65,22 @@ class MsgForm extends React.Component {
       if (validFlag.includes(priority)) {
         const messageBody = userMessage.slice(priority.length + 1);
         this.props.postNewMessage({
-          message: messageBody,
           priority,
-          group_id: groupId,
-          read_by: username
+          groupId,
+          message: messageBody,
+          readBy: username
         }).then(() => {
-          // this.setState({ messageInput: '' });
+          this.setState({ messageInput: '' });
         }).catch(() => {
           toastr.error('Unable to send message, please try again');
         });
       } else {
+        const { messageInput, priority } = this.state;
         this.props.postNewMessage({
-          message: this.state.messageInput,
-          priority: this.state.priority,
-          group_id: groupId,
-          read_by: username
+          priority,
+          groupId,
+          message: messageInput,
+          readBy: username
         }).then(() => {
           // this.setState({ messageInput: '' });
         }).catch(() => {

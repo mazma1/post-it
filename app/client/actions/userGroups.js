@@ -3,22 +3,40 @@ import last from 'lodash/last';
 import { setSelectedGroup } from '../actions/setSelectedGroup';
 import { getGroupMessages } from '../actions/groupMessages';
 import { getGroupMembers } from '../actions/groupMembers';
-import { SET_USER_GROUPS, FETCHING_USER_GROUPS, FETCH_USER_GROUPS_FAILURE } from '../actions/types';
+import {
+  SET_USER_GROUPS,
+  FETCHING_USER_GROUPS,
+  FETCH_USER_GROUPS_FAILURE,
+  SUBMIT_NEW_GROUP_FAILURE } from '../actions/types';
 
+
+  /**
+   * Fetches the groups a user belongs to
+
+   * @param {integer} userId authenticated user's id
+
+   * @returns {response} request response
+   */
 export function getUserGroups(userId) {
-  const request = axios.get(`/api/user/${userId}/groups`); // Returns a response
-
   return (dispatch) => {
     dispatch(fetchingUserGroups());
-    return request.then((res) => {
-      const groups = res.data.groups;
-      dispatch(setUserGroups(groups));
-    }).catch((error) => {
-      dispatch(fetchUserGroupsFailure(error));
-    });
+    return axios.get(`/api/v1/users/${userId}/groups`)
+      .then((res) => {
+        const { groups } = res.data;
+        dispatch(setUserGroups(groups));
+      })
+      .catch((error) => {
+        dispatch(fetchUserGroupsFailure(error));
+      });
   };
 }
 
+
+ /**
+   * Informs reducer that request to fetch a user's groups has begun
+   *
+   * @returns {action} action type and payload
+   */
 export function fetchingUserGroups() {
   return {
     type: FETCHING_USER_GROUPS,
@@ -26,13 +44,30 @@ export function fetchingUserGroups() {
   };
 }
 
-export function setUserGroups(group) {
+
+/**
+   * Informs reducers that the request to fetch a user's groups
+   * finished successfully
+   *
+   * @param {array} groups user's groups returned from API request
+   *
+   * @returns {action} action type and payload
+   */
+export function setUserGroups(groups) {
   return {
     type: SET_USER_GROUPS,
-    group
+    groups
   };
 }
 
+
+/**
+   * Informs reducers that the request to fetch a user's groups failed
+   *
+   * @param {object} error error returned from failed request
+   *
+   * @returns {action} action type and payload
+   */
 export function fetchUserGroupsFailure(error) {
   return {
     type: FETCH_USER_GROUPS_FAILURE,
@@ -40,28 +75,62 @@ export function fetchUserGroupsFailure(error) {
   };
 }
 
+
+/**
+   * Posts a new group to the database
+   *
+   * @param {string} groupName mane of new group
+   * @param {integer} userId id of user who created the group
+   *
+   * @returns {response} request response
+   */
 export function submitNewGroup({ groupName, userId }) {
   const reqBody = { groupName };
-  const request = axios.post('/api/v1/groups', reqBody);
-
   return (dispatch) => {
-    return request.then((res) => {
+    return axios.post('/api/v1/groups', reqBody)
+    .then((res) => {
       dispatch(setNewGroupActive(userId));
+    })
+    .catch((error) => {
+      dispatch(submittingNewGroupFailure());
     });
   };
 }
 
-export function setNewGroupActive(userId) {
-  const request = axios.get(`/api/user/${userId}/groups`);
 
+/**
+   * Sets a newly created group as active
+   *
+   * @param {integer} userId id of authenticated user
+   *
+   * @returns {response} request response
+   */
+export function setNewGroupActive(userId) {
   return (dispatch) => {
-    return request.then((res) => {
-      const groups = res.data.groups;
-      const lastGroup = last(groups);
-      dispatch(setUserGroups(groups));
-      dispatch(setSelectedGroup(lastGroup));
-      dispatch(getGroupMessages(lastGroup.id));
-      dispatch(getGroupMembers(lastGroup.id));
-    });
+    return axios.get(`/api/v1/users/${userId}/groups`)
+      .then((res) => {
+        const { groups } = res.data;
+        const lastGroup = last(groups);
+        dispatch(setUserGroups(groups));
+        dispatch(setSelectedGroup(lastGroup));
+        dispatch(getGroupMessages(lastGroup.id));
+        dispatch(getGroupMembers(lastGroup.id));
+      })
+      .catch();
+  };
+}
+
+
+/**
+   * Informs reducers that the request to submit a new group failed
+   *
+   * @param {object} error error returned from failed request
+   *
+   * @returns {action} action type and payload
+   */
+export function submittingNewGroupFailure(error) {
+  return {
+    type: SUBMIT_NEW_GROUP_FAILURE,
+    error
   };
 }

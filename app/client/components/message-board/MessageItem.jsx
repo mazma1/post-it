@@ -48,11 +48,11 @@ class MessageItem extends React.Component {
    * @returns {void} null
    */
   componentDidMount() {
-    const mappedMessages = mapKeys(this.props.messages, 'group_id');
+    const mappedMessages = mapKeys(this.props.messages, 'id');
     const groupId = Object.keys(mappedMessages)[0];
     this.props.getGroupMessagesCount(groupId).then(
       (response) => {
-        this.filterMessages(response.data);
+        this.filterMessages(response.data.messages);
       }
     );
   }
@@ -67,11 +67,11 @@ class MessageItem extends React.Component {
    */
   onSelect(event) {
     this.setState({ [event.target.name]: event.target.value });
-    const mappedMessages = mapKeys(this.props.messages, 'group_id');
+    const mappedMessages = mapKeys(this.props.messages, 'id');
     const groupId = Object.keys(mappedMessages)[0];
     this.props.getGroupMessagesCount(groupId).then(
       (response) => {
-        this.filterMessages(response.data);
+        this.filterMessages(response.data.messages);
       }
     );
   }
@@ -130,13 +130,13 @@ class MessageItem extends React.Component {
    * @returns {void} null
    */
   archiveMessageRequest(messageId) {
-    const mappedMessages = mapKeys(this.props.messages, 'group_id');
+    const mappedMessages = mapKeys(this.props.messages, 'id');
     const groupId = Object.keys(mappedMessages)[0];
     this.props.archiveMessage(messageId).then(
       () => {
         this.props.getGroupMessagesCount(groupId).then(
           (response) => {
-            this.filterMessages(response.data);
+            this.filterMessages(response.data.messages);
           }
         );
         toastr.success('Message successfully archived');
@@ -153,7 +153,12 @@ class MessageItem extends React.Component {
    */
   render() {
     const { authenticatedUsername } = this.props;
-    const { filteredMessages, messagesPerPage, currentPage, messageStatus } = this.state;
+    const {
+      filteredMessages,
+      messagesPerPage,
+      currentPage,
+      messageStatus } = this.state;
+
     const ArchiveBtn = (props) => {
       if (!includes(props.message.isArchived, authenticatedUsername)) {
         return (
@@ -161,7 +166,7 @@ class MessageItem extends React.Component {
             className="material-icons pull-right archive-btn"
             data-toggle="tooltip" data-placement="left" title="Archive Message"
             onClick={() => this.archiveMessageRequest({
-              messageId: props.message.message_id
+              messageId: props.message.id
             })}
           >
             archive
@@ -206,7 +211,7 @@ class MessageItem extends React.Component {
         {
           currentMessages.map((message) => {
             const time = moment(message.sent_at).format('ddd, MMM Do. h:mm a');
-            const readBy = message.read_by;
+            const readBy = message.readBy;
             const readByArray = lodashSplit(readBy, ',');
 
             let normalPriority;
@@ -221,10 +226,10 @@ class MessageItem extends React.Component {
             }
 
             return (
-              <div key={message.message_id}>
-                <div className="card-panel row" key={message.message_id}>
+              <div key={message.id}>
+                <div className="card-panel row" key={message.id}>
                   <span className="blue-text text-darken-2 font18">
-                    <b>@{message.sent_by.username} </b>
+                    <b>@{message.sentBy.username} </b>
                   </span>
                   <span className="blue-text text-darken-2 font18">
                     {time}
@@ -249,8 +254,8 @@ class MessageItem extends React.Component {
                   <p
                     className="msg_body"
                     onClick={() => this.props.onMessageClick({
-                      id: message.message_id,
-                      read_by: message.read_by }
+                      id: message.id,
+                      readBy: message.readBy }
                     )}>
                     {this.checkMessageLength(message.message)}
                   </p>
@@ -271,7 +276,9 @@ class MessageItem extends React.Component {
 
         <div className="col s12">
           <ul className="pagination center-align">
-            { pageNumbers.length > 1 ? renderPagination : null }
+            {pageNumbers.length > 1 && messageStatus === 'archived' ?
+              renderPagination
+            : null }
           </ul>
         </div>
       </div>

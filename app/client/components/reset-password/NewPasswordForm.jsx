@@ -21,7 +21,7 @@ class NewPasswordForm extends React.Component {
     super(props);
     this.state = {
       password: '',
-      confirm_password: '',
+      confirmPassword: '',
       errors: {}
     };
 
@@ -78,9 +78,10 @@ class NewPasswordForm extends React.Component {
   onNewPasswordSubmit(event) {
     event.preventDefault();
     const token = this.props.match.params.token;
+    const { password, confirmPassword } = this.state;
     this.props.updatePassword({
-      password: this.state.password,
-      confirm_password: this.state.confirm_password,
+      password,
+      confirmPassword,
       token
     }).then(
       () => {
@@ -136,7 +137,7 @@ class NewPasswordForm extends React.Component {
                       'input-field',
                       'auth-field',
                       'col s12',
-                      { 'has-error': errors.confirm_password }
+                      { 'has-error': errors.confirmPassword }
                     )}
                   >
                     <TextField
@@ -144,8 +145,8 @@ class NewPasswordForm extends React.Component {
                       label="Confirm Password"
                       error={errors.confirm_password}
                       onChange={this.onChange}
-                      value={this.state.confirm_password}
-                      field="confirm_password"
+                      value={this.state.confirmPassword}
+                      field="confirmPassword"
                       type="password"
                     />
                   </div>
