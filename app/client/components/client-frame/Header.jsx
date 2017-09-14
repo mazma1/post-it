@@ -11,7 +11,7 @@ import { logout } from '../../actions/signIn';
 import setSelectedGroup from '../../actions/setSelectedGroup';
 import { setGroupMessages } from '../../actions/groupMessages';
 import { submitNewUser } from '../../actions/groupMembers';
-import { AddUserBtn, GroupName } from '../misc/HeaderMisc.jsx';
+import { AddUserBtn, SearchBtn, GroupName } from '../misc/HeaderMisc.jsx';
 import {
   ModalHeader,
   ModalBody,
@@ -165,11 +165,10 @@ export class Header extends React.Component {
 
               <div className="col-md-8 col-sm-7 col-xs-9 lg-stack">
                 <ul className="cta">
-                  <li>
-                    <Link to="/search" onClick={this.onSearchClick}>
-                      <i className="glyphicon glyphicon-search pointer" />
-                    </Link>
-                  </li>
+                  <SearchBtn
+                    onSearchClick={this.onSearchClick}
+                    selectedGroup={selectedGroup}
+                  />
                   <li className="username">
                     <i className="glyphicon glyphicon-user pr6" />
                      @{username}

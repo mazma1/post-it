@@ -1,5 +1,6 @@
 import React from 'react';
 import isEmpty from 'lodash/isEmpty';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import checkGroupnameLength from '../../../utils/checkGroupNameLength';
 
@@ -16,6 +17,20 @@ export const AddUserBtn = (props) => {
     </button>
   );
 };
+
+export const SearchBtn = (props) => {
+  if (isEmpty(props.selectedGroup)) {
+    return null;
+  }
+  return (
+    <li>
+      <Link to="/search" onClick={props.onSearchClick}>
+        <i className="glyphicon glyphicon-search pointer" />
+      </Link>
+    </li>
+  );
+};
+
 
 const noMarginBottom = {
   marginBottom: 0
