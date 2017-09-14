@@ -139,19 +139,7 @@ class MessageCard extends React.Component {
     }
     return (
       <div>
-        { this.state.messageOpen ?
-          <MessageBody
-            closeMessage={this.closeMessageBody}
-            clickedMessageId={this.state.clickedMessageId}
-            closeModal={this.closeModal}
-            openModal={this.openModal}
-            messages={this.props.message.messages}
-          />
-        :
-          <div>
-            <MessageItem {...props} />
-          </div>
-        }
+        <MessageItem {...props} />
       </div>
     );
   }

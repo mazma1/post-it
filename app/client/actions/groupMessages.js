@@ -31,9 +31,9 @@ export function getGroupMessages(groupId) {
   };
 }
 
-export function updateReadStatus(messageDetails) {
-  const { groupId, messageId } = messageDetails;
-  const request = axios.patch(`/api/v1/groups/${messageId}/read`, messageDetails);
+export function updateReadStatus(messageParams) {
+  const { groupId, messageId } = messageParams;
+  const request = axios.patch(`/api/v1/groups/${messageId}/read`, messageParams);
 
   return dispatch => request;
 }

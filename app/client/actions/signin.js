@@ -24,8 +24,7 @@ export function userSignInRequest(userData) {
 
 
 /**
-   * Informs reducers that the request to sign in user
-   * finished successfully
+   * Informs reducers that the request to sign in user finished successfully
    *
    * @param {object} user user's information
    *

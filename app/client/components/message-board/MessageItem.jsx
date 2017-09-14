@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -253,10 +254,9 @@ class MessageItem extends React.Component {
                   </span>
                   <p
                     className="msg_body"
-                    onClick={() => this.props.onMessageClick({
-                      id: message.id,
-                      readBy: message.readBy }
-                    )}>
+                    onClick={() => {
+                      this.props.history.push(`/message/${message.id}`)
+                    }}>
                     {this.checkMessageLength(message.message)}
                   </p>
                 </div>
@@ -320,4 +320,4 @@ MessageItem.propTypes = {
   archiveMessage: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessageItem);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MessageItem));
