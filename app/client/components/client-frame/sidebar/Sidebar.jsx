@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import $ from 'jquery';
 import toastr from 'toastr';
 import isEmpty from 'lodash/isEmpty';
+import mapKeys from 'lodash/mapKeys';
 import GroupList from './GroupList.jsx';
 import ModalFrame from '../../modal/ModalFrame.jsx';
 import { Brand, MobileToggleBtn } from '../../misc/SidebarMisc.jsx'
@@ -77,11 +79,16 @@ export class Sidebar extends React.Component {
       () => {
         if (this.props.userGroups.hasGroup === false) {
           this.props.setSelectedGroup({});
-        } else {
-          this.props.setSelectedGroup(this.props.userGroups.groups[0]);
-          this.props.getGroupMessages(this.props.userGroups.groups[0].id);
-          this.props.getGroupMembers(this.props.userGroups.groups[0].id);
-        }
+        } else{
+          const groupId = this.props.match.params.groupId;
+          if (groupId) {
+            const mappedGroups = mapKeys(this.props.userGroups.groups, 'id');
+            const currentGroup = mappedGroups[groupId];
+            this.props.setSelectedGroup(currentGroup);
+            this.props.getGroupMessages(groupId);
+            this.props.getGroupMembers(groupId);
+          }
+        }   
       }
     )
     .catch((error) => {
@@ -215,6 +222,8 @@ export class Sidebar extends React.Component {
    * @returns {void}
    */
   onGroupSelect(group) {
+    const groupId = group.id;
+    this.props.history.push(`/message-board/${groupId}`);
     this.props.setSelectedGroup(group);
     this.props.getGroupMessages(group.id);
     this.props.getGroupMembers(group.id);
@@ -316,4 +325,4 @@ Sidebar.propTypes = {
   getGroupMessagesCount: PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Sidebar));

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import SignupForm from './SignupForm.jsx';
-import { userSignUpRequest } from '../../actions/signUp';
+import userSignUpRequest from '../../actions/signUp';
 import { userSignInRequest } from '../../actions/signIn';
 
 /**
@@ -29,8 +29,8 @@ class SignUp extends React.Component {
               </header>
 
               <SignupForm
-                userSignupRequest={userSignUpRequest}
-                userSigninRequest={userSignInRequest}
+                userSignUpRequest={userSignUpRequest}
+                userSignInRequest={userSignInRequest}
               />
             </div>
           </div>

@@ -254,8 +254,10 @@ class MessageItem extends React.Component {
                   </span>
                   <p
                     className="msg_body"
-                    onClick={() => {
+                    data-id={this.props.match.params.groupId}
+                    onClick={(event) => {
                       this.props.history.push(`/message/${message.id}`)
+                      localStorage.setItem('groupId', event.target.dataset.id);
                     }}>
                     {this.checkMessageLength(message.message)}
                   </p>

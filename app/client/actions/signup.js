@@ -7,7 +7,7 @@ import axios from 'axios';
 
   * @returns {response} request response
   */
-export default function userSignupRequest(userData) {
+export default function userSignUpRequest(userData) {
   return (dispatch) => {
     return axios.post('/api/v1/users/signup', userData)
       .then()

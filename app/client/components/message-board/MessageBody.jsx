@@ -27,6 +27,7 @@ class MessageBody extends React.Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.updateMessageDetails = this.updateMessageDetails.bind(this);
+    this.onClick = this.onClick.bind(this);
   }
 
    /**
@@ -36,7 +37,6 @@ class MessageBody extends React.Component {
    * @returns {void}
    */
   componentDidMount() {
-    console.log(this.state.messageId)
     this.updateMessageDetails();
   }
 
@@ -84,6 +84,11 @@ class MessageBody extends React.Component {
       readBy: clickedMessage.readBy,
     };
     this.props.updateReadStatus(messageParams);
+  }
+
+  onClick() {
+    this.props.history.push(`/message-board/${localStorage.getItem('groupId')}`);
+    localStorage.removeItem('groupId');
   }
 
   /**
@@ -138,7 +143,7 @@ class MessageBody extends React.Component {
             </div>
 
             <div className="col s12 m10 offset-m1">
-              <Link to="/message-board">Back</Link>
+              <button onClick={ this.onClick }>Back</button>
             </div>
           </div>
 
@@ -168,11 +173,12 @@ class MessageBody extends React.Component {
  * @returns {object} The groups a user belongs to, the messages in respective
  * groups and the username of logged in user
  */
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
     messages: state.groupMessages.messages,
     username: state.signedInUser.user.username,
-    groups: state.userGroups.groups
+    groups: state.userGroups.groups,
+    referrer: ownProps
   };
 }
 

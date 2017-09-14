@@ -62,7 +62,8 @@ class SearchForm extends Component {
   resetSearch(event) {
     event.preventDefault();
     this.props.resetSearch();
-    this.props.history.push('/message-board');
+    this.props.history.push(`/message-board/${localStorage.getItem('group')}`);
+    localStorage.removeItem('group');
   }
 
   /**

@@ -79,7 +79,6 @@ class MessageCard extends React.Component {
    */
   onMessageClick(clickedMsgProps) {
     const clickedMessageId = clickedMsgProps.id;
-    console.log(clickedMessageId)
     this.setState({
       clickedMessageId,
       messageOpen: true

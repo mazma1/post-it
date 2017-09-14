@@ -31,6 +31,7 @@ class SignUpForm extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onSignupClick = this.onSignupClick.bind(this);
   }
+  
 
    /**
    * Handles change event of sign up input fields

@@ -53,6 +53,7 @@ export class Header extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.newUserSubmit = this.newUserSubmit.bind(this);
     this.logout = this.logout.bind(this);
+    this.onSearchClick = this.onSearchClick.bind(this);
   }
 
    /**
@@ -66,6 +67,10 @@ export class Header extends React.Component {
     this.setState({
       isOpen: true
     });
+  }
+
+  onSearchClick() {
+    localStorage.setItem('group', this.props.match.params.groupId);
   }
 
    /**
@@ -161,7 +166,7 @@ export class Header extends React.Component {
               <div className="col-md-8 col-sm-7 col-xs-9 lg-stack">
                 <ul className="cta">
                   <li>
-                    <Link to="/search">
+                    <Link to="/search" onClick={this.onSearchClick}>
                       <i className="glyphicon glyphicon-search pointer" />
                     </Link>
                   </li>
