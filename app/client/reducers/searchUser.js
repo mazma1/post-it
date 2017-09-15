@@ -15,7 +15,8 @@ export default (state = {}, action = {}) => {
       return {
         ...state,
         isLoading: false,
-        users: action.searchResult
+        users: action.searchResult.users,
+        pagination: action.searchResult.pagination
       };
 
     case FETCH_SEARCHED_USER_FAILURE:
@@ -26,9 +27,7 @@ export default (state = {}, action = {}) => {
       };
 
     case RESET_SEARCH:
-      return {
-        searchResult: {}
-      };
+      return {};
 
     default:
       return state;

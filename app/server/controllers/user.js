@@ -6,6 +6,7 @@ import crypto from 'crypto';
 import models from '../models';
 import validateSignup from '../../utils/signupValidation';
 import sendEmail from '../../utils/sendEmail';
+import pagination from '../../utils/pagination';
 
 const saltRounds = 7;
 const salt = bcrypt.genSaltSync(saltRounds);
@@ -318,13 +319,14 @@ export default {
   searchForUser(req, res) {
     if (req.query.q) {
       const searchQuery = req.query.q;
-      models.User.findAll({
+      const limit = req.query.limit || 1;
+      const offset = req.query.offset || 0;
+      models.User.findAndCountAll({
         where: {
           $or: [
             { firstName: { $like: `%${searchQuery}%` } },
             { lastName: { $like: `%${searchQuery}%` } },
-            { username: { $like: `%${searchQuery}%` } },
-            { email: { $like: `%${searchQuery}%` } }
+            { username: { $like: `%${searchQuery}%` } }
           ]
         },
         attributes: [
@@ -336,10 +338,15 @@ export default {
           attributes: ['id', 'groupName'],
           through: { attributes: [] }
         }],
+        limit,
+        offset
       })
       .then((users) => {
         if (!isEmpty(users)) {
-          return res.status(200).send({ users });
+          return res.status(200).send({
+            users: users.rows,
+            pagination: pagination(users.count, limit, offset)
+          });
         }
         res.status(404).send({ error: 'User was not found' });
       })

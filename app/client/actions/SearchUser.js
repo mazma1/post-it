@@ -8,9 +8,9 @@ import {
 
 /**
    * Makes request to search for a user using provided search query
-
+   *
    * @param {string} searchQuery search query
-
+   *
    * @returns {response} request response
    */
 export function searchUser({ searchQuery }) {
@@ -18,7 +18,11 @@ export function searchUser({ searchQuery }) {
     dispatch(fetchingSearchedUser());
     return axios.get(`/api/v1/users/search?q=${searchQuery}`)
       .then((res) => {
-        const searchResult = res.data.users;
+        const { users, pagination } = res.data;
+        const searchResult = {
+          users,
+          pagination
+        }
         dispatch(fetchSearchedUserSuccess(searchResult));
       })
       .catch((error) => {
