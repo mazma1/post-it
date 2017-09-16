@@ -18,12 +18,13 @@ Post it is a simple React application that consumes a Node REST API on an Expre
 
 ## To get started
 1. Clone the repository: `git clone https://github.com/mazma1/post-it`
-2. Navigate into the app's root directory: `cd post-it`
-3. Ensure you have installed NodeJS and Postgres
-4. Install all dependencies: `npm install`
-5. Run tests to ensure the app is not broken: `npm test`
-6. Run `npm run db:migrate` to populate your database with initial user data
-7. Start the app: `npm run start:dev`
+2. Ensure you have installed NodeJS and Postgres
+3. Navigate into the app's root directory: `cd post-it`
+4. Create a `.env` file in the root directory using the sample `.env.sample` file
+5. Install all dependencies: `npm install`
+6. Run tests to ensure the app is not broken: `npm test`
+7. Run `npm run db:migrate` to populate your database with initial user data
+8. Start the app: `npm run start:dev`
 
 
 ## Available Functionalities on Client
