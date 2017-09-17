@@ -21,7 +21,7 @@ class MessageBody extends React.Component {
     this.state = {
       isOpen: false,
       messageId: this.props.match.params.messageId,
-      groupId: this.props.groups[0].id
+      groupId: this.props.selectedGroup.id
     };
 
     this.openModal = this.openModal.bind(this);
@@ -173,12 +173,12 @@ class MessageBody extends React.Component {
  * @returns {object} The groups a user belongs to, the messages in respective
  * groups and the username of logged in user
  */
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
     messages: state.groupMessages.messages,
     username: state.signedInUser.user.username,
     groups: state.userGroups.groups,
-    referrer: ownProps
+    selectedGroup: state.selectedGroup
   };
 }
 

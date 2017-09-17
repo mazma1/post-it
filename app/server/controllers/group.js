@@ -90,7 +90,7 @@ export default {
                 groupId: req.params.group_id,
                 userId: user.id
               };
-              models.Group_member.create(details)
+              models.GroupMember.create(details)
               .then(groupMember => res.status(201).send({
                 message: 'User successfully added to group',
               }))
@@ -221,6 +221,7 @@ export default {
         where: { groupId: req.params.group_id },
         attributes: [
           'id',
+          ['groupId', 'group'],
           ['body', 'message'],
           'priority',
           'readBy',

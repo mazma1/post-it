@@ -35,7 +35,9 @@ export function updateReadStatus(messageParams) {
   const { groupId, messageId } = messageParams;
   const request = axios.patch(`/api/v1/groups/${messageId}/read`, messageParams);
 
-  return dispatch => request;
+  return dispatch => request.then((res) => {
+    dispatch(getGroupMessages(groupId));
+  });
 }
 
 export function archiveMessage({ messageId }) {

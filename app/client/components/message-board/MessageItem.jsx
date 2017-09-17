@@ -49,7 +49,7 @@ class MessageItem extends React.Component {
    * @returns {void} null
    */
   componentDidMount() {
-    const mappedMessages = mapKeys(this.props.messages, 'id');
+    const mappedMessages = mapKeys(this.props.messages, 'group');
     const groupId = Object.keys(mappedMessages)[0];
     this.props.getGroupMessagesCount(groupId).then(
       (response) => {
@@ -228,7 +228,7 @@ class MessageItem extends React.Component {
 
             return (
               <div key={message.id}>
-                <div className="card-panel row" key={message.id}>
+                <div className="card-panel row">
                   <span className="blue-text text-darken-2 font18">
                     <b>@{message.sentBy.username} </b>
                   </span>

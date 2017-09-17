@@ -143,7 +143,7 @@ class SignInForm extends React.Component {
             <Link to="/signup">Sign Up</Link>
           </p>
           <p className="center">
-            <Link to="/reset_password">Forgot Password?</Link>
+            <Link to="/reset-password">Forgot Password?</Link>
           </p>
         </div>
 

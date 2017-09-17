@@ -76,7 +76,7 @@ class SearchForm extends Component {
     return (
       <ClientFrame>
         <div className="row search-form">
-          <div className="col s12 m10 offset-m1 message-card">
+          <div className="col s12 m10 offset-m1 search-form-inner">
             <div className="card search-card">
               <div className="card-content">
                 <span className="card-title">Search for User</span>
@@ -113,7 +113,11 @@ class SearchForm extends Component {
           </div>
         </div>
 
-        { searchResult.isLoading === false && !error ? <SearchResult /> : null }
+        {
+          searchResult.isLoading === false && !error ?
+            <SearchResult searchQuery={this.state.searchQuery} />
+          : null
+        }
       </ClientFrame>
     );
   }

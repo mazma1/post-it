@@ -1,6 +1,6 @@
 import axios from 'axios';
 import last from 'lodash/last';
-import { setSelectedGroup } from '../actions/setSelectedGroup';
+import setSelectedGroup from '../actions/setSelectedGroup';
 import { getGroupMessages } from '../actions/groupMessages';
 import { getGroupMembers } from '../actions/groupMembers';
 import {
@@ -91,9 +91,9 @@ export function submitNewGroup({ groupName, userId }) {
     .then((res) => {
       dispatch(setNewGroupActive(userId));
     })
-    .catch((error) => {
-      dispatch(submittingNewGroupFailure());
-    });
+    // .catch((error) => {
+    //   dispatch(submittingNewGroupFailure(error));
+    // });
   };
 }
 
@@ -116,7 +116,9 @@ export function setNewGroupActive(userId) {
         dispatch(getGroupMessages(lastGroup.id));
         dispatch(getGroupMembers(lastGroup.id));
       })
-      .catch();
+      .catch((error) => {
+        console.log('error', error)
+      });
   };
 }
 

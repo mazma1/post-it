@@ -319,8 +319,9 @@ export default {
   searchForUser(req, res) {
     if (req.query.q) {
       const searchQuery = req.query.q;
-      const limit = req.query.limit || 1;
+      const limit = req.query.limit || 5;
       const offset = req.query.offset || 0;
+      // console.log(req.query.offset )
       models.User.findAndCountAll({
         where: {
           $or: [
@@ -335,19 +336,21 @@ export default {
         include: [{
           model: models.Group,
           as: 'groups',
+          required: false,
           attributes: ['id', 'groupName'],
           through: { attributes: [] }
         }],
+        distinct: true,
         limit,
         offset
       })
       .then((users) => {
-        if (!isEmpty(users)) {
+        if (users.count > 0) {
           return res.status(200).send({
             users: users.rows,
             pagination: pagination(users.count, limit, offset)
           });
-        }
+        } 
         res.status(404).send({ error: 'User was not found' });
       })
       .catch((error) => {

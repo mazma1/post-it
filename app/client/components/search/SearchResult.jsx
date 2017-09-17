@@ -1,9 +1,9 @@
 import React from 'react';
 import SearchResultTable from '../tables/SearchResultTable.jsx';
 
-const SearchResult = () => (
+const SearchResult = (props) => (
   <div>
-    <SearchResultTable />
+    <SearchResultTable searchQuery={props.searchQuery} />
   </div>
 );
 
