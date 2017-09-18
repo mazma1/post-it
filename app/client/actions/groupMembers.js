@@ -15,8 +15,8 @@ export function fetchingGroupMembers() {
   };
 }
 
-export function submitNewUser({groupId, identifier}) {
-  const reqBody = { identifier }
+export function submitNewUser({ groupId, identifier }) {
+  const reqBody = { identifier };
   const request = axios.post(`/api/v1/groups/${groupId}/user`, reqBody);
 
   return (dispatch) => {
