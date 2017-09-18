@@ -7,7 +7,7 @@ const GroupMembersTable = (props) => {
     return (
       <tr key={member.id}>
         <td>
-          <b>{member.firstname} {member.lastname}</b> <br />
+          <b>{member.firstName} {member.lastName}</b> <br />
           @{member.username} | {member.email}
         </td>
       </tr>

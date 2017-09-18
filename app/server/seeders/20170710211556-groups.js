@@ -2,34 +2,34 @@ module.exports = {
   up: (queryInterface, Sequelize) =>
     queryInterface.bulkInsert('Groups', [
       {
-        group_name: 'Jasmine',
-        user_id: 2,
-        created_at: new Date(),
-        updated_at: new Date()
+        groupName: 'Jasmine',
+        userId: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
-        group_name: 'Bluebell',
-        user_id: 1,
-        created_at: new Date(),
-        updated_at: new Date()
+        groupName: 'Bluebell',
+        userId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
-        group_name: 'Allamanda',
-        user_id: 2,
-        created_at: new Date(),
-        updated_at: new Date()
+        groupName: 'Allamanda',
+        userId: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
-        group_name: 'Marigold',
-        user_id: 3,
-        created_at: new Date(),
-        updated_at: new Date()
+        groupName: 'Marigold',
+        userId: 3,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
-        group_name: 'Primrose',
-        user_id: 1,
-        created_at: new Date(),
-        updated_at: new Date()
+        groupName: 'Primrose',
+        userId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
     ], {}),
 

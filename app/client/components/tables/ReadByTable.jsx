@@ -13,13 +13,13 @@ class ReadByTable extends React.Component {
    */
   render() {
     const messagesArray = this.props.messages;
-    const messagesObject = mapKeys(messagesArray, 'message_id');
+    const messagesObject = mapKeys(messagesArray, 'id');
     const messageId = this.props.messageId;
-    const readByUsers = messagesObject[messageId];
+    const message = messagesObject[messageId];
     let readByRow;
 
-    if (readByUsers) {
-      const readBy = readByUsers.read_by;
+    if (message) {
+      const { readBy } = message;
       const readByArray = split(readBy, ',');
 
       readByRow = readByArray.map((username, index) => (

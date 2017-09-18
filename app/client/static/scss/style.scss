@@ -918,7 +918,7 @@ select.browser-default {
 }
 
 div.row .message-card {
-  padding-top: 30px;
+  padding-top: 100px;
 }
 
 .card .card-content .card-title {
@@ -979,13 +979,31 @@ select.browser-default.msg-filter {
   float: right;
   margin-right: 4%;
 }
-~
+
 .pagination>.active>a {
   z-index: 0;
 }
 
 .search-result {
   padding-bottom: 90px;
+}
+
+.dashboard-container {
+  padding-top: 35px!important;
+}
+
+.dashboard-text {
+  font-size: 20px;
+  text-align: center;
+}
+
+.dashboard-panel {
+  background: whitesmoke;
+  padding: 70px !important;
+}
+
+.search-form-inner {
+  padding-top: 40px !important;
 }
 // ul:not(.browser-default) {
 //   padding-left: 17px;

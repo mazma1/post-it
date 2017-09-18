@@ -8,6 +8,8 @@ import PageNotFound from '../components/PageNotFound.jsx';
 import ResetPassword from '../components/reset-password/EnterEmailForm.jsx';
 import NewPassword from '../components/reset-password/NewPasswordForm.jsx';
 import SearchUser from '../components/search/SearchForm.jsx';
+import MessageBody from '../components/message-board/MessageBody.jsx';
+import MessageBoard from '../components/message-board/MessageBoard.jsx';
 
 if (module.hot) {
   module.hot.accept();
@@ -25,9 +27,11 @@ function Client() {
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/signin" component={SignIn} />
         <Route exact path="/message-board" component={EnsureUserLoggedIn} />
+        <Route path="/message-board/:groupId" component={MessageBoard} />
+        <Route path="/message/:messageId" component={MessageBody} />
         <Route exact path="/search" component={SearchUser} />
-        <Route path="/reset_password" component={ResetPassword} />
-        <Route path="/newpassword/:token" component={NewPassword} />
+        <Route path="/reset-password" component={ResetPassword} />
+        <Route path="/new-password/:token" component={NewPassword} />
         <Route component={PageNotFound} />
       </Switch>
     </BrowserRouter>

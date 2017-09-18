@@ -10,7 +10,7 @@ import TextField from '../common/FormTextField.jsx';
  * SignupForm component
  * Parent component: SignUp.js
  */
-class SignupForm extends React.Component {
+class SignUpForm extends React.Component {
   /**
    * Constructor
    * @param {object} props
@@ -18,19 +18,20 @@ class SignupForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstname: '',
-      lastname: '',
+      firstName: '',
+      lastName: '',
       username: '',
-      phone: '',
+      phoneNumber: '',
       email: '',
       password: '',
-      confirm_password: '',
+      confirmPassword: '',
       errors: {}
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSignupClick = this.onSignupClick.bind(this);
   }
+  
 
    /**
    * Handles change event of sign up input fields
@@ -57,7 +58,7 @@ class SignupForm extends React.Component {
 
   /**
    * Handles Sign Up event
-   * Dispatches userSignupRequest action
+   * Dispatches userSignUpRequest action
    * If sign up request is successful, it equally signs user up and
    * redirects to the message board with a success flash message
    * If sign up was not successful, it returns the appropriate error message(s)
@@ -69,9 +70,9 @@ class SignupForm extends React.Component {
 
     if (this.valid()) {
       this.setState({ errors: {} });
-      this.props.userSignupRequest(this.state).then(
+      this.props.userSignUpRequest(this.state).then(
         () => {
-          this.props.userSigninRequest({
+          this.props.userSignInRequest({
             identifier: this.state.username,
             password: this.state.password
           })
@@ -102,16 +103,16 @@ class SignupForm extends React.Component {
               'input-field',
               'auth-field',
               'col m6 s12',
-              { 'has-error': errors.firstname }
+              { 'has-error': errors.firstName }
             )}
           >
             <TextField
               icon="perm_identity"
-              error={errors.firstname}
+              error={errors.firstName}
               label="First Name"
               onChange={this.onChange}
-              value={this.state.firstname}
-              field="firstname"
+              value={this.state.firstName}
+              field="firstName"
               autocomplete="off"
             />
           </div>
@@ -121,16 +122,16 @@ class SignupForm extends React.Component {
               'input-field',
               'auth-field',
               'col m6 s12',
-              { 'has-error': errors.lastname }
+              { 'has-error': errors.lastName }
             )}
           >
             <TextField
               icon="perm_identity"
-              error={errors.lastname}
+              error={errors.lastName}
               label="Last Name"
               onChange={this.onChange}
-              value={this.state.lastname}
-              field="lastname"
+              value={this.state.lastName}
+              field="lastName"
               autocomplete="off"
             />
           </div>
@@ -163,16 +164,16 @@ class SignupForm extends React.Component {
               'input-field',
               'auth-field',
               'col s12',
-              { 'has-error': errors.phone }
+              { 'has-error': errors.phoneNumber }
             )}
           >
             <TextField
               icon="phone"
-              error={errors.phone}
+              error={errors.phoneNumber}
               label="Phone Number"
               onChange={this.onChange}
-              value={this.state.phone}
-              field="phone"
+              value={this.state.phoneNumber}
+              field="phoneNumber"
               type="number"
               autocomplete="off"
             />
@@ -229,16 +230,16 @@ class SignupForm extends React.Component {
               'input-field',
               'auth-field',
               'col s12',
-              { 'has-error': errors.confirm_password }
+              { 'has-error': errors.confirmPassword }
             )}
           >
             <TextField
               icon="https"
-              error={errors.confirm_password}
+              error={errors.confirmPassword}
               label="Confirm Password"
               onChange={this.onChange}
-              value={this.state.confirm_password}
-              field="confirm_password"
+              value={this.state.confirmPassword}
+              field="confirmPassword"
               type="password"
               autocomplete="off"
             />
@@ -268,10 +269,10 @@ class SignupForm extends React.Component {
   }
 }
 
-SignupForm.propTypes = {
-  userSignupRequest: PropTypes.func.isRequired,
-  userSigninRequest: PropTypes.func.isRequired
+SignUpForm.propTypes = {
+  userSignUpRequest: PropTypes.func.isRequired,
+  userSignInRequest: PropTypes.func.isRequired
 };
 
-export default withRouter(SignupForm);
+export default withRouter(SignUpForm);
 

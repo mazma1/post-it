@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SigninForm from './SigninForm.jsx';
-import { userSigninRequest } from '../../actions/signin';
+import { userSignInRequest } from '../../actions/signIn';
 
 
 /**
@@ -17,7 +17,7 @@ class SignIn extends React.Component {
    * @returns {ReactElement} SignIn page markup
    */
   render() {
-    const { userSigninRequest } = this.props;
+    const { userSignInRequest } = this.props;
     return (
       <div className="background">
         <div className="container">
@@ -27,7 +27,7 @@ class SignIn extends React.Component {
                 <h5 className="center">Sign In | Post It</h5>
               </header>
 
-              <SigninForm userSigninRequest={userSigninRequest} />
+              <SigninForm userSignInRequest={userSignInRequest} />
             </div>
           </div>
         </div>
@@ -45,12 +45,12 @@ class SignIn extends React.Component {
  */
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    userSigninRequest
+    userSignInRequest
   }, dispatch);
 }
 
 SignIn.propTypes = {
-  userSigninRequest: PropTypes.func.isRequired
+  userSignInRequest: PropTypes.func.isRequired
 };
 
 export default connect(null, mapDispatchToProps)(SignIn);

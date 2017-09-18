@@ -2,12 +2,13 @@ import includes from 'lodash/includes';
 import Nexmo from 'nexmo';
 import models from '../models';
 import sendEmail from '../../utils/sendEmail';
+import validateGroupMember from '../../utils/validateGroupMember';
 
 
 export default {
   /**
    * Creates a new group
-   * Route: POST: /api/group
+   * Route: POST: /api/v1/groups
    *
    * @param {any} req
    * @param {any} res
@@ -15,36 +16,34 @@ export default {
    */
   createGroup(req, res) {
     let error = '';
-    // res.send(req.decoded); --JSON that contains details of the token owner.
     const userId = req.decoded.data.id;
+    const { groupName } = req.body;
     const groupData = {
-      group_name: req.body.group_name,
-      user_id: userId
+      groupName,
+      userId
     };
-    if (!req.body.group_name) {
+    if (!groupName) {
       error = 'Group name is required';
       res.status(400).send({ error });
     } else {
       models.Group.findOne({
-        where: {
-          group_name: req.body.group_name
-        },
+        where: { groupName },
       })
-      .then((group) => {
-        if (group) {
+      .then((existingGroup) => {
+        if (existingGroup) {
           error = 'Group already exists';
           res.status(409).send({ error });
         } else {
           models.Group.create(groupData)
           .then((newGroup) => {
-            models.Group_member.create({
-              group_id: newGroup.id,
-              user_id: userId
+            models.GroupMember.create({
+              groupId: newGroup.id,
+              userId
             })
             .then(groupMember => res.status(201).send({
               message: 'Group was successfully created and you have been added to it',
-              groupName: newGroup.group_name,
-              groupOwner: newGroup.user_id
+              groupName: newGroup.groupName,
+              groupOwner: newGroup.userId
             }))
             .catch(err => res.status(500).send(err.message));
           })
@@ -57,7 +56,7 @@ export default {
 
   /**
    * Adds a user to a group
-   * Route: POST: /api/group
+   * Route: POST: /api/v1/groups
    *
    * @param {any} req
    * @param {any} res
@@ -77,9 +76,9 @@ export default {
       })
       .then((user) => {
         if (user) {
-          models.Group_member.findOne({
+          models.GroupMember.findOne({
             where: {
-              $and: [{ user_id: user.id }, { group_id: req.params.group_id }]
+              $and: [{ userId: user.id }, { groupId: req.params.group_id }]
             },
           })
           .then((member) => {
@@ -88,10 +87,10 @@ export default {
               res.status(409).send({ error });
             } else {
               const details = {
-                group_id: req.params.group_id,
-                user_id: user.id
+                groupId: req.params.group_id,
+                userId: user.id
               };
-              models.Group_member.create(details)
+              models.GroupMember.create(details)
               .then(groupMember => res.status(201).send({
                 message: 'User successfully added to group',
               }))
@@ -108,81 +107,109 @@ export default {
 
   /**
    * Post message to a group
-   * Route: POST: /api/group/:group_id/message
+   * Route: POST: /api/v1/groups/:group_id/message
    *
    * @param {any} req
    * @param {any} res
    * @returns {response} response object
    */
   postMessageToGroup(req, res) {
-    if (!req.body.message) {
-      res.status(400).send({ error: 'Message is required.' });
-    } else {
-      const userId = req.decoded.data.id;
-      const userEmail = req.decoded.data.email;
-      const messageDetail = {
-        body: req.body.message,
-        group_id: req.params.group_id,
-        user_id: userId,
-        priority: req.body.priority,
-        read_by: req.body.read_by,
-        isArchived: ['']
-      };
-      models.Message.create(messageDetail)
-      .then((message) => {
-        res.status(201).send({
-          message: 'Message was successfully sent',
-          timeSent: message.createdAt,
-          messageBody: message.body
-        });
-        if (req.body.priority === 'urgent' || req.body.priority === 'critical') {
-          // get users email and send email
-          models.Group.findOne({
-            where: { id: messageDetail.group_id },
-            attributes: ['group_name'],
-            include: [{
-              model: models.User,
-              as: 'members',
-              attributes: ['email', 'mobile'],
-              through: { attributes: [] }
-            }]
-          }).then((members) => {
-            const priority = messageDetail.priority;
-            const uppercasePriority = priority.toUpperCase();
-            members.members.map((member) => {
-              const emailParams = {
-                senderAddress: member.email,
-                recepientAddress: userEmail,
-                groupName: members.group_name,
-                subject: `${uppercasePriority} message in ${members.group_name}`,
-                emailBody: messageDetail.body
-              };
-              sendEmail(emailParams);
-
-              // get users number and send sms
-              if (req.body.priority === 'critical') {
-                const nexmo = new Nexmo({
-                  apiKey: process.env.NEXMO_KEY,
-                  apiSecret: process.env.NEXMO_SECRET
-                });
-
-                const from = 'Post It';
-                const to = member.mobile;
-                const text = `${uppercasePriority} message in ${members.group_name}\n\n${messageDetail.body}`;
-
-                nexmo.message.sendSms(from, to, text);
-              }
-            });
-          });
-        }
-      })
-      .catch(error => res.status(500).send(error.message));
+    const userId = req.decoded.data.id;
+    const userEmail = req.decoded.data.email;
+    const groupId = req.params.group_id;
+    if (isNaN(req.params.group_id)) {
+      return res.status(400).send({ error: 'Invalid group id' });
     }
+    if (!req.body.message) {
+      return res.status(400).send({ error: 'Message is required' });
+    }
+    models.Group.findOne({
+      where: { id: groupId }
+    })
+    .then((group) => {
+      if (!group) {
+        return res.status(404).send({ error: 'Group does not exist' });
+      }
+      if (group) {
+        models.GroupMember.findOne({
+          where: {
+            $and: [{ userId }, { groupId }]
+          },
+        })
+        .then((member) => {
+          if (!member) {
+            return res.status(401).send({
+              error: 'You don\'t belong to this group'
+            });
+          }
+          const { priority } = req.body;
+          const messageDetail = {
+            userId,
+            priority,
+            readBy: req.decoded.data.username,
+            body: req.body.message,
+            groupId: req.params.group_id,
+            isArchived: ['']
+          };
+          models.Message.create(messageDetail)
+          .then((message) => {
+            res.status(201).send({
+              message: 'Message was successfully sent',
+              timeSent: message.createdAt,
+              messageBody: message.body
+            });
+            if (req.body.priority === 'urgent' || req.body.priority === 'critical') {
+              // get users email and send email
+              models.Group.findOne({
+                where: { id: messageDetail.groupId },
+                attributes: ['groupName'],
+                include: [{
+                  model: models.User,
+                  as: 'members',
+                  attributes: ['email', 'phoneNumber'],
+                  through: { attributes: [] }
+                }]
+              }).then((members) => {
+                const uppercasePriority = priority.toUpperCase();
+                members.members.map((member) => {
+                  const emailParams = {
+                    senderAddress: member.email,
+                    recepientAddress: userEmail,
+                    groupName: members.groupName,
+                    subject: `${uppercasePriority} message in ${members.groupName}`,
+                    emailBody: messageDetail.body
+                  };
+                  sendEmail(emailParams);
+
+                  // get users number and send sms
+                  if (req.body.priority === 'critical') {
+                    const nexmo = new Nexmo({
+                      apiKey: process.env.NEXMO_KEY,
+                      apiSecret: process.env.NEXMO_SECRET
+                    });
+
+                    const from = 'Post It';
+                    const to = member.mobile;
+                    const text = `${uppercasePriority} message in ${members.group_name}\n\n${messageDetail.body}`;
+
+                    nexmo.message.sendSms(from, to, text);
+                  }
+                });
+              })
+              .catch(err => res.status(500).send(err.message));
+            }
+          })
+          .catch(err => res.status(500).send(err.message));
+        })
+        .catch(err => res.status(500).send(err.message));
+      }
+    })
+    .catch(err => res.status(500).send(err.message)); 
   },
 
   /**
    * Get messages posted to a group
-   * Route: GET: /api/group/:group_id/messages
+   * Route: GET: /api/v1/groups/:group_id/messages
    *
    * @param {any} req
    * @param {any} res
@@ -191,39 +218,39 @@ export default {
   getGroupMessages(req, res) {
     if (req.params.group_id) {
       models.Message.findAll({ // User is associated to message
-        where: { group_id: req.params.group_id },
+        where: { groupId: req.params.group_id },
         attributes: [
-          'group_id',
-          ['id', 'message_id'],
+          'id',
+          ['groupId', 'group'],
           ['body', 'message'],
           'priority',
-          'read_by',
+          'readBy',
           'isArchived',
-          ['created_at', 'sent_at']
+          ['createdAt', 'sentAt']
         ],
         include: [{
           model: models.User,
-          as: 'sent_by',
+          as: 'sentBy',
           attributes: ['username'],
         }],
         order: [
-          ['created_at', 'DESC'],
+          ['createdAt', 'DESC'],
         ]
       })
-      .then((message) => {
-        if (message) {
-          res.status(200).send(message);
+      .then((messages) => {
+        if (messages) {
+          res.status(200).send({ messages });
         } else {
           res.status(404).send({ message: 'No message was found for the specified group' });
         }
       })
-      .catch(error => res.status(500).send(error));
+      .catch(error => res.status(500).send(error.message));
     }
   },
 
    /**
    * Updates a user that have read a message
-   * Route: PATCH: /api/group/message/read
+   * Route: PATCH: /api/v1/groups/message/read
    *
    * @param {any} req
    * @param {any} res
@@ -231,13 +258,13 @@ export default {
    */
   updateMessageReadStatus(req, res) {
     const username = req.body.username,
-      readBy = req.body.read_by,
-      messageId = req.body.message_id,
+      readBy = req.body.readBy,
+      messageId = req.params.message_id,
       updatedReadBy = `${readBy},${username}`;
 
     if (!includes(readBy, username)) {
       models.Message.update({
-        read_by: updatedReadBy,
+        readBy: updatedReadBy,
       }, {
         where: { id: messageId }
       })
@@ -253,7 +280,7 @@ export default {
 
    /**
    * Get the groups a user belongs to
-   * Route: GET: /api/group/:group_id/members
+   * Route: GET: /api/v1/groups/:group_id/members
    *
    * @param {any} req
    * @param {any} res
@@ -263,24 +290,28 @@ export default {
     if (req.params.group_id) {
       models.Group.findOne({
         where: { id: req.params.group_id },
-        attributes: ['group_name'],
+        attributes: ['groupName'],
         include: [{
           model: models.User,
           as: 'members',
-          attributes: ['id', 'firstname', 'lastname', 'username', 'email'],
+          attributes: ['id', 'firstName', 'lastName', 'username', 'email'],
           through: { attributes: [] }
         }]
       })
       .then((group) => {
-        res.status(200).send(group);
+        if (group) {
+          res.status(200).send(group);
+        } else {
+          res.status(404).send({ message: 'Group does not exist' });
+        }
       })
-      .catch(error => res.status(500).send(error));
+      .catch(error => res.status(500).send(error.message));
     }
   },
 
   /**
    * Archives a given message
-   * Route: PATCH: /api/group/:message_id/archive
+   * Route: PATCH: /api/v1/groups/:message_id/archive
    *
    * @param {any} req
    * @param {any} res

@@ -6,6 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import MessageBody from '../message-board/MessageBody.jsx';
 import MessageItem from '../message-board/MessageItem.jsx';
 import MessageForm from './MsgForm.jsx';
+import Dashboard from '../Dashboard.jsx';
 import {
   updateReadStatus,
   getGroupMessages } from '../../actions/groupMessages';
@@ -84,10 +85,10 @@ class MessageCard extends React.Component {
       messageOpen: true
     });
     const messageDetails = {
-      message_id: clickedMessageId,
+      messageId: clickedMessageId,
       username: this.props.authenticatedUsername,
-      read_by: clickedMsgProps.read_by,
-      group_id: this.props.userGroups.groups[0].id
+      readBy: clickedMsgProps.read_by,
+      groupId: this.props.userGroups.groups[0].id
     };
     return this.props.updateReadStatus(messageDetails);
   }
@@ -99,6 +100,7 @@ class MessageCard extends React.Component {
   render() {
     const { hasGroup } = this.props.userGroups;
     const { messages } = this.props.message;
+    const { selectedGroup } = this.props;
     const messageLoading = this.props.message.isLoading;
     const messageLoadingError = this.props.message.error;
     const divPadding = {
@@ -117,40 +119,38 @@ class MessageCard extends React.Component {
     }
 
     if (!messageLoading) {
-      if (hasGroup && !messageLoadingError && isEmpty(messages)) {
+      if (hasGroup && !messageLoadingError && !isEmpty(selectedGroup) && isEmpty(messages)) {
         return (
           <div style={divPadding}>
-            <p>This group currently has no messages</p>
+            <Dashboard message='This group currently has no messages'/>
+
 
             <div className="msg_card_bottom_padding" />
             <MessageForm />
           </div>
         );
-      } else if (hasGroup && messageLoadingError) {
+      }
+      if (hasGroup && !messageLoadingError && isEmpty(selectedGroup) && isEmpty(messages)) {
+        return (
+          <div>
+           <Dashboard message="Select a group on the sidebar to continue"/>
+          </div> 
+        );
+      }
+      if (hasGroup && messageLoadingError) {
         return (
           <div style={divPadding}>
             <p>Unable to load messages. Please try again later</p>
           </div>
         );
-      } else if (!hasGroup) {
+      }
+      if (!hasGroup) {
         return <div />;
       }
     }
     return (
       <div>
-        { this.state.messageOpen ?
-          <MessageBody
-            closeMessage={this.closeMessageBody}
-            clickedMessageId={this.state.clickedMessageId}
-            closeModal={this.closeModal}
-            openModal={this.openModal}
-            messages={this.props.message.messages}
-          />
-        :
-          <div>
-            <MessageItem {...props} />
-          </div>
-        }
+        <MessageItem {...props} />
       </div>
     );
   }
@@ -166,6 +166,7 @@ function mapStateToProps(state) {
   return {
     message: state.groupMessages,
     userGroups: state.userGroups,
+    selectedGroup: state.selectedGroup,
     authenticatedUsername: state.signedInUser.user.username
   };
 }

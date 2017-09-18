@@ -1,36 +1,44 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('Group_members', {
+    queryInterface.createTable('GroupMembers', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      group_id: {
+      groupId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: true
+        },
         references: {
           model: 'Groups',
           key: 'id'
         }
       },
-      user_id: {
+      userId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: true
+        },
         references: {
           model: 'Users',
           key: 'id'
         }
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       }
     }),
   down: queryInterface =>
-    queryInterface.dropTable('Group_members'),
+    queryInterface.dropTable('GroupMembers'),
 };

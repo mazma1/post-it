@@ -17,8 +17,8 @@ export default (state = initialState.auth, action = {}) => {
         isAuthenticated: !isEmpty(action.user),
         user: {
           id: action.user.data.id,
-          firstname: action.user.data.firstname,
-          lastname: action.user.data.lastname,
+          firstname: action.user.data.firstName,
+          lastname: action.user.data.lastName,
           username: action.user.data.username,
           email: action.user.data.email
         }

@@ -15,9 +15,9 @@ export function fetchingGroupMembers() {
   };
 }
 
-export function submitNewUser(identifier) {
-  const groupId = identifier.groupId;
-  const request = axios.post(`/api/group/${groupId}/user`, identifier);
+export function submitNewUser({ groupId, identifier }) {
+  const reqBody = { identifier };
+  const request = axios.post(`/api/v1/groups/${groupId}/user`, reqBody);
 
   return (dispatch) => {
     return request.then((res) => {
@@ -33,7 +33,7 @@ export function getGroupMembers(groupId) {
     };
   }
 
-  const request = axios.get(`/api/group/${groupId}/members`);
+  const request = axios.get(`/api/v1/groups/${groupId}/members`);
 
   return (dispatch) => {
     dispatch(fetchingGroupMembers);
