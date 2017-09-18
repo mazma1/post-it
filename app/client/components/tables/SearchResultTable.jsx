@@ -57,11 +57,7 @@ class SearchResultTable extends React.Component {
             {user.phoneNumber}
           </td>
           <td>
-            {user.groups.map(group => (
-              <ul key={group.id}>
-                <li>{group.groupName}</li>
-              </ul>
-            ))}
+            {user.groups.length}
           </td>
         </tr>
       ));
