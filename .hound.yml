@@ -1,2 +1,2 @@
 jshint:
-  config_file: .eslintrc
+  config_file: .jshintrc
