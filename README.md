@@ -49,7 +49,7 @@ For more of the api, [go here.](http://docs.postit9.apiary.io/)
 ## Limitations
 
 1. Users are added to the group one at a time.
-2. Chat messages are not real-time. You have to refresh your browser to view new messages.
+2. Chat message notifications are not real-time. You have to refresh your browser to see new message notifications.
 
 
 ## Contributing
