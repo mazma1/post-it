@@ -204,7 +204,7 @@ export default {
         .catch(err => res.status(500).send(err.message));
       }
     })
-    .catch(err => res.status(500).send(err.message)); 
+    .catch(err => res.status(500).send(err.message));
   },
 
   /**
@@ -216,7 +216,7 @@ export default {
    * @returns {response} response object
    */
   getGroupMessages(req, res) {
-    if (req.params.group_id) {
+    if (req.params.group_id && !isNaN(req.params.group_id)) {
       models.Message.findAll({ // User is associated to message
         where: { groupId: req.params.group_id },
         attributes: [
@@ -245,6 +245,8 @@ export default {
         }
       })
       .catch(error => res.status(500).send(error.message));
+    } else {
+      res.status(400).send({ message: 'Invalid group id' });
     }
   },
 
@@ -287,10 +289,10 @@ export default {
    * @returns {response} response object
    */
   getGroupMembers(req, res) {
-    if (req.params.group_id) {
+    if (req.params.group_id && !isNaN(req.params.group_id)) {
       models.Group.findOne({
         where: { id: req.params.group_id },
-        attributes: ['groupName'],
+        attributes: [],
         include: [{
           model: models.User,
           as: 'members',
@@ -306,6 +308,8 @@ export default {
         }
       })
       .catch(error => res.status(500).send(error.message));
+    } else {
+      res.status(400).send({ message: 'Invalid group id' });
     }
   },
 

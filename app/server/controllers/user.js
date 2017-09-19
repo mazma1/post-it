@@ -321,7 +321,6 @@ export default {
       const searchQuery = req.query.q;
       const limit = req.query.limit || 5;
       const offset = req.query.offset || 0;
-      // console.log(req.query.offset )
       models.User.findAndCountAll({
         where: {
           $or: [
@@ -350,7 +349,7 @@ export default {
             users: users.rows,
             pagination: pagination(users.count, limit, offset)
           });
-        } 
+        }
         res.status(404).send({ error: 'User was not found' });
       })
       .catch((error) => {

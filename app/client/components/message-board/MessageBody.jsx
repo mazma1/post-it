@@ -33,17 +33,22 @@ class MessageBody extends React.Component {
    /**
    * It dispatches updateMessageDetails action to update that a user has
    * read a message
-   * 
+   *
    * @returns {void}
    */
   componentDidMount() {
     this.updateMessageDetails();
   }
 
+
+  onClick() {
+    this.props.history.push(`/message-board/${localStorage.getItem('groupId')}`);
+    localStorage.removeItem('groupId');
+  }
   /**
    * Handles Open Modal event
    * @param {SyntheticEvent} event
-   * 
+   *
    * @returns {void}
    */
   openModal(event) {
@@ -68,9 +73,9 @@ class MessageBody extends React.Component {
 
    /**
    * Function that updates that a user has read a message
-   * 
+   *
    * @param {void} null
-   * 
+   *
    * @returns {void} null
    */
   updateMessageDetails() {
@@ -84,11 +89,6 @@ class MessageBody extends React.Component {
       readBy: clickedMessage.readBy,
     };
     this.props.updateReadStatus(messageParams);
-  }
-
-  onClick() {
-    this.props.history.push(`/message-board/${localStorage.getItem('groupId')}`);
-    localStorage.removeItem('groupId');
   }
 
   /**
@@ -167,9 +167,9 @@ class MessageBody extends React.Component {
 
 /**
  * Maps pieces of the redux state to props
- * 
+ *
  * @param {object} state Redux state
- * 
+ *
  * @returns {object} The groups a user belongs to, the messages in respective
  * groups and the username of logged in user
  */

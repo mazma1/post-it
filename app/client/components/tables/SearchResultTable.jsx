@@ -103,7 +103,7 @@ function mapStateToProps(state) {
 }
 
 SearchResultTable.propTypes = {
-  searchResult: PropTypes.object
+  searchResult: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps, { searchUser })(SearchResultTable);

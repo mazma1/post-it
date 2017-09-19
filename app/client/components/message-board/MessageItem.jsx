@@ -68,7 +68,7 @@ class MessageItem extends React.Component {
    */
   onSelect(event) {
     this.setState({ [event.target.name]: event.target.value });
-    const mappedMessages = mapKeys(this.props.messages, 'id');
+    const mappedMessages = mapKeys(this.props.messages, 'group');
     const groupId = Object.keys(mappedMessages)[0];
     this.props.getGroupMessagesCount(groupId).then(
       (response) => {
@@ -131,7 +131,7 @@ class MessageItem extends React.Component {
    * @returns {void} null
    */
   archiveMessageRequest(messageId) {
-    const mappedMessages = mapKeys(this.props.messages, 'id');
+    const mappedMessages = mapKeys(this.props.messages, 'group');
     const groupId = Object.keys(mappedMessages)[0];
     this.props.archiveMessage(messageId).then(
       () => {
@@ -211,7 +211,7 @@ class MessageItem extends React.Component {
         </select>
         {
           currentMessages.map((message) => {
-            const time = moment(message.sent_at).format('ddd, MMM Do. h:mm a');
+            const time = moment(message.sentAt).format('ddd, MMM Do. h:mm a');
             const readBy = message.readBy;
             const readByArray = lodashSplit(readBy, ',');
 
@@ -267,6 +267,14 @@ class MessageItem extends React.Component {
           })
         }
 
+        <div className="col s12 pagination-container">
+          <ul className="pagination center-align">
+            {pageNumbers.length > 1 ?
+              renderPagination
+              : null}
+          </ul>
+        </div>
+
         {
           messageStatus === 'unread' ?
             <div>
@@ -275,14 +283,6 @@ class MessageItem extends React.Component {
             </div>
           : null
         }
-
-        <div className="col s12">
-          <ul className="pagination center-align">
-            {pageNumbers.length > 1 && messageStatus === 'archived' ?
-              renderPagination
-            : null }
-          </ul>
-        </div>
       </div>
     );
   }
