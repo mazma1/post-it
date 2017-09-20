@@ -5,20 +5,20 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import toastr from 'toastr';
 import $ from 'jquery';
-import ModalFrame from '../modal/ModalFrame.jsx';
-import GroupMembersTable from '../tables/GroupMembersTable.jsx';
+import ModalFrame from '../modal/ModalFrame';
+import GroupMembersTable from '../tables/GroupMembersTable';
 import { logout } from '../../actions/signIn';
 import setSelectedGroup from '../../actions/setSelectedGroup';
 import { setGroupMessages } from '../../actions/groupMessages';
 import { submitNewUser } from '../../actions/groupMembers';
-import { AddUserBtn, SearchBtn, GroupName } from '../misc/HeaderMisc.jsx';
+import { AddUserBtn, SearchBtn, GroupName } from '../misc/HeaderMisc';
 import {
   ModalHeader,
   ModalBody,
   ModalFooter,
   CloseButton,
   CancelButton,
-  SubmitButton } from '../modal/SubModals.jsx';
+  SubmitButton } from '../modal/SubModals';
 
 /**
  * Header component for message board

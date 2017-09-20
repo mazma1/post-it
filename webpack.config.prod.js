@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const DIST_DIR = path.resolve(__dirname, './app/client/dist');
 
 module.exports = {
+  devtool: 'source-maps',
   entry: [
     './app/client/index.jsx'
   ],

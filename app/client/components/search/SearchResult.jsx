@@ -1,5 +1,5 @@
 import React from 'react';
-import SearchResultTable from '../tables/SearchResultTable.jsx';
+import SearchResultTable from '../tables/SearchResultTable';
 
 const SearchResult = (props) => (
   <div>

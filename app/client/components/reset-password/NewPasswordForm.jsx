@@ -5,7 +5,7 @@ import toastr from 'toastr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import TextField from '../common/FormTextField.jsx';
+import TextField from '../common/FormTextField';
 import {
   validateResetPasswordToken,
   updatePassword } from '../../actions/resetPassword';

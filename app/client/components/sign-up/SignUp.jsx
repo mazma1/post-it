@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import SignupForm from './SignupForm.jsx';
+import SignupForm from './SignupForm';
 import userSignUpRequest from '../../actions/signUp';
 import { userSignInRequest } from '../../actions/signIn';
 

@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import mapKeys from 'lodash/mapKeys';
 import PropTypes from 'prop-types';
 import { updateReadStatus } from '../../actions/groupMessages';
-import ClientFrame from '..//client-frame/ClientFrame.jsx';
-import ReadByTable from '../tables/ReadByTable.jsx';
-import ModalFrame from '../modal/ModalFrame.jsx';
+import ClientFrame from '../client-frame/ClientFrame';
+import ReadByTable from '../tables/ReadByTable';
+import ModalFrame from '../modal/ModalFrame';
 import {
   ModalHeader,
   ModalFooter,
-  CloseButton } from '../modal/SubModals.jsx';
+  CloseButton } from '../modal/SubModals';
 
 
 /** Renders the full content of a message */

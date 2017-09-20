@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
-import TextField from '../common/FormTextField.jsx';
+import TextField from '../common/FormTextField';
 import { resetLinkRequest } from '../../actions/resetPassword';
 
 /**

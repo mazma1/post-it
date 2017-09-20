@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
-import Pagination from '../Pagination.jsx';
+import Pagination from '../Pagination';
 import { searchUser } from '../../actions/searchUser';
 
 /** Table of search result */

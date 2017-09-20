@@ -7,9 +7,9 @@ import $ from 'jquery';
 import toastr from 'toastr';
 import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
-import GroupList from './GroupList.jsx';
-import ModalFrame from '../../modal/ModalFrame.jsx';
-import { Brand, MobileToggleBtn } from '../../misc/SidebarMisc.jsx'
+import GroupList from './GroupList';
+import ModalFrame from '../../modal/ModalFrame';
+import { Brand, MobileToggleBtn } from '../../misc/SidebarMisc';
 import { getUserGroups, submitNewGroup } from '../../../actions/userGroups';
 import setSelectedGroup from '../../../actions/setSelectedGroup';
 import { getGroupMembers } from '../../../actions/groupMembers';
@@ -22,7 +22,7 @@ import {
   ModalBody,
   ModalFooter,
   CancelButton,
-  SubmitButton } from '../../modal/SubModals.jsx';
+  SubmitButton } from '../../modal/SubModals';
 
 /**
  * Sidebar component for message board

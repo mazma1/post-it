@@ -3,11 +3,11 @@ import classnames from 'classnames';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import ClientFrame from '../client-frame/ClientFrame.jsx';
-import TextField from '../common/FormTextField.jsx';
-import SearchResult from '../search/SearchResult.jsx';
+import ClientFrame from '../client-frame/ClientFrame';
+import TextField from '../common/FormTextField';
+import SearchResult from '../search/SearchResult';
 import { searchUser, resetSearch } from '../../actions/searchUser';
-import { SubmitButton } from '../modal/SubModals.jsx';
+import { SubmitButton } from '../modal/SubModals';
 
 /** Form for searching for registered users */
 class SearchForm extends Component {

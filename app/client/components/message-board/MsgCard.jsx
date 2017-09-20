@@ -3,10 +3,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
-import MessageBody from '../message-board/MessageBody.jsx';
-import MessageItem from '../message-board/MessageItem.jsx';
-import MessageForm from './MsgForm.jsx';
-import Dashboard from '../Dashboard.jsx';
+import MessageItem from '../message-board/MessageItem';
+import MessageForm from './MsgForm';
+import Dashboard from '../Dashboard';
 import {
   updateReadStatus,
   getGroupMessages } from '../../actions/groupMessages';

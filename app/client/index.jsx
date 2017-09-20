@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import configureStore from './store/configureStore';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import { setCurrentUser } from './actions/signIn';
-import Client from './components/Client.jsx';
+import Client from './components/Client';
 
 require('bootstrap-loader');
 require('materialize-loader');

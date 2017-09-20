@@ -1,15 +1,15 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import SignUp from './sign-up/SignUp.jsx';
-import SignIn from './sign-in/SignIn.jsx';
-import EnsureUserLoggedIn from '../components/EnsureLoggedIn.jsx';
-import HomePageRedirect from '../components/HomepageRedirect.jsx';
-import PageNotFound from '../components/PageNotFound.jsx';
-import ResetPassword from '../components/reset-password/EnterEmailForm.jsx';
-import NewPassword from '../components/reset-password/NewPasswordForm.jsx';
-import SearchUser from '../components/search/SearchForm.jsx';
-import MessageBody from '../components/message-board/MessageBody.jsx';
-import MessageBoard from '../components/message-board/MessageBoard.jsx';
+import SignUp from './sign-up/SignUp';
+import SignIn from './sign-in/SignIn';
+import EnsureUserLoggedIn from '../components/EnsureLoggedIn';
+import HomePageRedirect from '../components/HomepageRedirect';
+import PageNotFound from '../components/PageNotFound';
+import ResetPassword from '../components/reset-password/EnterEmailForm';
+import NewPassword from '../components/reset-password/NewPasswordForm';
+import SearchUser from '../components/search/SearchForm';
+import MessageBody from '../components/message-board/MessageBody';
+import MessageBoard from '../components/message-board/MessageBoard';
 
 if (module.hot) {
   module.hot.accept();
