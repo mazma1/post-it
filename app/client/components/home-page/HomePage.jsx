@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 /**
  * HomePage component
+ *
  * @returns {ReactElement} HomePage Markup
  */
 const HomePage = () => (

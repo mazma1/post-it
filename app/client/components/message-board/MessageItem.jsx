@@ -21,6 +21,7 @@ class MessageItem extends React.Component {
 
    /**
    * Constructor
+   *
    * @param {object} props
    */
   constructor(props) {
@@ -33,7 +34,7 @@ class MessageItem extends React.Component {
       messagesPerPage: 5
     };
 
-    this.onSelect = this.onSelect.bind(this);
+    this.onCategorySelect = this.onCategorySelect.bind(this);
     this.archiveMessageRequest = this.archiveMessageRequest.bind(this);
     this.filterMessages = this.filterMessages.bind(this);
     this.checkMessageLength = this.checkMessageLength.bind(this);
@@ -41,11 +42,8 @@ class MessageItem extends React.Component {
   }
 
   /**
-   * Defines what must be executed once MessageItem component mounts
-   * It dispatches getGroupMessagesCount action to fetch the messages that
-   * will be used to get the read/unread and archived messages
-   * When the messages are returned, they are filtered and then displayed
-   * accordingly
+   * Fetches messages and filters them as unread/read and archived
+   *
    * @returns {void} null
    */
   componentDidMount() {
@@ -60,13 +58,12 @@ class MessageItem extends React.Component {
 
   /**
    * Handles message category select event
-   * Dispatches submitNewUser action to add the new user record to the DB
-   * If the submission was successful, it adds a success flash message
-   * If submission was not successful, it returns the appropriate error message
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void} null
    */
-  onSelect(event) {
+  onCategorySelect(event) {
     this.setState({ [event.target.name]: event.target.value });
     const mappedMessages = mapKeys(this.props.messages, 'group');
     const groupId = Object.keys(mappedMessages)[0];
@@ -77,20 +74,24 @@ class MessageItem extends React.Component {
     );
   }
 
+
   /**
    * Updates the current page state with the clicked page number
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void} null
    */
   updatePageNumber(event) {
     this.setState({ currentPage: Number(event.target.id) });
   }
 
+
   /**
    * Filters messages based on the message category a user selects
-   * Updates the filteredMessages state with the result
-   * The filtered messages are then displayed
+   *
    * @param {array} messages messages to be filtered
+   *
    * @returns {void} null
    */
   filterMessages(messages) {
@@ -111,10 +112,12 @@ class MessageItem extends React.Component {
     this.setState({ filteredMessages });
   }
 
+
   /**
-   * Checks the length of a given message and truncates it if
-   it is more than 300
+   * Checks the length of a given message and truncates it if it is more than 300
+   *
    * @param {string} message
+   *
    * @returns {message} message/truncated message (if length > 300)
    */
   checkMessageLength(message) {
@@ -124,10 +127,13 @@ class MessageItem extends React.Component {
     return message;
   }
 
+
   /**
    * Archives a given message and updates the messages displayed
-   in both categories
+   * in both categories
+   *
    * @param {object} messageId id of message to be archived
+   *
    * @returns {void} null
    */
   archiveMessageRequest(messageId) {
@@ -144,12 +150,14 @@ class MessageItem extends React.Component {
       }
     )
     .catch((error) => {
-      toastr.error(`Unable to archive message, ${error}`);
+      toastr.error('Unable to archive message, please try again');
     });
   }
 
+
   /**
    * Render
+   *
    * @returns {ReactElement} Markup for a single message item
    */
   render() {
@@ -203,7 +211,7 @@ class MessageItem extends React.Component {
         <select
           className="browser-default msg-filter"
           name="messageStatus"
-          onChange={this.onSelect}
+          onChange={this.onCategorySelect}
           value={this.state.messageStatus}
         >
           <option value="unread">Unread / Read</option>
@@ -241,7 +249,8 @@ class MessageItem extends React.Component {
                       'priority-label',
                       { 'label-default': normalPriority },
                       { 'label-warning': urgentPriority },
-                      { 'label-danger': criticalPriority })}
+                      { 'label-danger': criticalPriority }
+                    )}
                   >
                     {message.priority}
                   </span>
@@ -258,7 +267,8 @@ class MessageItem extends React.Component {
                     onClick={(event) => {
                       this.props.history.push(`/message/${message.id}`)
                       localStorage.setItem('groupId', event.target.dataset.id);
-                    }}>
+                    }}
+                  >
                     {this.checkMessageLength(message.message)}
                   </p>
                 </div>
@@ -288,12 +298,13 @@ class MessageItem extends React.Component {
   }
 }
 
+
 /**
- * Maps action creators to redux dispatch function
- * Action creators bound will be available as props in Header
- * Actions generated by the action creators flows though all the reducers
+ * Maps action creators to redux dispatch function and avails them as props
+ *
  * @param {function} dispatch Redux dispatch function
- * @returns {function} Action creators bound to redux dispatch function
+ *
+ * @returns {function} Action cretaors bound to redux dispatch function
  */
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
@@ -302,11 +313,13 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
+
 /**
- * Maps pieces of the redux state to props
- * Whatever is returned will show up as props in Headbar
+ * Maps pieces of the redux state to props in Sidebar
+ *
  * @param {object} state Redux state
- * @returns {object} Username, selected group and member's loading status
+ *
+ * @returns {object} Details of selected group
  */
 function mapStateToProps(state) {
   return {
@@ -320,6 +333,11 @@ MessageItem.propTypes = {
   authenticatedUsername: PropTypes.string.isRequired,
   onMessageClick: PropTypes.func.isRequired,
   archiveMessage: PropTypes.func.isRequired,
+  match: PropTypes.object.isRequired,
+};
+
+MessageItem.defaultProps = {
+  messages: {}
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MessageItem));

@@ -17,6 +17,7 @@ if (module.hot) {
 
 /**
  * Overarching Client Component
+ *
  * @returns {ReactRouting} Definition of app routes
 */
 function Client() {

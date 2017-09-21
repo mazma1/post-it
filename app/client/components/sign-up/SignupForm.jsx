@@ -6,11 +6,9 @@ import { withRouter, Link } from 'react-router-dom';
 import validateInput from '../../../utils/signupValidation';
 import TextField from '../common/FormTextField';
 
-/**
- * SignupForm component
- * Parent component: SignUp.js
- */
+/** SignupForm component */
 class SignUpForm extends React.Component {
+
   /**
    * Constructor
    * @param {object} props
@@ -31,44 +29,31 @@ class SignUpForm extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.onSignupClick = this.onSignupClick.bind(this);
   }
-  
+
 
    /**
    * Handles change event of sign up input fields
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void}
    */
   onChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  /**
-   * Handles sign up input validation on client
-   * @returns {boolean} If an input is valid or not
-   */
-  valid() {
-    const { errors, valid } = validateInput(this.state);
-
-    if (!valid) {
-      this.setState({ errors });
-    }
-
-    return valid;
-  }
 
   /**
-   * Handles Sign Up event
-   * Dispatches userSignUpRequest action
-   * If sign up request is successful, it equally signs user up and
-   * redirects to the message board with a success flash message
-   * If sign up was not successful, it returns the appropriate error message(s)
+   * Makes request to sign up a user
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void}
    */
   onSignupClick(event) {
     event.preventDefault();
 
-    if (this.valid()) {
+    if (this.isValid()) {
       this.setState({ errors: {} });
       this.props.userSignUpRequest(this.state).then(
         () => {
@@ -90,7 +75,21 @@ class SignUpForm extends React.Component {
 
 
   /**
+  * Handles sign up input validation on client
+  *
+  * @returns {boolean} If an input is valid or not
+  */
+  isValid() {
+    const { errors, valid } = validateInput(this.state);
+    if (!valid) {
+      this.setState({ errors });
+    }
+    return valid;
+  }
+
+  /**
    * Render
+   *
    * @returns {ReactElement} Sign up form markup
    */
   render() {
@@ -108,6 +107,7 @@ class SignUpForm extends React.Component {
           >
             <TextField
               icon="perm_identity"
+              type="text"
               error={errors.firstName}
               label="First Name"
               onChange={this.onChange}
@@ -127,6 +127,7 @@ class SignUpForm extends React.Component {
           >
             <TextField
               icon="perm_identity"
+              type="text"
               error={errors.lastName}
               label="Last Name"
               onChange={this.onChange}
@@ -149,6 +150,7 @@ class SignUpForm extends React.Component {
             <TextField
               icon="perm_identity"
               error={errors.username}
+              type="text"
               label="Username"
               onChange={this.onChange}
               value={this.state.username}

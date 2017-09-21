@@ -7,14 +7,12 @@ import TextField from '../common/FormTextField';
 import validateInput from '../../../utils/signinValidation';
 
 
-/**
- * SigninForm component
- * Parent component: SignIn.js
- */
+/** SigninForm component */
 class SignInForm extends React.Component {
 
   /**
    * Constructor
+   *
    * @param {object} props
    */
   constructor(props) {
@@ -29,23 +27,12 @@ class SignInForm extends React.Component {
     this.onSigninClick = this.onSigninClick.bind(this);
   }
 
-   /**
-   * Handles input validation on client
-   * @returns {boolean} If an input is valid or not
-   */
-  validateInput() {
-    const { errors, valid } = validateInput(this.state);
-
-    if (!valid) {
-      this.setState({ errors });
-    }
-
-    return valid;
-  }
 
   /**
    * Handles change event of sign in input fields
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void} null
    */
   onChange(event) {
@@ -53,18 +40,15 @@ class SignInForm extends React.Component {
   }
 
   /**
-   * Handles Sign In event
-   * Dispatches userSignInRequest action
-   * If sign in request was successful, it redirects to the message board
-   * with a success flash message.
-   * If sign in was not successful, it returns the appropriate error message(s)
+   * Makes request to authenticate a user
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void}
    */
   onSigninClick(event) {
     event.preventDefault();
-
-    if (this.validateInput()) {
+    if (this.isValid()) {
       this.setState({ errors: {} });
       this.props.userSignInRequest(this.state).then(
         () => {
@@ -76,8 +60,23 @@ class SignInForm extends React.Component {
     }
   }
 
+
+  /**
+   * Handles input validation on client
+   *
+   * @returns {boolean} If an input is valid or not
+   */
+  isValid() {
+    const { errors, valid } = validateInput(this.state);
+    if (!valid) {
+      this.setState({ errors });
+    }
+    return valid;
+  }
+
   /**
    * Render
+   *
    * @returns {ReactElement} Sign in form markup
    */
   render() {
@@ -96,6 +95,7 @@ class SignInForm extends React.Component {
             <TextField
               icon="perm_identity"
               error={errors.identifier}
+              type="text"
               label="Username or Email"
               onChange={this.onChange}
               value={this.state.identifier}

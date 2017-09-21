@@ -9,6 +9,7 @@
   "rules": {
     "comma-dangle": 0,
     "jsx-a11y/img-has-alt": 0,
-    "import/no-named-as-default": 0
+    "import/no-named-as-default": 0,
+    "react/forbid-prop-types": 0
   }
 }

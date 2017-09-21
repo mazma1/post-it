@@ -9,7 +9,8 @@ export const ModalHeader = props => (
       className="close"
       data-dismiss="modal"
       aria-label="Close"
-      onClick={props.onClose}>
+      onClick={props.onClose}
+    >
       <span aria-hidden="true">&times;</span>
     </button>
     <h4 className="modal-title">{props.header}</h4>
@@ -22,7 +23,7 @@ ModalHeader.propTypes = {
 };
 
 export const ModalBody = (props) => {
-  const error = props.errors.error;
+  const { error } = props.errors;
   return (
     <div className="modal-body">
       <div className="row">
@@ -45,7 +46,9 @@ export const ModalBody = (props) => {
                 autoComplete="off"
               />
               <label>{props.label}</label>
-              {error && <span className="help-block modal-help-block">{error}</span>}
+              {error &&
+                <span className="help-block modal-help-block">{error}</span>
+              }
             </div>
           </div>
         </form>
@@ -63,13 +66,18 @@ ModalBody.propTypes = {
   label: PropTypes.string.isRequired,
 };
 
+ModalBody.defaultProps = {
+  error: {}
+};
+
 export const CloseButton = props => (
   <button
     type="button"
     onClick={props.onClick}
     aria-label="Close"
     data-dismiss="modal"
-    className="btn waves-effect waves-light blue lighten-1">
+    className="btn waves-effect waves-light blue lighten-1"
+  >
     Close
   </button>
 );
@@ -84,7 +92,8 @@ export const CancelButton = props => (
     onClick={props.onClick}
     aria-label="Close"
     data-dismiss="modal"
-    className="btn waves-effect waves-light red darken-2 modal-cancel-btn">
+    className="btn waves-effect waves-light red darken-2 modal-cancel-btn"
+  >
     Cancel
   </button>
 );
@@ -98,7 +107,8 @@ export const SubmitButton = props => (
     type="button"
     disabled={props.isLoading}
     className="btn waves-effect waves-light blue lighten-1 search-submit-btn"
-    onClick={props.onSubmit}>
+    onClick={props.onSubmit}
+  >
     Submit
   </button>
 );
@@ -106,6 +116,10 @@ export const SubmitButton = props => (
 SubmitButton.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   isLoading: PropTypes.bool
+};
+
+SubmitButton.defaultProps = {
+  isLoading: false
 };
 
 export const ModalFooter = props => (

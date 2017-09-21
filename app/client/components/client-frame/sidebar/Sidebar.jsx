@@ -32,21 +32,13 @@ export class Sidebar extends React.Component {
 
   /**
    * Constructor
+   *
    * @param {object} props
+   *
    */
   constructor(props) {
     super(props);
 
-    /**
-     * @type {object}
-     * @prop {boolean} isOpen Tells if a modal is open or not
-     * @prop {string} newGroup Name of new group to be created
-     * @prop {boolean} isLoading Tells if the request to create
-     * new group has been completed or not
-     * @prop {string} error Error message if the group was not created
-     * successfully
-     * @prop {array} groups Groups with their notification counts
-     */
     this.state = {
       isOpen: false,
       newGroup: '',
@@ -59,18 +51,13 @@ export class Sidebar extends React.Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.newGroupSubmit = this.newGroupSubmit.bind(this);
+    this.submitNewGroup = this.submitNewGroup.bind(this);
     this.getUnreadCount = this.getUnreadCount.bind(this);
   }
 
   /**
-   * Defines what must be executed before sidebar component mounts
-   * It dispatches getUserGroups action to fetch the groups a signed
-   * in user belongs to
-   * If no group was found, it dispatches setSelectedGroup with an empty object
-   * If groups were found:
-   * it sets the first group from the returned groups as active
-   * it fetches the messages and members belonging to the first group
+   * Fetches the groups a signed in user belongs to
+   *
    * @returns {void}
    */
   componentWillMount() {
@@ -79,7 +66,7 @@ export class Sidebar extends React.Component {
       () => {
         if (this.props.userGroups.hasGroup === false) {
           this.props.setSelectedGroup({});
-        } else{
+        } else {
           const groupId = this.props.match.params.groupId;
           if (groupId) {
             const mappedGroups = mapKeys(this.props.userGroups.groups, 'id');
@@ -88,56 +75,30 @@ export class Sidebar extends React.Component {
             this.props.getGroupMessages(groupId);
             this.props.getGroupMembers(groupId);
           }
-        }   
+        }
       }
     )
     .catch((error) => {
-      toastr.error(`Unable to load user groups, ${error.message}`);
+      toastr.error('Unable to load groups, please try again later');
     });
   }
 
   /**
-  * getUnreadCount is called when the component mounts
-  * It gets the number of unread messgages a user has in a group
-  * @param {void} null
+  * Gets the number of unread messgages a user has in a group
+  *
   * @returns {void} null
   */
   componentDidMount() {
     this.getUnreadCount();
   }
 
-  /**
-   * Handles Open Modal event
-   * Updates isOpen state
-   * @param {SyntheticEvent} event
-   * @returns {void}
-   */
-  openModal(event) {
-    event.stopPropagation();
-    this.setState({
-      isOpen: true
-    });
-  }
 
   /**
-   * Handles Close Modal event
-   * Updates isOpen, newGroup and error states
+   * Handles change event of New Group input form and updates
+   * isOpen and newGroup states
+   *
    * @param {SyntheticEvent} event
-   * @returns {void}
-   */
-  closeModal(event) {
-    event.preventDefault();
-    this.setState({
-      isOpen: false,
-      newGroup: '',
-      error: {}
-    });
-  }
-
-  /**
-   * Handles change event of New Group input form
-   * Updates isOpen and newGroup states
-   * @param {SyntheticEvent} event
+   *
    * @returns {void}
    */
   onChange(event) {
@@ -147,9 +108,29 @@ export class Sidebar extends React.Component {
     });
   }
 
+
   /**
-   * Function that gets count of messages unread by a user
+  * Sets a clicked group as active and fetches the messages and members
+  * that belong to the group
+  *
+  * @param {object} group Details of clicked group
+  *
+  * @returns {void}
+  */
+  onGroupSelect(group) {
+    const groupId = group.id;
+    this.props.history.push(`/message-board/${groupId}`);
+    this.props.setSelectedGroup(group);
+    this.props.getGroupMessages(group.id);
+    this.props.getGroupMembers(group.id);
+  }
+
+
+  /**
+   * Function that gets count of messages unread by a user in a group
+   *
    * @param {void} null
+   *
    * @returns {void} null
    */
   getUnreadCount() {
@@ -161,8 +142,8 @@ export class Sidebar extends React.Component {
         if (!this.props.userGroups.isLoading) {
           const groups = this.props.userGroups.groups;
           if (!isEmpty(groups)) {
-            groups.map((group) => {
-              this.props.getGroupMessagesCount(group.id).then(
+            groups.map(group => this.props.getGroupMessagesCount(group.id)
+              .then(
                 (res) => {
                   let unreadCount = 0;
                   res.data.messages.map((message) => {
@@ -177,23 +158,54 @@ export class Sidebar extends React.Component {
                   });
                   this.setState({ groups: groupsWithNotification });
                 }
-              );
-            });
+              )
+            );
           }
         }
-      });
+      }
+    );
   }
 
 
   /**
-   * Handles Submit New Group event
-   * Dispatches submitNewGroup action to add the new group record to the DB
-   * If the submission was successful, it adds a success flash message
-   * If submission was not successful, it returns the appropriate error message
+   * Handles Open Modal event
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void}
    */
-  newGroupSubmit(event) {
+  openModal(event) {
+    event.stopPropagation();
+    this.setState({
+      isOpen: true
+    });
+  }
+
+  /**
+   * Handles Close Modal event
+   *
+   * @param {SyntheticEvent} event
+   *
+   * @returns {void}
+   */
+  closeModal(event) {
+    event.preventDefault();
+    this.setState({
+      isOpen: false,
+      newGroup: '',
+      error: {}
+    });
+  }
+
+
+  /**
+   * Adds a new group record to the DB
+   *
+   * @param {SyntheticEvent} event
+   *
+   * @returns {void}
+   */
+  submitNewGroup(event) {
     this.setState({ error: {}, isLoading: true });
     event.preventDefault();
     this.props.submitNewGroup({
@@ -211,26 +223,10 @@ export class Sidebar extends React.Component {
     );
   }
 
-  /**
-   * Is called when a group name on the sidebar is clicked
-   * It sets the clicked group as active
-   * It fetches the messages that belong to the group
-   * It fetches the members that belong to the group
-   * @param {object} group Details of clicked group
-   * @prop {number} group.id Group id
-   * @prop {string} group.name Group name
-   * @returns {void}
-   */
-  onGroupSelect(group) {
-    const groupId = group.id;
-    this.props.history.push(`/message-board/${groupId}`);
-    this.props.setSelectedGroup(group);
-    this.props.getGroupMessages(group.id);
-    this.props.getGroupMembers(group.id);
-  }
 
   /**
    * Render
+   *
    * @returns {ReactElement} Sidebar markup
    */
   render() {
@@ -262,13 +258,13 @@ export class Sidebar extends React.Component {
             onChange={this.onChange}
             value={this.state.newGroup}
             errors={this.state.error}
-            onSubmit={this.newGroupSubmit}
+            onSubmit={this.submitNewGroup}
           />
 
           <ModalFooter>
             <CancelButton onClick={this.closeModal} />
             <SubmitButton
-              onSubmit={this.newGroupSubmit}
+              onSubmit={this.submitNewGroup}
               isLoading={this.state.isLoading}
             />
           </ModalFooter>
@@ -279,9 +275,10 @@ export class Sidebar extends React.Component {
 }
 
 /**
- * Maps pieces of the redux state to props
- * Whatever is returned will show up as props in Sidebar
+ * Maps pieces of the redux state to props in Sidebar
+ *
  * @param {object} state Redux state
+ *
  * @returns {object} Details of signed in user, his groups and the active group
  */
 function mapStateToProps(state) {
@@ -295,10 +292,10 @@ function mapStateToProps(state) {
 
 
 /**
- * Maps action creators to redux dispatch function
- * Action creators bound will be available as props in Sidebar
- * Actions generated by the action creators flows though all the reducers
+ * Maps action creators to redux dispatch function and avails them as props
+ *
  * @param {function} dispatch Redux dispatch function
+ *
  * @returns {function} Action cretaors bound to redux dispatch function
  */
 function mapDispatchToProps(dispatch) {
@@ -322,7 +319,12 @@ Sidebar.propTypes = {
   submitNewGroup: PropTypes.func.isRequired,
   getGroupMembers: PropTypes.func.isRequired,
   getGroupMessages: PropTypes.func.isRequired,
-  getGroupMessagesCount: PropTypes.func.isRequired
+  getGroupMessagesCount: PropTypes.func.isRequired,
+  match: PropTypes.object.isRequired
+};
+
+Sidebar.defaultProps = {
+  selectedGroup: {}
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Sidebar));

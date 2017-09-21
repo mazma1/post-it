@@ -77,7 +77,7 @@ class SearchResultTable extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {searchResultRow}  
+            {searchResultRow}
           </tbody>
         </table>
         {this.props.searchResult.users.length > 0 ?
@@ -93,7 +93,9 @@ class SearchResultTable extends React.Component {
 
 /**
  * Maps pieces of the redux state to props
+ *
  * @param {object} state Redux state
+ *
  * @returns {object} Search result
  */
 function mapStateToProps(state) {
@@ -103,7 +105,9 @@ function mapStateToProps(state) {
 }
 
 SearchResultTable.propTypes = {
-  searchResult: PropTypes.object.isRequired
+  searchResult: PropTypes.object.isRequired,
+  searchUser: PropTypes.func.isRequired,
+  searchQuery: PropTypes.string.isRequired
 };
 
 export default connect(mapStateToProps, { searchUser })(SearchResultTable);

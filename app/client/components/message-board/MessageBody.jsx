@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import mapKeys from 'lodash/mapKeys';
 import PropTypes from 'prop-types';
@@ -27,12 +26,12 @@ class MessageBody extends React.Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.updateMessageDetails = this.updateMessageDetails.bind(this);
-    this.onClick = this.onClick.bind(this);
+    this.onMessageClick = this.onMessageClick.bind(this);
   }
 
+
    /**
-   * It dispatches updateMessageDetails action to update that a user has
-   * read a message
+   * Updates that a user has read a message
    *
    * @returns {void}
    */
@@ -41,12 +40,20 @@ class MessageBody extends React.Component {
   }
 
 
-  onClick() {
+  /**
+  * Sets an active group's id to the local storage when a message is clicked
+  *
+  * @returns {void} null
+  */
+  onMessageClick() {
     this.props.history.push(`/message-board/${localStorage.getItem('groupId')}`);
     localStorage.removeItem('groupId');
   }
+
+
   /**
    * Handles Open Modal event
+   *
    * @param {SyntheticEvent} event
    *
    * @returns {void}
@@ -58,10 +65,12 @@ class MessageBody extends React.Component {
     });
   }
 
+
   /**
   * Handles Close Modal event
+  *
   * @param {SyntheticEvent} event
-
+  *
   * @returns {void}
   */
   closeModal(event) {
@@ -70,6 +79,7 @@ class MessageBody extends React.Component {
       isOpen: false
     });
   }
+
 
    /**
    * Function that updates that a user has read a message
@@ -91,9 +101,10 @@ class MessageBody extends React.Component {
     this.props.updateReadStatus(messageParams);
   }
 
+
   /**
    * Render
-   * 
+   *
    * @returns {ReactElement} Full message markup
    */
   render() {
@@ -143,7 +154,7 @@ class MessageBody extends React.Component {
             </div>
 
             <div className="col s12 m10 offset-m1">
-              <button onClick={ this.onClick }>Back</button>
+              <button onClick={this.onMessageClick}>Back</button>
             </div>
           </div>
 
@@ -185,7 +196,14 @@ function mapStateToProps(state) {
 MessageBody.propTypes = {
   messages: PropTypes.array.isRequired,
   username: PropTypes.string.isRequired,
-  groups: PropTypes.array.isRequired
+  groups: PropTypes.array.isRequired,
+  match: PropTypes.object.isRequired,
+  selectedGroup: PropTypes.object,
+  updateReadStatus: PropTypes.func.isRequired
+};
+
+MessageBody.defaultProps = {
+  selectedGroup: {}
 };
 
 export default connect(mapStateToProps, { updateReadStatus })(MessageBody);

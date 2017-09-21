@@ -30,8 +30,9 @@ class SearchForm extends Component {
 
   /**
    * Handles change event of new password form
-   * Updates searchQuery state
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void} null
    */
   onChange(event) {
@@ -39,9 +40,10 @@ class SearchForm extends Component {
   }
 
   /**
-   * Handles search request submit event
-   * Dispatches search user action with provided search query
+   * Submits a search query to the database
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void} null
    */
   onSearchSubmit(event) {
@@ -54,9 +56,10 @@ class SearchForm extends Component {
   }
 
   /**
-   * Is called when the search page is closed to clear previous
-   search result
+   * Is called when the search page is closed to clear previous search result
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void} null
    */
   resetSearch(event) {
@@ -68,6 +71,7 @@ class SearchForm extends Component {
 
   /**
    * Render
+   *
    * @returns {ReactElement} Search Result markup
    */
   render() {
@@ -82,7 +86,9 @@ class SearchForm extends Component {
                 <span className="card-title">Search for User</span>
                 <button
                   className="close"
-                  onClick={this.resetSearch}><span>&times;</span>
+                  onClick={this.resetSearch}
+                >
+                  <span>&times;</span>
                 </button>
                 <hr />
                 <form className="col s12 auth-form" onSubmit={this.onSearchSubmit}>
@@ -97,6 +103,7 @@ class SearchForm extends Component {
                     >
                       <TextField
                         icon="perm_identity"
+                        type="text"
                         label="Enter Search Query"
                         onChange={this.onChange}
                         error={error}

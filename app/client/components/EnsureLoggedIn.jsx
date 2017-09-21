@@ -12,10 +12,9 @@ import MessageBoard from './message-board/MessageBoard';
 class EnsureLoggedIn extends React.Component {
 
   /**
-   * Defines what must be executed after component mounts
-   * If a user is authenticated, it renders message board component
-   * If user is not authenticated, it redirects to sign in page
-   * with an error flash message
+   * Checks if a user is authenticated. If yes, it renders message board component
+   * If no, it redirects to sign in page
+   *
    * @returns {void}
    */
   componentDidMount() {
@@ -29,6 +28,7 @@ class EnsureLoggedIn extends React.Component {
 
   /**
    * Render
+   *
    * @returns {ReactElement} message board component markup
    */
   render() {
@@ -42,7 +42,9 @@ class EnsureLoggedIn extends React.Component {
 
 /**
  * Maps pieces of the redux state to props
+ *
  * @param {object} state Redux state
+ *
  * @returns {object} User's authentication status
  */
 function mapStateToProps(state) {

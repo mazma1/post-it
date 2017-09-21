@@ -7,13 +7,12 @@ import { connect } from 'react-redux';
 import TextField from '../common/FormTextField';
 import { resetLinkRequest } from '../../actions/resetPassword';
 
-/**
- * Form for submiting email for password reset
- */
+/** Form for submiting email for password reset */
 class EnterEmailForm extends React.Component {
 
   /**
    * Constructor
+   *
    * @param {object} props
    */
   constructor(props) {
@@ -24,13 +23,14 @@ class EnterEmailForm extends React.Component {
     };
 
     this.onChange = this.onChange.bind(this);
-    this.onRequestResetSubmit = this.onRequestResetSubmit.bind(this);
+    this.submitResetRequest = this.submitResetRequest.bind(this);
   }
 
   /**
    * Handles change event of email input form
-   * Updates error and email states
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void} null
    */
   onChange(event) {
@@ -39,14 +39,13 @@ class EnterEmailForm extends React.Component {
   }
 
   /**
-   * Handles password reset request event
-   * Dispatches resetLinkRequest action with provided email
-   * If the submission was successful, it adds a success flash message
-   * If submission was not successful, it returns the appropriate error message
+   * Sends email containg password reset instructions to user
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void}
    */
-  onRequestResetSubmit(event) {
+  submitResetRequest(event) {
     event.preventDefault();
     this.setState({ error: {} });
     this.props.resetLinkRequest({ email: this.state.email }).then(
@@ -64,6 +63,7 @@ class EnterEmailForm extends React.Component {
 
   /**
    * Render
+   *
    * @returns {ReactElement} Email Form markup
    */
   render() {
@@ -77,7 +77,10 @@ class EnterEmailForm extends React.Component {
                 <h5 className="center">Request Password Reset</h5>
               </header>
 
-              <form className="col s10 offset-s1 auth-form" onSubmit={this.onRequestResetSubmit}>
+              <form
+                className="col s10 offset-s1 auth-form"
+                onSubmit={this.submitResetRequest}
+              >
                 <div className="row">
                   <div
                     className={classnames(
@@ -104,7 +107,8 @@ class EnterEmailForm extends React.Component {
                   <div className="input-field col s12">
                     <a
                       className="btn auth-btn waves-effect waves-light col s12"
-                      onClick={this.onRequestResetSubmit}>
+                      onClick={this.submitResetRequest}
+                    >
                       Request Reset
                     </a>
                   </div>

@@ -10,11 +10,11 @@ import HomePage from './home-page/HomePage';
 class HomepageRedirect extends React.Component {
 
 /**
- * Defines what must be executed before component mounts
- * Checks a userr's authentication status when accessing the index page
+ * Checks a user's authentication status when accessing the index page
  * If user's session is still active (user is still authenticated),
  * user is redirected to the message board
  * If user's session has expired, the index page is rendered
+ *
  * @returns {void}
  */
   componentWillMount() {
@@ -26,6 +26,7 @@ class HomepageRedirect extends React.Component {
 
   /**
  * Render
+ *
  * @returns {ReactElement} ComposedComponent
  */
   render() {
@@ -35,7 +36,9 @@ class HomepageRedirect extends React.Component {
 
 /**
  * Maps pieces of the redux state to props
+ *
  * @param {object} state Redux state
+ *
  * @returns {object} User's authentication status
  */
 function mapStateToProps(state) {
