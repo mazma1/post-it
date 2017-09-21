@@ -5,19 +5,16 @@ import {
   FETCH_GROUP_MESSAGES_FAILURE } from '../actions/types';
 
 
-export function getGroupMessagesCount(groupId) {
-  const request = axios.get(`/api/v1/groups/${groupId}/messages`);
-
-  return (dispatch) => {
-    return request;
-  };
-}
-
+/**
+   * Makes request to get the messages of a group
+   *
+   * @param {number} groupId group id
+   *
+   * @returns {response} request response
+   */
 export function getGroupMessages(groupId) {
   if (!groupId) {
-    return (dispatch) => {
-      dispatch(setGroupMessages({}));
-    };
+    return dispatch => dispatch(setGroupMessages({}));
   }
   return (dispatch) => {
     dispatch(fetchingGroupMessages({}));
@@ -31,32 +28,75 @@ export function getGroupMessages(groupId) {
   };
 }
 
-export function updateReadStatus(messageParams) {
-  const { groupId, messageId } = messageParams;
-  const request = axios.patch(`/api/v1/groups/${messageId}/read`, messageParams);
 
-  return dispatch => request.then((res) => {
-    dispatch(getGroupMessages(groupId));
-  });
-}
-
-export function archiveMessage({ messageId }) {
-  const request = axios.patch(`/api/v1/groups/${messageId}/archive`, messageId);
-
-  return dispatch => request;
-}
-
+/**
+   * Makes request to post a new message to the database
+   *
+   * @param {string} priority message priority
+   * @param {number} groupId group id
+   * @param {string} message message being posted
+   * @param {string} readBy users that have read the message
+   *
+   * @returns {response} request response
+   */
 export function postNewMessage({ priority, groupId, message, readBy }) {
   const reqBody = { priority, groupId, message, readBy };
-  const request = axios.post(`/api/v1/groups/${groupId}/message`, reqBody);
-
-  return (dispatch) => {
-    return request.then((res) => {
+  return dispatch => axios.post(`/api/v1/groups/${groupId}/message`, reqBody)
+    .then((res) => {
       dispatch(getGroupMessages(groupId));
-    });
-  };
+    })
+    .catch(error => (error));
 }
 
+
+/**
+   * Makes request to get the messages of a group for count
+   *
+   * @param {number} groupId group id
+   *
+   * @returns {response} request response
+   */
+export function getGroupMessagesCount(groupId) {
+  return dispatch => axios.get(`/api/v1/groups/${groupId}/messages`)
+    .catch(error => (error));
+}
+
+
+/**
+   * Makes request to update the users that have read a message
+   *
+   * @param {object} messageParams details of message to be updated
+   *
+   * @returns {response} request response
+   */
+export function updateReadStatus(messageParams) {
+  const { groupId, messageId } = messageParams;
+  return dispatch => axios.patch(`/api/v1/groups/${messageId}/read`, messageParams)
+    .then((res) => {
+      dispatch(getGroupMessages(groupId));
+    })
+    .catch(error => (error));
+}
+
+
+/**
+   * Makes request to archive a message in a group
+   *
+   * @param {number} messageId id of message to be archived
+   *
+   * @returns {response} request response
+   */
+export function archiveMessage({ messageId }) {
+  return dispatch => axios.patch(`/api/v1/groups/${messageId}/archive`, messageId)
+    .catch(error => (error));
+}
+
+
+ /**
+   * Informs reducer that request to fetch group messages has begun
+   *
+   * @returns {action} action type and payload
+   */
 export function fetchingGroupMessages() {
   return {
     type: FETCHING_GROUP_MESSAGES,
@@ -64,6 +104,15 @@ export function fetchingGroupMessages() {
   };
 }
 
+
+/**
+   * Informs reducers that the request to fetch a group's messages finished
+   * successfully
+   *
+   * @param {object} membersDetails details of members
+   *
+   * @returns {action} action type and payload
+   */
 export function setGroupMessages(messages) {
   return {
     type: SET_GROUP_MESSAGES,
@@ -71,9 +120,17 @@ export function setGroupMessages(messages) {
   };
 }
 
-export function fetchGroupMessagesFailure(ex) {
+
+/**
+   * Informs reducers that the request to fetch group messages failed
+   *
+   * @param {object} error error returned from failed request
+   *
+   * @returns {action} action type and payload
+   */
+export function fetchGroupMessagesFailure(error) {
   return {
     type: FETCH_GROUP_MESSAGES_FAILURE,
-    ex
+    error
   };
 }

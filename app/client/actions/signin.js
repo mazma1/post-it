@@ -4,22 +4,21 @@ import { SET_CURRENT_USER, DELETE_CURRENT_USER } from './types';
 import setAuthorizationToken from '../../utils/setAuthorizationToken';
 
 /**
-   * Makes request to sign in a user
-
-   * @param {object} userData user's required sign in credentials
-
-   * @returns {response} request response
-   */
+  * Makes request to sign in a user
+  *
+  * @param {object} userData user's required sign in credentials
+  *
+  * @returns {response} request response
+  */
 export function userSignInRequest(userData) {
-  return (dispatch) => {
-    return axios.post('/api/v1/users/signin', userData)
-      .then((res) => {
-        const { token } = res.data;
-        localStorage.setItem('jwtToken', token);
-        setAuthorizationToken(token);
-        dispatch(setCurrentUser(jwt.decode(token)));
-      });
-  };
+  return dispatch => axios.post('/api/v1/users/signin', userData)
+    .then((res) => {
+      const { token } = res.data;
+      localStorage.setItem('jwtToken', token);
+      setAuthorizationToken(token);
+      dispatch(setCurrentUser(jwt.decode(token)));
+    })
+    .catch(error => (error));
 }
 
 
