@@ -6,7 +6,7 @@ import { PropTypes } from 'prop-types';
 import ClientFrame from '../client-frame/ClientFrame';
 import TextField from '../common/FormTextField';
 import SearchResult from '../search/SearchResult';
-import { searchUser, resetSearch } from '../../actions/searchUser';
+import { searchUser, resetSearch } from '../../actions/search';
 import { SubmitButton } from '../modal/SubModals';
 
 /** Form for searching for registered users */

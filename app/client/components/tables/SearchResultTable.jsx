@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import Pagination from '../Pagination';
-import { searchUser } from '../../actions/searchUser';
+import { searchUser } from '../../actions/search';
 
 /** Table of search result */
 class SearchResultTable extends React.Component {

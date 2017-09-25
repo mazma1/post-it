@@ -32,7 +32,7 @@
     "start:dev": "nodemon --exec babel-node ./app/server/bin/www --ignore ./app/client",
     "rebuild:testdb": "NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate",
     "seed:testdb": "NODE_ENV=test sequelize db:seed:all",
-    "create:testdb": "npm run rebuild:testdb && npm run seed:testdb",
+    "create:testdb": "NODE_ENV=test npm run rebuild:testdb && npm run seed:testdb",
     "run:test": "NODE_ENV=test nyc --reporter=html --reporter=text ./node_modules/.bin/mocha --compilers js:babel-core/register --timeout 20000 ./app/server/test/*.test.js",
     "test": "npm run create:testdb && npm run run:test",
     "test:client": "jest .app/client/test/  --verbose",

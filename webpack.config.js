@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const DIST_DIR = path.resolve(__dirname, './app/client/dist');
 
 module.exports = {
-  devtool: 'eval',
+  devtool: 'source-maps',
   entry: [
     'webpack/hot/dev-server', // HMR works without this
     'webpack-hot-middleware/client?noInfo=true',
