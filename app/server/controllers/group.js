@@ -238,7 +238,7 @@ export default {
         ]
       })
       .then((messages) => {
-        if (messages) {
+        if (messages.length > 0) {
           res.status(200).send({ messages });
         } else {
           res.status(404).send({ message: 'No message was found for the specified group' });
@@ -248,36 +248,6 @@ export default {
     } else {
       res.status(400).send({ message: 'Invalid group id' });
     }
-  },
-
-   /**
-   * Updates a user that have read a message
-   * Route: PATCH: /api/v1/groups/message/read
-   *
-   * @param {any} req
-   * @param {any} res
-   * @returns {response} response object
-   */
-  updateMessageReadStatus(req, res) {
-    const username = req.body.username,
-      readBy = req.body.readBy,
-      messageId = req.params.message_id,
-      updatedReadBy = `${readBy},${username}`;
-
-    if (!includes(readBy, username)) {
-      models.Message.update({
-        readBy: updatedReadBy,
-      }, {
-        where: { id: messageId }
-      })
-      .then((update) => {
-        res.status(201).send({
-          message: 'Message read status updated successfully'
-        });
-      })
-      .catch(error => res.status(500).send(error.message));
-    }
-    res.status(200).send('User has read message');
   },
 
    /**
@@ -311,28 +281,5 @@ export default {
     } else {
       res.status(400).send({ message: 'Invalid group id' });
     }
-  },
-
-  /**
-   * Archives a given message
-   * Route: PATCH: /api/v1/groups/:message_id/archive
-   *
-   * @param {any} req
-   * @param {any} res
-   * @returns {response} response object
-   */
-  archiveMessage(req, res) {
-    models.Message.findOne({
-      where: {
-        id: req.params.message_id
-      }
-    })
-    .then((message) => {
-      const username = req.decoded.data.username;
-      message.isArchived.push(username);
-      message.update({ isArchived: message.isArchived });
-      res.status(200).send(message);
-    })
-    .catch(error => res.status(500).send(error.message));
   }
 };

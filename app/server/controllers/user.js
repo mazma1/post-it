@@ -186,7 +186,9 @@ export default {
         if (user) {
           const resetPasswordHash = crypto.randomBytes(20).toString('hex');
           const resetPasswordExpires = Date.now() + 3600000;
-
+          if (process.env.NODE_ENV === 'test') {
+            return res.status(200).send({ resetPasswordHash });
+          }
           const emailParams = {
             senderAddress: process.env.ADMIN_EMAIL,
             recepientAddress: user.email,

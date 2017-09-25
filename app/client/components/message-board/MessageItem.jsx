@@ -47,13 +47,20 @@ class MessageItem extends React.Component {
    * @returns {void} null
    */
   componentDidMount() {
+    this.mounted = true;
     const mappedMessages = mapKeys(this.props.messages, 'group');
     const groupId = Object.keys(mappedMessages)[0];
     this.props.getGroupMessagesCount(groupId).then(
       (response) => {
-        this.filterMessages(response.data.messages);
+        if (this.mounted) {
+          this.filterMessages(response.data.messages);
+        }
       }
     );
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
   }
 
   /**

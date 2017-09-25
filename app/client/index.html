@@ -14,16 +14,5 @@
 
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
-  <script src="/socket.io/socket.io.js"></script>
-  <script>
-    $(function () {
-      var socket = io();
-      $('#chatform').submit(function () {
-        socket.emit('chat message', $('#m').val());
-        $('#m').val('');
-        return false;
-      });
-    });
-  </script>
 </body>
 </html>

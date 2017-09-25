@@ -71,7 +71,7 @@ export function getGroupMessagesCount(groupId) {
    */
 export function updateReadStatus(messageParams) {
   const { groupId, messageId } = messageParams;
-  return dispatch => axios.patch(`/api/v1/groups/${messageId}/read`, messageParams)
+  return dispatch => axios.patch(`/api/v1/messages/${messageId}/read`, messageParams)
     .then((res) => {
       dispatch(getGroupMessages(groupId));
     })
@@ -87,7 +87,7 @@ export function updateReadStatus(messageParams) {
    * @returns {response} request response
    */
 export function archiveMessage({ messageId }) {
-  return dispatch => axios.patch(`/api/v1/groups/${messageId}/archive`, messageId)
+  return dispatch => axios.patch(`/api/v1/messages/${messageId}/archive`, messageId)
     .catch(error => (error));
 }
 

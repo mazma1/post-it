@@ -6,14 +6,12 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import config from '../../webpack.config';
 import userRoute from './routes/user';
 import groupRoute from './routes/group';
+import messageRoute from './routes/message';
 
 require('dotenv').config();
 const path = require('path');
 
 const app = express();
-
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
 
 // Parse incoming requests data
 app.use(bodyParser.json());
@@ -22,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Use all routes
 app.use('/', userRoute);
 app.use('/', groupRoute);
+app.use('/', messageRoute);
 
 if (process.env.NODE_ENV !== 'production') {
   const compiler = webpack(config);
