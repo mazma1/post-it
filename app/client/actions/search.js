@@ -14,21 +14,18 @@ import {
    * @returns {response} request response
    */
 export function searchUser({ searchQuery, offset = 0, limit = 1 }) {
-  return (dispatch) => {
-    // dispatch(fetchingSearchedUser());
-    return axios.get(`/api/v1/users/search?q=${searchQuery}&limit=${limit}&offset=${offset}`)
-      .then((res) => {
-        const { users, pagination } = res.data;
-        const searchResult = {
-          users,
-          pagination
-        };
-        dispatch(fetchSearchedUserSuccess(searchResult));
-      })
-      .catch((error) => {
-        dispatch(fetchSearchedUserFailure(error.response.data.error));
-      });
-  };
+  return dispatch => axios.get(`/api/v1/users/search?q=${searchQuery}&limit=${limit}&offset=${offset}`)
+    .then((res) => {
+      const { users, pagination } = res.data;
+      const searchResult = {
+        users,
+        pagination
+      };
+      dispatch(fetchSearchedUserSuccess(searchResult));
+    })
+    .catch((error) => {
+      dispatch(fetchSearchedUserFailure(error.response.data.error));
+    });
 }
 
 

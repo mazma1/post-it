@@ -38,8 +38,7 @@ export function submitNewUser({ groupId, identifier }) {
   return dispatch => axios.post(`/api/v1/groups/${groupId}/user`, reqBody)
     .then((res) => {
       dispatch(getGroupMembers(groupId));
-    })
-    .catch(error => (error));
+    });
 }
 
 

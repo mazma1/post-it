@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import jwt from 'jsonwebtoken';
-import app from '../app';
+import app from '../../app';
 
 const should = chai.should();
 chai.use(chaiHttp);
@@ -236,13 +236,14 @@ describe('Group Endpoint', () => {
         });
     });
 
-    it('should return status 404 when a group does not have messages', (done) => {
+    it('should return an empty array of messages when a group does not have messages', (done) => {
       chai.request(app).get('/api/v1/groups/3/messages')
         .set('x-access-token', token)
         .end((err, res) => {
-          res.status.should.equal(404);
+          res.status.should.equal(200);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('No message was found for the specified group');
+          res.body.should.have.property('messages');
+          res.body.messages.should.be.a('array').with.lengthOf(0);
           done();
         });
     });

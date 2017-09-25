@@ -2,7 +2,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import app from '../app';
+import app from '../../app';
 
 const should = chai.should();
 chai.use(chaiHttp);

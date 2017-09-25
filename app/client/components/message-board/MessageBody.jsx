@@ -196,7 +196,7 @@ function mapStateToProps(state) {
 MessageBody.propTypes = {
   messages: PropTypes.array.isRequired,
   username: PropTypes.string.isRequired,
-  groups: PropTypes.array.isRequired,
+  // groups: PropTypes.array.isRequired,
   match: PropTypes.object.isRequired,
   selectedGroup: PropTypes.object,
   updateReadStatus: PropTypes.func.isRequired

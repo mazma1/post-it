@@ -22,17 +22,21 @@ describe('User Groups Actions', () => {
 
   describe('#setUserGroups', () => {
     it('should update the store with returned user\'s groups', () => {
-      const group = [
+      const groups = [
         {
           id: 1,
           name: 'Cohort 29'
+        },
+        {
+          id: 2,
+          name: 'Teens Code'
         }
       ];
       const expectedAction = {
         type: types.SET_USER_GROUPS,
-        group
+        groups
       };
-      expect(actions.setUserGroups(group)).toEqual(expectedAction);
+      expect(actions.setUserGroups(groups)).toEqual(expectedAction);
     });
   });
 
@@ -43,12 +47,12 @@ describe('User Groups Actions', () => {
 
     it('should create SET_USER_GROUPS to update store when request to get user\'s groups is successful', () => {
       nock('http://localhost')
-        .post('/api/user/1/groups')
-        .reply(201, { data: { group: [{ id: 1, name: 'Cohort 29' }] } });
+        .post('/api/v1/users/1/groups')
+        .reply(201, { data: { groups: [{ id: 1, name: 'Cohort 29' }] } });
 
       const expectedAction = [
         { type: types.FETCHING_USER_GROUPS, group: [] },
-        { type: types.SET_CURRENT_USER, group: [{ id: 1, name: 'Cohort 29' }] }
+        { type: types.SET_CURRENT_USER, groups: [{ id: 1, name: 'Cohort 29' }] }
       ];
       const store = mockStore({ group: [] });
 
@@ -60,10 +64,10 @@ describe('User Groups Actions', () => {
     it('should update store with error message when request to get user\'s groups fails', () => {
       nock('http://localhost')
         .post('/api/user/1/groups')
-        .reply(201, { data: { group: [{ id: 1, name: 'Cohort 29' }] } });
+        .reply(201, { data: { groups: [{ id: 1, name: 'Cohort 29' }] } });
 
       const expectedAction = [
-        { type: types.FETCHING_USER_GROUPS, group: [] },
+        { type: types.FETCHING_USER_GROUPS, groups: [] },
         { type: types.FETCH_USER_GROUPS_FAILURE, error: {} }
       ];
       const store = mockStore();

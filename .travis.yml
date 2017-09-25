@@ -3,6 +3,9 @@ dist: trusty
 language: node_js
 node_js:
   - "stable"
-after_success:
-  - npm run coverage
+services:
+  - postgresql
+before_script:
+  - psql -c 'create database postit_test;' -U postgres
+  - psql -c "create user joe1 with password '1234';" -U postgres
 

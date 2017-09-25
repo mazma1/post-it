@@ -22,9 +22,10 @@ describe('Header Component', () => {
     submitNewUser: jest.fn(),
     newUserSubmit: jest.fn(),
     username: '',
-    membersLoading: '',
+    membersLoading: false,
     groupMembers: [],
-    selectedGroup: undefined
+    selectedGroup: undefined,
+    match: {}
   };
   const header = () => {
     if (!mountedHeader) {
@@ -92,10 +93,13 @@ describe('Header Component', () => {
     expect(Object.keys(addUserBtnDisplay.props()).length).toBe(2);
   });
 
-  // it('should call `newUserSubmit` function when new user is submitted', () => {
-  //   header().find(SubmitButton).simulate('submit');
-  //   expect(props.newUserSubmit.mock.calls.length).toBe(1);
-  // });
+  it('should call `submitNewUser` function when new user is submitted', () => {
+    const submitButton = header().find(SubmitButton);
+    expect(submitButton.length).toBe(1);
+
+    // submitButton.simulate('submit');
+    // expect(props.submitNewUser.mock.calls.length).toBe(1);
+  });
 
   it('should always render addUser and groupMembers Modals', () => {
     expect(header().find(ModalFrame).length).toBe(2);

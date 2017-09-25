@@ -344,7 +344,7 @@ MessageItem.propTypes = {
 };
 
 MessageItem.defaultProps = {
-  messages: {}
+  messages: []
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MessageItem));

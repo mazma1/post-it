@@ -24,7 +24,8 @@ describe('Sidebar Component', () => {
     signedInUser: undefined,
     unreadCount: undefined,
     selectedGroup: undefined,
-    userGroups: undefined
+    userGroups: undefined,
+    match: {}
   };
   const sidebar = () => {
     if (!mountedSidebar) {
@@ -61,11 +62,9 @@ describe('Sidebar Component', () => {
         username: 'mazma'
       }
     };
-    props.getUserGroups = () => {
-      return new Promise((resolve, reject) => {
-        const resolveGetUserGroups = resolve;
-      });
-    };
+    props.getUserGroups = () => new Promise((resolve, reject) => {
+      const resolveGetUserGroups = resolve;
+    });
   });
 
   it('should always render a wrapping div', () => {
