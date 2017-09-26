@@ -238,7 +238,7 @@ export default {
         ]
       })
       .then((messages) => {
-        if (messages.length > 0) {
+        if (messages) {
           res.status(200).send({ messages });
         } else {
           res.status(404).send({ message: 'No message was found for the specified group' });

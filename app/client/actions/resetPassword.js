@@ -9,8 +9,7 @@ import axios from 'axios';
    * @returns {response} request response
    */
 export function resetLinkRequest(email) {
-  return dispatch => axios.post('/api/v1/users/resetpassword', email)
-    .catch(error => (error));
+  return dispatch => axios.post('/api/v1/users/resetpassword', email);
 }
 
 
@@ -36,6 +35,5 @@ export function validateResetPasswordToken(token) {
    */
 export function updatePassword(newPasswordDetails) {
   const { token } = newPasswordDetails;
-  return dispatch => axios.patch(`/api/v1/users/updatepassword/${token}`, newPasswordDetails)
-    .catch(error => (error));
+  return dispatch => axios.patch(`/api/v1/users/updatepassword/${token}`, newPasswordDetails);
 }

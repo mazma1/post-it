@@ -90,9 +90,6 @@ export function submitNewGroup({ groupName, userId }) {
     .then((res) => {
       dispatch(setNewGroupActive(userId));
     });
-    // .catch((error) => {
-    //   dispatch(submittingNewGroupFailure(error));
-    // });
 }
 
 

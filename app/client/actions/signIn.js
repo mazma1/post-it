@@ -17,8 +17,7 @@ export function userSignInRequest(userData) {
       localStorage.setItem('jwtToken', token);
       setAuthorizationToken(token);
       dispatch(setCurrentUser(jwt.decode(token)));
-    })
-    .catch(error => (error));
+    });
 }
 
 
