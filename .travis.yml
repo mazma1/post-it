@@ -8,6 +8,5 @@ services:
 before_script:
   - psql -c 'create database postit_test;' -U postgres
   - psql -c "create user joe1 with password '1234';" -U postgres
-after_script:
-  - nyc report --reporter=text-lcov | coveralls
+  - npm install -g nyc
 
