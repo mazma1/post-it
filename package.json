@@ -43,15 +43,15 @@
     ]
   },
   "scripts": {
+    "postinstall": "webpack -p --config ./webpack.config.prod.js",
     "start": "babel-node -- app/server/bin/www",
     "start:dev": "nodemon --exec babel-node ./app/server/bin/www --ignore ./app/client",
     "rebuild:testdb": "NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate",
     "seed:testdb": "NODE_ENV=test sequelize db:seed:all",
     "create:testdb": "NODE_ENV=test npm run rebuild:testdb && npm run seed:testdb",
-    "run:test": "NODE_ENV=test nyc --reporter=html --reporter=text ./node_modules/.bin/mocha --compilers js:babel-core/register --timeout 10000 ./app/server/test/**/*.test.js",
+    "run:test": "NODE_ENV=test mocha --compilers js:babel-core/register --timeout 10000 ./app/server/test/**/*.test.js",
     "test": "npm run create:testdb && npm run run:test",
     "test:client": "jest .app/client/test/  --verbose",
-    "coverage": "NODE_ENV=test cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "reset_db": "NODE_ENV=production sequelize db:migrate:undo:all && NODE_ENV=production sequelize db:migrate && NODE_ENV=production sequelize db:seed:all",
     "db:migrate": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all"
   },
@@ -88,7 +88,7 @@
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.1.0",
     "expect": "^1.20.2",
-    "istanbul": "^0.4.5",
+    "istanbul": "^0.4.4",
     "jest": "^20.0.4",
     "mocha": "^3.4.2",
     "mocha-lcov-reporter": "^1.3.0",
