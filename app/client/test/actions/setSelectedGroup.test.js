@@ -1,4 +1,4 @@
-import * as actions from '../../actions/setSelectedGroup';
+import setSelectedGroup from '../../actions/setSelectedGroup';
 import * as types from '../../actions/types';
 
 describe('Set Selected Group Action', () => {
@@ -11,6 +11,6 @@ describe('Set Selected Group Action', () => {
       type: types.SET_SELECTED_GROUP,
       selectedGroup
     };
-    expect(actions.setSelectedGroup(selectedGroup)).toEqual(expectedAction);
+    expect(setSelectedGroup(selectedGroup)).toEqual(expectedAction);
   });
 });

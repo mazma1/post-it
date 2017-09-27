@@ -1,7 +1,7 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import nock from 'nock';
-import * as actions from '../../../client/actions/signin';
+import * as actions from '../../../client/actions/signIn';
 import * as types from '../../actions/types';
 
 const middlewares = [thunk];
@@ -13,8 +13,8 @@ describe('Sign In Actions', () => {
       const user = {
         data: {
           id: 1,
-          firstname: 'Mary',
-          lastname: 'Mazi',
+          firstName: 'Mary',
+          lastName: 'Mazi',
           username: 'mazma',
           email: 'holladasheila@gmail.com'
         }
@@ -45,7 +45,7 @@ describe('Sign In Actions', () => {
 
     it('should create SET_CURRENT_USER after successful sign in', () => {
       nock('http://localhost')
-        .post('/api/user/signin')
+        .post('/api/v1/users/signin')
         .reply(201, { data: { token: '1234tycngsgu67890plkm' } });
 
       const expectedAction = {
@@ -54,7 +54,7 @@ describe('Sign In Actions', () => {
       };
       const store = mockStore();
 
-      store.dispatch(actions.userSigninRequest({
+      store.dispatch(actions.userSignInRequest({
         username: 'mazma',
         password: 1234
       })).then(() => {
