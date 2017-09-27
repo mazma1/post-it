@@ -9,5 +9,5 @@ before_script:
   - psql -c 'create database postit_test;' -U postgres
   - psql -c "create user joe1 with password '1234';" -U postgres
 after_script:
-  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage  
+  - nyc report --reporter=text-lcov | coveralls
 
