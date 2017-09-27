@@ -9,16 +9,12 @@ let token;
 
 describe('Message Endpoint', () => {
   before((done) => {
-    chai.request(app).post('/api/v1/users/signin')
-      .send({ identifier: 'mazma', password: '123456' })
-      .end((err, res) => {
-        token = res.body.token;
-        done();
-      });
-    // token = jwt.sign({ data: { id: 1 } }, process.env.TOKEN_SECRET, { expiresIn: '24hr' });
+    token = jwt.sign({ data: { id: 1 } }, process.env.TOKEN_SECRET, { expiresIn: '24hr' });
+    done();
   });
 
   after((done) => {
+    token = null;
     done();
   });
 
