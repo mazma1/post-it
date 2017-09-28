@@ -17,7 +17,7 @@ import {
 /**
  * Message Item component for the message board
  */
-class MessageItem extends React.Component {
+export class MessageItem extends React.Component {
 
    /**
    * Constructor
@@ -330,7 +330,7 @@ MessageItem.propTypes = {
   getGroupMessagesCount: PropTypes.func.isRequired,
   messages: PropTypes.array,
   authenticatedUsername: PropTypes.string.isRequired,
-  onMessageClick: PropTypes.func.isRequired,
+  // onMessageClick: PropTypes.func.isRequired,
   archiveMessage: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,
 };

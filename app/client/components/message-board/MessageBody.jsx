@@ -13,7 +13,7 @@ import {
 
 
 /** Renders the full content of a message */
-class MessageBody extends React.Component {
+export class MessageBody extends React.Component {
   constructor(props) {
     super(props);
 
@@ -41,7 +41,7 @@ class MessageBody extends React.Component {
 
 
   /**
-  * Sets an active group's id to the local storage when a message is clicked
+  * Takes a user to the previous page
   *
   * @returns {void} null
   */
@@ -163,7 +163,7 @@ class MessageBody extends React.Component {
             <ModalHeader header="Message Read By" onClose={this.closeModal} />
 
             <div className="modal-body">
-              <ReadByTable messageId={Number(this.state.messageId)} />
+              <ReadByTable messageId={Number(this.state.messageId)} messages={this.props.messages} />
             </div>
 
             <ModalFooter>

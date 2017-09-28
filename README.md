@@ -1,8 +1,8 @@
 # Post It
 A simple Node.js application that allows friends and colleagues create groups for messaging. Up to date version of project can be found on the `development` branch.
 
-[![Build Status](https://travis-ci.org/mazma1/post-it.svg?branch=development)](https://travis-ci.org/mazma1/post-it)
-[![Coverage Status](https://coveralls.io/repos/github/mazma1/post-it/badge.svg?branch=development)](https://coveralls.io/github/mazma1/post-it?branch=chore/implement-feedback)
+[![Build Status](https://travis-ci.org/mazma1/post-it.svg?branch=chore/implement-feedback)](https://travis-ci.org/mazma1/post-it)
+[![codecov.io Code Coverage](https://codecov.io/github/mazma1/post-it/branch/chore%2Fimplement-feedback/graphs/badge.svg)](https://codecov.io/gh/mazma1/post-it/branch/chore%2Fimplement-feedback)
 [![Code Climate](https://codeclimate.com/github/mazma1/post-it/badges/gpa.svg)](https://codeclimate.com/github/mazma1/post-it)
 
 ## Structure

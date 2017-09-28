@@ -15,7 +15,7 @@ const homepage = () => {
   return mountedHomepage;
 };
 
-describe('Homepage Component', () => {
+describe('<HomePage />', () => {
   it('should mount and render itself', () => {
     expect(homepage().find('h2').text()).toBe('Welcome to PostIT!');
     expect(homepage().find('h4').hasClass('index-line-height')).toBe(true);

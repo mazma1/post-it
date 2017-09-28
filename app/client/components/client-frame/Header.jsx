@@ -310,14 +310,15 @@ Header.propTypes = {
   setGroupMessages: PropTypes.func.isRequired,
   submitNewUser: PropTypes.func.isRequired,
   selectedGroup: PropTypes.object,
-  username: PropTypes.string.isRequired,
+  username: PropTypes.string,
   membersLoading: PropTypes.bool.isRequired,
   groupMembers: PropTypes.array.isRequired,
   match: PropTypes.object.isRequired
 };
 
 Header.defaultProps = {
-  selectedGroup: {}
+  selectedGroup: {},
+  username: ''
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

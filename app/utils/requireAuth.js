@@ -17,13 +17,15 @@ export default function (ComposedComponent) {
     componentWillMount() {
       const token = localStorage.getItem('jwtToken');
       const { isAuthenticated } = this.props;
-
+      if (!isAuthenticated) {
+        toastr.error('You need to sign in to access this page');
+        return this.props.history.push('/signin');
+      }
       if (isAuthenticated && token) {
         this.props.verifyToken(token).then(
           (res) => {
             if (res.status === 200) {
               this.setState({ validToken: true });
-              toastr.success('Welcome back!');
               return this.props.history.push('/message-board');
             }
           },

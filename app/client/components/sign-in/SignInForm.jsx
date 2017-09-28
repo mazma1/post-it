@@ -8,7 +8,7 @@ import validateInput from '../../../utils/signinValidation';
 
 
 /** SigninForm component */
-class SignInForm extends React.Component {
+export class SignInForm extends React.Component {
 
   /**
    * Constructor

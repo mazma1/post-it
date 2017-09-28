@@ -14,7 +14,7 @@ const messageBoard = () => {
   return mountedMessageBoard;
 };
 
-describe('MessageBoard Component', () => {
+describe('<MessageBoard />', () => {
   it('should always render a wrapping <ClientFrame/>', () => {
     const clientFrame = messageBoard().find(ClientFrame);
     expect(clientFrame.length).toBe(1);

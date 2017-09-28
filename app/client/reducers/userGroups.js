@@ -37,7 +37,7 @@ export default (state = initialState.userGroups, action = {}) => {
 
     case SUBMIT_NEW_GROUP_FAILURE:
       return {
-        ...state,
+        isLoading: false,
         error: action.error.response.data
       };
 

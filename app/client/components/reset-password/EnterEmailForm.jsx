@@ -8,7 +8,7 @@ import TextField from '../common/FormTextField';
 import { resetLinkRequest } from '../../actions/resetPassword';
 
 /** Form for submiting email for password reset */
-class EnterEmailForm extends React.Component {
+export class EnterEmailForm extends React.Component {
 
   /**
    * Constructor

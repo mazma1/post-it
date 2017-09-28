@@ -13,7 +13,7 @@ import {
   SubmitButton
 } from '../../components/modal/SubModals';
 
-describe('Header Component', () => {
+describe('<Header />', () => {
   let mountedHeader;
   const props = {
     logout: jest.fn(),

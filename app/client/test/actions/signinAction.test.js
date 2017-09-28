@@ -3,11 +3,14 @@ import thunk from 'redux-thunk';
 import nock from 'nock';
 import * as actions from '../../../client/actions/signIn';
 import * as types from '../../actions/types';
+import mockLocalStorage from '../mockLocalStorage';
+
+Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-describe('Sign In Actions', () => {
+describe('Sign In Action\'s', () => {
   describe('#setCurrentUser', () => {
     it('should set current user details with given data', () => {
       const user = {
@@ -27,14 +30,26 @@ describe('Sign In Actions', () => {
     });
   });
 
+  describe('#logout', () => {
+    it('should create DELETE_CURRENT_USER after successful log out', () => {
+      const expectedAction = {
+        type: types.DELETE_CURRENT_USER,
+        user: {}
+      };
+      const store = mockStore();
+      store.dispatch(actions.logout());
+      expect(store.getActions()).toEqual([expectedAction]);
+    });
+  });
+
   describe('#deleteCurrentUser', () => {
     it('should delete a user\'s data after log out', () => {
       const user = {};
       const expectedAction = {
-        type: types.SET_CURRENT_USER,
+        type: types.DELETE_CURRENT_USER,
         user
       };
-      expect(actions.setCurrentUser(user)).toEqual(expectedAction);
+      expect(actions.deleteCurrentUser(user)).toEqual(expectedAction);
     });
   });
 

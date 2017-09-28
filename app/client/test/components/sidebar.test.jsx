@@ -1,7 +1,6 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { mount } from 'enzyme';
-import { spy } from 'sinon';
+import { mount, shallow } from 'enzyme';
 import { Sidebar } from '../../components/client-frame/sidebar/Sidebar';
 import { Brand, MobileToggleBtn } from '../../components/misc/SidebarMisc';
 import GroupList from '../../components/client-frame/sidebar/GroupList';
@@ -12,7 +11,7 @@ import {
   ModalFooter
 } from '../../components/modal/SubModals';
 
-describe('Sidebar Component', () => {
+describe('<Sidebar />', () => {
   let mountedSidebar;
   const props = {
     getUserGroups: jest.fn(),
@@ -25,15 +24,16 @@ describe('Sidebar Component', () => {
     unreadCount: undefined,
     selectedGroup: undefined,
     userGroups: undefined,
+    history: { push: jest.fn() },
     match: {}
   };
   const sidebar = () => {
     if (!mountedSidebar) {
-      mountedSidebar = mount(
+      mountedSidebar = mount((
         <MemoryRouter>
           <Sidebar {...props} />
         </MemoryRouter>
-      );
+      ), { context: this });
     }
     return mountedSidebar;
   };
@@ -44,7 +44,7 @@ describe('Sidebar Component', () => {
       isLoading: false,
       hasGroup: true,
       groups: [
-        { id: 1, group_name: 'Cohort 29' }
+        { id: 1, groupName: 'Cohort 29' }
       ]
     };
     props.selectedGroup = {
@@ -81,22 +81,24 @@ describe('Sidebar Component', () => {
   });
 
   it('should call componentWillMount() before it mounts', () => {
-    spy(Sidebar.prototype, 'componentWillMount');
-    sidebar();
-    expect(Sidebar.prototype.componentWillMount.calledOnce).toBe(true);
+    const CWMSpy = jest.spyOn(sidebar().instance(), 'componentWillMount');
+    sidebar().instance().componentWillMount();
+    expect(CWMSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should call componentDidMount() when it mounts', () => {
-    spy(Sidebar.prototype, 'componentDidMount');
-    sidebar();
-    expect(Sidebar.prototype.componentDidMount.calledOnce).toBe(true);
-  });
+  // it('should mount with onChange()', () => {
+  //   const event = { target: {} };
+  //   const onChangeSpy = jest.spyOn(Sidebar.prototype, 'onChange');
+  //   Sidebar.prototype.onChange(event);
+  //   expect(onChangeSpy).toHaveBeenCalledTimes(1);
+  // });
 
   it('should always render <Brand/> with one prop', () => {
     expect(sidebar().find(Brand).length).toBe(1);
 
     const brandDisplay = sidebar().find(Brand);
     expect(Object.keys(brandDisplay.props()).length).toBe(1);
+    expect(brandDisplay.props().brandName).toBe('Post It');
   });
 
   it('should always render <MobileToggleBtn /> with no prop', () => {
@@ -106,11 +108,13 @@ describe('Sidebar Component', () => {
     expect(Object.keys(mobileToggleBtnDisplay.props()).length).toBe(0);
   });
 
-  it('should always render <GroupList/> with four props', () => {
+  it('should always render <GroupList/> with five props', () => {
     expect(sidebar().find(GroupList).length).toBe(1);
 
     const groupListDisplay = sidebar().find(GroupList);
     expect(Object.keys(groupListDisplay.props()).length).toBe(5);
+    expect(groupListDisplay.props().userGroups).toBe(props.userGroups);
+    expect(groupListDisplay.props().selectedGroup).toBe(props.selectedGroup);
   });
 
   it('should always render the createGroup Modal', () => {

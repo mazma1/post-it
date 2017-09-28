@@ -6,13 +6,13 @@ import Pagination from '../Pagination';
 import { searchUser } from '../../actions/search';
 
 /** Table of search result */
-class SearchResultTable extends React.Component {
+export class SearchResultTable extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.handlePageClick = this.handlePageClick.bind(this);
-  }  
+  }
 
   /**
    * handles click on change of page
@@ -44,10 +44,10 @@ class SearchResultTable extends React.Component {
     if (!isEmpty(users)) {
       searchResultRow = users.map(user => (
         <tr key={user.id}>
-          <td>
+          <td id="firstName">
             {user.firstName}
           </td>
-          <td>
+          <td id="lastName">
             {user.lastName}
           </td>
           <td>

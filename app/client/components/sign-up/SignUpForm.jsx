@@ -7,7 +7,7 @@ import validateInput from '../../../utils/signupValidation';
 import TextField from '../common/FormTextField';
 
 /** SignupForm component */
-class SignUpForm extends React.Component {
+export class SignUpForm extends React.Component {
 
   /**
    * Constructor

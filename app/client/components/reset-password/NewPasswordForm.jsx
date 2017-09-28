@@ -11,7 +11,7 @@ import {
   updatePassword } from '../../actions/resetPassword';
 
 /** Form for submiting new password */
-class NewPasswordForm extends React.Component {
+export class NewPasswordForm extends React.Component {
 
   /**
    * Constructor

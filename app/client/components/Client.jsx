@@ -28,8 +28,8 @@ function Client() {
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/signin" component={SignIn} />
         <Route exact path="/message-board" component={requireAuth(MessageBoard)} />
-        <Route path="/message-board/:groupId" component={requireAuth(MessageBoard)} />
-        <Route path="/message/:messageId" component={requireAuth(MessageBody)} />
+        <Route path="/message-board/:groupId" component={MessageBoard} />
+        <Route path="/message/:messageId" component={MessageBody} />
         <Route exact path="/search" component={requireAuth(SearchUser)} />
         <Route path="/reset-password" component={ResetPassword} />
         <Route path="/new-password/:token" component={NewPassword} />

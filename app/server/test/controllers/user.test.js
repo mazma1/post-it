@@ -557,6 +557,53 @@ describe('User Endpoint', () => {
     });
   });
 
+  // Get User Groups
+  describe('GET /api/v1/users/:user_id/groups', () => {
+    it('should return status 400 if user id is invalid', (done) => {
+      chai.request(app).get('/api/v1/users/XYZ/groups')
+        .set('x-access-token', token)
+        .type('form')
+        .send()
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('Invalid user id');
+          done();
+        });
+    });
+
+    it('returns status 404 if user does not exist', (done) => {
+      chai.request(app).get('/api/v1/users/20/groups')
+        .set('x-access-token', token)
+        .type('form')
+        .send()
+        .end((err, res) => {
+          res.status.should.equal(404);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('User does not exist');
+          done();
+        });
+    });
+
+    it('should return status 200 if user exists', (done) => {
+      chai.request(app).get('/api/v1/users/1/groups')
+        .set('x-access-token', token)
+        .type('form')
+        .send()
+        .end((err, res) => {
+          res.status.should.equal(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('groups').with.lengthOf(4);
+          res.body.groups.should.be.a('array');
+          res.body.groups[0].should.have.property('name').eql('Jasmine');
+          res.body.groups[1].should.have.property('name').eql('Bluebell');
+          res.body.groups[3].should.have.property('name').eql('Test Group 3');
+          res.body.groups[2].should.have.property('name').eql('Marigold');
+          done();
+        });
+    });
+  });
+
   // Password reset hash token
   describe('POST /api/v1/users/resetpassword', () => {
     it('should return status 400 for missing email', (done) => {

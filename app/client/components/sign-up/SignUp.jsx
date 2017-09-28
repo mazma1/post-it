@@ -7,7 +7,7 @@ import userSignUpRequest from '../../actions/signUp';
 import { userSignInRequest } from '../../actions/signIn';
 
 /** SignUp Page Component */
-class SignUp extends React.Component {
+export class SignUp extends React.Component {
 
   /**
    * Render

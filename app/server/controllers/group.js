@@ -2,7 +2,6 @@ import includes from 'lodash/includes';
 import Nexmo from 'nexmo';
 import models from '../models';
 import sendEmail from '../../utils/sendEmail';
-import validateGroupMember from '../../utils/validateGroupMember';
 
 
 export default {

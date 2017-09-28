@@ -3,7 +3,7 @@ import { NavLink, MemoryRouter } from 'react-router-dom';
 import { mount } from 'enzyme';
 import GroupList from '../../components/client-frame/sidebar/GroupList';
 
-describe('GroupList Component', () => {
+describe('<GroupList />', () => {
   let props;
   let mountedGroupList;
 

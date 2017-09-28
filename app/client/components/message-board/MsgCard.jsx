@@ -11,7 +11,7 @@ import {
   getGroupMessages } from '../../actions/groupMessages';
 
 /** MessageCard component for message board */
-class MessageCard extends React.Component {
+export class MessageCard extends React.Component {
   /**
    * Constructor
    *
@@ -50,7 +50,7 @@ class MessageCard extends React.Component {
     const messageDetails = {
       messageId: clickedMessageId,
       username: this.props.authenticatedUsername,
-      readBy: clickedMsgProps.read_by,
+      readBy: clickedMsgProps.readBy,
       groupId: this.props.userGroups.groups[0].id
     };
     return this.props.updateReadStatus(messageDetails);
@@ -65,7 +65,7 @@ class MessageCard extends React.Component {
    * @returns {void} null
    */
   openModal(event) {
-    event.stopPropagation();
+    event.preventDefault();
     this.setState({
       isOpen: true
     });
@@ -108,7 +108,7 @@ class MessageCard extends React.Component {
     };
 
     if (messageLoading) {
-      return <div style={divPadding}>Loading...</div>;
+      return <div className="group-spinner" style={divPadding}>Loading...</div>;
     }
 
     if (!messageLoading) {
@@ -182,7 +182,7 @@ function mapDispatchToProps(dispatch) {
 MessageCard.propTypes = {
   getGroupMessages: PropTypes.func.isRequired,
   updateReadStatus: PropTypes.func.isRequired,
-  authenticatedUsername: PropTypes.string.isRequired,
+  authenticatedUsername: PropTypes.string,
   selectedGroup: PropTypes.object.isRequired,
   userGroups: PropTypes.object,
   message: PropTypes.object
@@ -190,7 +190,8 @@ MessageCard.propTypes = {
 
 MessageCard.defaultProps = {
   userGroups: {},
-  message: {}
+  message: {},
+  authenticatedUsername: ''
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageCard);

@@ -61,26 +61,28 @@ export class Sidebar extends React.Component {
    */
   componentWillMount() {
     const userId = this.props.signedInUser.user.id;
-    this.props.getUserGroups(userId).then(
-      () => {
-        if (this.props.userGroups.hasGroup === false) {
-          this.props.setSelectedGroup({});
-        } else {
-          const groupId = this.props.match.params.groupId;
-          this.getUnreadCount(this.props.userGroups.groups);
-          if (groupId) {
-            const mappedGroups = mapKeys(this.props.userGroups.groups, 'id');
-            const currentGroup = mappedGroups[groupId];
-            this.props.setSelectedGroup(currentGroup);
-            this.props.getGroupMessages(groupId);
-            this.props.getGroupMembers(groupId);
+    if (userId) {
+      this.props.getUserGroups(userId).then(
+        () => {
+          if (this.props.userGroups.hasGroup === false) {
+            this.props.setSelectedGroup({});
+          } else {
+            const groupId = this.props.match.params.groupId;
+            this.getUnreadCount(this.props.userGroups.groups);
+            if (groupId) {
+              const mappedGroups = mapKeys(this.props.userGroups.groups, 'id');
+              const currentGroup = mappedGroups[groupId];
+              this.props.setSelectedGroup(currentGroup);
+              this.props.getGroupMessages(groupId);
+              this.props.getGroupMembers(groupId);
+            }
           }
         }
-      }
-    )
-    .catch((error) => {
-      toastr.error('Unable to load groups, please try again later');
-    });
+      )
+      .catch((error) => {
+        toastr.error('Unable to load groups, please try again later');
+      });
+    }
   }
 
 
@@ -95,7 +97,7 @@ export class Sidebar extends React.Component {
   onChange(event) {
     this.setState({
       error: {},
-      [event.target.name]: event.target.value
+      // [event.target.name]: event.target.value
     });
   }
 

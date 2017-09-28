@@ -10,7 +10,7 @@ import { searchUser, resetSearch } from '../../actions/search';
 import { SubmitButton } from '../modal/SubModals';
 
 /** Form for searching for registered users */
-class SearchForm extends Component {
+export class SearchForm extends Component {
 
   /**
    * Constructor

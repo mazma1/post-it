@@ -1,9 +1,7 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import nock from 'nock';
-// import expect from 'expect';
-import { userSignInRequest } from '../../../client/actions/signIn';
-import * as types from '../../actions/types';
+import userSignUpRequest from '../../../client/actions/signUp';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -18,15 +16,8 @@ describe('Sign up async action', () => {
       .post('/api/v1/users/signup')
       .reply(201, { data: { token: '1234tycngsgu67890plkm' } });
 
-    const expectedAction = {
-      type: types.SET_CURRENT_USER,
-      user: { token: '1234tycngsgu67890plkm' }
-    };
     const store = mockStore({ isAuthenticated: [] });
 
-    store.dispatch(userSignInRequest({ username: 'mazma', password: 1234 })).then(() => {
-      // return of async actions
-      expect(store.getActions()).toEqual(expectedAction);
-    });
+    store.dispatch(userSignUpRequest({ identifier: 'mazma', password: 1234 }));
   });
 });

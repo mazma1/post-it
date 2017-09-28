@@ -7,7 +7,7 @@ import { userSignInRequest } from '../../actions/signIn';
 
 
 /** SignIn Page Component */
-class SignIn extends React.Component {
+export class SignIn extends React.Component {
 
   /**
    * Render

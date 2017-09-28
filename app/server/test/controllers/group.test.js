@@ -180,6 +180,34 @@ describe('Group Endpoint', () => {
         });
     });
 
+    it('should return status 400 for invalid group id', (done) => {
+      chai.request(app).post('/api/v1/groups/vfff/message')
+        .set('x-access-token', token)
+        .send({})
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('Invalid group id');
+          done();
+        });
+    });
+
+    it('should return status 404 if specified group does not exist', (done) => {
+      const message = {
+        message: 'Test Message',
+        priority: 'normal'
+      };
+      chai.request(app).post('/api/v1/groups/11/message')
+        .set('x-access-token', token)
+        .send(message)
+        .end((err, res) => {
+          res.status.should.equal(404);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('Group does not exist');
+          done();
+        });
+    });
+
     it('should successfully send specified message to group', (done) => {
       const message = {
         message: 'Test Message',
