@@ -26,7 +26,7 @@ class MessageBody extends React.Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.updateMessageDetails = this.updateMessageDetails.bind(this);
-    this.onMessageClick = this.onMessageClick.bind(this);
+    this.handleBackClick = this.handleBackClick.bind(this);
   }
 
 
@@ -45,7 +45,7 @@ class MessageBody extends React.Component {
   *
   * @returns {void} null
   */
-  onMessageClick() {
+  handleBackClick() {
     this.props.history.push(`/message-board/${localStorage.getItem('groupId')}`);
     localStorage.removeItem('groupId');
   }
@@ -154,7 +154,7 @@ class MessageBody extends React.Component {
             </div>
 
             <div className="col s12 m10 offset-m1">
-              <button onClick={this.onMessageClick}>Back</button>
+              <button onClick={this.handleBackClick}>Back</button>
             </div>
           </div>
 

@@ -28,8 +28,9 @@ class MessageItem extends React.Component {
     super(props);
 
     this.state = {
-      messageStatus: 'unread',
-      filteredMessages: [],
+      messageStatus: '',
+      unreadMsgs: [],
+      archivedMsgs: [],
       currentPage: 1,
       messagesPerPage: 5
     };
@@ -41,26 +42,23 @@ class MessageItem extends React.Component {
     this.updatePageNumber = this.updatePageNumber.bind(this);
   }
 
+
+  /**
+  * Sets messageStatus in state to 'unread'
+  *
+  * @returns {void} null
+  */
+  componentWillMount() {
+    this.setState({ messageStatus: 'unread' });
+  }
+
   /**
    * Fetches messages and filters them as unread/read and archived
    *
    * @returns {void} null
    */
   componentDidMount() {
-    this.mounted = true;
-    const mappedMessages = mapKeys(this.props.messages, 'group');
-    const groupId = Object.keys(mappedMessages)[0];
-    this.props.getGroupMessagesCount(groupId).then(
-      (response) => {
-        if (this.mounted) {
-          this.filterMessages(response.data.messages);
-        }
-      }
-    );
-  }
-
-  componentWillUnmount() {
-    this.mounted = false;
+    this.filterMessages(this.props.messages);
   }
 
   /**
@@ -71,14 +69,7 @@ class MessageItem extends React.Component {
    * @returns {void} null
    */
   onCategorySelect(event) {
-    this.setState({ [event.target.name]: event.target.value });
-    const mappedMessages = mapKeys(this.props.messages, 'group');
-    const groupId = Object.keys(mappedMessages)[0];
-    this.props.getGroupMessagesCount(groupId).then(
-      (response) => {
-        this.filterMessages(response.data.messages);
-      }
-    );
+    this.setState({ messageStatus: event.target.value });
   }
 
 
@@ -102,21 +93,17 @@ class MessageItem extends React.Component {
    * @returns {void} null
    */
   filterMessages(messages) {
-    const filteredMessages = [];
+    const unreadMsgs = [];
+    const archivedMsgs = [];
     messages.map((message) => {
-      if (this.state.messageStatus === 'unread') {
-        if (!includes(message.isArchived, this.props.authenticatedUsername)) {
-          filteredMessages.push(message);
-        }
+      if (!includes(message.isArchived, this.props.authenticatedUsername)) {
+        unreadMsgs.push(message);
       }
-
-      if (this.state.messageStatus === 'archived') {
-        if (includes(message.isArchived, this.props.authenticatedUsername)) {
-          filteredMessages.push(message);
-        }
+      if (includes(message.isArchived, this.props.authenticatedUsername)) {
+        archivedMsgs.push(message);
       }
     });
-    this.setState({ filteredMessages });
+    this.setState({ unreadMsgs, archivedMsgs });
   }
 
 
@@ -168,12 +155,17 @@ class MessageItem extends React.Component {
    * @returns {ReactElement} Markup for a single message item
    */
   render() {
+    let filteredMessages;
     const { authenticatedUsername } = this.props;
     const {
-      filteredMessages,
       messagesPerPage,
       currentPage,
       messageStatus } = this.state;
+    if (this.state.messageStatus === 'unread') {
+      filteredMessages = this.state.unreadMsgs;
+    } else {
+      filteredMessages = this.state.archivedMsgs;
+    }
 
     const ArchiveBtn = (props) => {
       if (!includes(props.message.isArchived, authenticatedUsername)) {
@@ -272,7 +264,7 @@ class MessageItem extends React.Component {
                     className="msg_body"
                     data-id={this.props.match.params.groupId}
                     onClick={(event) => {
-                      this.props.history.push(`/message/${message.id}`)
+                      this.props.history.push(`/message/${message.id}`);
                       localStorage.setItem('groupId', event.target.dataset.id);
                     }}
                   >

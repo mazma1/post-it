@@ -38,7 +38,6 @@ export class Sidebar extends React.Component {
    */
   constructor(props) {
     super(props);
-
     this.state = {
       isOpen: false,
       newGroup: '',
@@ -68,6 +67,7 @@ export class Sidebar extends React.Component {
           this.props.setSelectedGroup({});
         } else {
           const groupId = this.props.match.params.groupId;
+          this.getUnreadCount(this.props.userGroups.groups);
           if (groupId) {
             const mappedGroups = mapKeys(this.props.userGroups.groups, 'id');
             const currentGroup = mappedGroups[groupId];
@@ -81,15 +81,6 @@ export class Sidebar extends React.Component {
     .catch((error) => {
       toastr.error('Unable to load groups, please try again later');
     });
-  }
-
-  /**
-  * Gets the number of unread messgages a user has in a group
-  *
-  * @returns {void} null
-  */
-  componentDidMount() {
-    this.getUnreadCount();
   }
 
 
@@ -133,37 +124,29 @@ export class Sidebar extends React.Component {
    *
    * @returns {void} null
    */
-  getUnreadCount() {
+  getUnreadCount(groups) {
     const groupsWithNotification = [];
-    const { id, username } = this.props.signedInUser.user;
-
-    this.props.getUserGroups(id).then(
-      () => {
-        if (!this.props.userGroups.isLoading) {
-          const groups = this.props.userGroups.groups;
-          if (!isEmpty(groups)) {
-            groups.map(group => this.props.getGroupMessagesCount(group.id)
-              .then(
-                (res) => {
-                  let unreadCount = 0;
-                  res.data.messages.map((message) => {
-                    if (!message.readBy.split(',').includes(username)) {
-                      unreadCount += 1;
-                    }
-                  });
-                  groupsWithNotification.push({
-                    id: group.id,
-                    name: group.name,
-                    unreadCount
-                  });
-                  this.setState({ groups: groupsWithNotification });
-                }
-              )
-            );
+    const { username } = this.props.signedInUser.user;
+    if (!isEmpty(groups)) {
+      groups.map(group => this.props.getGroupMessagesCount(group.id)
+        .then(
+          (res) => {
+            let unreadCount = 0;
+            res.data.messages.map((message) => {
+              if (!message.readBy.split(',').includes(username)) {
+                unreadCount += 1;
+              }
+            });
+            groupsWithNotification.push({
+              id: group.id,
+              name: group.name,
+              unreadCount
+            });
+            this.setState({ groups: groupsWithNotification });
           }
-        }
-      }
-    );
+        )
+      );
+    }
   }
 
 
