@@ -20,6 +20,10 @@ export function userSignInRequest(userData) {
     });
 }
 
+export function verifyToken(token) {
+  return dispatch => axios.get('/api/v1/users/verifytoken');
+}
+
 
 /**
    * Informs reducers that the request to sign in user finished successfully

@@ -32,7 +32,7 @@ export default (state = initialState.userGroups, action = {}) => {
     case FETCH_USER_GROUPS_FAILURE:
       return {
         isLoading: false,
-        error: action.error
+        error: action.error.response.data.error
       };
 
     case SUBMIT_NEW_GROUP_FAILURE:
