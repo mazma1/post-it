@@ -9,6 +9,7 @@ import Client from './components/Client';
 
 require('bootstrap-loader');
 require('materialize-loader');
+require('../../node_modules/toastr/build/toastr.min.css');
 require('./static/scss/style.scss');
 require('../client/static/img/index-bg.png');
 
