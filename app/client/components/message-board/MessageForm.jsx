@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { postNewMessage } from '../../actions/groupMessages';
 
 /** Message Input Form component for message board */
-export class MsgForm extends React.Component {
+export class MessageForm extends React.Component {
 
   /**
    * Constructor
@@ -184,11 +184,11 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-MsgForm.propTypes = {
+MessageForm.propTypes = {
   groupId: PropTypes.number.isRequired,
   postNewMessage: PropTypes.func.isRequired,
   selectedGroup: PropTypes.object.isRequired,
   username: PropTypes.string.isRequired
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MsgForm);
+export default connect(mapStateToProps, mapDispatchToProps)(MessageForm);

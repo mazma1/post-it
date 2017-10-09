@@ -26,7 +26,6 @@ export default function (ComposedComponent) {
           (res) => {
             if (res.status === 200) {
               this.setState({ validToken: true });
-              return this.props.history.push('/message-board');
             }
           },
           ({ response }) => {

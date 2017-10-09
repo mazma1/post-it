@@ -1,4 +1,3 @@
-import includes from 'lodash/includes';
 import Nexmo from 'nexmo';
 import models from '../models';
 import sendEmail from '../../utils/sendEmail';
@@ -158,7 +157,6 @@ export default {
               messageBody: message.body
             });
             if (req.body.priority === 'urgent' || req.body.priority === 'critical') {
-              // get users email and send email
               models.Group.findOne({
                 where: { id: messageDetail.groupId },
                 attributes: ['groupName'],
@@ -180,7 +178,6 @@ export default {
                   };
                   sendEmail(emailParams);
 
-                  // get users number and send sms
                   if (req.body.priority === 'critical') {
                     const nexmo = new Nexmo({
                       apiKey: process.env.NEXMO_KEY,
@@ -240,7 +237,9 @@ export default {
         if (messages) {
           res.status(200).send({ messages });
         } else {
-          res.status(404).send({ message: 'No message was found for the specified group' });
+          res.status(404).send({
+            message: 'No message was found for the specified group'
+          });
         }
       })
       .catch(error => res.status(500).send(error.message));

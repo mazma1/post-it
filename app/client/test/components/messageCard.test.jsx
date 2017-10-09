@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { MessageCard } from '../../components/message-board/MsgCard';
+import { MessageCard } from '../../components/message-board/MessageCard';
 import { MessageItem } from '../../components/message-board/MessageItem';
 import Dashboard from '../../components/Dashboard';
 import mockLocalStorage from '../mockLocalStorage';
@@ -9,19 +9,19 @@ Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
 
 describe('<MessageCard />', () => {
   let props;
-  let mountedMsgCard;
+  let mountedMessageCard;
 
   const event = {
     preventDefault: jest.fn()
   };
   const clickedMsgProps = { id: 1 };
   const messageCard = () => {
-    if (!mountedMsgCard) {
-      mountedMsgCard = shallow(
+    if (!mountedMessageCard) {
+      mountedMessageCard = shallow(
         <MessageCard {...props} />
       );
     }
-    return mountedMsgCard;
+    return mountedMessageCard;
   };
 
   beforeEach(() => {
@@ -34,7 +34,7 @@ describe('<MessageCard />', () => {
       selectedGroup: {},
       history: { push: jest.fn() }
     };
-    mountedMsgCard = undefined;
+    mountedMessageCard = undefined;
     props.authenticatedUsername = 'mazma';
     props.updateReadStatus = jest.fn(() => Promise.resolve());
   });

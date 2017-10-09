@@ -9,7 +9,7 @@ import toastr from 'toastr';
 import lodashSplit from 'lodash/split';
 import mapKeys from 'lodash/mapKeys';
 import includes from 'lodash/includes';
-import MessageForm from './MsgForm';
+import MessageForm from './MessageForm';
 import {
   getGroupMessagesCount,
   archiveMessage } from '../../actions/groupMessages';

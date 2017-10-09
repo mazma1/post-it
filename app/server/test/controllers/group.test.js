@@ -192,6 +192,20 @@ describe('Group Endpoint', () => {
         });
     });
 
+    it('should return status 401 if user does not belong to group', (done) => {
+      const token1 = jwt.sign({ data: { id: 2 } }, process.env.TOKEN_SECRET, { expiresIn: '24hr' });
+      const message = 'Hello';
+      chai.request(app).post('/api/v1/groups/6/message')
+        .set('x-access-token', token1)
+        .send({ message })
+        .end((err, res) => {
+          res.status.should.equal(401);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('You don\'t belong to this group');
+          done();
+        });
+    });
+
     it('should return status 404 if specified group does not exist', (done) => {
       const message = {
         message: 'Test Message',
@@ -211,7 +225,7 @@ describe('Group Endpoint', () => {
     it('should successfully send specified message to group', (done) => {
       const message = {
         message: 'Test Message',
-        priority: 'normal'
+        priority: 'critical'
       };
       chai.request(app).post('/api/v1/groups/2/message')
         .set('x-access-token', token)
@@ -246,7 +260,7 @@ describe('Group Endpoint', () => {
           res.body.should.have.property('messages').with.lengthOf(4);
           res.body.messages.should.be.a('array');
           res.body.messages[0].should.have.property('message').eql('Test Message');
-          res.body.messages[0].should.have.property('priority').eql('normal');
+          res.body.messages[0].should.have.property('priority').eql('critical');
           res.body.messages[0].should.have.property('sentBy').should.be.a('object');
           res.body.messages[0].sentBy.should.have.property('username').eql('mazma');
           done();

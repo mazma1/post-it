@@ -1,16 +1,16 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { MsgForm } from '../../components/message-board/MsgForm';
+import { MessageForm } from '../../components/message-board/MessageForm';
 
-describe('<MsgForm', () => {
-  let mountedMsgForm;
-  const msgForm = () => {
-    if (!mountedMsgForm) {
-      mountedMsgForm = shallow(
-        <MsgForm {...props} />
+describe('<MessageForm', () => {
+  let mountedMessageForm;
+  const messageForm = () => {
+    if (!mountedMessageForm) {
+      mountedMessageForm = shallow(
+        <MessageForm {...props} />
       );
     }
-    return mountedMsgForm;
+    return mountedMessageForm;
   };
   const props = {
     postNewMessage: jest.fn(),
@@ -30,34 +30,34 @@ describe('<MsgForm', () => {
 
   it('should mount with onChange()', () => {
     const event = { target: { messageInput: 'Hello' } };
-    const onChangeSpy = jest.spyOn(msgForm().instance(), 'onChange');
-    msgForm().instance().onChange(event);
+    const onChangeSpy = jest.spyOn(messageForm().instance(), 'onChange');
+    messageForm().instance().onChange(event);
     expect(onChangeSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should mount with onSelect()', () => {
     const event = { target: { priority: 'normal' } };
-    const onSelectSpy = jest.spyOn(msgForm().instance(), 'onSelect');
-    msgForm().instance().onSelect(event);
+    const onSelectSpy = jest.spyOn(messageForm().instance(), 'onSelect');
+    messageForm().instance().onSelect(event);
     expect(onSelectSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should mount with onMessageSend()', () => {
     const event = { preventDefault: jest.fn() };
-    const onMessageSendSpy = jest.spyOn(msgForm().instance(), 'onMessageSend');
-    msgForm().instance().onMessageSend(event);
+    const onMessageSendSpy = jest.spyOn(messageForm().instance(), 'onMessageSend');
+    messageForm().instance().onMessageSend(event);
     expect(onMessageSendSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should always render the message form when there is an active group', () => {
-    expect(msgForm().find('footer').hasClass('footer')).toBe(true);
-    expect(msgForm().find('[name="messageInput"]').length).toBe(1);
+    expect(messageForm().find('footer').hasClass('footer')).toBe(true);
+    expect(messageForm().find('[name="messageInput"]').length).toBe(1);
   });
 
   it('should call onMessageSend() when the message send button is clicked', () => {
-    const sendButton = msgForm().find('a');
+    const sendButton = messageForm().find('a');
     const event = { preventDefault: jest.fn() };
-    const onMessageSendSpy = jest.spyOn(msgForm().instance(), 'onMessageSend');
+    const onMessageSendSpy = jest.spyOn(messageForm().instance(), 'onMessageSend');
     expect(sendButton.length).toBe(1);
 
     sendButton.simulate('click', event);
@@ -68,9 +68,9 @@ describe('<MsgForm', () => {
     const targetMock = {
       target: { priority: 'urgent' },
     };
-    const onSelectSpy = jest.spyOn(msgForm().instance(), 'onSelect');
+    const onSelectSpy = jest.spyOn(messageForm().instance(), 'onSelect');
 
-    msgForm().find('select').simulate('change', targetMock);
+    messageForm().find('select').simulate('change', targetMock);
     expect(onSelectSpy).toBeCalledWith(targetMock);
   });
 });

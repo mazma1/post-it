@@ -97,7 +97,7 @@ export class Sidebar extends React.Component {
   onChange(event) {
     this.setState({
       error: {},
-      // [event.target.name]: event.target.value
+      [event.target.name]: event.target.value
     });
   }
 

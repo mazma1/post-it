@@ -1,6 +1,8 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import jwt from 'jsonwebtoken';
+import sinon from 'sinon';
+import models from '../../models';
 import app from '../../app';
 
 const should = chai.should();
@@ -45,14 +47,31 @@ describe('Message Endpoint', () => {
     });
 
     // Bad Request
-    it('should return status 500 for internal server error', (done) => {
-      chai.request(app).patch('/api/v1/messages/:message_id/read')
-        .set('x-access-token', token)
-        .send({ read: 'mazma', username: 'mazma' })
-        .end((err, res) => {
-          res.status.should.equal(500);
-          done();
-        });
+    describe('internal server error', () => {
+      let stubFindOne;
+
+      beforeEach((done) => {
+        stubFindOne = sinon.stub(models.Message, 'update')
+          .callsFake(() => Promise.reject({ message: 'Internal server error' }));
+        done();
+      });
+
+      afterEach((done) => {
+        stubFindOne.restore();
+        done();
+      });
+
+      it('should return status 500', (done) => {
+        chai.request(app).patch('/api/v1/messages/1/read')
+          .set('x-access-token', token)
+          .type('form')
+          .send({ read: 'mazma', username: 'mary' })
+          .end((err, res) => {
+            res.error.status.should.equal(500);
+            res.error.text.should.equal('Internal server error');
+            done();
+          });
+      });
     });
   });
 
@@ -68,6 +87,34 @@ describe('Message Endpoint', () => {
           res.body.should.have.property('message').eql('Message successfully archived');
           done();
         });
+    });
+
+    // Bad Request
+    describe('internal server error', () => {
+      let stubFindOne;
+
+      beforeEach((done) => {
+        stubFindOne = sinon.stub(models.Message, 'findOne')
+          .callsFake(() => Promise.reject({ message: 'Internal server error' }));
+        done();
+      });
+
+      afterEach((done) => {
+        stubFindOne.restore();
+        done();
+      });
+
+      it('should return status 500', (done) => {
+        chai.request(app).patch('/api/v1/messages/1/archive')
+          .set('x-access-token', token)
+          .type('form')
+          .send({ username: 'clare' })
+          .end((err, res) => {
+            res.error.status.should.equal(500);
+            res.error.text.should.equal('Internal server error');
+            done();
+          });
+      });
     });
   });
 });

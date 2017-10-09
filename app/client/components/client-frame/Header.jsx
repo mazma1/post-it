@@ -7,7 +7,7 @@ import toastr from 'toastr';
 import $ from 'jquery';
 import ModalFrame from '../modal/ModalFrame';
 import GroupMembersTable from '../tables/GroupMembersTable';
-import { logout } from '../../actions/signIn.js';
+import { logout } from '../../actions/signIn';
 import setSelectedGroup from '../../actions/setSelectedGroup';
 import { setGroupMessages } from '../../actions/groupMessages';
 import { submitNewUser } from '../../actions/groupMembers';
@@ -131,7 +131,6 @@ export class Header extends React.Component {
     );
   }
 
-  
   /**
    * Logs a user out
    *

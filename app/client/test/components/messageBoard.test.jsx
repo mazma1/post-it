@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import MessageBoard from '../../components/message-board/MessageBoard';
-import MessageCard from '../../components/message-board/MsgCard';
+import MessageCard from '../../components/message-board/MessageCard';
 import ClientFrame from '../../components/client-frame/ClientFrame';
 
 let mountedMessageBoard;

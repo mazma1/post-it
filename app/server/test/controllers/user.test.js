@@ -2,6 +2,8 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
+import sinon from 'sinon';
+import models from '../../models';
 import app from '../../app';
 
 const should = chai.should();
@@ -504,7 +506,6 @@ describe('User Endpoint', () => {
         });
     });
 
-    // describe('status 401', () => {
     it('should return status 401 for invalid identifier (email or username)', (done) => {
       const user = {
         identifier: 'mary1',
@@ -554,6 +555,37 @@ describe('User Endpoint', () => {
           res.body.should.have.property('password').eql('This field is required');
           done();
         });
+    });
+
+    describe('internal server error', () => {
+      let stubFindOne;
+
+      beforeEach((done) => {
+        stubFindOne = sinon.stub(models.User, 'findOne')
+          .callsFake(() => Promise.reject({ message: 'Internal server error' }));
+        done();
+      });
+
+      afterEach((done) => {
+        stubFindOne.restore();
+        done();
+      });
+
+      it('should return status 500', (done) => {
+        const user = {
+          identifier: 'maryx',
+          password: '123456'
+        };
+        chai.request(app)
+          .post('/api/v1/users/signin')
+          .type('form')
+          .send(user)
+          .end((err, res) => {
+            res.error.status.should.equal(500);
+            res.error.text.should.equal('Internal server error');
+            done();
+          });
+      });
     });
   });
 
@@ -632,7 +664,20 @@ describe('User Endpoint', () => {
         });
     });
 
-    it('should generate a hash token that will be sent to user', (done) => {
+    it('should return status 404 if user does not exist', (done) => {
+      chai.request(app)
+        .post('/api/v1/users/resetpassword')
+        .type('form')
+        .send({ email: 'abc@email.com' })
+        .end((err, res) => {
+          res.status.should.equal(404);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('User does not exist');
+          done();
+        });
+    });
+
+    it('should send a hash token to user', (done) => {
       chai.request(app)
         .post('/api/v1/users/resetpassword')
         .type('form')
@@ -640,7 +685,52 @@ describe('User Endpoint', () => {
         .end((err, res) => {
           res.status.should.equal(200);
           res.body.should.be.a('object');
-          res.body.should.have.property('resetPasswordHash');
+          res.body.should.have.property('message').eql('Email sent');
+          done();
+        });
+    });
+  });
+
+  describe('POST /api/v1/users/newpassword', () => {
+    it('should return status 400 if token is missing', (done) => {
+      chai.request(app)
+        .post('/api/v1/users/newpassword')
+        .type('form')
+        .send()
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('Reset password token is required');
+          done();
+        });
+    });
+  });
+
+  describe('Mocked POST /api/v1/users/newpassword', () => {
+    let stubFindOne;
+    beforeEach((done) => {
+      stubFindOne = sinon.stub(models.ForgotPassword, 'findOne')
+        .callsFake(() => Promise.resolve({
+          hash: 'resetPassword',
+          expiry_time: Date.now(),
+          message: 'Token is valid' }));
+      done();
+    });
+
+    afterEach((done) => {
+      stubFindOne.restore();
+      done();
+    });
+
+    it('should return status 200 if token is valid', (done) => {
+      chai.request(app)
+        .post('/api/v1/users/newpassword')
+        .type('form')
+        .send({ token: 'resetPassword' })
+        .end((err, res) => {
+          res.status.should.equal(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('Token is valid');
           done();
         });
     });

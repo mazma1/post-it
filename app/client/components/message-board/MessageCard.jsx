@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import MessageItem from '../message-board/MessageItem';
-import MessageForm from './MsgForm';
+import MessageForm from './MessageForm';
 import Dashboard from '../Dashboard';
 import {
   updateReadStatus,
