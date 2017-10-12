@@ -54,7 +54,7 @@ export default {
 
   /**
    * Adds a user to a group
-   * Route: POST: /api/v1/groups
+   * Route: POST: /api/v1/groups/:group_id/user
    *
    * @param {any} req
    * @param {any} res

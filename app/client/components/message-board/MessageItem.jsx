@@ -264,7 +264,8 @@ export class MessageItem extends React.Component {
                     className="msg_body"
                     data-id={this.props.match.params.groupId}
                     onClick={(event) => {
-                      this.props.history.push(`/message/${message.id}`);
+                      const groupId = event.target.dataset.id;
+                      this.props.history.push(`/message-board/${groupId}/message/${message.id}`);
                       localStorage.setItem('groupId', event.target.dataset.id);
                     }}
                   >

@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import mapKeys from 'lodash/mapKeys';
+import find from 'lodash/find';
 import PropTypes from 'prop-types';
 import { updateReadStatus } from '../../actions/groupMessages';
 import ClientFrame from '../client-frame/ClientFrame';
@@ -36,7 +37,9 @@ export class MessageBody extends React.Component {
    * @returns {void}
    */
   componentDidMount() {
-    this.updateMessageDetails();
+    if (this.props.messages.length > 0) {
+      this.updateMessageDetails();
+    }
   }
 
 
@@ -108,9 +111,9 @@ export class MessageBody extends React.Component {
    * @returns {ReactElement} Full message markup
    */
   render() {
-    const mappedMessages = mapKeys(this.props.messages, 'id');
-    const clickedMessage = mappedMessages[this.state.messageId];
-
+    const { messages } = this.props;
+    const clickedMessage = find(messages, message => message.id === parseInt(
+      this.state.messageId, 10));
     return (
       <ClientFrame>
         <div>
@@ -119,11 +122,11 @@ export class MessageBody extends React.Component {
               <div className="card">
                 <div className="card-content">
                   <span className="card-title">
-                    @{clickedMessage.sentBy.username}:
+                    {(messages.length > 0) ? clickedMessage.sentBy.username : null}
                   </span>
                   <hr />
                   <h6 className="message-content full-msg">
-                    {clickedMessage.message}
+                    {(messages.length > 0) ? clickedMessage.message : null}
                   </h6>
                 </div>
 
@@ -163,7 +166,10 @@ export class MessageBody extends React.Component {
             <ModalHeader header="Message Read By" onClose={this.closeModal} />
 
             <div className="modal-body">
-              <ReadByTable messageId={Number(this.state.messageId)} messages={this.props.messages} />
+              <ReadByTable
+                messageId={Number(this.state.messageId)}
+                messages={this.props.messages}
+              />
             </div>
 
             <ModalFooter>
