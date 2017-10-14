@@ -193,11 +193,10 @@ export class Header extends React.Component {
 
               <div className="col-md-9 col-sm-7 col-xs-8 mobile-stack">
                 <ul className="cta">
-                  <li>
-                    <span className="search-icon">
-                      <i className="material-icons">search</i>
-                    </span>
-                  </li>
+                  <SearchBtn
+                    onSearchClick={this.onSearchClick}
+                    selectedGroup={selectedGroup}
+                  />
                   <li className="username">
                     <i className="glyphicon glyphicon-user" />
                      @{username}

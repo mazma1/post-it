@@ -74,6 +74,7 @@ export class HomePage extends React.Component {
                         <img
                           src="../../dist/img/google.jpg"
                           alt="no-img"
+                          className="google-icon"
                           style={{ display: 'inline', width: '20%' }}
                         />
                       </span>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import toastr from 'toastr';
 import { withRouter, Link } from 'react-router-dom';
-import validateInput from '../../../utils/signupValidation';
+import validateInput from '../../../server/utils/signupValidation';
 import TextField from '../common/FormTextField';
 
 /** SignupForm component */

@@ -1,6 +1,6 @@
 import Nexmo from 'nexmo';
 import models from '../models';
-import sendEmail from '../../utils/sendEmail';
+import sendEmail from '../utils/sendEmail';
 
 
 export default {

@@ -34,8 +34,12 @@
     ]
   },
   "scripts": {
-    "postinstall": "webpack -p --config ./webpack.config.prod.js",
-    "start": "babel-node -- app/server/bin/www",
+    "build:client": "webpack -p --config ./webpack.config.prod.js",
+    "build:server": "rimraf app/server/dist/ && babel ./app/server --out-dir ./app/server/dist/ --ignore ./test --copy-files",
+    "build": "concurrently \"npm run build:server\" \"npm run build:client\"",
+    "production": "NODE_ENV=production npm run build",
+    "postinstall": "npm run production",
+    "start": "node app/server/dist/bin/www",
     "start:dev": "nodemon --exec babel-node ./app/server/bin/www --ignore ./app/client",
     "rebuild:testdb": "NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate",
     "seed:testdb": "NODE_ENV=test sequelize db:seed:all",
@@ -110,6 +114,7 @@
     "bootstrap-loader": "^2.1.0",
     "bootstrap-sass": "^3.3.7",
     "classnames": "^2.2.5",
+    "concurrently": "^3.5.0",
     "config": "^1.26.1",
     "css-loader": "^0.28.4",
     "dotenv": "^4.0.0",

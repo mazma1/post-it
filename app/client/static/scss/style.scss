@@ -26,6 +26,10 @@ body {
   height: 100%;
 }
 
+i.glyphicon.glyphicon-user {
+  padding-right: 5px;
+}
+
 // Start: Mobile Sidebar Navigation
 // aside.navbar-default.mobile-navbar {
   #sidebar {
@@ -512,7 +516,7 @@ section.cards {
 
 @media screen and (max-width: 1284px) and (min-width: 1200px) {
   .footer {
-    width: 75%;
+    width: 76%;
   }
   .col-lg-11 {
     width: 92%;
@@ -935,11 +939,13 @@ div.row .message-card {
 }
 
 .msg-filter {
-  padding-top: 90px;
+  // padding-top: 90px;
   margin-top: 17px;
-  width: 97%;
-  margin-left: 12px;
-  height: 30px;
+  width: 93%;
+  margin-left: 14px;
+  // height: 30px;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
 
 select.browser-default.msg-filter {
@@ -1016,8 +1022,8 @@ select.browser-default.msg-filter {
 }
 
 .google-icon {
-  margin-left: -36px;
-  margin-right: 30px;
+  margin-left: -16px;
+  margin-right: 17px;
 }
 
 .google-btn {
@@ -1029,4 +1035,75 @@ select.browser-default.msg-filter {
 
 button.google-btn:hover {
   color: whitesmoke;
+}
+
+@media screen and (max-width: 1239px) and (min-width: 1024px) {
+  .google-btn {
+    font-size: 14px;
+  }
+
+  .google-icon {
+    margin-left: -20px;
+    margin-right: 13px;
+  }
+}  
+
+@media screen and (max-width: 1023px) and (min-width: 769px) {
+  .google-btn {
+    font-size: 10px;
+    height: 40px;
+  }
+
+  .google-icon {
+    margin-left: -13px;
+    margin-right: 13px;
+  }
+}  
+
+@media screen and (max-width: 768px) and (min-width: 555px) {
+  .google-btn {
+    font-size: 10px;
+    height: 40px;
+  }
+
+  .google-icon {
+    margin-left: -14px;
+    margin-right: 15px;
+  }
+} 
+
+@media screen and (max-width: 554px) {
+  .google-btn {
+    font-size: 7px;
+    height: 40px;
+  }
+
+  .google-icon {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  span.search-icon i.material-icons {
+    font-size: 5px;
+    padding-top: 0;
+  }
+  .priority-container {
+    display: none;
+  }
+  i.glyphicon.glyphicon-search {
+    padding-right: 5px;
+  }
+}
+
+@media screen and (max-width: 1024px) and (min-width: 426px) {
+  footer.footer {
+    padding-right: 0;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .msg-filter {
+    width: 97%;
+  }
 }

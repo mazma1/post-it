@@ -8,5 +8,5 @@ import axios from 'axios';
   * @returns {response} request response
   */
 export default function userSignUpRequest(userData) {
-  return dispatch => axios.post('/api/v1/users/signup', userData);
+  return () => axios.post('/api/v1/users/signup', userData);
 }

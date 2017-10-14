@@ -4,7 +4,7 @@ import {
   FETCHING_USER_GROUPS,
   FETCH_USER_GROUPS_FAILURE,
   SUBMIT_NEW_GROUP_FAILURE } from '../actions/types';
-import initialState from '../../utils/initialState';
+import initialState from '../utils/initialState';
 
 
 /**

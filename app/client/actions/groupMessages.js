@@ -57,7 +57,7 @@ export function postNewMessage({ priority, groupId, message, readBy }) {
    * @returns {response} request response
    */
 export function getGroupMessagesCount(groupId) {
-  return dispatch => axios.get(`/api/v1/groups/${groupId}/messages`)
+  return () => axios.get(`/api/v1/groups/${groupId}/messages`)
     .catch(error => (error));
 }
 
@@ -87,7 +87,7 @@ export function updateReadStatus(messageParams) {
    * @returns {response} request response
    */
 export function archiveMessage({ messageId }) {
-  return dispatch => axios.patch(`/api/v1/messages/${messageId}/archive`, messageId)
+  return () => axios.patch(`/api/v1/messages/${messageId}/archive`, messageId)
     .catch(error => (error));
 }
 

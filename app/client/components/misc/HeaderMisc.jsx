@@ -2,7 +2,7 @@ import React from 'react';
 import isEmpty from 'lodash/isEmpty';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import checkGroupnameLength from '../../../utils/checkGroupNameLength';
+import checkGroupnameLength from '../../utils/checkGroupNameLength';
 
 export const AddUserBtn = (props) => {
   if (isEmpty(props.selectedGroup)) {

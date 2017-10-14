@@ -1,7 +1,7 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import { SET_CURRENT_USER, DELETE_CURRENT_USER } from './types';
-import setAuthorizationToken from '../../utils/setAuthorizationToken';
+import setAuthorizationToken from '../utils/setAuthorizationToken';
 
 /**
   * Makes request to sign in a user
@@ -30,8 +30,8 @@ export function googleSignIn(tokenId) {
     });
 }
 
-export function verifyToken(token) {
-  return dispatch => axios.get('/api/v1/users/verifytoken');
+export function verifyToken() {
+  return () => axios.get('/api/v1/users/verifytoken');
 }
 
 

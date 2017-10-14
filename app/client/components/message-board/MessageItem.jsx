@@ -208,7 +208,7 @@ export class MessageItem extends React.Component {
     return (
       <div>
         <select
-          className="browser-default msg-filter"
+          className="browser-default msg-filter form-control"
           name="messageStatus"
           onChange={this.onCategorySelect}
           value={this.state.messageStatus}

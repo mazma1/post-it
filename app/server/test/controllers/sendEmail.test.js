@@ -1,6 +1,6 @@
 import chai from 'chai';
 import app from '../../app';
-import sendEmail from '../../../utils/sendEmail';
+import sendEmail from '../../utils/sendEmail';
 
 const should = chai.should();
 

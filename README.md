@@ -61,3 +61,6 @@ This project is open for contributions. All contributions must adhere to the Air
 2. Fork the repository
 3. Implement the said feature
 4. Raise a pull request to the development branch
+
+## License
+[MIT](https://github.com/mazma1/post-it/blob/chore/implement-feedback/LICENSE)

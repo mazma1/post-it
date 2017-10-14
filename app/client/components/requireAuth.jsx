@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import toastr from 'toastr';
-import { verifyToken } from '../client/actions/signIn';
+import { verifyToken } from '../actions/signIn';
 
 export default function (ComposedComponent) {
   class Authenticate extends React.Component {

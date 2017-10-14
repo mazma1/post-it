@@ -5,9 +5,9 @@ import isEmpty from 'lodash/isEmpty';
 import crypto from 'crypto';
 import GoogleAuth from 'google-auth-library';
 import models from '../models';
-import validateSignup from '../../utils/signupValidation';
-import sendEmail from '../../utils/sendEmail';
-import pagination from '../../utils/pagination';
+import validateSignup from '../utils/signupValidation';
+import sendEmail from '../utils/sendEmail';
+import pagination from '../utils/pagination';
 
 const saltRounds = 7;
 const salt = bcrypt.genSaltSync(saltRounds);

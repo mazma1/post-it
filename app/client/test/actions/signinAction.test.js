@@ -4,7 +4,7 @@ import nock from 'nock';
 import * as actions from '../../../client/actions/signIn';
 import * as types from '../../actions/types';
 import mockLocalStorage from '../mockLocalStorage';
-import setAuthorizationToken from '../../../utils/setAuthorizationToken';
+import setAuthorizationToken from '../../utils/setAuthorizationToken';
 
 Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
 

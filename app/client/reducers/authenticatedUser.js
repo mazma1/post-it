@@ -1,6 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 import { SET_CURRENT_USER, DELETE_CURRENT_USER } from '../actions/types';
-import initialState from '../../utils/initialState';
+import initialState from '../utils/initialState';
 
 
 /**

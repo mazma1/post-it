@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import jwt from 'jsonwebtoken';
 import configureStore from './store/configureStore';
-import setAuthorizationToken from '../utils/setAuthorizationToken';
+import setAuthorizationToken from './utils/setAuthorizationToken';
 import { setCurrentUser } from './actions/signIn';
 import Client from './components/Client';
 
@@ -12,6 +12,7 @@ require('materialize-loader');
 require('../../node_modules/toastr/build/toastr.min.css');
 require('./static/scss/style.scss');
 require('../client/static/img/index-bg.png');
+require('../client/static/img/google.jpg');
 
 
 // Define Redux Store

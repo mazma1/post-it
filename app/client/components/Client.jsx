@@ -9,7 +9,7 @@ import NewPassword from '../components/reset-password/NewPasswordForm';
 import SearchUser from '../components/search/SearchForm';
 import MessageBody from '../components/message-board/MessageBody';
 import MessageBoard from '../components/message-board/MessageBoard';
-import requireAuth from '../../utils/requireAuth';
+import requireAuth from '../components/requireAuth';
 
 if (module.hot) {
   module.hot.accept();
