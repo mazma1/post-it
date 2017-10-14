@@ -17,7 +17,7 @@ export default function validateInput(data) {
     errors.firstName = 'First name cannot be empty';
   } else if (!isNaN(data.firstName)) {
     errors.firstName = 'First name cannot be a number';
-  } else if (!data.firstName.match(lettersRegex)) {
+  } else if (!data.firstName.trim().match(lettersRegex)) {
     errors.firstName = 'First name must contain only alphabets';
   } else if (data.firstName.length < 3) {
     errors.firstName = 'First name must be more than two letters';
@@ -31,7 +31,7 @@ export default function validateInput(data) {
     errors.lastName = 'Last name cannot be empty';
   } else if (!isNaN(data.lastName)) {
     errors.lastName = 'Last name cannot be a number';
-  } else if (!data.lastName.match(lettersRegex)) {
+  } else if (!data.lastName.trim().match(lettersRegex)) {
     errors.lastName = 'Last name must contain only alphabets';
   } else if (data.lastName.length < 3) {
     errors.lastName = 'Last name must be more than two letters';
@@ -47,7 +47,7 @@ export default function validateInput(data) {
 
   if (!data.phoneNumber) {
     errors.phoneNumber = 'This field is required';
-  } else if (isNaN(data.phoneNumber)) {
+  } else if (isNaN(data.phoneNumber.trim())) {
     errors.phoneNumber = 'Phone number must contain only numbers';
   } else {
     if (data.phoneNumber.length !== 11) {

@@ -23,7 +23,7 @@ describe('Search Action\'s', () => {
         type: types.FETCH_SEARCHED_USER_SUCCESS,
         users: [{ id: 1, name: 'mazma' }]
       };
-      const store = mockStore({ group: [] });
+      const store = mockStore({});
 
       store.dispatch(actions.searchUser({ searchQuery: 'lkjhgfds' })).then(() => {
         store.dispatch(actions.fetchSearchedUserSuccess({}));
