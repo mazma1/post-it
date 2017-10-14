@@ -141,9 +141,7 @@ export class Header extends React.Component {
   logout(event) {
     event.preventDefault();
     this.props.logout();
-    this.props.setSelectedGroup({});
-    this.props.setGroupMessages({});
-    this.props.history.push('/signin');
+    window.location.href = '/';
   }
 
 

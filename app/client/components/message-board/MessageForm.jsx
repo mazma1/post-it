@@ -188,7 +188,7 @@ MessageForm.propTypes = {
   groupId: PropTypes.number.isRequired,
   postNewMessage: PropTypes.func.isRequired,
   selectedGroup: PropTypes.object.isRequired,
-  username: PropTypes.string.isRequired
+  username: PropTypes.string
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageForm);

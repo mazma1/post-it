@@ -20,6 +20,16 @@ export function userSignInRequest(userData) {
     });
 }
 
+export function googleSignIn(tokenId) {
+  return dispatch => axios.post('/api/v1/users/googleAuth', tokenId)
+    .then((res) => {
+      const { token } = res.data;
+      localStorage.setItem('jwtToken', token);
+      setAuthorizationToken(token);
+      dispatch(setCurrentUser(jwt.decode(token)));
+    });
+}
+
 export function verifyToken(token) {
   return dispatch => axios.get('/api/v1/users/verifytoken');
 }

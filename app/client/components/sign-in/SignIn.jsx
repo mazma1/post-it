@@ -14,7 +14,7 @@ export class SignIn extends React.Component {
    * @returns {ReactElement} SignIn page markup
    */
   render() {
-    const { userSignInRequest } = this.props;
+    const { userSignInRequest, googleSignIn } = this.props;
     return (
       <div className="background">
         <div className="container">
@@ -24,7 +24,9 @@ export class SignIn extends React.Component {
                 <h5 className="center">Sign In | Post It</h5>
               </header>
 
-              <SignInForm userSignInRequest={userSignInRequest} />
+              <SignInForm
+                userSignInRequest={userSignInRequest}
+              />
             </div>
           </div>
         </div>

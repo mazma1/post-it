@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import validator from 'validator';
 import isEmpty from 'lodash/isEmpty';
 import crypto from 'crypto';
+import GoogleAuth from 'google-auth-library';
 import models from '../models';
 import validateSignup from '../../utils/signupValidation';
 import sendEmail from '../../utils/sendEmail';
@@ -130,6 +131,80 @@ export default {
     }
   },
 
+
+  /**
+   * Authenticates and logs a user in using the google API
+   * Route: POST: /api/v1/users/googleAuth
+   *
+   * @param {any} req
+   * @param {any} res
+   * @returns {response} response object
+   */
+  googleSignIn(req, res) {
+    let user;
+    const idToken = Object.keys(req.body)[0];
+    const auth = new GoogleAuth();
+    const client = new auth.OAuth2(process.env.CLIENT_ID, '', '');
+    client.verifyIdToken(idToken, process.env.CLIENT_ID, (e, login) => {
+      const payload = login.getPayload();
+      user = {
+        firstName: payload.givenName,
+        lastName: payload.familyName,
+        email: payload.email,
+        username: payload.givenName,
+        googleId: payload.sub
+      };
+
+      models.User.findOne({
+        where: {
+          $or: [
+            { googleId: user.googleId },
+            { email: user.email }
+          ]
+        },
+      }).then((user) => {
+        if (!user) {
+          const { firstName, lastName, username, email, googleId } = req.body;
+          const userData = {
+            firstName,
+            lastName,
+            username,
+            email,
+            phoneNumber: '08098765432',
+            password: bcrypt.hashSync(googleId, salt),
+            googleId
+          };
+          return models.User.create(userData).then((googleUser) => {
+            const { id } = googleUser;
+            const token = jwt.sign({
+              data: {
+                id,
+                firstName,
+                lastName,
+                username,
+                email
+              }
+            }, process.env.TOKEN_SECRET, { expiresIn: '24h' });
+            res.status(201).send({ message: 'Google sign was successful', token });
+          }).catch();
+        }
+        if (user.email) {
+          const { id, firstName, lastName, username, email } = user;
+          const token = jwt.sign({
+            data: {
+              id,
+              firstName,
+              lastName,
+              username,
+              email
+            }
+          }, process.env.TOKEN_SECRET, { expiresIn: '24h' });
+          res.status(200).send({ message: 'Google sign was successful', token });
+        }
+      }).catch();
+    });
+  },
+
   /**
    * Fetches the groups a user belongs to
    * Route: GET: /api/v1/users/:user_id/groups
@@ -190,9 +265,9 @@ export default {
             senderAddress: process.env.ADMIN_EMAIL,
             recepientAddress: user.email,
             subject: 'Reset your Post It Password',
-            emailBody: `Hello ${user.firstName} ${user.lastName}, 
-            <br><br>You recently made a request to reset your Post It password. 
-            Please click the link below to complete the process. 
+            emailBody: `Hello ${user.firstName} ${user.lastName},
+            <br><br>You recently made a request to reset your Post It password.
+            Please click the link below to complete the process.
             <br><br><a href='http://${req.headers.host}/new-password/${resetPasswordHash}'>Reset now ></a>
             <br><br>----------------------<br>
             The Post It Team`

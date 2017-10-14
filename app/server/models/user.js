@@ -42,6 +42,10 @@ export default (sequelize, DataTypes) => {
       validate: {
         notEmpty: true
       }
+    },
+    googleId: {
+      allowNull: true,
+      type: DataTypes.STRING
     }
   });
   User.associate = (models) => {
