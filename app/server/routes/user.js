@@ -12,6 +12,5 @@ router.post('/api/v1/users/newpassword', userController.validateResetPasswordTok
 router.patch('/api/v1/users/updatepassword/:token', userController.updateUserPassword);
 router.get('/api/v1/users/:user_id/groups', tokenAuth, userController.getUserGroups);
 router.get('/api/v1/users/search', tokenAuth, userController.searchForUser);
-router.get('/api/v1/users/verifytoken', tokenAuth);
 
 export default router;
