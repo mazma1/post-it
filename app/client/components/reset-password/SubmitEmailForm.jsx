@@ -7,13 +7,22 @@ import { connect } from 'react-redux';
 import TextField from '../common/FormTextField';
 import { resetLinkRequest } from '../../actions/resetPassword';
 
-/** Form for submiting email for password reset */
-export class EnterEmailForm extends React.Component {
+
+/**
+  * Displays form for submiting email for password reset
+  *
+  * @class SubmitEmailForm
+  *
+  * @extends {React.Component}
+  */
+export class SubmitEmailForm extends React.Component {
 
   /**
-   * Constructor
+   * Creates an instance of SubmitEmailForm
    *
-   * @param {object} props
+   * @param {any} props
+   *
+   * @memberof SubmitEmailForm
    */
   constructor(props) {
     super(props);
@@ -74,7 +83,7 @@ export class EnterEmailForm extends React.Component {
           <div className="row">
             <div className="card-panel col s12 m8 offset-m2 l6 offset-l3 z-depth-5 signin-card">
               <header className="auth-header pwd-reset-auth-header">
-                <h5 className="center">Request Password Reset</h5>
+                <h5 className="cSubmit">Request Password Reset</h5>
               </header>
 
               <form
@@ -114,8 +123,8 @@ export class EnterEmailForm extends React.Component {
                   </div>
                 </div>
 
-                <div className="center call-to-sign-in">
-                  <p className="center">Remember your password?
+                <div className="cSubmit call-to-sign-in">
+                  <p className="cSubmit">Remember your password?
                     <Link to="/signin"> Sign In</Link>
                   </p>
                 </div>
@@ -130,8 +139,8 @@ export class EnterEmailForm extends React.Component {
   }
 }
 
-EnterEmailForm.propTypes = {
+SubmitEmailForm.propTypes = {
   resetLinkRequest: PropTypes.func.isRequired,
 };
 
-export default connect(null, { resetLinkRequest })(EnterEmailForm);
+export default connect(null, { resetLinkRequest })(SubmitEmailForm);

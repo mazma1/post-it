@@ -20,6 +20,14 @@ export function userSignInRequest(userData) {
     });
 }
 
+
+/**
+  * Makes request to authenticate a user via Google API
+  *
+  * @param {object} tokenId user's google token id to be verified
+  *
+  * @returns {response} request response
+  */
 export function googleSignIn(tokenId) {
   return dispatch => axios.post('/api/v1/users/googleAuth', tokenId)
     .then((res) => {
@@ -29,11 +37,6 @@ export function googleSignIn(tokenId) {
       dispatch(setCurrentUser(jwt.decode(token)));
     });
 }
-
-export function verifyToken() {
-  return () => axios.get('/api/v1/users/verifytoken');
-}
-
 
 /**
    * Informs reducers that the request to sign in user finished successfully

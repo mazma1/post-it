@@ -64,7 +64,6 @@ export class SignUpForm extends React.Component {
    */
   onSignUpClick(event) {
     event.preventDefault();
-
     if (this.isValid()) {
       this.setState({ errors: {} });
       this.props.userSignUpRequest(this.state).then(

@@ -1,20 +1,33 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import mapKeys from 'lodash/mapKeys';
 import find from 'lodash/find';
 import PropTypes from 'prop-types';
-import { updateReadStatus } from '../../actions/groupMessages';
-import ClientFrame from '../client-frame/ClientFrame';
-import ReadByTable from '../tables/ReadByTable';
-import ModalFrame from '../modal/ModalFrame';
+import mapKeys from 'lodash/mapKeys';
+import { connect } from 'react-redux';
 import {
   ModalHeader,
   ModalFooter,
   CloseButton } from '../modal/SubModals';
+import ModalFrame from '../modal/ModalFrame';
+import ReadByTable from '../tables/ReadByTable';
+import ClientFrame from '../client-frame/ClientFrame';
+import { updateReadStatus } from '../../actions/groupMessages';
 
 
-/** Renders the full content of a message */
+/**
+  * Display the full content of a message
+  *
+  * @class MessageBody
+  *
+  * @extends {React.Component}
+  */
 export class MessageBody extends React.Component {
+
+  /**
+    * Creates an instance of MessageBody
+    * @param {any} props
+    *
+    * @memberof MessageBody
+    */
   constructor(props) {
     super(props);
 
@@ -26,16 +39,16 @@ export class MessageBody extends React.Component {
 
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.updateMessageDetails = this.updateMessageDetails.bind(this);
     this.handleBackClick = this.handleBackClick.bind(this);
+    this.updateMessageDetails = this.updateMessageDetails.bind(this);
   }
 
 
-   /**
-   * Updates that a user has read a message
-   *
-   * @returns {void}
-   */
+  /**
+    * Updates that a user has read a message
+    *
+    * @returns {void}
+    */
   componentDidMount() {
     if (this.props.messages.length > 0) {
       this.updateMessageDetails();
@@ -44,10 +57,10 @@ export class MessageBody extends React.Component {
 
 
   /**
-  * Takes a user to the previous page
-  *
-  * @returns {void} null
-  */
+    * Takes a user to the previous page
+    *
+    * @returns {void} null
+    */
   handleBackClick() {
     this.props.history.push(`/message-board/${localStorage.getItem('groupId')}`);
     localStorage.removeItem('groupId');
@@ -70,12 +83,12 @@ export class MessageBody extends React.Component {
 
 
   /**
-  * Handles Close Modal event
-  *
-  * @param {SyntheticEvent} event
-  *
-  * @returns {void}
-  */
+    * Handles Close Modal event
+    *
+    * @param {SyntheticEvent} event
+    *
+    * @returns {void}
+    */
   closeModal(event) {
     event.preventDefault();
     this.setState({
@@ -84,13 +97,13 @@ export class MessageBody extends React.Component {
   }
 
 
-   /**
-   * Function that updates that a user has read a message
-   *
-   * @param {void} null
-   *
-   * @returns {void} null
-   */
+  /**
+    * Function that updates that a user has read a message
+    *
+    * @param {void} null
+    *
+    * @returns {void} null
+    */
   updateMessageDetails() {
     const { messageId, groupId } = this.state;
     const mappedMessages = mapKeys(this.props.messages, 'id');
@@ -106,14 +119,15 @@ export class MessageBody extends React.Component {
 
 
   /**
-   * Render
-   *
-   * @returns {ReactElement} Full message markup
-   */
+    * Render
+    *
+    * @returns {ReactElement} Full message markup
+    */
   render() {
     const { messages } = this.props;
     const clickedMessage = find(messages, message => message.id === parseInt(
-      this.state.messageId, 10));
+      this.state.messageId, 10)
+    );
     return (
       <ClientFrame>
         <div>
@@ -200,11 +214,11 @@ function mapStateToProps(state) {
 }
 
 MessageBody.propTypes = {
+  selectedGroup: PropTypes.object,
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
   messages: PropTypes.array.isRequired,
   username: PropTypes.string.isRequired,
-  // groups: PropTypes.array.isRequired,
-  match: PropTypes.object.isRequired,
-  selectedGroup: PropTypes.object,
   updateReadStatus: PropTypes.func.isRequired
 };
 

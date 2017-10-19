@@ -1,20 +1,30 @@
 import React from 'react';
-import classnames from 'classnames';
-import { withRouter, Link } from 'react-router-dom';
 import toastr from 'toastr';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import {
+  Link,
+  withRouter } from 'react-router-dom';
 import TextField from '../common/FormTextField';
 import validateInput from '../../utils/signinValidation';
 
 
-/** SigninForm component */
+/**
+ * Display sign in form
+ *
+ * @class SignInForm
+ *
+ * @extends {React.Component}
+ */
 export class SignInForm extends React.Component {
 
   /**
-   * Constructor
-   *
-   * @param {object} props
-   */
+     * Creates an instance of SignInForm
+     *
+     * @param {any} props
+     *
+     * @memberof SignInForm
+     */
   constructor(props) {
     super(props);
     this.state = {
@@ -24,7 +34,7 @@ export class SignInForm extends React.Component {
     };
 
     this.onChange = this.onChange.bind(this);
-    this.onSigninClick = this.onSigninClick.bind(this);
+    this.onSignInClick = this.onSignInClick.bind(this);
   }
 
 
@@ -46,7 +56,7 @@ export class SignInForm extends React.Component {
    *
    * @returns {void}
    */
-  onSigninClick(event) {
+  onSignInClick(event) {
     event.preventDefault();
     if (this.isValid()) {
       this.setState({ errors: {} });
@@ -83,7 +93,7 @@ export class SignInForm extends React.Component {
   render() {
     const { errors } = this.state;
     return (
-      <form className="col s12 auth-form" onSubmit={this.onSigninClick}>
+      <form className="col s12 auth-form" onSubmit={this.onSignInClick}>
         <div className="row">
           <div
             className={classnames(
@@ -132,7 +142,7 @@ export class SignInForm extends React.Component {
           <div className="input-field col s12">
             <a
               className="btn auth-btn waves-effect waves-light col s12"
-              onClick={this.onSigninClick}
+              onClick={this.onSignInClick}
             >
               Sign In
             </a>
@@ -155,6 +165,7 @@ export class SignInForm extends React.Component {
 }
 
 SignInForm.propTypes = {
+  history: PropTypes.object.isRequired,
   userSignInRequest: PropTypes.func.isRequired
 };
 

@@ -58,7 +58,10 @@ export const ModalBody = (props) => {
 };
 
 ModalBody.propTypes = {
-  error: PropTypes.object,
+  errors: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object
+  ]),
   onSubmit: PropTypes.func.isRequired,
   field: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
@@ -67,7 +70,7 @@ ModalBody.propTypes = {
 };
 
 ModalBody.defaultProps = {
-  error: {}
+  errors: {}
 };
 
 export const CloseButton = props => (

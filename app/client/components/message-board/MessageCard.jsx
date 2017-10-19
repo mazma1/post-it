@@ -1,22 +1,31 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
-import MessageItem from '../message-board/MessageItem';
-import MessageForm from './MessageForm';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Dashboard from '../Dashboard';
+import MessageForm from './MessageForm';
 import {
   updateReadStatus,
   getGroupMessages } from '../../actions/groupMessages';
+import MessageItem from '../message-board/MessageItem';
 
-/** MessageCard component for message board */
+
+/**
+  * Display MessageCard
+  *
+  * @class MessageCard
+  *
+  * @extends {React.Component}
+  */
 export class MessageCard extends React.Component {
   /**
-   * Constructor
-   *
-   * @param {object} props
-   */
+    * Creates an instance of MessageCard
+    *
+    * @param {any} props
+    *
+    * @memberof MessageCard
+    */
   constructor(props) {
     super(props);
 
@@ -37,7 +46,7 @@ export class MessageCard extends React.Component {
    /**
    * Updates the read status of a message when clicked
    *
-   * @param {object} clickedMsgProps id and read_status of clicked message
+   * @param {object} clickedMsgProps id and readStatus of clicked message
    *
    * @returns {func} request to update read status
    */
@@ -91,9 +100,9 @@ export class MessageCard extends React.Component {
    * @returns {ReactElement} MessageCard markup
    */
   render() {
-    const { hasGroup } = this.props.userGroups;
-    const { messages } = this.props.message;
     const { selectedGroup } = this.props;
+    const { messages } = this.props.message;
+    const { hasGroup } = this.props.userGroups;
     const messageLoading = this.props.message.isLoading;
     const messageLoadingError = this.props.message.error;
     const divPadding = {

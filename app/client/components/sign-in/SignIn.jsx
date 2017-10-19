@@ -6,15 +6,22 @@ import SignInForm from './SignInForm';
 import { userSignInRequest } from '../../actions/signIn';
 
 
-/** SignIn Page Component */
+/**
+ * Displays sign in page
+ *
+ * @class SignIn
+ *
+ * @extends {React.Component}
+ */
 export class SignIn extends React.Component {
 
   /**
    * Render
+   *
    * @returns {ReactElement} SignIn page markup
    */
   render() {
-    const { userSignInRequest, googleSignIn } = this.props;
+    const { userSignInRequest } = this.props;
     return (
       <div className="background">
         <div className="container">
@@ -24,9 +31,7 @@ export class SignIn extends React.Component {
                 <h5 className="center">Sign In | Post It</h5>
               </header>
 
-              <SignInForm
-                userSignInRequest={userSignInRequest}
-              />
+              <SignInForm userSignInRequest={userSignInRequest} />
             </div>
           </div>
         </div>

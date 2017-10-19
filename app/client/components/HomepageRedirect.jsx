@@ -5,8 +5,15 @@ import PropTypes from 'prop-types';
 import HomePage from './home-page/HomePage';
 
 
-/** HomepageRedirect Component */
-class HomepageRedirect extends React.Component {
+/**
+ * Renders the index page or message board depending on user's
+ * authentication status
+ *
+ * @class HomePageRedirect
+ *
+ * @extends {React.Component}
+ */
+class HomePageRedirect extends React.Component {
 
 /**
  * Checks a user's authentication status when accessing the index page
@@ -23,10 +30,10 @@ class HomepageRedirect extends React.Component {
   }
 
   /**
- * Render
- *
- * @returns {ReactElement} ComposedComponent
- */
+   * Render
+   *
+   * @returns {ReactElement} Home page component
+   */
   render() {
     return <Route path="/" component={HomePage} />;
   }
@@ -45,9 +52,10 @@ function mapStateToProps(state) {
   };
 }
 
-HomepageRedirect.propTypes = {
+HomePageRedirect.propTypes = {
+  history: PropTypes.object.isRequired,
   isAuthenticated: PropTypes.bool.isRequired
 };
 
-export default connect(mapStateToProps)(HomepageRedirect);
+export default connect(mapStateToProps)(HomePageRedirect);
 

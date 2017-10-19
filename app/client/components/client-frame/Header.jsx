@@ -1,17 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
-import PropTypes from 'prop-types';
-import toastr from 'toastr';
 import $ from 'jquery';
+import toastr from 'toastr';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { withRouter, Link } from 'react-router-dom';
 import ModalFrame from '../modal/ModalFrame';
-import GroupMembersTable from '../tables/GroupMembersTable';
-import { logout } from '../../actions/signIn';
-import setSelectedGroup from '../../actions/setSelectedGroup';
-import { setGroupMessages } from '../../actions/groupMessages';
-import { submitNewUser } from '../../actions/groupMembers';
-import { AddUserBtn, SearchBtn, GroupName } from '../misc/HeaderMisc';
 import {
   ModalHeader,
   ModalBody,
@@ -19,17 +13,28 @@ import {
   CloseButton,
   CancelButton,
   SubmitButton } from '../modal/SubModals';
+import { logout } from '../../actions/signIn';
+import { submitNewUser } from '../../actions/groupMembers';
+import { AddUserBtn, SearchBtn, GroupName } from '../misc/HeaderMisc';
+import GroupMembersTable from '../tables/GroupMembersTable';
+
 
 /**
- * Header component for message board
+ * Display Header
+ *
+ * @class Header
+ *
+ * @extends {React.Component}
  */
 export class Header extends React.Component {
 
   /**
-   * Constructor
-   *
-   * @param {object} props
-   */
+    * Creates an instance of Header
+    *
+    * @param {any} props
+    *
+    * @memberof Header
+    */
   constructor(props) {
     super(props);
 
@@ -105,7 +110,7 @@ export class Header extends React.Component {
   }
 
   /**
-   * Submits a new user record to the database
+   * Submits a new user's record to the database
    *
    * @param {SyntheticEvent} event
    *
@@ -271,8 +276,9 @@ export class Header extends React.Component {
 
 /**
  * Maps pieces of the redux state to props
- * Whatever is returned will show up as props in Headbar
+ *
  * @param {object} state Redux state
+ *
  * @returns {object} Username, selected group and member's loading status
  */
 function mapStateToProps(state) {
@@ -294,16 +300,12 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     logout,
-    setSelectedGroup,
-    setGroupMessages,
     submitNewUser
   }, dispatch);
 }
 
 Header.propTypes = {
   logout: PropTypes.func.isRequired,
-  setSelectedGroup: PropTypes.func.isRequired,
-  setGroupMessages: PropTypes.func.isRequired,
   submitNewUser: PropTypes.func.isRequired,
   selectedGroup: PropTypes.object,
   username: PropTypes.string,

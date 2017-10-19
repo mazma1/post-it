@@ -5,14 +5,13 @@ import mapKeys from 'lodash/mapKeys';
 import PropTypes from 'prop-types';
 
 /**
- *Functional component that renders a list of groups a user belongs to
- * on the message board
- *
- *@param {object} props User's groups details and required helper functions
- *
- *@returns {JSX} Unordered list of a user's groups (if any),
- * Defined 'emptyGroup' constant if a user belongs to no group,
- * A 'Loading...' indicator when the groups are still being fetched
+  * Displays a list of groups a user belongs to on the message board
+  *
+  * @param {object} props User's groups details and required helper functions
+  *
+  * @returns {JSX} Unordered list of a user's groups (if any),
+  * Defined 'emptyGroup' constant if a user belongs to no group,
+  * A 'Loading...' indicator when the groups are still being fetched
   */
 function GroupList(props) {
   const { hasGroup } = props.userGroups;
@@ -110,11 +109,11 @@ function GroupList(props) {
 }
 
 GroupList.propTypes = {
-  userGroups: PropTypes.object.isRequired,
-  selectedGroup: PropTypes.object,
-  onGroupSelect: PropTypes.func.isRequired,
   unreadCount: PropTypes.array,
-  openModal: PropTypes.func.isRequired
+  selectedGroup: PropTypes.object,
+  openModal: PropTypes.func.isRequired,
+  userGroups: PropTypes.object.isRequired,
+  onGroupSelect: PropTypes.func.isRequired,
 };
 
 GroupList.defaultProps = {

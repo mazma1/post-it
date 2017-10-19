@@ -1,41 +1,46 @@
 import React from 'react';
+import $ from 'jquery';
+import toastr from 'toastr';
+import PropTypes from 'prop-types';
+import isEmpty from 'lodash/isEmpty';
+import mapKeys from 'lodash/mapKeys';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import $ from 'jquery';
-import toastr from 'toastr';
-import isEmpty from 'lodash/isEmpty';
-import mapKeys from 'lodash/mapKeys';
 import GroupList from './GroupList';
-import ModalFrame from '../../modal/ModalFrame';
-import { Brand, MobileToggleBtn } from '../../misc/SidebarMisc';
-import { getUserGroups, submitNewGroup } from '../../../actions/userGroups';
-import setSelectedGroup from '../../../actions/setSelectedGroup';
-import { getGroupMembers } from '../../../actions/groupMembers';
-import {
-  getGroupMessages,
-  updateReadStatus,
-  getGroupMessagesCount } from '../../../actions/groupMessages';
 import {
   ModalHeader,
   ModalBody,
   ModalFooter,
   CancelButton,
   SubmitButton } from '../../modal/SubModals';
+import ModalFrame from '../../modal/ModalFrame';
+import { Brand, MobileToggleBtn } from '../../misc/SidebarMisc';
+import setSelectedGroup from '../../../actions/setSelectedGroup';
+import { getGroupMembers } from '../../../actions/groupMembers';
+import {
+  getGroupMessages,
+  updateReadStatus,
+  getGroupMessagesCount } from '../../../actions/groupMessages';
+import { getUserGroups, submitNewGroup } from '../../../actions/userGroups';
+
 
 /**
- * Sidebar component for message board
- * Child components: GroupList and Create Group modal
- */
+  * Display Sidebar
+  *
+  * @class Sidebar
+  *
+  * @extends {React.Component}
+  */
 export class Sidebar extends React.Component {
 
   /**
-   * Constructor
-   *
-   * @param {object} props
-   *
-   */
+    * Creates an instance of Sidebar
+    *
+    * @param {any} props
+    *
+    * @memberof Sidebar
+    */
   constructor(props) {
     super(props);
     this.state = {
@@ -46,10 +51,10 @@ export class Sidebar extends React.Component {
       groups: []
     };
 
-    this.onGroupSelect = this.onGroupSelect.bind(this);
+    this.onChange = this.onChange.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.onChange = this.onChange.bind(this);
+    this.onGroupSelect = this.onGroupSelect.bind(this);
     this.submitNewGroup = this.submitNewGroup.bind(this);
     this.getUnreadCount = this.getUnreadCount.bind(this);
   }
@@ -87,8 +92,7 @@ export class Sidebar extends React.Component {
 
 
   /**
-   * Handles change event of New Group input form and updates
-   * isOpen and newGroup states
+   * Handles change event of New Group form
    *
    * @param {SyntheticEvent} event
    *
@@ -233,7 +237,6 @@ export class Sidebar extends React.Component {
           </div>
         </aside>
 
-        {/*Create Group Modal*/}
         <ModalFrame id="createGroup" show={this.state.isOpen}>
           <ModalHeader header="Group Name" onClose={this.closeModal} />
 
@@ -265,6 +268,7 @@ export class Sidebar extends React.Component {
  * @param {object} state Redux state
  *
  * @returns {object} Details of signed in user, his groups and the active group
+ * and the group messages
  */
 function mapStateToProps(state) {
   return {
@@ -305,7 +309,8 @@ Sidebar.propTypes = {
   getGroupMembers: PropTypes.func.isRequired,
   getGroupMessages: PropTypes.func.isRequired,
   getGroupMessagesCount: PropTypes.func.isRequired,
-  match: PropTypes.object.isRequired
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 Sidebar.defaultProps = {

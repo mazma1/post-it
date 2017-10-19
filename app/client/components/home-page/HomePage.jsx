@@ -1,21 +1,26 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import GoogleButton from 'react-google-login';
 import toastr from 'toastr';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import GoogleButton from 'react-google-login';
 import { googleSignIn } from '../../actions/signIn';
 
 /**
- * HomePage component
- *
- * @returns {ReactElement} HomePage Markup
- */
+  * Displays HomePage
+  *
+  * @class HomePage
+  *
+  * @extends {React.Component}
+  */
 export class HomePage extends React.Component {
   /**
-   * Constructor
-   *
-   * @param {object} props
-   */
+    * Creates an instance of HomePage
+    *
+    * @param {any} props
+    *
+    * @memberof HomePage
+    */
   constructor(props) {
     super(props);
 
@@ -91,4 +96,10 @@ export class HomePage extends React.Component {
     );
   }
 }
+
+HomePage.propTypes = {
+  googleSignIn: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
+};
+
 export default connect(null, { googleSignIn })(HomePage);

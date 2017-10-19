@@ -74,7 +74,6 @@ describe('Sign In Action\'s', () => {
         username: 'mazma',
         password: 1234
       })).then(() => {
-        // return of async actions
         expect(store.getActions()).toEqual(expectedAction);
       });
     });
@@ -101,22 +100,6 @@ describe('Sign In Action\'s', () => {
         store.dispatch(setAuthorizationToken({ token: '1234tycngsgu67890plkm' }));
         expect(store.getActions()).toEqual(expectedAction);
       });
-    });
-  });
-
-  describe('#verifyToken', () => {
-    afterEach(() => {
-      nock.cleanAll();
-    });
-
-    it('should make request to verify token', () => {
-      nock('http://localhost')
-        .get('/api/v1/users/verifytoken')
-        .reply(201, {});
-
-      const store = mockStore();
-
-      store.dispatch(actions.verifyToken({ token: '1234tycngsgu67890plkm' }));
     });
   });
 });

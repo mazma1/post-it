@@ -4,9 +4,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SignUpForm from './SignUpForm';
 import userSignUpRequest from '../../actions/signUp';
-import { userSignInRequest } from '../../actions/signIn';
 
-/** SignUp Page Component */
+/**
+ * Displays sign up page
+ *
+ * @class SignUp
+ *
+ * @extends {React.Component}
+ */
 export class SignUp extends React.Component {
 
   /**
@@ -15,7 +20,7 @@ export class SignUp extends React.Component {
    * @returns {ReactElement} SignUp page markup
    */
   render() {
-    const { userSignUpRequest, userSignInRequest } = this.props;
+    const { userSignUpRequest } = this.props;
     return (
       <div className="background">
         <div className="container">
@@ -27,7 +32,6 @@ export class SignUp extends React.Component {
 
               <SignUpForm
                 userSignUpRequest={userSignUpRequest}
-                userSignInRequest={userSignInRequest}
               />
             </div>
           </div>
@@ -46,14 +50,12 @@ export class SignUp extends React.Component {
  */
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    userSignUpRequest,
-    userSignInRequest
+    userSignUpRequest
   }, dispatch);
 }
 
 SignUp.propTypes = {
-  userSignUpRequest: PropTypes.func.isRequired,
-  userSignInRequest: PropTypes.func.isRequired
+  userSignUpRequest: PropTypes.func.isRequired
 };
 
 

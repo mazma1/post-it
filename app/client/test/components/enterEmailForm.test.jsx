@@ -1,17 +1,17 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import TextField from '../../components/common/FormTextField';
-import { EnterEmailForm } from '../../components/reset-password/EnterEmailForm';
+import { SubmitEmailForm } from '../../components/reset-password/SubmitEmailForm';
 
-describe('<EnterEmailForm />', () => {
-  let mountedEnterEmailForm;
+describe('<SubmitEmailForm />', () => {
+  let mountedSubmitEmailForm;
   const emailForm = () => {
-    if (!mountedEnterEmailForm) {
-      mountedEnterEmailForm = shallow(
-        <EnterEmailForm {...props} />
+    if (!mountedSubmitEmailForm) {
+      mountedSubmitEmailForm = shallow(
+        <SubmitEmailForm {...props} />
       );
     }
-    return mountedEnterEmailForm;
+    return mountedSubmitEmailForm;
   };
   const props = {
     resetLinkRequest: jest.fn(() => Promise.resolve())

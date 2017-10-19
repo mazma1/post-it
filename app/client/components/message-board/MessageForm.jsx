@@ -1,19 +1,28 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import isEmpty from 'lodash/isEmpty';
 import toastr from 'toastr';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
+import isEmpty from 'lodash/isEmpty';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { postNewMessage } from '../../actions/groupMessages';
 
-/** Message Input Form component for message board */
+
+/**
+  * Displays Message Input Form
+  *
+  * @class MessageForm
+  *
+  * @extends {React.Component}
+  */
 export class MessageForm extends React.Component {
 
   /**
-   * Constructor
-   *
-   * @param {object} props
-   */
+    * Creates an instance of MessageForm
+    *
+    * @param {any} props
+    *
+    * @memberof MessageForm
+    */
   constructor(props) {
     super(props);
 
@@ -29,7 +38,7 @@ export class MessageForm extends React.Component {
   }
 
   /**
-   * Handles change event of form to create new group
+   * Handles change event of message form
    *
    * @param {SyntheticEvent} event
    *
@@ -41,8 +50,9 @@ export class MessageForm extends React.Component {
 
    /**
    * Handles change event of Priority Select input
-   * Updates messageInput state
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void}
    */
   onSelect(event) {
@@ -83,9 +93,7 @@ export class MessageForm extends React.Component {
           groupId,
           message: messageInput,
           readBy: username
-        }).then(() => {
-          // this.setState({ messageInput: '' });
-        }).catch(() => {
+        }).then().catch(() => {
           toastr.error('Unable to send message, please try again');
         });
       }

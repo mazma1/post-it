@@ -1,29 +1,36 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { withRouter } from 'react-router-dom';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import moment from 'moment';
 import toastr from 'toastr';
-import lodashSplit from 'lodash/split';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import mapKeys from 'lodash/mapKeys';
+import { connect } from 'react-redux';
+import lodashSplit from 'lodash/split';
 import includes from 'lodash/includes';
+import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom';
 import MessageForm from './MessageForm';
 import {
   getGroupMessagesCount,
   archiveMessage } from '../../actions/groupMessages';
 
+
 /**
- * Message Item component for the message board
- */
+  * Displays Message Item
+  *
+  * @class MessageItem
+  *
+  * @extends {React.Component}
+  */
 export class MessageItem extends React.Component {
 
    /**
-   * Constructor
-   *
-   * @param {object} props
-   */
+    * Creates an instance of MessageItem
+    *
+    * @param {any} props
+    *
+    * @memberof MessageForm
+    */
   constructor(props) {
     super(props);
 
@@ -328,12 +335,12 @@ function mapStateToProps(state) {
 }
 
 MessageItem.propTypes = {
-  getGroupMessagesCount: PropTypes.func.isRequired,
   messages: PropTypes.array,
-  authenticatedUsername: PropTypes.string.isRequired,
-  // onMessageClick: PropTypes.func.isRequired,
-  archiveMessage: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  archiveMessage: PropTypes.func.isRequired,
+  getGroupMessagesCount: PropTypes.func.isRequired,
+  authenticatedUsername: PropTypes.string.isRequired,
 };
 
 MessageItem.defaultProps = {

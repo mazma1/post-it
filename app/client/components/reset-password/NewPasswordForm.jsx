@@ -1,23 +1,31 @@
 import React from 'react';
-import classnames from 'classnames';
-import { withRouter } from 'react-router-dom';
 import toastr from 'toastr';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom';
 import TextField from '../common/FormTextField';
 import {
   validateResetPasswordToken,
   updatePassword } from '../../actions/resetPassword';
 
-/** Form for submiting new password */
+/**
+  * Displays form for submiting new password
+  *
+  * @class NewPasswordForm
+  *
+  * @extends {React.Component}
+  */
 export class NewPasswordForm extends React.Component {
 
   /**
-   * Constructor
-   *
-   * @param {object} props
-   */
+    * Creates an instance of NewPasswordForm
+    *
+    * @param {any} props
+    *
+    * @memberof NewPasswordForm
+    */
   constructor(props) {
     super(props);
     this.state = {
@@ -190,9 +198,10 @@ function mapDispatchToProps(dispatch) {
 }
 
 NewPasswordForm.propTypes = {
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
   updatePassword: PropTypes.func.isRequired,
-  validateResetPasswordToken: PropTypes.func.isRequired,
-  match: PropTypes.object.isRequired
+  validateResetPasswordToken: PropTypes.func.isRequired
 };
 
 export default withRouter(connect(null, mapDispatchToProps)(NewPasswordForm));

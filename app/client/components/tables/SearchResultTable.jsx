@@ -15,10 +15,11 @@ export class SearchResultTable extends React.Component {
   }
 
   /**
-   * handles click on change of page
+   * Handles click on change of page
+   *
    * @param {object} page
+   *
    * @returns {void}
-   * @memberOf Users
    */
   handlePageClick(page) {
     const selected = page.selected;
