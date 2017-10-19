@@ -1,17 +1,29 @@
 import React from 'react';
+import toastr from 'toastr';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import toastr from 'toastr';
-import { withRouter, Link } from 'react-router-dom';
-import validateInput from '../../../server/utils/signupValidation';
+import {
+  Link,
+  withRouter } from 'react-router-dom';
 import TextField from '../common/FormTextField';
+import validateInput from '../../../server/utils/signupValidation';
 
-/** SignupForm component */
+
+/**
+ * Display sign up form
+ *
+ * @class SignUpForm
+ *
+ * @extends {React.Component}
+ */
 export class SignUpForm extends React.Component {
 
   /**
-   * Constructor
-   * @param {object} props
+   * Creates an instance of SignUpForm
+   *
+   * @param {any} props
+   *
+   * @memberof SignUpForm
    */
   constructor(props) {
     super(props);
@@ -27,7 +39,7 @@ export class SignUpForm extends React.Component {
     };
 
     this.onChange = this.onChange.bind(this);
-    this.onSignupClick = this.onSignupClick.bind(this);
+    this.onSignUpClick = this.onSignUpClick.bind(this);
   }
 
 
@@ -50,23 +62,15 @@ export class SignUpForm extends React.Component {
    *
    * @returns {void}
    */
-  onSignupClick(event) {
+  onSignUpClick(event) {
     event.preventDefault();
 
     if (this.isValid()) {
       this.setState({ errors: {} });
       this.props.userSignUpRequest(this.state).then(
         () => {
-          this.props.userSignInRequest({
-            identifier: this.state.username,
-            password: this.state.password
-          })
-            .then(() => {
-              toastr.success('Sign up was successful. Welcome to Post It!');
-              this.props.history.push('/message-board');
-            },
-            ({ response }) => this.setState({ errors: response.data })
-          );
+          toastr.success('Sign up was successful. Welcome to Post It!');
+          this.props.history.push('/message-board');
         },
         ({ response }) => this.setState({ errors: response.data })
       );
@@ -95,7 +99,7 @@ export class SignUpForm extends React.Component {
   render() {
     const { errors } = this.state;
     return (
-      <form className="col s12 auth-form" onSubmit={this.onSignupClick}>
+      <form className="col s12 auth-form" onSubmit={this.onSignUpClick}>
         <div className="row">
           <div
             className={classnames(
@@ -252,7 +256,7 @@ export class SignUpForm extends React.Component {
           <div className="input-field col s12">
             <a
               className="auth-btn btn waves-effect waves-light col s12"
-              onClick={this.onSignupClick}
+              onClick={this.onSignUpClick}
             >
               Sign Up
             </a>
@@ -272,8 +276,8 @@ export class SignUpForm extends React.Component {
 }
 
 SignUpForm.propTypes = {
-  userSignUpRequest: PropTypes.func.isRequired,
-  userSignInRequest: PropTypes.func.isRequired
+  history: PropTypes.object.isRequired,
+  userSignUpRequest: PropTypes.func.isRequired
 };
 
 export default withRouter(SignUpForm);

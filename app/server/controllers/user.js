@@ -64,7 +64,7 @@ export default {
                 username,
                 email
               }
-            }, process.env.TOKEN_SECRET, { expiresIn: '24h' });
+            }, process.env.TOKEN_SECRET, { expiresIn: '720m' });
             res.status(201).send({ message: 'Signup was successful', token });
           })
           .catch(error => res.status(500).send(error.message));
@@ -116,7 +116,7 @@ export default {
                 username,
                 email
               }
-            }, process.env.TOKEN_SECRET, { expiresIn: '24h' });
+            }, process.env.TOKEN_SECRET, { expiresIn: '720m' });
             res.status(200).send({
               message: 'User successfully logged in',
               token
