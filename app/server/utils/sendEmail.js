@@ -13,7 +13,7 @@ function sendEmail(emailParams) {
     service: 'gmail',
     port: 465,
     auth: {
-      user: 'mazi.mary.o@gmail.com',
+      user: 'noreply.swiftpost@gmail.com',
       pass: process.env.EMAIL_PASSWORD
     }
   }));
