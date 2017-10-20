@@ -63,7 +63,6 @@ describe('Search Action\'s', () => {
         type: types.FETCH_SEARCHED_USER_FAILURE,
         error: {}
       };
-      console.log(expectedAction.error)
       expect(actions.fetchSearchedUserFailure({})).toEqual(expectedAction);
     });
   });
