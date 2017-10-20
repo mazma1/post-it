@@ -23,7 +23,6 @@ describe('Search Action\'s', () => {
       const store = mockStore({});
 
       store.dispatch(actions.searchUser({ searchQuery: 'm' })).then(() => {
-        // store.dispatch(actions.fetchSearchedUserSuccess({}));
         expect(store.getActions()).toEqual(expectedAction);
       });
     });
