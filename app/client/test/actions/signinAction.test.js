@@ -1,14 +1,15 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import nock from 'nock';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import * as actions from '../../../client/actions/signIn';
 import * as types from '../../actions/types';
 import mockLocalStorage from '../mockLocalStorage';
-import setAuthorizationToken from '../../utils/setAuthorizationToken';
 
 Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
 
 const middlewares = [thunk];
+const mock = new MockAdapter(axios);
 const mockStore = configureMockStore(middlewares);
 
 describe('Sign In Action\'s', () => {
@@ -55,13 +56,8 @@ describe('Sign In Action\'s', () => {
   });
 
   describe('#userSigninRequest', () => {
-    afterEach(() => {
-      nock.cleanAll();
-    });
-
     it('should create SET_CURRENT_USER after successful sign in', () => {
-      nock('http://localhost')
-        .post('/api/v1/users/signin')
+      mock.onPost('/api/v1/users/signin')
         .reply(201, { data: { token: '1234tycngsgu67890plkm' } });
 
       const expectedAction = {
@@ -80,13 +76,8 @@ describe('Sign In Action\'s', () => {
   });
 
   describe('#googleSignIn', () => {
-    afterEach(() => {
-      nock.cleanAll();
-    });
-
     it('should create SET_CURRENT_USER after successful sign in via Google', () => {
-      nock('http://localhost')
-        .post('/api/v1/users/googleAuth')
+      mock.onPost('/api/v1/users/googleAuth')
         .reply(201, { data: { token: '1234tycngsgu67890plkm' } });
 
       const expectedAction = {
@@ -96,8 +87,6 @@ describe('Sign In Action\'s', () => {
       const store = mockStore({ data: { token: '1234tycngsgu67890plkm' } });
 
       store.dispatch(actions.googleSignIn({ token: 'mazma' })).then((data) => {
-        store.dispatch(localStorage.setItem());
-        store.dispatch(setAuthorizationToken({ token: '1234tycngsgu67890plkm' }));
         expect(store.getActions()).toEqual(expectedAction);
       });
     });

@@ -1,22 +1,19 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import nock from 'nock';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import * as actions from '../../../client/actions/groupMembers';
 import * as types from '../../actions/types';
 
 const middlewares = [thunk];
+const mock = new MockAdapter(axios);
 const mockStore = configureMockStore(middlewares);
 
 
 describe('Group Members Action\'s', () => {
   describe('#getGroupMembers', () => {
-    afterEach(() => {
-      nock.cleanAll();
-    });
-
     it('should create SET_GROUP_MEMBERS after successfully fetching members of a group', () => {
-      nock('http://localhost')
-        .get('/api/v1/groups/1/members')
+      mock.onGet('/api/v1/groups/1/members')
         .reply(201, {});
 
       const expectedAction = {
@@ -25,22 +22,15 @@ describe('Group Members Action\'s', () => {
       };
       const store = mockStore({});
 
-      store.dispatch(actions.fetchingGroupMembers());
       store.dispatch(actions.getGroupMembers({ groupId: 1 })).then(() => {
-        store.dispatch(actions.setGroupMembers({ memberDetails: {} }));
         expect(store.getActions()).toEqual(expectedAction);
       });
     });
   });
 
   describe('#submitNewUser', () => {
-    afterEach(() => {
-      nock.cleanAll();
-    });
-
     it('should make a request to add a new user to a group', () => {
-      nock('http://localhost')
-        .get('/api/v1/groups/1/user')
+      mock.onPost('/api/v1/groups/1/user')
         .reply(201, {});
 
       const store = mockStore();

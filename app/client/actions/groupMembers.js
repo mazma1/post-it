@@ -10,9 +10,9 @@ import { SET_GROUP_MEMBERS, FETCHING_GROUP_MEMBERS } from '../actions/types';
    * @returns {response} request response
    */
 export function getGroupMembers(groupId) {
-  if (!groupId) {
-    return dispatch => dispatch(setGroupMembers({}));
-  }
+  // if (!groupId) {
+  //   return dispatch => dispatch(setGroupMembers({}));
+  // }
   return (dispatch) => {
     dispatch(fetchingGroupMembers);
     return axios.get(`/api/v1/groups/${groupId}/members`)

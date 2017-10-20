@@ -1,22 +1,19 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import nock from 'nock';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import * as actions from '../../../client/actions/groupMessages';
 import * as types from '../../actions/types';
 
 const middlewares = [thunk];
+const mock = new MockAdapter(axios);
 const mockStore = configureMockStore(middlewares);
 
 
 describe('Group Messages Action\'s', () => {
   describe('#getGroupMessages', () => {
-    afterEach(() => {
-      nock.cleanAll();
-    });
-
     it('should create SET_GROUP_MEMBERS after successfully fetching messages of a group', () => {
-      nock('http://localhost')
-        .get('/api/v1/groups/1/messages')
+      mock.onGet('/api/v1/groups/1/messages')
         .reply(201, {});
 
       const expectedAction = {
@@ -26,20 +23,14 @@ describe('Group Messages Action\'s', () => {
       const store = mockStore({});
 
       store.dispatch(actions.getGroupMessages({ groupId: 1 })).then(() => {
-        store.dispatch(actions.setGroupMessages({ messages: {} }));
         expect(store.getActions()).toEqual(expectedAction);
       });
     });
   });
 
   describe('#postNewMessage', () => {
-    afterEach(() => {
-      nock.cleanAll();
-    });
-
     it('should make a request to post a new message to a group', () => {
-      nock('http://localhost')
-        .post('/api/v1/groups/1/user')
+      mock.onPost('/api/v1/groups/1/message')
         .reply(201, {});
       const messageDetails = {
         priority: 'normal',
@@ -47,20 +38,21 @@ describe('Group Messages Action\'s', () => {
         message: 'Hello',
         readBy: 'mazma'
       };
+      const expectedAction = {
+        type: types.SET_GROUP_MEMBERS,
+        messages: {}
+      };
       const store = mockStore();
 
-      store.dispatch(actions.postNewMessage(messageDetails));
+      store.dispatch(actions.postNewMessage(messageDetails)).then(() => {
+        expect(store.getActions()).toEqual(expectedAction);
+      });
     });
   });
 
   describe('#getGroupMessagesCount', () => {
-    afterEach(() => {
-      nock.cleanAll();
-    });
-
     it('should make a request to get the count of messages in a group', () => {
-      nock('http://localhost')
-        .get('/api/v1/groups/1/messages')
+      mock.onGet('/api/v1/groups/1/messages')
         .reply(201, {});
       const store = mockStore();
 
@@ -69,29 +61,24 @@ describe('Group Messages Action\'s', () => {
   });
 
   describe('#updateReadStatus', () => {
-    afterEach(() => {
-      nock.cleanAll();
-    });
-
     it('should make a request to update a user that has read a message', () => {
-      nock('http://localhost')
-        .patch('/api/v1/messages/1/read');
+      mock.onPatch('/api/v1/messages/1/read');
+
+      const expectedAction = {
+        type: types.SET_GROUP_MESSAGES,
+        messages: {}
+      };
       const store = mockStore();
 
       store.dispatch(actions.updateReadStatus({ groupId: 1, messageId: 1 })).then(() => {
-        store.dispatch(actions.getGroupMessages(1));
+        expect(actions.setGroupMessages({})).toEqual(expectedAction);
       });
     });
   });
 
   describe('#archiveMessage', () => {
-    afterEach(() => {
-      nock.cleanAll();
-    });
-
     it('should make a request to archive a message', () => {
-      nock('http://localhost')
-        .patch('/api/v1/messages/1/archive');
+      mock.onPatch('/api/v1/messages/1/archive');
       const store = mockStore();
 
       store.dispatch(actions.updateReadStatus({ groupId: 1, messageId: 1 })).then(() => {

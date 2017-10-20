@@ -13,9 +13,9 @@ import {
    * @returns {response} request response
    */
 export function getGroupMessages(groupId) {
-  if (!groupId) {
-    return dispatch => dispatch(setGroupMessages({}));
-  }
+  // if (!groupId) {
+  //   return dispatch => dispatch(setGroupMessages({}));
+  // }
   return (dispatch) => {
     dispatch(fetchingGroupMessages({}));
     return axios.get(`/api/v1/groups/${groupId}/messages`)

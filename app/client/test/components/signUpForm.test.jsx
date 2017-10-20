@@ -31,11 +31,11 @@ describe('<SignUpForm />', () => {
     expect(onChangeSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should mount with onSignupClick()', () => {
+  it('should mount with onSignUpClick()', () => {
     const event = { preventDefault: jest.fn() };
-    const onSignupClickSpy = jest.spyOn(signUpForm().instance(), 'onSignupClick');
-    signUpForm().instance().onSignupClick(event);
-    expect(onSignupClickSpy).toHaveBeenCalledTimes(1);
+    const onSignUpClickSpy = jest.spyOn(signUpForm().instance(), 'onSignUpClick');
+    signUpForm().instance().onSignUpClick(event);
+    expect(onSignUpClickSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should always render the sign up form', () => {
@@ -46,7 +46,7 @@ describe('<SignUpForm />', () => {
   it('should call signUpClick() when the form is submitted', () => {
     const submitButton = signUpForm().find('a');
     const event = { preventDefault: jest.fn() };
-    const signUpSubmitSpy = jest.spyOn(signUpForm().instance(), 'onSignupClick');
+    const signUpSubmitSpy = jest.spyOn(signUpForm().instance(), 'onSignUpClick');
     submitButton.simulate('click', event);
     expect(signUpSubmitSpy.mock.calls.length).toBe(2);
   });

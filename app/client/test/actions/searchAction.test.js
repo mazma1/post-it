@@ -1,23 +1,20 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import nock from 'nock';
+import axios from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 import * as actions from '../../../client/actions/search';
 import * as types from '../../actions/types';
 
 const middlewares = [thunk];
+const mock = new MockAdapter(axios);
 const mockStore = configureMockStore(middlewares);
 
 
 describe('Search Action\'s', () => {
   describe('#searchUser', () => {
-    afterEach(() => {
-      nock.cleanAll();
-    });
-
     it('should create FETCH_SEARCHED_USER_SUCCESS after making a search request successfully', () => {
-      nock('http://localhost')
-        .get('/api/v1/users/search?q=hdhdhd&limit=1&offset=1')
-        .reply(201, {});
+      mock.onGet('/api/v1/users/search')
+        .reply(200, { id: 1, name: 'mazma' });
 
       const expectedAction = {
         type: types.FETCH_SEARCHED_USER_SUCCESS,
@@ -25,8 +22,8 @@ describe('Search Action\'s', () => {
       };
       const store = mockStore({});
 
-      store.dispatch(actions.searchUser({ searchQuery: 'lkjhgfds' })).then(() => {
-        store.dispatch(actions.fetchSearchedUserSuccess({}));
+      store.dispatch(actions.searchUser({ searchQuery: 'm' })).then(() => {
+        // store.dispatch(actions.fetchSearchedUserSuccess({}));
         expect(store.getActions()).toEqual(expectedAction);
       });
     });
@@ -67,6 +64,7 @@ describe('Search Action\'s', () => {
         type: types.FETCH_SEARCHED_USER_FAILURE,
         error: {}
       };
+      console.log(expectedAction.error)
       expect(actions.fetchSearchedUserFailure({})).toEqual(expectedAction);
     });
   });

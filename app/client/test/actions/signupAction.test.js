@@ -1,23 +1,30 @@
-import configureMockStore from 'redux-mock-store';
+import axios from 'axios';
 import thunk from 'redux-thunk';
-import nock from 'nock';
+import MockAdapter from 'axios-mock-adapter';
+import configureMockStore from 'redux-mock-store';
+import * as types from '../../actions/types';
+import mockLocalStorage from '../mockLocalStorage';
 import userSignUpRequest from '../../../client/actions/signUp';
 
+Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+
 const middlewares = [thunk];
+const mock = new MockAdapter(axios);
 const mockStore = configureMockStore(middlewares);
 
 describe('Sign up async action', () => {
-  afterEach(() => {
-    nock.cleanAll();
-  });
-
-  it('should create SET_CURRENT_USER when signin is successful', () => {
-    nock('http://localhost')
-      .post('/api/v1/users/signup')
+  it('should create SET_CURRENT_USER when signup is successful', () => {
+    mock.onPost('/api/v1/users/signup')
       .reply(201, { data: { token: '1234tycngsgu67890plkm' } });
 
-    const store = mockStore({ isAuthenticated: [] });
+    const expectedAction = {
+      type: types.SET_CURRENT_USER,
+      user: { token: '1234tycngsgu67890plkm' }
+    };
+    const store = mockStore({});
 
-    store.dispatch(userSignUpRequest({ identifier: 'mazma', password: 1234 }));
+    store.dispatch(userSignUpRequest()).then(() => {
+      expect(store.getActions()).toEqual(expectedAction);
+    });
   });
 });
