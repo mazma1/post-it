@@ -218,28 +218,24 @@ export default {
    * @returns {response} response object
    */
   getUserGroups(req, res) {
-    if (req.params.user_id && !isNaN(req.params.user_id)) {
-      models.User.findOne({
-        where: { id: req.params.user_id },
-        attributes: [],
-        include: [{
-          model: models.Group,
-          as: 'groups',
-          attributes: ['id', ['groupName', 'name']],
-          through: { attributes: [] }
-        }]
-      })
-      .then((user) => {
-        if (user) {
-          res.status(200).send(user);
-        } else {
-          res.status(404).send({ message: 'User does not exist' });
-        }
-      })
-      .catch(error => res.status(500).send(error.message));
-    } else {
-      res.status(400).send({ message: 'Invalid user id' });
-    }
+    models.User.findOne({
+      where: { id: req.params.user_id },
+      attributes: [],
+      include: [{
+        model: models.Group,
+        as: 'groups',
+        attributes: ['id', ['groupName', 'name']],
+        through: { attributes: [] }
+      }]
+    })
+    .then((user) => {
+      if (user) {
+        res.status(200).send(user);
+      } else {
+        res.status(404).send({ message: 'User does not exist' });
+      }
+    })
+    .catch(error => res.status(500).send(error.message));
   },
 
   /**
