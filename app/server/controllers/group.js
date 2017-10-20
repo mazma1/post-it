@@ -8,8 +8,9 @@ export default {
    * Creates a new group
    * Route: POST: /api/v1/groups
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   createGroup(req, res) {
@@ -56,8 +57,9 @@ export default {
    * Adds a user to a group
    * Route: POST: /api/v1/groups/:group_id/user
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   addUserToGroup(req, res) {
@@ -107,8 +109,9 @@ export default {
    * Post message to a group
    * Route: POST: /api/v1/groups/:group_id/message
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   postMessageToGroup(req, res) {
@@ -207,8 +210,9 @@ export default {
    * Get messages posted to a group
    * Route: GET: /api/v1/groups/:group_id/messages
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   getGroupMessages(req, res) {
@@ -252,8 +256,9 @@ export default {
    * Get the groups a user belongs to
    * Route: GET: /api/v1/groups/:group_id/members
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   getGroupMembers(req, res) {

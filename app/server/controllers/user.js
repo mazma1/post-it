@@ -17,8 +17,9 @@ export default {
    * Creates a new user
    * Route: POST: /api/v1/users/signup
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   signup(req, res) {
@@ -78,8 +79,9 @@ export default {
    * Authenticates and logs a user in
    * Route: POST: /api/v1/users/signin
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   signin(req, res) {
@@ -136,8 +138,9 @@ export default {
    * Authenticates and logs a user in using the google API
    * Route: POST: /api/v1/users/googleAuth
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   googleSignIn(req, res) {
@@ -209,8 +212,9 @@ export default {
    * Fetches the groups a user belongs to
    * Route: GET: /api/v1/users/:user_id/groups
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   getUserGroups(req, res) {
@@ -242,8 +246,9 @@ export default {
    * Sends reset password link on request
    * Route: POST: /api/v1/users/resetPassword
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   sendResetPasswordLink(req, res) {
@@ -313,8 +318,9 @@ export default {
    * Checks the validity of reset password token
    * Route: POST: /api/v1/users/newpassword
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   validateResetPasswordToken(req, res) {
@@ -340,8 +346,9 @@ export default {
    * Updates a user's password
    * Route: PATCH: /api/v1/users/newpassword
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   updateUserPassword(req, res) {
@@ -386,8 +393,9 @@ export default {
    * Search for registered user
    * Route: POST: /api/v1/users/search'
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   searchForUser(req, res) {

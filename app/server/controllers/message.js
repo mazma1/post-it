@@ -6,8 +6,9 @@ export default {
    * Updates a user that have read a message
    * Route: PATCH: /api/v1/messages/:message_id/read
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   updateMessageReadStatus(req, res) {
@@ -35,8 +36,9 @@ export default {
    * Archives a given message
    * Route: PATCH: /api/v1/messages/:message_id/archive
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   archiveMessage(req, res) {
