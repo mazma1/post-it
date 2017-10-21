@@ -66,3 +66,7 @@ This project is open for contributions. All contributions must adhere to the Air
 
 ## License
 [MIT](https://github.com/mazma1/post-it/blob/chore/implement-feedback/LICENSE)
+
+
+## FAQS
+View frequently asked questions [here](https://github.com/mazma1/post-it/wiki/Post-It-FAQs)
