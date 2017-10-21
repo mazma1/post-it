@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { MessageCard } from '../../components/message-board/MessageCard';
-import { MessageItem } from '../../components/message-board/MessageItem';
 import Dashboard from '../../components/Dashboard';
 import mockLocalStorage from '../mockLocalStorage';
 
@@ -132,36 +131,5 @@ describe('<MessageCard />', () => {
       };
       expect(messageCard().find('p').text()).toBe('Unable to load messages. Please try again later');
     });
-
-    // it('should always render <MessageItem/> with four props if messages are fetched successfully', () => {
-    //   props.userGroups = {
-    //     isLoading: false,
-    //     hasGroup: true,
-    //     groups: [
-    //       { id: 1, group_name: 'Cohort 29' }
-    //     ]
-    //   };
-    //   props.message = {
-    //     isLoading: false,
-    //     messages: [
-    //       {
-    //         id: 1,
-    //         group: 1,
-    //         message: 'Hello',
-    //         sentBy: {
-    //           username: 'mazma'
-    //         }
-    //       }
-    //     ]
-    //   };
-    //   props.selectedGroup = {
-    //     id: 1,
-    //     name: 'Cohort 29'
-    //   };
-    //   expect(messageCard().find(MessageItem).length).toBe(1);
-
-    //   const messageItemtDisplay = messageCard().find(MessageItem);
-    //   expect(Object.keys(messageItemtDisplay.props()).length).toBe(4);
-    // });
   });
 });

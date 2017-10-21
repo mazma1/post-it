@@ -16,7 +16,6 @@ describe('<MessageItem />', () => {
     history: { push: jest.fn() }
   };
   const event = {
-    // preventDefault: jest.fn(),
     target: {
       dataset: { id: 1 }
     }
@@ -31,7 +30,6 @@ describe('<MessageItem />', () => {
   };
 
   beforeEach(() => {
-    // mountedMessageBody = undefined;
     props.messages = [
       {
         id: 1,
@@ -98,15 +96,6 @@ describe('<MessageItem />', () => {
     expect(archiveMessageRequestSpy).toHaveBeenCalledTimes(1);
   });
 
-  // it('should call archiveMessageRequest() when the archive button is clicked', () => {
-  //   const archiveButton = messageItem().find('i').hasClass('archive-btn');
-  //   const archiveMessageRequestSpy = jest.spyOn(messageItem().instance(), 'archiveMessageRequest');
-  //   expect(archiveButton.length).toBe(1);
-
-  //   archiveButton.simulate('click');
-  //   expect(archiveMessageRequestSpy.calls.length).toBe(1);
-  // });
-
   it('should open a message item when clicked', () => {
     const message = messageItem().find('p').hasClass('msg_body');
     expect(message).toBe(true);
@@ -114,12 +103,4 @@ describe('<MessageItem />', () => {
     messageItem().find('p').simulate('click', event);
     expect(props.history.push.mock.calls.length).toBe(1);
   });
-
-  // it('should archive a message when the archive button is clicked', () => {
-  //   // const message = messageItem().find('p').hasClass('msg_body');
-  //   // expect(message).toBe(true);
-  //   const readByArray = ['mazma'];
-  //   messageItem().find('i').simulate('click', readByArray);
-  //   expect(props.archiveMessageRequest.mock.calls.length).toBe(1);
-  // });
 });

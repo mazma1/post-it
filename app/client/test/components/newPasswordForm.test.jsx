@@ -51,15 +51,4 @@ describe('<NewPasswordForm />', () => {
     updatePasswordButton.simulate('click', event);
     expect(submitNewPasswordSpy.mock.calls.length).toBe(1);
   });
-
-  // describe('with failed updatePassword request', () => {
-  //   it('should catch resulting error', () => {
-  //     // props.updatePassword = jest.fn(() => Promise.reject());
-  //     const updatePasswordButton = newPasswordForm().find('a');
-  //     const event = { preventDefault: jest.fn() };
-  //     const submitNewPasswordSpy = jest.spyOn(newPasswordForm().instance(), 'submitNewPassword');
-  //     updatePasswordButton.simulate('click', event);
-  //     expect(submitNewPasswordSpy.mock.calls.length).toBe(1);
-  //   });
-  // });
 });

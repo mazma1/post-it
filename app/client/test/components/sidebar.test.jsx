@@ -62,9 +62,8 @@ describe('<Sidebar />', () => {
         username: 'mazma'
       }
     };
-    props.getUserGroups = () => new Promise((resolve, reject) => {
-      const resolveGetUserGroups = resolve;
-    });
+    props.getGroupMessagesCount = jest.fn(() => Promise.resolve());
+    props.getUserGroups = jest.fn(() => Promise.resolve());
   });
 
   it('should always render a wrapping div', () => {
@@ -86,12 +85,29 @@ describe('<Sidebar />', () => {
     expect(CWMSpy).toHaveBeenCalledTimes(1);
   });
 
-  // it('should mount with onChange()', () => {
-  //   const event = { target: {} };
-  //   const onChangeSpy = jest.spyOn(Sidebar.prototype, 'onChange');
-  //   Sidebar.prototype.onChange(event);
-  //   expect(onChangeSpy).toHaveBeenCalledTimes(1);
-  // });
+  it('should mount with onChange()', () => {
+    const event = { target: {} };
+    const onChangeSpy = jest.spyOn(Sidebar.prototype, 'onChange');
+    const shallowSidebar = shallow(<Sidebar {...props} />);
+    shallowSidebar.instance().onChange(event);
+    expect(onChangeSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should mount with onGroupSelect()', () => {
+    const group = { id: 1 };
+    const onGroupSelectSpy = jest.spyOn(Sidebar.prototype, 'onGroupSelect');
+    const shallowSidebar = shallow(<Sidebar {...props} />);
+    shallowSidebar.instance().onGroupSelect(group);
+    expect(onGroupSelectSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should mount with getUnreadCount()', () => {
+    const groups = [{ id: 1, name: 'Cohort 29' }];
+    const getUnreadCountSpy = jest.spyOn(Sidebar.prototype, 'getUnreadCount');
+    const shallowSidebar = shallow(<Sidebar {...props} />);
+    shallowSidebar.instance().getUnreadCount(groups);
+    expect(getUnreadCountSpy).toHaveBeenCalledTimes(1);
+  });
 
   it('should always render <Brand/> with one prop', () => {
     expect(sidebar().find(Brand).length).toBe(1);

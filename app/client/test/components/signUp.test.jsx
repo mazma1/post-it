@@ -25,11 +25,11 @@ describe('<SignUp />', () => {
     };
   });
 
-  it('should mount <SignUpForm /> with two props', () => {
+  it('should mount <SignUpForm /> with userSignUpRequest as a prop', () => {
     expect(signUp().find('h5').text()).toBe('Sign up | Post It');
     expect(signUp().find(SignUpForm).length).toBe(1);
 
-    // const SignUpDisplay = signUp().find(SignUpForm);
-    // expect(Object.keys(SignUpDisplay.props()).length).toBe(2);
+    const SignUpDisplay = signUp().find(SignUpForm);
+    expect(SignUpDisplay.props().userSignUpRequest);
   });
 });

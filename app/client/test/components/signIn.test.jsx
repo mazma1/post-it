@@ -20,11 +20,11 @@ const signIn = () => {
 };
 
 describe('<SignIn />', () => {
-  it('should render <SignInForm /> with one prop', () => {
+  it('should render <SignInForm /> with userSignInRequest as a prop', () => {
     expect(signIn().find('h5').text()).toBe('Sign In | Post It');
     expect(signIn().find(SignInForm).length).toBe(1);
 
-    // const SignInDisplay = signIn().find(SignInForm);
-    // expect(Object.keys(SignInDisplay.props()).length).toBe(1);
+    const SignInDisplay = signIn().find(SignInForm);
+    expect(SignInDisplay.props().userSignInRequest);
   });
 });

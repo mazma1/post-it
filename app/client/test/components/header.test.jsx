@@ -1,17 +1,22 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { mount } from 'enzyme';
-import { spy } from 'sinon';
+import { mount, shallow } from 'enzyme';
 import { Header } from '../../components/client-frame/Header';
 import { AddUserBtn, GroupName } from '../../components/misc/HeaderMisc';
 import GroupMembers from '../../components/tables/GroupMembersTable';
 import ModalFrame from '../../components/modal/ModalFrame';
+import mockLocalStorage from '../mockLocalStorage';
 import {
   ModalHeader,
   ModalBody,
-  ModalFooter,
-  SubmitButton
+  ModalFooter
 } from '../../components/modal/SubModals';
+
+Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+Object.defineProperty(window.location, 'href', {
+  writable: true,
+  value: '/'
+});
 
 describe('<Header />', () => {
   let mountedHeader;
@@ -25,7 +30,7 @@ describe('<Header />', () => {
     membersLoading: false,
     groupMembers: [],
     selectedGroup: undefined,
-    match: {}
+    match: { params: {} }
   };
   const header = () => {
     if (!mountedHeader) {
@@ -52,11 +57,30 @@ describe('<Header />', () => {
       id: 1,
       name: 'Cohort 29'
     };
-    // props.submitNewUser = () => {
-    //   return new Promise((resolve, reject) => {
-    //     const resolveSubmitNewUser = resolve;
-    //   });
-    // };
+    props.submitNewUser = jest.fn(() => Promise.resolve());
+  });
+
+  it('should mount with submitNewUser()', () => {
+    const event = { target: {}, preventDefault: jest.fn() };
+    const submitNewUserSpy = jest.spyOn(Header.prototype, 'submitNewUser');
+    const shallowHeader = shallow(<Header {...props} />);
+    shallowHeader.instance().submitNewUser(event);
+    expect(submitNewUserSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should mount with onSearchClick()', () => {
+    const onSearchClickSpy = jest.spyOn(Header.prototype, 'onSearchClick');
+    const shallowHeader = shallow(<Header {...props} />);
+    shallowHeader.instance().onSearchClick();
+    expect(onSearchClickSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should mount with logout()', () => {
+    const event = { target: {}, preventDefault: jest.fn() };
+    const logoutSpy = jest.spyOn(Header.prototype, 'logout');
+    const shallowHeader = shallow(<Header {...props} />);
+    shallowHeader.instance().logout(event);
+    expect(logoutSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should always render a wrapping div', () => {
@@ -91,14 +115,6 @@ describe('<Header />', () => {
 
     const addUserBtnDisplay = header().find(AddUserBtn);
     expect(Object.keys(addUserBtnDisplay.props()).length).toBe(2);
-  });
-
-  it('should call `submitNewUser` function when new user is submitted', () => {
-    const submitButton = header().find(SubmitButton);
-    expect(submitButton.length).toBe(1);
-
-    // submitButton.simulate('submit');
-    // expect(props.submitNewUser.mock.calls.length).toBe(1);
   });
 
   it('should always render addUser and groupMembers Modals', () => {

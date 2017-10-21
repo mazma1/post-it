@@ -28,7 +28,7 @@ describe('<MessageBody />', () => {
   };
 
   beforeEach(() => {
-    // mountedMessageBody = undefined;
+    mountedMessageBody = undefined;
     props.messages = [
       {
         id: 1,

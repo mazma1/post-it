@@ -29,7 +29,6 @@ describe('<GroupList />', () => {
     mountedGroupList = undefined;
   });
 
-  // All tests will go here
   describe('When a user\'s groups are still being fetched', () => {
     beforeEach(() => {
       props.userGroups = {
