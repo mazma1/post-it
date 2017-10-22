@@ -18,13 +18,16 @@ function sendEmail(emailParams) {
     }
   }));
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log(`Email sent:${info.response}`);
-    }
-  });
+  if (process.env.NODE_ENV !== 'production') {
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(`Email sent:${info.response}`);
+      }
+    });
+  } else {
+    transporter.sendMail(mailOptions);
+  }
 }
-
 export default sendEmail;

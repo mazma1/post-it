@@ -7,6 +7,7 @@ import mapKeys from 'lodash/mapKeys';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
+import jwt from 'jsonwebtoken';
 import GroupList from './GroupList';
 import {
   ModalHeader,
@@ -65,8 +66,14 @@ export class Sidebar extends React.Component {
    * @returns {void}
    */
   componentWillMount() {
+    const token = localStorage.getItem('jwtToken');
+    let expiredToken;
+    if (token) {
+      const expiryDate = jwt.decode(token).exp;
+      expiredToken = expiryDate < Date.now() / 1000;
+    }
     const userId = this.props.signedInUser.user.id;
-    if (userId) {
+    if (userId && expiredToken === false) {
       this.props.getUserGroups(userId).then(
         () => {
           if (this.props.userGroups.hasGroup === false) {
