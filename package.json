@@ -40,7 +40,7 @@
     "run:test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text ./node_modules/.bin/mocha --compilers js:babel-core/register --timeout 20000 ./app/server/test/**/*.test.js",
     "test:server": "npm run create:testdb && npm run run:test",
     "test:client": "jest .app/client/test/  --verbose",
-    "test": "npm run test:server",
+    "test": "npm run test:server && npm run test:client && npm run coverage",
     "test:local": "npm run test:server && npm run test:client && npm run coverage",
     "reset_db": "NODE_ENV=production sequelize db:migrate:undo:all && NODE_ENV=production sequelize db:migrate && NODE_ENV=production sequelize db:seed:all",
     "db:migrate": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",

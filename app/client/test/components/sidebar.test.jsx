@@ -10,6 +10,9 @@ import {
   ModalBody,
   ModalFooter
 } from '../../components/modal/SubModals';
+import mockLocalStorage from '../mockLocalStorage';
+
+Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
 
 describe('<Sidebar />', () => {
   let mountedSidebar;
