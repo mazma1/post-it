@@ -117,6 +117,7 @@ export default {
   postMessageToGroup(req, res) {
     const userId = req.decoded.data.id;
     const userEmail = req.decoded.data.email;
+    const { username } = req.decoded.data;
     if (!req.body.message) {
       return res.status(400).send({ error: 'Message is required' });
     }
@@ -150,11 +151,14 @@ export default {
             const uppercasePriority = priority.toUpperCase();
             return members.members.map((member) => {
               const emailParams = {
-                senderAddress: member.email,
-                recepientAddress: userEmail,
+                senderAddress: userEmail,
+                recepientAddress: member.email,
                 groupName: members.groupName,
-                subject: `${uppercasePriority} message in ${members.groupName}`,
-                emailBody: messageDetail.body
+                subject: `Post It: ${uppercasePriority} message in ${members.groupName}`,
+                emailBody: `From <b>@${username}</b>: <br><br>
+                            <i>${messageDetail.body}</i> <br><br>
+                            <a href='http://${req.headers.host}/message-board/${messageDetail.groupId}'>Click here</a>
+                            to view message details.`
               };
               sendEmail(emailParams);
 
