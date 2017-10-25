@@ -1,18 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'bootstrap-loader';
+import 'materialize-loader';
 import { Provider } from 'react-redux';
 import jwt from 'jsonwebtoken';
 import configureStore from './store/configureStore';
 import setAuthorizationToken from './utils/setAuthorizationToken';
 import { setCurrentUser } from './actions/signIn';
 import Client from './components/Client';
-
-require('bootstrap-loader');
-require('materialize-loader');
-require('../../node_modules/toastr/build/toastr.min.css');
-require('./static/scss/style.scss');
-require('../client/static/img/index-bg.png');
-require('../client/static/img/google.jpg');
+import '../../node_modules/toastr/build/toastr.min.css';
+import './static/scss/style.scss';
+import '../client/static/img/index-bg.png';
+import '../client/static/img/google.jpg';
 
 
 // Define Redux Store

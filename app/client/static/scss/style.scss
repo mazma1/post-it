@@ -1105,3 +1105,7 @@ ul.pagination li {
 .zero-padding {
   margin-bottom: 0;
 }
+
+li.new-group:focus {
+  outline: none;
+}

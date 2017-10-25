@@ -19,7 +19,7 @@
       "jsx"
     ],
     "unmockedModulePathPatterns": [
-      "react", "this"
+      "react"
     ],
     "collectCoverage": true,
     "transform": {
@@ -105,7 +105,7 @@
     "babel-preset-react": "^6.24.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
-    "bootstrap-loader": "^2.1.0",
+    "bootstrap-loader": "^2.2.0",
     "bootstrap-sass": "^3.3.7",
     "classnames": "^2.2.5",
     "concurrently": "^3.5.0",
@@ -113,14 +113,15 @@
     "css-loader": "^0.28.4",
     "dotenv": "^4.0.0",
     "express": "^4.15.3",
+    "extract-text-webpack-plugin": "^3.0.1",
     "file-loader": "^0.11.2",
     "google-auth-library": "^0.11.0",
     "html-webpack-plugin": "^2.29.0",
     "jquery": "^3.2.1",
     "jsonwebtoken": "^7.4.1",
     "lodash": "^4.17.4",
-    "materialize-css": "^0.99.0",
-    "materialize-loader": "^2.0.0",
+    "materialize-css": "^0.100.2",
+    "materialize-loader": "^2.0.2",
     "moment": "^2.18.1",
     "morgan": "^1.8.2",
     "nexmo": "^2.0.2",
