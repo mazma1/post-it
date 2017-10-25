@@ -51,10 +51,6 @@ SearchBtn.defaultProps = {
 };
 
 
-const noMarginBottom = {
-  marginBottom: 0
-};
-
 export const GroupName = (props) => {
   if (isEmpty(props.selectedGroup)) {
     return <div className="col-md-4 col-sm-5 col-xs-3" />;
@@ -62,7 +58,7 @@ export const GroupName = (props) => {
 
   return (
     <div className="col-md-4 col-sm-5 col-xs-3 brand">
-      <ul style={noMarginBottom}>
+      <ul className="zero-padding">
         <h4 className="group-name">
           {checkGroupnameLength(props.selectedGroup.name)}
         </h4>

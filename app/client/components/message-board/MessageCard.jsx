@@ -105,10 +105,6 @@ export class MessageCard extends React.Component {
     const { hasGroup } = this.props.userGroups;
     const messageLoading = this.props.message.isLoading;
     const messageLoadingError = this.props.message.error;
-    const divPadding = {
-      paddingLeft: '20px',
-      paddingTop: '20px'
-    };
     const props = {
       messages: this.props.message.messages,
       onMessageClick: this.onMessageClick,
@@ -117,13 +113,13 @@ export class MessageCard extends React.Component {
     };
 
     if (messageLoading) {
-      return <div className="group-spinner" style={divPadding}>Loading...</div>;
+      return <div className="group-spinner loading-padding">Loading...</div>;
     }
 
     if (!messageLoading) {
       if (hasGroup && !messageLoadingError && !isEmpty(selectedGroup) && isEmpty(messages)) {
         return (
-          <div style={divPadding}>
+          <div className="loading-padding">
             <Dashboard message="This group currently has no messages" />
 
 
@@ -141,7 +137,7 @@ export class MessageCard extends React.Component {
       }
       if (hasGroup && messageLoadingError) {
         return (
-          <div style={divPadding}>
+          <div className="loading-padding">
             <p>Unable to load messages. Please try again later</p>
           </div>
         );

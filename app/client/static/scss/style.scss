@@ -1006,6 +1006,11 @@ select.browser-default.msg-filter {
   width: 100%;
 }
 
+.google {
+  display: inline;
+  width: 20%;
+}
+
 button.google-btn:hover {
   color: $whitesmoke;
 }
@@ -1079,4 +1084,24 @@ button.google-btn:hover {
   .msg-filter {
     width: 97%;
   }
+}
+
+ul.pagination li {
+  cursor: pointer;
+}
+
+.loading-padding {
+  padding-left: 20px;
+  padding-left: 20px;
+}
+
+.new-group {
+  margin-top: 8px;
+  border-top: 1px solid #b5818a;
+  border-bottom: 1px solid #b5818a;
+  background-color: #eae5e5;
+}
+
+.zero-padding {
+  margin-bottom: 0;
 }

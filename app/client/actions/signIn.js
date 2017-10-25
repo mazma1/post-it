@@ -54,7 +54,7 @@ export function setCurrentUser(user) {
 
 
 /**
-   * Logs outa user and deletes token from local storage
+   * Logs out a user and deletes token from local storage
    *
    * @returns {action} action to delete user details
    */

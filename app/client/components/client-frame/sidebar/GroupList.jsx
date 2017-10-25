@@ -18,27 +18,14 @@ function GroupList(props) {
   const groupsArray = props.userGroups.groups;
   const { unreadCount, onGroupSelect } = props;
   const mappedUnreadCount = mapKeys(unreadCount, 'id');
-
-  const divPadding = {
-    paddingLeft: '20px',
-    paddingTop: '20px'
-  };
-
-  const newGroup = {
-    marginTop: '8px',
-    borderTop: '1px solid #b5818a',
-    borderBottom: '1px solid #b5818a',
-    backgroundColor: '#eae5e5'
-  };
-
   let groups;
 
   if (props.userGroups.isLoading === true) {
-    return <div style={divPadding}>Loading...</div>;
+    return <div className="loading-padding">Loading...</div>;
   }
 
   const emptyGroup = (
-    <div style={divPadding}>
+    <div className="loading-padding">
       <p>No groups available.</p>
       <a
         href="#createGroup"
@@ -51,7 +38,7 @@ function GroupList(props) {
   );
 
   const createGroup = (
-    <li role="presentation" style={newGroup}>
+    <li role="presentation" className="new-group">
       <a
         id="createNewGroup"
         href="#createGroup"
