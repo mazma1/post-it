@@ -162,7 +162,7 @@ export default {
               };
               sendEmail(emailParams);
 
-              if (req.body.priority === 'critical') {
+              if (req.body.priority === 'critical' && process.env.NODE_ENV !== 'test') {
                 const smsParams = {
                   priority: uppercasePriority,
                   group: members.groupName,

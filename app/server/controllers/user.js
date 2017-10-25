@@ -53,7 +53,7 @@ export default {
             firstName,
             lastName,
             email,
-            username: username.toLowercase(),
+            username: username.toLowerCase(),
             phoneNumber: `234${phoneNumber.slice(1)}`,
             password: bcrypt.hashSync(req.body.password, salt)
           };

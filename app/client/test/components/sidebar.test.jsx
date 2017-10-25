@@ -47,7 +47,7 @@ describe('<Sidebar />', () => {
       isLoading: false,
       hasGroup: true,
       groups: [
-        { id: 1, groupName: 'Cohort 29' }
+        { id: 1, name: 'Cohort 29' }
       ]
     };
     props.selectedGroup = {

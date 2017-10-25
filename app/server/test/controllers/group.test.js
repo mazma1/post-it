@@ -45,7 +45,7 @@ describe('Group Endpoint', () => {
           res.status.should.equal(201);
           res.body.should.be.a('object');
           res.body.should.have.property('message').eql('Group was successfully created and you have been added to it');
-          res.body.should.have.property('groupName').eql('Test Group 3');
+          res.body.should.have.property('groupName').eql('test group 3');
           res.body.should.have.property('groupOwner').eql(1);
           done();
         });

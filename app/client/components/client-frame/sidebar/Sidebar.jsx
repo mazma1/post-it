@@ -209,7 +209,6 @@ export class Sidebar extends React.Component {
       error.error = 'Group name cannot be empty';
       this.setState({ error });
     }
-    console.log(isEmpty(error))
     return isEmpty(error);
   }
 

@@ -47,7 +47,7 @@ describe('<GroupList />', () => {
         isLoading: false,
         hasGroup: true,
         groups: [
-          { id: 1, group_name: 'Cohort 29' }
+          { id: 1, name: 'Cohort 29' }
         ]
       };
       props.selectedGroup = {
@@ -67,7 +67,7 @@ describe('<GroupList />', () => {
     });
 
     it('should render the button to create a new group', () => {
-      expect(groupList().find('#createNewGroup').text()).toBe('Create new group');
+      expect(groupList().find('#createNewGroup').text()).toBe('Create New Group');
     });
 
     it('should render the number of unread messages', () => {
