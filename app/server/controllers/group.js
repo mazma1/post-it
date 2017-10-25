@@ -16,7 +16,7 @@ export default {
   createGroup(req, res) {
     let error = '';
     const userId = req.decoded.data.id;
-    const { groupName } = req.body;
+    const groupName = req.body.groupName.toLowerCase();
     const groupData = {
       groupName,
       userId

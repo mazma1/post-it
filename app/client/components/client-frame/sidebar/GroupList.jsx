@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 import mapKeys from 'lodash/mapKeys';
 import PropTypes from 'prop-types';
+import capitalizeFirstLetter from '../../../utils/capitalizeFirstLetter';
 
 /**
   * Displays a list of groups a user belongs to on the message board
@@ -45,7 +46,7 @@ function GroupList(props) {
         data-toggle="modal" data-target="#createGroup"
         onClick={props.openModal}
       >
-        Create new group
+        Create New Group
       </a>
     </li>
   );
@@ -68,7 +69,7 @@ function GroupList(props) {
           className={classnames({ active: isSelected })}
         >
           <NavLink to="#">
-            {group.name}
+            {capitalizeFirstLetter(group.name)}
             {
               mappedUnreadCount[id] && mappedUnreadCount[id].unreadCount > 0 ?
                 <span className="new badge">

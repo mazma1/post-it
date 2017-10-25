@@ -30,7 +30,10 @@ export default {
     } else {
       models.User.findOne({
         where: {
-          $or: [{ username: req.body.username }, { email: req.body.email }]
+          $or: [
+            { email: req.body.email },
+            { username: req.body.username.toLowerCase() },
+          ]
         },
       })
       .then((existingUser, err) => {
@@ -49,8 +52,8 @@ export default {
           const userData = {
             firstName,
             lastName,
-            username,
             email,
+            username: username.toLowercase(),
             phoneNumber: `234${phoneNumber.slice(1)}`,
             password: bcrypt.hashSync(req.body.password, salt)
           };

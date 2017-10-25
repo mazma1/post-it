@@ -3,6 +3,7 @@ import $ from 'jquery';
 import toastr from 'toastr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
 import { bindActionCreators } from 'redux';
 import { withRouter, Link } from 'react-router-dom';
 import ModalFrame from '../modal/ModalFrame';
@@ -51,6 +52,7 @@ export class Header extends React.Component {
     this.submitNewUser = this.submitNewUser.bind(this);
     this.logout = this.logout.bind(this);
     this.onSearchClick = this.onSearchClick.bind(this);
+    this.isValid = this.isValid.bind(this);
   }
 
 
@@ -110,6 +112,24 @@ export class Header extends React.Component {
   }
 
   /**
+  * Handles input validation for adding user to group
+  *
+  * @returns {boolean} If an input is valid or not
+  */
+  isValid() {
+    const error = {};
+    if (!this.state.newUser) {
+      error.error = 'Username is required';
+      return this.setState({ error });
+    }
+    if (this.state.newUser.trim().length === 0) {
+      error.error = 'Username cannot be empty';
+      return this.setState({ error });
+    }
+    return isEmpty(error);
+  }
+
+  /**
    * Submits a new user's record to the database
    *
    * @param {SyntheticEvent} event
@@ -117,23 +137,25 @@ export class Header extends React.Component {
    * @returns {void}
    */
   submitNewUser(event) {
-    this.setState({ error: '', isLoading: true });
     event.preventDefault();
-    this.props.submitNewUser({
-      groupId: this.props.selectedGroup.id,
-      identifier: this.state.newUser
-    }).then(
-      () => {
-        toastr.success('User has been successfully added to group');
-        $('[data-dismiss=modal]').trigger({ type: 'click' });
-      },
-      ({ response }) => {
-        this.setState({
-          error: response.data,
-          isLoading: false
-        });
-      }
-    );
+    if (this.isValid()) {
+      this.setState({ error: '', isLoading: true });
+      this.props.submitNewUser({
+        groupId: this.props.selectedGroup.id,
+        identifier: this.state.newUser
+      }).then(
+        () => {
+          toastr.success('User has been successfully added to group');
+          $('[data-dismiss=modal]').trigger({ type: 'click' });
+        },
+        ({ response }) => {
+          this.setState({
+            error: response.data,
+            isLoading: false
+          });
+        }
+      );
+    }
   }
 
   /**

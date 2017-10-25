@@ -58,6 +58,7 @@ export class Sidebar extends React.Component {
     this.onGroupSelect = this.onGroupSelect.bind(this);
     this.submitNewGroup = this.submitNewGroup.bind(this);
     this.getUnreadCount = this.getUnreadCount.bind(this);
+    this.isValid = this.isValid.bind(this);
   }
 
   /**
@@ -193,6 +194,25 @@ export class Sidebar extends React.Component {
     });
   }
 
+  /**
+   * Handles input validation for creating new group
+   *
+   * @returns {boolean} If an input is valid or not
+   */
+  isValid() {
+    const error = {};
+    if (!this.state.newGroup) {
+      error.error = 'Group name is required';
+      this.setState({ error });
+    }
+    if (this.state.newGroup.trim().length === 0) {
+      error.error = 'Group name cannot be empty';
+      this.setState({ error });
+    }
+    console.log(isEmpty(error))
+    return isEmpty(error);
+  }
+
 
   /**
    * Adds a new group record to the DB
@@ -202,21 +222,23 @@ export class Sidebar extends React.Component {
    * @returns {void}
    */
   submitNewGroup(event) {
-    this.setState({ error: {}, isLoading: true });
     event.preventDefault();
-    this.props.submitNewGroup({
-      groupName: this.state.newGroup,
-      userId: this.props.signedInUser.user.id
-    }).then(
-      () => {
-        toastr.success('Your group has been successfully created');
-        $('[data-dismiss=modal]').trigger({ type: 'click' });
-        this.setState({ isLoading: false });
-      },
-      ({ response }) => {
-        this.setState({ error: response.data, isLoading: false });
-      }
-    );
+    if (this.isValid()) {
+      this.setState({ error: {}, isLoading: true });
+      this.props.submitNewGroup({
+        groupName: this.state.newGroup,
+        userId: this.props.signedInUser.user.id
+      }).then(
+        () => {
+          toastr.success('Your group has been successfully created');
+          $('[data-dismiss=modal]').trigger({ type: 'click' });
+          this.setState({ isLoading: false });
+        },
+        ({ response }) => {
+          this.setState({ error: response.data, isLoading: false });
+        }
+      );
+    }  
   }
 
 

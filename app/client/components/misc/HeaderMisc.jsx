@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import { Link } from 'react-router-dom';
 import checkGroupnameLength from '../../utils/checkGroupNameLength';
+import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter';
 
 export const AddUserBtn = (props) => {
   if (isEmpty(props.selectedGroup)) {
@@ -60,7 +61,7 @@ export const GroupName = (props) => {
     <div className="col-md-4 col-sm-5 col-xs-3 brand">
       <ul className="zero-padding">
         <h4 className="group-name">
-          {checkGroupnameLength(props.selectedGroup.name)}
+          {capitalizeFirstLetter(checkGroupnameLength(props.selectedGroup.name))}
         </h4>
         <li role="presentation" className="dropdown">
           <a
