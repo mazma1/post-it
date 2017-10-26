@@ -68,7 +68,7 @@ export default {
                 username,
                 email
               }
-            }, process.env.TOKEN_SECRET, { expiresIn: '720m' });
+            }, process.env.TOKEN_SECRET, { expiresIn: '24h' });
             res.status(201).send({ message: 'Signup was successful', token });
           })
           .catch(error => res.status(500).send(error.message));
@@ -121,7 +121,7 @@ export default {
                 username,
                 email
               }
-            }, process.env.TOKEN_SECRET, { expiresIn: '720m' });
+            }, process.env.TOKEN_SECRET, { expiresIn: '24h' });
             res.status(200).send({
               message: 'User successfully logged in',
               token
@@ -136,6 +136,20 @@ export default {
     }
   },
 
+  verifyGoogleUser(req, res) {
+    const { email } = req.body;
+    models.User.findOne({
+      where: { email }
+    }).then((user) => {
+      if (!user) {
+        res.status(200).send({ message: 'New user' });
+      } else {
+        res.status(200).send({ message: 'Returning user' });
+      }
+    }).catch((error) => {
+      res.status(500).send({ error: error.message });
+    });
+  },
 
   /**
    * Authenticates and logs a user in using the google API
@@ -148,19 +162,18 @@ export default {
    */
   googleSignIn(req, res) {
     let user;
-    const idToken = Object.keys(req.body)[0];
+    const idToken = req.body.tokenId;
     const auth = new GoogleAuth();
     const client = new auth.OAuth2(process.env.CLIENT_ID, '', '');
     client.verifyIdToken(idToken, process.env.CLIENT_ID, (e, login) => {
       const payload = login.getPayload();
       user = {
-        firstName: payload.givenName,
-        lastName: payload.familyName,
+        firstName: payload.given_name,
+        lastName: payload.family_name,
         email: payload.email,
-        username: payload.givenName,
+        username: payload.given_name,
         googleId: payload.sub
       };
-
       models.User.findOne({
         where: {
           $or: [
@@ -168,15 +181,15 @@ export default {
             { email: user.email }
           ]
         },
-      }).then((user) => {
-        if (!user) {
-          const { firstName, lastName, username, email, googleId } = req.body;
+      }).then((existingUser) => {
+        if (!existingUser) {
+          const { firstName, lastName, username, email, googleId } = user;
           const userData = {
             firstName,
             lastName,
-            username,
+            username: username.toLowerCase(),
             email,
-            phoneNumber: '08098765432',
+            phoneNumber: `234${req.body.phoneNumber.slice(1)}`,
             password: bcrypt.hashSync(googleId, salt),
             googleId
           };
@@ -191,11 +204,13 @@ export default {
                 email
               }
             }, process.env.TOKEN_SECRET, { expiresIn: '24h' });
-            res.status(201).send({ message: 'Google sign was successful', token });
-          }).catch();
+            res.status(201).send({ message: 'Google sign up was successful', token });
+          }).catch((error) => {
+            res.status(500).send({ error: error.message });
+          });
         }
-        if (user.email) {
-          const { id, firstName, lastName, username, email } = user;
+        if (existingUser) {
+          const { id, firstName, lastName, username, email } = existingUser;
           const token = jwt.sign({
             data: {
               id,
@@ -205,9 +220,11 @@ export default {
               email
             }
           }, process.env.TOKEN_SECRET, { expiresIn: '24h' });
-          res.status(200).send({ message: 'Google sign was successful', token });
+          res.status(200).send({ message: 'Google sign in was successful', token });
         }
-      }).catch();
+      }).catch((error) => {
+        res.status(500).send({ error: error.message });
+      });
     });
   },
 

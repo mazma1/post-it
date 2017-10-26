@@ -168,7 +168,6 @@ export class Header extends React.Component {
   logout(event) {
     event.preventDefault();
     this.props.logout();
-    window.location.href = '/';
   }
 
 

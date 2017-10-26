@@ -17,12 +17,13 @@ describe('<HomePage />', () => {
   beforeEach(() => {
     props = {
       googleSignIn: jest.fn(() => Promise.resolve()),
+      verifyGoogleUser: jest.fn(() => Promise.resolve()),
       history: { push: jest.fn() }
     };
   });
 
   it('should mount with googleSignIn()', () => {
-    const response = { tokenId: '' };
+    const response = { tokenId: '', profileObj: { email: '' } };
     const googleSignInSpy = jest.spyOn(homepage().instance(), 'googleSignIn');
     homepage().instance().googleSignIn(response);
     expect(googleSignInSpy).toHaveBeenCalledTimes(1);

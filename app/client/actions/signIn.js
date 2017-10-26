@@ -22,14 +22,31 @@ export function userSignInRequest(userData) {
 
 
 /**
+  * Makes request to verify if a google user is a new or returning user
+  *
+  * @param {object} email user's email
+  *
+  * @returns {response} request response
+  */
+export function verifyGoogleUser(email) {
+  const reqBody = { email };
+  return dispatch => axios.post('/api/v1/users/verifyGoogleUser', reqBody);
+}
+
+
+/**
   * Makes request to authenticate a user via Google API
   *
   * @param {object} tokenId user's google token id to be verified
   *
   * @returns {response} request response
   */
-export function googleSignIn(tokenId) {
-  return dispatch => axios.post('/api/v1/users/googleAuth', tokenId)
+export function googleSignIn(userDetails) {
+  const reqBody = {
+    tokenId: userDetails.token || userDetails,
+    phoneNumber: userDetails.phoneNumber || null
+  };
+  return dispatch => axios.post('/api/v1/users/googleAuth', reqBody)
     .then((res) => {
       const { token } = res.data;
       localStorage.setItem('jwtToken', token);
@@ -60,6 +77,7 @@ export function setCurrentUser(user) {
    */
 export function logout() {
   return (dispatch) => {
+    window.location.href = '/';
     localStorage.removeItem('jwtToken');
     setAuthorizationToken(false);
     dispatch(deleteCurrentUser());

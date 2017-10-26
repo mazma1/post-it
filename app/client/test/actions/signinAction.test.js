@@ -7,6 +7,10 @@ import * as types from '../../actions/types';
 import mockLocalStorage from '../mockLocalStorage';
 
 Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+Object.defineProperty(window.location, 'href', {
+  writable: true,
+  value: '/'
+});
 
 const middlewares = [thunk];
 const mock = new MockAdapter(axios);
@@ -89,6 +93,17 @@ describe('Sign In Action\'s', () => {
       store.dispatch(actions.googleSignIn({ token: 'mazma' })).then((data) => {
         expect(store.getActions()).toEqual(expectedAction);
       });
+    });
+  });
+
+  describe('#verifyGoogleUser', () => {
+    it('should make request to determine if user is new or returning', () => {
+      mock.onPost('/api/v1/users/verifyGoogleUser')
+        .reply(200, { data: { message: 'New User' } });
+
+      const store = mockStore({ data: { message: 'New User' } });
+
+      store.dispatch(actions.verifyGoogleUser({ email: 'mazi@yahoo.com' }));
     });
   });
 });

@@ -21,6 +21,11 @@ router.post(
 );
 
 router.post(
+  '/api/v1/users/verifyGoogleUser',
+  userController.verifyGoogleUser
+);
+
+router.post(
   '/api/v1/users/resetpassword',
   userController.sendResetPasswordLink
 );
