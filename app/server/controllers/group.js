@@ -212,10 +212,6 @@ export default {
     .then((messages) => {
       if (messages) {
         res.status(200).send({ messages });
-      } else {
-        res.status(404).send({
-          message: 'No message was found for the specified group'
-        });
       }
     })
     .catch(error => res.status(500).send(error.message));
@@ -244,8 +240,6 @@ export default {
     .then((group) => {
       if (group) {
         res.status(200).send(group);
-      } else {
-        res.status(404).send({ message: 'Group does not exist' });
       }
     })
     .catch(error => res.status(500).send(error.message));

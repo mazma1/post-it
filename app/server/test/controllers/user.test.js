@@ -625,12 +625,11 @@ describe('User Endpoint', () => {
         .end((err, res) => {
           res.status.should.equal(200);
           res.body.should.be.a('object');
-          res.body.should.have.property('groups').with.lengthOf(4);
+          res.body.should.have.property('groups').with.lengthOf(3);
           res.body.groups.should.be.a('array');
           res.body.groups[0].should.have.property('name').eql('jasmine');
           res.body.groups[1].should.have.property('name').eql('bluebell');
-          res.body.groups[3].should.have.property('name').eql('test group 3');
-          res.body.groups[2].should.have.property('name').eql('marigold');
+          res.body.groups[2].should.have.property('name').eql('test group 3');
           done();
         });
     });

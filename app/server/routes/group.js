@@ -16,6 +16,7 @@ router.post(
   '/api/v1/groups/:group_id/user',
   tokenAuth,
   verifyGroupId,
+  verifyMembership,
   groupController.addUserToGroup
 );
 
@@ -31,6 +32,7 @@ router.get(
   '/api/v1/groups/:group_id/messages',
   tokenAuth,
   verifyGroupId,
+  verifyMembership,
   groupController.getGroupMessages
 );
 
@@ -38,6 +40,7 @@ router.get(
   '/api/v1/groups/:group_id/members',
   tokenAuth,
   verifyGroupId,
+  verifyMembership,
   groupController.getGroupMembers
 );
 

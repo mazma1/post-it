@@ -126,9 +126,9 @@ describe('Group Endpoint', () => {
 
     it('should successfully add specified user to group', (done) => {
       const identifier = {
-        identifier: 'mazma'
+        identifier: 'clare'
       };
-      chai.request(app).post('/api/v1/groups/4/user')
+      chai.request(app).post('/api/v1/groups/6/user')
         .set('x-access-token', token)
         .send(identifier)
         .end((err, res) => {
@@ -193,7 +193,7 @@ describe('Group Endpoint', () => {
     });
 
     it('should return status 401 if user does not belong to group', (done) => {
-      const token1 = jwt.sign({ data: { id: 2 } }, process.env.TOKEN_SECRET, { expiresIn: '24hr' });
+      const token1 = jwt.sign({ data: { id: 3 } }, process.env.TOKEN_SECRET, { expiresIn: '24hr' });
       const message = 'Hello';
       chai.request(app).post('/api/v1/groups/6/message')
         .set('x-access-token', token1)
@@ -277,18 +277,6 @@ describe('Group Endpoint', () => {
           done();
         });
     });
-
-    it('should return an empty array of messages when a group does not have messages', (done) => {
-      chai.request(app).get('/api/v1/groups/3/messages')
-        .set('x-access-token', token)
-        .end((err, res) => {
-          res.status.should.equal(200);
-          res.body.should.be.a('object');
-          res.body.should.have.property('messages');
-          res.body.messages.should.be.a('array').with.lengthOf(0);
-          done();
-        });
-    });
   });
 
   // Get group members
@@ -336,7 +324,7 @@ describe('Group Endpoint', () => {
         .end((err, res) => {
           res.status.should.equal(404);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Group does not exist');
+          res.body.should.have.property('error').eql('Group does not exist');
           done();
         });
     });
