@@ -3,8 +3,8 @@ import smtpTransport from 'nodemailer-smtp-transport';
 
 function sendEmail(emailParams) {
   const mailOptions = {
-    from: emailParams.recepientAddress,
-    to: emailParams.senderAddress,
+    from: emailParams.senderAddress,
+    to: emailParams.recepientAddress,
     subject: emailParams.subject,
     html: emailParams.emailBody
   };
