@@ -116,7 +116,6 @@ export default {
    */
   postMessageToGroup(req, res) {
     const userId = req.decoded.data.id;
-    const userEmail = req.decoded.data.email;
     const { username } = req.decoded.data;
     if (!req.body.message) {
       return res.status(400).send({ error: 'Message is required' });
@@ -132,14 +131,14 @@ export default {
     };
     models.Message.create(messageDetail)
       .then((message) => {
-        const { id, priority, isArchived, readBy } = message;
+        const { id, isArchived, readBy } = message;
         res.status(201).send({
           id,
           readBy,
-          priority,
           isArchived,
           group: message.groupId,
           message: message.body,
+          priority: message.priority,
           timeSent: message.createdAt,
           sentBy: { username: req.decoded.data.username }
         });
@@ -157,7 +156,7 @@ export default {
             const uppercasePriority = priority.toUpperCase();
             return members.members.map((member) => {
               const emailParams = {
-                senderAddress: userEmail,
+                senderAddress: '"Post It ✔" <noreply.swiftpost@gmail.com>',
                 recepientAddress: member.email,
                 groupName: members.groupName,
                 subject: `Post It: ${uppercasePriority} message in ${members.groupName}`,
