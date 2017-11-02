@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import checkGroupnameLength from '../../../utils/checkGroupNameLength';
+import checkGroupnameLength from '../../utils/checkGroupNameLength';
+import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter';
 
 export const AddUserBtn = (props) => {
   if (isEmpty(props.selectedGroup)) {
@@ -12,10 +13,20 @@ export const AddUserBtn = (props) => {
     <button
       className="btn waves-effect waves-light blue lighten-1"
       data-toggle="modal" data-target="#addUser"
-      onClick={props.openModal}>
+      onClick={props.openModal}
+    >
       Add User
     </button>
   );
+};
+
+AddUserBtn.propTypes = {
+  selectedGroup: PropTypes.object,
+  openModal: PropTypes.func.isRequired
+};
+
+AddUserBtn.defaultProps = {
+  selectedGroup: {}
 };
 
 export const SearchBtn = (props) => {
@@ -31,10 +42,15 @@ export const SearchBtn = (props) => {
   );
 };
 
-
-const noMarginBottom = {
-  marginBottom: 0
+SearchBtn.propTypes = {
+  selectedGroup: PropTypes.object,
+  onSearchClick: PropTypes.func.isRequired
 };
+
+SearchBtn.defaultProps = {
+  selectedGroup: {}
+};
+
 
 export const GroupName = (props) => {
   if (isEmpty(props.selectedGroup)) {
@@ -43,12 +59,18 @@ export const GroupName = (props) => {
 
   return (
     <div className="col-md-4 col-sm-5 col-xs-3 brand">
-      <ul style={noMarginBottom}>
+      <ul className="zero-padding">
         <h4 className="group-name">
-          {checkGroupnameLength(props.selectedGroup.name)}
+          {capitalizeFirstLetter(checkGroupnameLength(props.selectedGroup.name))}
         </h4>
         <li role="presentation" className="dropdown">
-          <a className="dropdown-toggle options" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+          <a
+            className="dropdown-toggle options"
+            data-toggle="dropdown"
+            role="button"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
             <span className="caret" />
           </a>
           <ul className="dropdown-menu group-members-dropdown">
@@ -67,13 +89,12 @@ export const GroupName = (props) => {
   );
 };
 
-AddUserBtn.propTypes = {
+GroupName.propTypes = {
   selectedGroup: PropTypes.object,
   openModal: PropTypes.func.isRequired
 };
 
-GroupName.propTypes = {
-  selectedGroup: PropTypes.object,
-  openModal: PropTypes.func.isRequired
+GroupName.defaultProps = {
+  selectedGroup: {}
 };
 

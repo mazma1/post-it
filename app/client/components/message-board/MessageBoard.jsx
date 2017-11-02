@@ -1,11 +1,7 @@
 import React from 'react';
-import ClientFrame from '../client-frame/ClientFrame.jsx';
-import MessageCard from './MsgCard.jsx';
+import ClientFrame from '../client-frame/ClientFrame';
+import MessageCard from './MessageCard';
 
-/**
- * MessageBoard Component
- * @returns {ReactElement} MessageBoard Markup
- */
 const MessageBoard = () => (
   <ClientFrame>
     <section className="cards card-panel-wrapper">

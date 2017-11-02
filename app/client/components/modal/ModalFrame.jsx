@@ -5,7 +5,6 @@ const ModalFrame = (props) => {
   if (props.membersLoading) {
     return null;
   }
-
   return (
     <div id={props.id} className="modal fade" tabIndex="-1" role="dialog">
       <div className="modal-dialog" role="document">
@@ -22,6 +21,10 @@ const ModalFrame = (props) => {
 ModalFrame.propTypes = {
   membersLoading: PropTypes.bool,
   id: PropTypes.string.isRequired
+};
+
+ModalFrame.defaultProps = {
+  membersLoading: false
 };
 
 export default ModalFrame;

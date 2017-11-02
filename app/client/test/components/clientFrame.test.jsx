@@ -4,7 +4,7 @@ import ClientFrame from '../../components/client-frame/ClientFrame';
 import Sidebar from '../../components/client-frame/sidebar/Sidebar';
 import Header from '../../components/client-frame/Header';
 
-describe('ClientFrame Component', () => {
+describe('<ClientFrame />', () => {
   let mountedClientFrame;
 
   const clientFrame = () => {

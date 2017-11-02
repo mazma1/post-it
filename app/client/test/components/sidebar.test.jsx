@@ -1,7 +1,6 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { mount } from 'enzyme';
-import { spy } from 'sinon';
+import { mount, shallow } from 'enzyme';
 import { Sidebar } from '../../components/client-frame/sidebar/Sidebar';
 import { Brand, MobileToggleBtn } from '../../components/misc/SidebarMisc';
 import GroupList from '../../components/client-frame/sidebar/GroupList';
@@ -11,8 +10,11 @@ import {
   ModalBody,
   ModalFooter
 } from '../../components/modal/SubModals';
+import mockLocalStorage from '../mockLocalStorage';
 
-describe('Sidebar Component', () => {
+Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+
+describe('<Sidebar />', () => {
   let mountedSidebar;
   const props = {
     getUserGroups: jest.fn(),
@@ -24,15 +26,17 @@ describe('Sidebar Component', () => {
     signedInUser: undefined,
     unreadCount: undefined,
     selectedGroup: undefined,
-    userGroups: undefined
+    userGroups: undefined,
+    history: { push: jest.fn() },
+    match: {}
   };
   const sidebar = () => {
     if (!mountedSidebar) {
-      mountedSidebar = mount(
+      mountedSidebar = mount((
         <MemoryRouter>
           <Sidebar {...props} />
         </MemoryRouter>
-      );
+      ), { context: this });
     }
     return mountedSidebar;
   };
@@ -43,7 +47,7 @@ describe('Sidebar Component', () => {
       isLoading: false,
       hasGroup: true,
       groups: [
-        { id: 1, group_name: 'Cohort 29' }
+        { id: 1, name: 'Cohort 29' }
       ]
     };
     props.selectedGroup = {
@@ -61,11 +65,8 @@ describe('Sidebar Component', () => {
         username: 'mazma'
       }
     };
-    props.getUserGroups = () => {
-      return new Promise((resolve, reject) => {
-        const resolveGetUserGroups = resolve;
-      });
-    };
+    props.getGroupMessagesCount = jest.fn(() => Promise.resolve());
+    props.getUserGroups = jest.fn(() => Promise.resolve());
   });
 
   it('should always render a wrapping div', () => {
@@ -82,15 +83,33 @@ describe('Sidebar Component', () => {
   });
 
   it('should call componentWillMount() before it mounts', () => {
-    spy(Sidebar.prototype, 'componentWillMount');
-    sidebar();
-    expect(Sidebar.prototype.componentWillMount.calledOnce).toBe(true);
+    const CWMSpy = jest.spyOn(sidebar().instance(), 'componentWillMount');
+    sidebar().instance().componentWillMount();
+    expect(CWMSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should call componentDidMount() when it mounts', () => {
-    spy(Sidebar.prototype, 'componentDidMount');
-    sidebar();
-    expect(Sidebar.prototype.componentDidMount.calledOnce).toBe(true);
+  it('should mount with onChange()', () => {
+    const event = { target: {} };
+    const onChangeSpy = jest.spyOn(Sidebar.prototype, 'onChange');
+    const shallowSidebar = shallow(<Sidebar {...props} />);
+    shallowSidebar.instance().onChange(event);
+    expect(onChangeSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should mount with onGroupSelect()', () => {
+    const group = { id: 1 };
+    const onGroupSelectSpy = jest.spyOn(Sidebar.prototype, 'onGroupSelect');
+    const shallowSidebar = shallow(<Sidebar {...props} />);
+    shallowSidebar.instance().onGroupSelect(group);
+    expect(onGroupSelectSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should mount with getUnreadCount()', () => {
+    const groups = [{ id: 1, name: 'Cohort 29' }];
+    const getUnreadCountSpy = jest.spyOn(Sidebar.prototype, 'getUnreadCount');
+    const shallowSidebar = shallow(<Sidebar {...props} />);
+    shallowSidebar.instance().getUnreadCount(groups);
+    expect(getUnreadCountSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should always render <Brand/> with one prop', () => {
@@ -98,6 +117,7 @@ describe('Sidebar Component', () => {
 
     const brandDisplay = sidebar().find(Brand);
     expect(Object.keys(brandDisplay.props()).length).toBe(1);
+    expect(brandDisplay.props().brandName).toBe('Post It');
   });
 
   it('should always render <MobileToggleBtn /> with no prop', () => {
@@ -107,11 +127,13 @@ describe('Sidebar Component', () => {
     expect(Object.keys(mobileToggleBtnDisplay.props()).length).toBe(0);
   });
 
-  it('should always render <GroupList/> with four props', () => {
+  it('should always render <GroupList/> with five props', () => {
     expect(sidebar().find(GroupList).length).toBe(1);
 
     const groupListDisplay = sidebar().find(GroupList);
     expect(Object.keys(groupListDisplay.props()).length).toBe(5);
+    expect(groupListDisplay.props().userGroups).toBe(props.userGroups);
+    expect(groupListDisplay.props().selectedGroup).toBe(props.selectedGroup);
   });
 
   it('should always render the createGroup Modal', () => {

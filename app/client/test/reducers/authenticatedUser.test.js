@@ -17,8 +17,8 @@ describe('isAuthenticated reducer', () => {
     const user = {
       data: {
         id: 1,
-        firstname: 'Mary',
-        lastname: 'Mazi',
+        firstName: 'Mary',
+        lastName: 'Mazi',
         username: 'mazma',
         email: 'mary@yahoo.com'
       }
@@ -32,8 +32,8 @@ describe('isAuthenticated reducer', () => {
         isAuthenticated: !isEmpty(action.user),
         user: {
           id: user.data.id,
-          firstname: user.data.firstname,
-          lastname: user.data.lastname,
+          firstname: user.data.firstName,
+          lastname: user.data.lastName,
           username: user.data.username,
           email: user.data.email
         }

@@ -1,0 +1,3 @@
+node_modules/
+app/client/**/*.{js,jsx}
+app/server/test/**/*.js

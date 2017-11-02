@@ -3,10 +3,11 @@ import jwt from 'jsonwebtoken';
 import validator from 'validator';
 import isEmpty from 'lodash/isEmpty';
 import crypto from 'crypto';
+import GoogleAuth from 'google-auth-library';
 import models from '../models';
-import validateSignup from '../../utils/signupValidation';
-import sendEmail from '../../utils/sendEmail';
-import pagination from '../../utils/pagination';
+import validateSignup from '../utils/signupValidation';
+import sendEmail from '../utils/sendEmail';
+import pagination from '../utils/pagination';
 
 const saltRounds = 7;
 const salt = bcrypt.genSaltSync(saltRounds);
@@ -16,8 +17,9 @@ export default {
    * Creates a new user
    * Route: POST: /api/v1/users/signup
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   signup(req, res) {
@@ -28,7 +30,10 @@ export default {
     } else {
       models.User.findOne({
         where: {
-          $or: [{ username: req.body.username }, { email: req.body.email }]
+          $or: [
+            { email: req.body.email },
+            { username: req.body.username.toLowerCase() },
+          ]
         },
       })
       .then((existingUser, err) => {
@@ -47,8 +52,8 @@ export default {
           const userData = {
             firstName,
             lastName,
-            username,
             email,
+            username: username.toLowerCase(),
             phoneNumber: `234${phoneNumber.slice(1)}`,
             password: bcrypt.hashSync(req.body.password, salt)
           };
@@ -77,8 +82,9 @@ export default {
    * Authenticates and logs a user in
    * Route: POST: /api/v1/users/signin
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   signin(req, res) {
@@ -130,45 +136,135 @@ export default {
     }
   },
 
+  verifyGoogleUser(req, res) {
+    const { email } = req.body;
+    models.User.findOne({
+      where: { email }
+    }).then((user) => {
+      if (!user) {
+        res.status(200).send({ message: 'New user' });
+      } else {
+        res.status(200).send({ message: 'Returning user' });
+      }
+    }).catch((error) => {
+      res.status(500).send({ error: error.message });
+    });
+  },
+
+  /**
+   * Authenticates and logs a user in using the google API
+   * Route: POST: /api/v1/users/googleAuth
+   *
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
+   * @returns {response} response object
+   */
+  googleSignIn(req, res) {
+    let user;
+    const idToken = req.body.tokenId;
+    const auth = new GoogleAuth();
+    const client = new auth.OAuth2(process.env.CLIENT_ID, '', '');
+    client.verifyIdToken(idToken, process.env.CLIENT_ID, (e, login) => {
+      const payload = login.getPayload();
+      user = {
+        firstName: payload.given_name,
+        lastName: payload.family_name,
+        email: payload.email,
+        username: payload.given_name,
+        googleId: payload.sub
+      };
+      models.User.findOne({
+        where: {
+          $or: [
+            { googleId: user.googleId },
+            { email: user.email }
+          ]
+        },
+      }).then((existingUser) => {
+        if (!existingUser) {
+          const { firstName, lastName, username, email, googleId } = user;
+          const userData = {
+            firstName,
+            lastName,
+            username: username.toLowerCase(),
+            email,
+            phoneNumber: `234${req.body.phoneNumber.slice(1)}`,
+            password: bcrypt.hashSync(googleId, salt),
+            googleId
+          };
+          return models.User.create(userData).then((googleUser) => {
+            const { id } = googleUser;
+            const token = jwt.sign({
+              data: {
+                id,
+                firstName,
+                lastName,
+                username,
+                email
+              }
+            }, process.env.TOKEN_SECRET, { expiresIn: '24h' });
+            res.status(201).send({ message: 'Google sign up was successful', token });
+          }).catch((error) => {
+            res.status(500).send({ error: error.message });
+          });
+        }
+        if (existingUser) {
+          const { id, firstName, lastName, username, email } = existingUser;
+          const token = jwt.sign({
+            data: {
+              id,
+              firstName,
+              lastName,
+              username,
+              email
+            }
+          }, process.env.TOKEN_SECRET, { expiresIn: '24h' });
+          res.status(200).send({ message: 'Google sign in was successful', token });
+        }
+      }).catch((error) => {
+        res.status(500).send({ error: error.message });
+      });
+    });
+  },
+
   /**
    * Fetches the groups a user belongs to
    * Route: GET: /api/v1/users/:user_id/groups
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   getUserGroups(req, res) {
-    if (req.params.user_id && !isNaN(req.params.user_id)) {
-      models.User.findOne({
-        where: { id: req.params.user_id },
-        attributes: [],
-        include: [{
-          model: models.Group,
-          as: 'groups',
-          attributes: ['id', ['groupName', 'name']],
-          through: { attributes: [] }
-        }]
-      })
-      .then((user) => {
-        if (user) {
-          res.status(200).send(user);
-        } else {
-          res.status(404).send({ message: 'User does not exist' });
-        }
-      })
-      .catch(error => res.status(500).send(error.message));
-    } else {
-      res.status(400).send({ message: 'Invalid user id' });
-    }
+    models.User.findOne({
+      where: { id: req.params.user_id },
+      attributes: [],
+      include: [{
+        model: models.Group,
+        as: 'groups',
+        attributes: ['id', ['groupName', 'name']],
+        through: { attributes: [] }
+      }]
+    })
+    .then((user) => {
+      if (user) {
+        res.status(200).send(user);
+      } else {
+        res.status(404).send({ message: 'User does not exist' });
+      }
+    })
+    .catch(error => res.status(500).send(error.message));
   },
 
   /**
    * Sends reset password link on request
    * Route: POST: /api/v1/users/resetPassword
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   sendResetPasswordLink(req, res) {
@@ -186,14 +282,13 @@ export default {
         if (user) {
           const resetPasswordHash = crypto.randomBytes(20).toString('hex');
           const resetPasswordExpires = Date.now() + 3600000;
-
           const emailParams = {
             senderAddress: process.env.ADMIN_EMAIL,
             recepientAddress: user.email,
             subject: 'Reset your Post It Password',
-            emailBody: `Hello ${user.firstName} ${user.lastName}, 
-            <br><br>You recently made a request to reset your Post It password. 
-            Please click the link below to complete the process. 
+            emailBody: `Hello ${user.firstName} ${user.lastName},
+            <br><br>You recently made a request to reset your Post It password.
+            Please click the link below to complete the process.
             <br><br><a href='http://${req.headers.host}/new-password/${resetPasswordHash}'>Reset now ></a>
             <br><br>----------------------<br>
             The Post It Team`
@@ -239,8 +334,9 @@ export default {
    * Checks the validity of reset password token
    * Route: POST: /api/v1/users/newpassword
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   validateResetPasswordToken(req, res) {
@@ -266,8 +362,9 @@ export default {
    * Updates a user's password
    * Route: PATCH: /api/v1/users/newpassword
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   updateUserPassword(req, res) {
@@ -312,8 +409,9 @@ export default {
    * Search for registered user
    * Route: POST: /api/v1/users/search'
    *
-   * @param {any} req
-   * @param {any} res
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
    * @returns {response} response object
    */
   searchForUser(req, res) {

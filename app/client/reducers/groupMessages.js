@@ -2,7 +2,7 @@ import {
   SET_GROUP_MESSAGES,
   FETCHING_GROUP_MESSAGES,
   FETCH_GROUP_MESSAGES_FAILURE } from '../actions/types';
-import initialState from '../../utils/initialState';
+import initialState from '../utils/initialState';
 
 
 /**

@@ -3,7 +3,7 @@ import { NavLink, MemoryRouter } from 'react-router-dom';
 import { mount } from 'enzyme';
 import GroupList from '../../components/client-frame/sidebar/GroupList';
 
-describe('GroupList Component', () => {
+describe('<GroupList />', () => {
   let props;
   let mountedGroupList;
 
@@ -29,7 +29,6 @@ describe('GroupList Component', () => {
     mountedGroupList = undefined;
   });
 
-  // All tests will go here
   describe('When a user\'s groups are still being fetched', () => {
     beforeEach(() => {
       props.userGroups = {
@@ -48,7 +47,7 @@ describe('GroupList Component', () => {
         isLoading: false,
         hasGroup: true,
         groups: [
-          { id: 1, group_name: 'Cohort 29' }
+          { id: 1, name: 'Cohort 29' }
         ]
       };
       props.selectedGroup = {
@@ -68,7 +67,7 @@ describe('GroupList Component', () => {
     });
 
     it('should render the button to create a new group', () => {
-      expect(groupList().find('#createNewGroup').text()).toBe('Create new group');
+      expect(groupList().find('#createNewGroup').text()).toBe('Create New Group');
     });
 
     it('should render the number of unread messages', () => {

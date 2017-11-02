@@ -1,120 +1,124 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { withRouter } from 'react-router-dom';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import moment from 'moment';
 import toastr from 'toastr';
-import lodashSplit from 'lodash/split';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import mapKeys from 'lodash/mapKeys';
+import { connect } from 'react-redux';
+import lodashSplit from 'lodash/split';
 import includes from 'lodash/includes';
-import MessageForm from './MsgForm.jsx';
+import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom';
+import MessageForm from './MessageForm';
 import {
   getGroupMessagesCount,
   archiveMessage } from '../../actions/groupMessages';
 
+
 /**
- * Message Item component for the message board
- */
-class MessageItem extends React.Component {
+  * Displays Message Item
+  *
+  * @class MessageItem
+  *
+  * @extends {React.Component}
+  */
+export class MessageItem extends React.Component {
 
    /**
-   * Constructor
-   * @param {object} props
-   */
+    * Creates an instance of MessageItem
+    *
+    * @param {any} props
+    *
+    * @memberof MessageForm
+    */
   constructor(props) {
     super(props);
 
     this.state = {
-      messageStatus: 'unread',
-      filteredMessages: [],
+      messageStatus: '',
+      unreadMsgs: [],
+      archivedMsgs: [],
       currentPage: 1,
       messagesPerPage: 5
     };
 
-    this.onSelect = this.onSelect.bind(this);
+    this.onCategorySelect = this.onCategorySelect.bind(this);
     this.archiveMessageRequest = this.archiveMessageRequest.bind(this);
     this.filterMessages = this.filterMessages.bind(this);
     this.checkMessageLength = this.checkMessageLength.bind(this);
     this.updatePageNumber = this.updatePageNumber.bind(this);
   }
 
+
   /**
-   * Defines what must be executed once MessageItem component mounts
-   * It dispatches getGroupMessagesCount action to fetch the messages that
-   * will be used to get the read/unread and archived messages
-   * When the messages are returned, they are filtered and then displayed
-   * accordingly
+  * Sets messageStatus in state to 'unread'
+  *
+  * @returns {void} null
+  */
+  componentWillMount() {
+    this.setState({ messageStatus: 'unread' });
+  }
+
+  /**
+   * Fetches messages and filters them as unread/read and archived
+   *
    * @returns {void} null
    */
   componentDidMount() {
-    const mappedMessages = mapKeys(this.props.messages, 'group');
-    const groupId = Object.keys(mappedMessages)[0];
-    this.props.getGroupMessagesCount(groupId).then(
-      (response) => {
-        this.filterMessages(response.data.messages);
-      }
-    );
+    this.filterMessages(this.props.messages);
   }
 
   /**
    * Handles message category select event
-   * Dispatches submitNewUser action to add the new user record to the DB
-   * If the submission was successful, it adds a success flash message
-   * If submission was not successful, it returns the appropriate error message
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void} null
    */
-  onSelect(event) {
-    this.setState({ [event.target.name]: event.target.value });
-    const mappedMessages = mapKeys(this.props.messages, 'group');
-    const groupId = Object.keys(mappedMessages)[0];
-    this.props.getGroupMessagesCount(groupId).then(
-      (response) => {
-        this.filterMessages(response.data.messages);
-      }
-    );
+  onCategorySelect(event) {
+    this.setState({ messageStatus: event.target.value });
   }
+
 
   /**
    * Updates the current page state with the clicked page number
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void} null
    */
   updatePageNumber(event) {
     this.setState({ currentPage: Number(event.target.id) });
   }
 
+
   /**
    * Filters messages based on the message category a user selects
-   * Updates the filteredMessages state with the result
-   * The filtered messages are then displayed
+   *
    * @param {array} messages messages to be filtered
+   *
    * @returns {void} null
    */
   filterMessages(messages) {
-    const filteredMessages = [];
+    const unreadMsgs = [];
+    const archivedMsgs = [];
     messages.map((message) => {
-      if (this.state.messageStatus === 'unread') {
-        if (!includes(message.isArchived, this.props.authenticatedUsername)) {
-          filteredMessages.push(message);
-        }
+      if (!includes(message.isArchived, this.props.authenticatedUsername)) {
+        unreadMsgs.push(message);
       }
-
-      if (this.state.messageStatus === 'archived') {
-        if (includes(message.isArchived, this.props.authenticatedUsername)) {
-          filteredMessages.push(message);
-        }
+      if (includes(message.isArchived, this.props.authenticatedUsername)) {
+        archivedMsgs.push(message);
       }
     });
-    this.setState({ filteredMessages });
+    this.setState({ unreadMsgs, archivedMsgs });
   }
 
+
   /**
-   * Checks the length of a given message and truncates it if
-   it is more than 300
+   * Checks the length of a given message and truncates it if it is more than 300
+   *
    * @param {string} message
+   *
    * @returns {message} message/truncated message (if length > 300)
    */
   checkMessageLength(message) {
@@ -124,10 +128,13 @@ class MessageItem extends React.Component {
     return message;
   }
 
+
   /**
    * Archives a given message and updates the messages displayed
-   in both categories
+   * in both categories
+   *
    * @param {object} messageId id of message to be archived
+   *
    * @returns {void} null
    */
   archiveMessageRequest(messageId) {
@@ -144,21 +151,28 @@ class MessageItem extends React.Component {
       }
     )
     .catch((error) => {
-      toastr.error(`Unable to archive message, ${error}`);
+      toastr.error('Unable to archive message, please try again');
     });
   }
 
+
   /**
    * Render
+   *
    * @returns {ReactElement} Markup for a single message item
    */
   render() {
+    let filteredMessages;
     const { authenticatedUsername } = this.props;
     const {
-      filteredMessages,
       messagesPerPage,
       currentPage,
       messageStatus } = this.state;
+    if (this.state.messageStatus === 'unread') {
+      filteredMessages = this.state.unreadMsgs;
+    } else {
+      filteredMessages = this.state.archivedMsgs;
+    }
 
     const ArchiveBtn = (props) => {
       if (!includes(props.message.isArchived, authenticatedUsername)) {
@@ -201,9 +215,9 @@ class MessageItem extends React.Component {
     return (
       <div>
         <select
-          className="browser-default msg-filter"
+          className="browser-default msg-filter form-control"
           name="messageStatus"
-          onChange={this.onSelect}
+          onChange={this.onCategorySelect}
           value={this.state.messageStatus}
         >
           <option value="unread">Unread / Read</option>
@@ -241,7 +255,8 @@ class MessageItem extends React.Component {
                       'priority-label',
                       { 'label-default': normalPriority },
                       { 'label-warning': urgentPriority },
-                      { 'label-danger': criticalPriority })}
+                      { 'label-danger': criticalPriority }
+                    )}
                   >
                     {message.priority}
                   </span>
@@ -256,9 +271,11 @@ class MessageItem extends React.Component {
                     className="msg_body"
                     data-id={this.props.match.params.groupId}
                     onClick={(event) => {
-                      this.props.history.push(`/message/${message.id}`)
+                      const groupId = event.target.dataset.id;
+                      this.props.history.push(`/message-board/${groupId}/message/${message.id}`);
                       localStorage.setItem('groupId', event.target.dataset.id);
-                    }}>
+                    }}
+                  >
                     {this.checkMessageLength(message.message)}
                   </p>
                 </div>
@@ -288,12 +305,13 @@ class MessageItem extends React.Component {
   }
 }
 
+
 /**
- * Maps action creators to redux dispatch function
- * Action creators bound will be available as props in Header
- * Actions generated by the action creators flows though all the reducers
+ * Maps action creators to redux dispatch function and avails them as props
+ *
  * @param {function} dispatch Redux dispatch function
- * @returns {function} Action creators bound to redux dispatch function
+ *
+ * @returns {function} Action cretaors bound to redux dispatch function
  */
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
@@ -302,11 +320,13 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
+
 /**
- * Maps pieces of the redux state to props
- * Whatever is returned will show up as props in Headbar
+ * Maps pieces of the redux state to props in Sidebar
+ *
  * @param {object} state Redux state
- * @returns {object} Username, selected group and member's loading status
+ *
+ * @returns {object} Details of selected group
  */
 function mapStateToProps(state) {
   return {
@@ -315,11 +335,16 @@ function mapStateToProps(state) {
 }
 
 MessageItem.propTypes = {
-  getGroupMessagesCount: PropTypes.func.isRequired,
   messages: PropTypes.array,
-  authenticatedUsername: PropTypes.string.isRequired,
-  onMessageClick: PropTypes.func.isRequired,
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
   archiveMessage: PropTypes.func.isRequired,
+  getGroupMessagesCount: PropTypes.func.isRequired,
+  authenticatedUsername: PropTypes.string.isRequired,
+};
+
+MessageItem.defaultProps = {
+  messages: []
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MessageItem));

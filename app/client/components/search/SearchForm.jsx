@@ -1,20 +1,30 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import toastr from 'toastr';
+import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import ClientFrame from '../client-frame/ClientFrame.jsx';
-import TextField from '../common/FormTextField.jsx';
-import SearchResult from '../search/SearchResult.jsx';
-import { searchUser, resetSearch } from '../../actions/searchUser';
-import { SubmitButton } from '../modal/SubModals.jsx';
+import TextField from '../common/FormTextField';
+import { SubmitButton } from '../modal/SubModals';
+import SearchResult from '../search/SearchResult';
+import ClientFrame from '../client-frame/ClientFrame';
+import { searchUser, resetSearch } from '../../actions/search';
 
-/** Form for searching for registered users */
-class SearchForm extends Component {
+
+/**
+ * Displays form for searching for registered users
+ *
+ * @class SearchForm
+ *
+ * @extends {React.Component}
+ */
+export class SearchForm extends Component {
 
   /**
-   * Constructor
-   * @param {object} props
+   * Creates an instance of SearchForm
+   *
+   * @param {any} props
+   *
+   * @memberof SearchForm
    */
   constructor(props) {
     super(props);
@@ -29,9 +39,10 @@ class SearchForm extends Component {
   }
 
   /**
-   * Handles change event of new password form
-   * Updates searchQuery state
+   * Handles change event of search form
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void} null
    */
   onChange(event) {
@@ -39,9 +50,10 @@ class SearchForm extends Component {
   }
 
   /**
-   * Handles search request submit event
-   * Dispatches search user action with provided search query
+   * Submits a search query to the database
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void} null
    */
   onSearchSubmit(event) {
@@ -54,9 +66,10 @@ class SearchForm extends Component {
   }
 
   /**
-   * Is called when the search page is closed to clear previous
-   search result
+   * It is called when the search page is closed to clear previous search result
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void} null
    */
   resetSearch(event) {
@@ -67,7 +80,8 @@ class SearchForm extends Component {
   }
 
   /**
-   * Render
+   * Renders the search result
+   *
    * @returns {ReactElement} Search Result markup
    */
   render() {
@@ -82,10 +96,15 @@ class SearchForm extends Component {
                 <span className="card-title">Search for User</span>
                 <button
                   className="close"
-                  onClick={this.resetSearch}><span>&times;</span>
+                  onClick={this.resetSearch}
+                >
+                  <span>&times;</span>
                 </button>
                 <hr />
-                <form className="col s12 auth-form" onSubmit={this.onSearchSubmit}>
+                <form
+                  className="col s12 auth-form"
+                  onSubmit={this.onSearchSubmit}
+                >
                   <div className="row">
                     <div
                       className={classnames(
@@ -97,6 +116,7 @@ class SearchForm extends Component {
                     >
                       <TextField
                         icon="perm_identity"
+                        type="text"
                         label="Enter Search Query"
                         onChange={this.onChange}
                         error={error}
@@ -125,7 +145,9 @@ class SearchForm extends Component {
 
 /**
  * Maps pieces of the redux state to props
+ *
  * @param {object} state Redux state
+ *
  * @returns {object} search result
  */
 function mapStateToProps(state) {
@@ -135,6 +157,7 @@ function mapStateToProps(state) {
 }
 
 SearchForm.propTypes = {
+  history: PropTypes.object.isRequired,
   searchUser: PropTypes.func.isRequired,
   resetSearch: PropTypes.func.isRequired,
   searchResult: PropTypes.object.isRequired

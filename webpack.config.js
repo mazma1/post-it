@@ -5,8 +5,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const DIST_DIR = path.resolve(__dirname, './app/client/dist');
 
 module.exports = {
+  devtool: 'eval',
   entry: [
-    'webpack/hot/dev-server', // HMR works without this
     'webpack-hot-middleware/client?noInfo=true',
     '../post-it/app/client/index.jsx'
   ],
@@ -25,6 +25,9 @@ module.exports = {
       { test: /bootstrap\/dist\/js\/umd\//, loader: 'imports?jQuery=jquery' },
       { test: /\.(jpe?g|png|gif)$/i, loader: 'file-loader?name=/img/[name].[ext]' }
     ]
+  },
+  resolve: {
+    extensions: ['.js', '.jsx']
   },
   plugins: [
     new HtmlWebpackPlugin({

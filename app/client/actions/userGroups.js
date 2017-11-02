@@ -12,9 +12,9 @@ import {
 
   /**
    * Fetches the groups a user belongs to
-
+   *
    * @param {integer} userId authenticated user's id
-
+   *
    * @returns {response} request response
    */
 export function getUserGroups(userId) {
@@ -86,15 +86,10 @@ export function fetchUserGroupsFailure(error) {
    */
 export function submitNewGroup({ groupName, userId }) {
   const reqBody = { groupName };
-  return (dispatch) => {
-    return axios.post('/api/v1/groups', reqBody)
+  return dispatch => axios.post('/api/v1/groups', reqBody)
     .then((res) => {
       dispatch(setNewGroupActive(userId));
-    })
-    // .catch((error) => {
-    //   dispatch(submittingNewGroupFailure(error));
-    // });
-  };
+    });
 }
 
 
@@ -106,20 +101,16 @@ export function submitNewGroup({ groupName, userId }) {
    * @returns {response} request response
    */
 export function setNewGroupActive(userId) {
-  return (dispatch) => {
-    return axios.get(`/api/v1/users/${userId}/groups`)
-      .then((res) => {
-        const { groups } = res.data;
-        const lastGroup = last(groups);
-        dispatch(setUserGroups(groups));
-        dispatch(setSelectedGroup(lastGroup));
-        dispatch(getGroupMessages(lastGroup.id));
-        dispatch(getGroupMembers(lastGroup.id));
-      })
-      .catch((error) => {
-        console.log('error', error)
-      });
-  };
+  return dispatch => axios.get(`/api/v1/users/${userId}/groups`)
+    .then((res) => {
+      const { groups } = res.data;
+      const lastGroup = last(groups);
+      dispatch(setUserGroups(groups));
+      dispatch(setSelectedGroup(lastGroup));
+      dispatch(getGroupMessages(lastGroup.id));
+      dispatch(getGroupMembers(lastGroup.id));
+    })
+    .catch(error => (error));
 }
 
 

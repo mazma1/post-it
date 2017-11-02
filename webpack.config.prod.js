@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const DIST_DIR = path.resolve(__dirname, './app/client/dist');
 
 module.exports = {
+  devtool: 'source-map',
   entry: [
     './app/client/index.jsx'
   ],
@@ -24,12 +25,16 @@ module.exports = {
       { test: /\.(jpe?g|png|gif)$/i, loader: 'file-loader?name=/img/[name].[ext]' },
     ]
   },
+  resolve: {
+    extensions: ['.js', '.jsx']
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: './app/client/index.html'
     }),
     new webpack.optimize.UglifyJsPlugin({
       minimize: true,
+      sourceMap: true,
       compress: {
         warnings: false
       }

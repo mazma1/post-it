@@ -1,24 +1,21 @@
 # Post It
 A simple Node.js application that allows friends and colleagues create groups for messaging. Up to date version of project can be found on the `development` branch.
 
-[![Build Status](https://travis-ci.org/mazma1/post-it.svg?branch=development)](https://travis-ci.org/mazma1/post-it)
-[![Coverage Status](https://coveralls.io/repos/github/mazma1/post-it/badge.svg?branch=development)](https://coveralls.io/github/mazma1/post-it?branch=development)
+[![Build Status](https://travis-ci.org/mazma1/post-it.svg?branch=chore/implement-feedback)](https://travis-ci.org/mazma1/post-it)
+[![codecov.io Code Coverage](https://codecov.io/github/mazma1/post-it/branch/chore%2Fimplement-feedback/graphs/badge.svg)](https://codecov.io/gh/mazma1/post-it/branch/chore%2Fimplement-feedback)
 [![Code Climate](https://codeclimate.com/github/mazma1/post-it/badges/gpa.svg)](https://codeclimate.com/github/mazma1/post-it)
 
-## Structure
-Post it is a simple React application that consumes a Node REST API on an Express server. The API allows users do the following:
-1. Sign up and log in to their accounts.
-2. Create groups 
-3. Add users to a group
-4. Post messages to a group
-5. Retrieve all the messages posted to groups the user belongs to
-6. Retrieve the groups a user belongs to
-7. Retrieve the members of a group
+
+## Core Technologies
+1. NodeJS/Express
+2. Postgres/Sequelize ORM
+3. ReactJS/Redux
+4. Webpack
 
 
 ## To get started
 1. Clone the repository: `git clone https://github.com/mazma1/post-it`
-2. Ensure you have installed NodeJS and Postgres
+2. Ensure you have installed [NodeJS](https://nodejs.org/en/) and [Postgres](https://www.postgresql.org/download/)
 3. Navigate into the app's root directory: `cd post-it`
 4. Create a `.env` file in the root directory using the sample `.env.sample` file
 5. Install all dependencies: `npm install`
@@ -36,6 +33,7 @@ Post it is a simple React application that consumes a Node REST API on an Expre
 6. View members of a group
 7. Add user to group
 8. Create new group
+9. Search for registered users
 
 
 
@@ -49,14 +47,26 @@ For more of the api, [go here.](http://docs.postit9.apiary.io/)
 ## Limitations
 
 1. Users are added to the group one at a time.
-2. Chat message notifications are not real-time. You have to refresh your browser to see new message notifications.
+2. Group creator cannot remove users from group
+3. Chat message notifications are not real-time. You have to refresh your browser to see new message notifications.
+4. Users cannot update their profile
 
 
 ## Contributing
 
-This project is open for contributions. To do so:
+This project is open for contributions. All contributions must adhere to the Airbnb styleguide.
+1. [Javascript](http://airbnb.io/javascript/) 
+2. [React](https://github.com/airbnb/javascript/tree/master/react)   
 
+#### To get started:
 1. Raise an issue in the app's repo
 2. Fork the repository
 3. Implement the said feature
 4. Raise a pull request to the development branch
+
+## License
+[MIT](https://github.com/mazma1/post-it/blob/chore/implement-feedback/LICENSE)
+
+
+## FAQS
+View frequently asked questions [here](https://github.com/mazma1/post-it/wiki/Post-It-FAQs)

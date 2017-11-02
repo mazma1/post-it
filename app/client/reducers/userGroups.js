@@ -4,7 +4,7 @@ import {
   FETCHING_USER_GROUPS,
   FETCH_USER_GROUPS_FAILURE,
   SUBMIT_NEW_GROUP_FAILURE } from '../actions/types';
-import initialState from '../../utils/initialState';
+import initialState from '../utils/initialState';
 
 
 /**
@@ -32,12 +32,12 @@ export default (state = initialState.userGroups, action = {}) => {
     case FETCH_USER_GROUPS_FAILURE:
       return {
         isLoading: false,
-        error: action.error
+        error: action.error.response.data.error
       };
 
     case SUBMIT_NEW_GROUP_FAILURE:
       return {
-        ...state,
+        isLoading: false,
         error: action.error.response.data
       };
 

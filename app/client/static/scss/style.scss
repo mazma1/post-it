@@ -1,4 +1,7 @@
 $blue : #31708f;
+$whitesmoke: #f5f5f5;
+$black: #000000;
+$white: #ffffff;
 $sidebar-bkground: #C0C0C0;
 $pixel0: 0;
 $pixel6: 6px;
@@ -26,53 +29,56 @@ body {
   height: 100%;
 }
 
+i.glyphicon.glyphicon-user {
+  padding-right: 5px;
+}
+
 // Start: Mobile Sidebar Navigation
-// aside.navbar-default.mobile-navbar {
+
+#sidebar {
+  width: $pixel280;
+  position: fixed;
+  top: 0;
+  height:100%;
+  background: $sidebar-bkground;
+  overflow: auto;
+}
+
+#brand-name {
+  font-size: $pixel26;
+  padding-top: $pixel22;
+  padding-bottom: $pixel21;
+  text-align: center;
+  box-shadow: 0 4px 6px -6px black;
+}
+
+@media (max-width: $tablet-width) {
   #sidebar {
-    width: $pixel280;
-    position: fixed;
-    top: 0;
-    height:100%;
-    background: $sidebar-bkground;
-    overflow: auto;
+    position: relative;
+    width: 100%;
   }
 
   #brand-name {
-    font-size: $pixel26;
-    padding-top: $pixel22;
-    padding-bottom: $pixel21;
-    text-align: center;
-    box-shadow: 0 4px 6px -6px black;
+    text-align: left !important;
+    font-size: 22px;
+    padding: 5px 20px;
+    line-height: 50px !important;
+    display: inline-block;
   }
 
-  @media (max-width: $tablet-width) {
-    #sidebar {
-      position: relative;
-      width: 100%;
-    }
-  
-    #brand-name {
-      text-align: left !important;
-      font-size: 22px;
-      padding: 5px 20px;
-      line-height: 50px !important;
-      display: inline-block;
-    }
-
-    #sidebar .mobile-nav-btn {
-      margin-top: 13px;
-    }
-
-    .mobile-navbar {  
-      top: 0;
-      border-width: 0 0 1px;
-      position: fixed;
-      right: 0;
-      left: 0;
-      z-index: 1030;
-    }
+  #sidebar .mobile-nav-btn {
+    margin-top: 13px;
   }
-// }
+
+  .mobile-navbar {  
+    top: 0;
+    border-width: 0 0 1px;
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+  }
+}
 
 .navbar-collapse {
   padding-right: $pixel0;
@@ -88,12 +94,9 @@ ul#menu-content li.active {
 
 // Start: Content Area
 #content-area {
-  // padding-top: 70px; // msg _card_padding
   width: 76%;
   position:relative;
-  left: $pixel300; // width of your side box.
-
-  
+  left: $pixel300;
 }
 
 @media screen and (max-width: 850px) and (min-width: 769px) {
@@ -126,7 +129,6 @@ ul#menu-content li.active {
   ul.cta {
     list-style: none;
     text-align: right;
-    // padding-top: $pt24;
   }
   li {
     display: inline-block;
@@ -159,9 +161,6 @@ ul#menu-content li.active {
   @media screen and (max-width: 920px) and (min-width: 768px) {
     li.username  {
       display: none;
-    }
-    ul {
-      // padding-right: 40px;
     }
   }  
  }
@@ -252,9 +251,6 @@ section.nav-bar {
   top:0px; 
   height: 100px; 
   overflow: hidden; 
-  // left: 0px; 
-  // width: 100%; 
-  // background-color: #aabbff; 
   
   .nav-container {
     width: 76%;
@@ -288,9 +284,6 @@ section.nav-bar {
   } 
 
   @media screen and (max-width: 1079px) and (min-width: 768px) {
-    .nav-container {
-      // width: 64%;
-    }
     .group-name {
       font-size: 1.5rem;
       margin-top: 1.5rem;
@@ -346,10 +339,6 @@ section.nav-bar {
 }
 // End: Desktop Side Navbar
 
-// .card-panel-wrapper {
-//   width: 100%;
-//   margin: 0 auto;
-// }
 
 // Start: Message Card
 section.cards {
@@ -377,13 +366,10 @@ section.cards {
   }
 
   .card-panel {
-      padding: 10px;
-      margin: 1.5rem 1rem 1rem 1rem;
+    padding: 10px;
+    margin: 1.5rem 1rem 1rem 1rem;
   }
-  // .card-panel {
-  //   padding: 10px;
-  //   margin: 1.5rem 1rem 1rem 1rem;
-  // } 
+ 
   @media screen and (max-width: 1263px) and (min-width: 1153px) {
     .card-panel {
       width: 94%;
@@ -469,21 +455,16 @@ section.cards {
   position: fixed;
   bottom: 0;
   width: 76%;
-  /*right: 0;*/
   padding-bottom: 8px;
   padding-right: 65px;
   margin-right: 10px;
-  background-color: white;
-  box-shadow: 0 -4px 6px -6px black;
+  background-color: $white;
+  box-shadow: 0 -4px 6px -6px $black;
 }
 
 .footer-container{
   padding-left: 24px;
 }
-
-// .auth {
-//   background-color: #5b7dde;
-// }
 
 .msg-send-btn {
   padding-left: 0;
@@ -512,7 +493,7 @@ section.cards {
 
 @media screen and (max-width: 1284px) and (min-width: 1200px) {
   .footer {
-    width: 75%;
+    width: 76%;
   }
   .col-lg-11 {
     width: 92%;
@@ -656,7 +637,7 @@ html, body, #clientApp, #clientApp>div {
   overflow-y: auto;
  
   .index-header {
-    padding-top: 130px;
+    padding-top: 110px;
   }   
 
   .index-desc {
@@ -743,7 +724,7 @@ form.col.s12.auth-form {
 }
 
 .signin-card {
-  margin-top: 120px;
+  margin-top: 90px;
 }
 
 @media screen and (max-width: 425px) {
@@ -829,8 +810,8 @@ input[type=number]:not(.browser-default):focus:not([readonly]) + label {
 }
 @media (min-width: 768px) {
   .modal-dialog {
-     width: 100%;
-    margin: 0; 
+    margin: 0;
+    width: 100%;
   }
 
   .modal-dialog {
@@ -848,7 +829,6 @@ modal-open .modal {
 
 .modal.fade.in  {
   padding-right: 0 !important;
-  // height: 360px;
 }
 
 .modal .modal-footer .btn, 
@@ -895,14 +875,12 @@ select.browser-default {
 } 
 
 .msg-read-by {
-  // margin-left: -100px;
-  right: 0px;
+  right: 0;
   left: 612px;
 }
 
 .not-found {
-  margin-top: 30px;
-  margin-left: 30px;
+  padding-top: 20%;
 }
 
 .pwd-reset-form-padding-bottom {
@@ -936,11 +914,11 @@ div.row .message-card {
 }
 
 .msg-filter {
-  padding-top: 90px;
   margin-top: 17px;
-  width: 97%;
-  margin-left: 12px;
-  height: 30px;
+  width: 93%;
+  margin-left: 14px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 select.browser-default.msg-filter {
@@ -998,7 +976,7 @@ select.browser-default.msg-filter {
 }
 
 .dashboard-panel {
-  background: whitesmoke;
+  background: $whitesmoke;
   padding: 70px !important;
 }
 
@@ -1009,6 +987,135 @@ select.browser-default.msg-filter {
 .pagination-container {
   padding-left: 17px;
 }
-// ul:not(.browser-default) {
-//   padding-left: 17px;
-// }  
+
+.google-signin {
+  margin: auto;
+  padding-top: 25px;
+  width: 40%;
+}
+
+.google-icon {
+  margin-left: -16px;
+  margin-right: 17px;
+}
+
+.google-btn {
+  border-radius: 3px;
+  height: 50px;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.google {
+  display: inline;
+  width: 20%;
+}
+
+button.google-btn:hover {
+  color: $whitesmoke;
+}
+
+@media screen and (max-width: 1239px) and (min-width: 1024px) {
+  .google-btn {
+    font-size: 14px;
+  }
+
+  .google-icon {
+    margin-left: -20px;
+    margin-right: 13px;
+  }
+}  
+
+@media screen and (max-width: 1023px) and (min-width: 769px) {
+  .google-btn {
+    font-size: 10px;
+    height: 40px;
+  }
+
+  .google-icon {
+    margin-left: -13px;
+    margin-right: 13px;
+  }
+}  
+
+@media screen and (max-width: 768px) and (min-width: 555px) {
+  .google-btn {
+    font-size: 10px;
+    height: 40px;
+  }
+
+  .google-icon {
+    margin-left: -14px;
+    margin-right: 15px;
+  }
+} 
+
+@media screen and (max-width: 554px) {
+  .google-btn {
+    font-size: 7px;
+    height: 40px;
+  }
+
+  .google-icon {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  span.search-icon i.material-icons {
+    font-size: 5px;
+    padding-top: 0;
+  }
+  .priority-container {
+    display: none;
+  }
+  i.glyphicon.glyphicon-search {
+    padding-right: 5px;
+  }
+}
+
+@media screen and (max-width: 1024px) and (min-width: 426px) {
+  footer.footer {
+    padding-right: 0;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .msg-filter {
+    width: 97%;
+  }
+}
+
+ul.pagination li {
+  cursor: pointer;
+}
+
+.loading-padding {
+  padding-top: 20px;
+  padding-left: 20px;
+}
+
+.new-group {
+  margin-top: 8px;
+  border-top: 1px solid #b5818a;
+  border-bottom: 1px solid #b5818a;
+  background-color: #eae5e5;
+}
+
+.zero-padding {
+  margin-bottom: 0;
+}
+
+li.new-group:focus {
+  outline: none;
+}
+
+.social-login {
+  font-size: 16px;
+  margin-top: -20px;
+  padding-bottom: 20px;
+}
+
+.social-padding-bottom {
+  padding-bottom: 50px;
+}

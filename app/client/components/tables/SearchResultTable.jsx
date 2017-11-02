@@ -2,23 +2,24 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
-import Pagination from '../Pagination.jsx';
-import { searchUser } from '../../actions/searchUser';
+import Pagination from '../Pagination';
+import { searchUser } from '../../actions/search';
 
 /** Table of search result */
-class SearchResultTable extends React.Component {
+export class SearchResultTable extends React.Component {
 
   constructor(props) {
     super(props);
 
     this.handlePageClick = this.handlePageClick.bind(this);
-  }  
+  }
 
   /**
-   * handles click on change of page
+   * Handles click on change of page
+   *
    * @param {object} page
+   *
    * @returns {void}
-   * @memberOf Users
    */
   handlePageClick(page) {
     const selected = page.selected;
@@ -44,10 +45,10 @@ class SearchResultTable extends React.Component {
     if (!isEmpty(users)) {
       searchResultRow = users.map(user => (
         <tr key={user.id}>
-          <td>
+          <td id="firstName">
             {user.firstName}
           </td>
-          <td>
+          <td id="lastName">
             {user.lastName}
           </td>
           <td>
@@ -77,7 +78,7 @@ class SearchResultTable extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {searchResultRow}  
+            {searchResultRow}
           </tbody>
         </table>
         {this.props.searchResult.users.length > 0 ?
@@ -93,7 +94,9 @@ class SearchResultTable extends React.Component {
 
 /**
  * Maps pieces of the redux state to props
+ *
  * @param {object} state Redux state
+ *
  * @returns {object} Search result
  */
 function mapStateToProps(state) {
@@ -103,7 +106,9 @@ function mapStateToProps(state) {
 }
 
 SearchResultTable.propTypes = {
-  searchResult: PropTypes.object.isRequired
+  searchResult: PropTypes.object.isRequired,
+  searchUser: PropTypes.func.isRequired,
+  searchQuery: PropTypes.string.isRequired
 };
 
 export default connect(mapStateToProps, { searchUser })(SearchResultTable);

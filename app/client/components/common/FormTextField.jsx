@@ -20,18 +20,24 @@ const FormTextField = props => (
 );
 
 FormTextField.propTypes = {
+  error: PropTypes.string,
+  autocomplete: PropTypes.string,
   field: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  error: PropTypes.string,
-  icon: PropTypes.string,
-  autocomplete: PropTypes.string,
+  icon: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired
 };
 
 FormTextField.defaultProps = {
   type: 'text'
+};
+
+FormTextField.defaultProps = {
+  error: '',
+  autocomplete: 'on'
+
 };
 
 export default FormTextField;

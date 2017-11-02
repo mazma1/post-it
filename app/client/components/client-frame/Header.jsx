@@ -1,46 +1,44 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
-import { bindActionCreators } from 'redux';
-import PropTypes from 'prop-types';
-import toastr from 'toastr';
 import $ from 'jquery';
-import ModalFrame from '../modal/ModalFrame.jsx';
-import GroupMembersTable from '../tables/GroupMembersTable.jsx';
-import { logout } from '../../actions/signIn';
-import setSelectedGroup from '../../actions/setSelectedGroup';
-import { setGroupMessages } from '../../actions/groupMessages';
-import { submitNewUser } from '../../actions/groupMembers';
-import { AddUserBtn, SearchBtn, GroupName } from '../misc/HeaderMisc.jsx';
+import toastr from 'toastr';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
+import { bindActionCreators } from 'redux';
+import { withRouter, Link } from 'react-router-dom';
+import ModalFrame from '../modal/ModalFrame';
 import {
   ModalHeader,
   ModalBody,
   ModalFooter,
   CloseButton,
   CancelButton,
-  SubmitButton } from '../modal/SubModals.jsx';
+  SubmitButton } from '../modal/SubModals';
+import { logout } from '../../actions/signIn';
+import { submitNewUser } from '../../actions/groupMembers';
+import { AddUserBtn, SearchBtn, GroupName } from '../misc/HeaderMisc';
+import GroupMembersTable from '../tables/GroupMembersTable';
+
 
 /**
- * Header component for message board
- * Child components: GroupName Add User modal and Group members modals
+ * Display Header
+ *
+ * @class Header
+ *
+ * @extends {React.Component}
  */
 export class Header extends React.Component {
 
   /**
-   * Constructor
-   * @param {object} props
-   */
+    * Creates an instance of Header
+    *
+    * @param {any} props
+    *
+    * @memberof Header
+    */
   constructor(props) {
     super(props);
 
-    /**
-     * @type {object}
-     * @prop {boolean} isOpen Tells if a modal is open or not
-     * @prop {string} newUser Email/Username of user to be added to group
-     * @prop {boolean} isLoading Tells if the request to add user has
-     * been completed or not
-     * @prop {string} error Error message if the user was not added successfully
-     */
     this.state = {
       isOpen: false,
       newUser: '',
@@ -51,17 +49,44 @@ export class Header extends React.Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.newUserSubmit = this.newUserSubmit.bind(this);
+    this.submitNewUser = this.submitNewUser.bind(this);
     this.logout = this.logout.bind(this);
     this.onSearchClick = this.onSearchClick.bind(this);
+    this.isValid = this.isValid.bind(this);
   }
 
-   /**
-   * Handles Open Modal event
-   * Updates isOpen state
+
+  /**
+  * Sets an active group id to the local storage when the search icon is clicked
+  *
+  * @returns {void} null
+  */
+  onSearchClick() {
+    localStorage.setItem('group', this.props.match.params.groupId);
+  }
+
+
+  /**
+   * Handles change event of New User input form
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void}
    */
+  onChange(event) {
+    this.setState({
+      error: '',
+      [event.target.name]: event.target.value
+    });
+  }
+
+  /**
+  * Handles Open Modal event
+  *
+  * @param {SyntheticEvent} event
+  *
+  * @returns {void}
+  */
   openModal(event) {
     event.preventDefault();
     this.setState({
@@ -69,14 +94,12 @@ export class Header extends React.Component {
     });
   }
 
-  onSearchClick() {
-    localStorage.setItem('group', this.props.match.params.groupId);
-  }
 
-   /**
+  /**
    * Handles Close Modal event
-   * Updates isOpen, newUser and error states
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void}
    */
   closeModal(event) {
@@ -89,65 +112,70 @@ export class Header extends React.Component {
   }
 
   /**
-   * Handles change event of New User input form
-   * Updates newUser state
-   * @param {SyntheticEvent} event
-   * @returns {void}
-   */
-  onChange(event) {
-    this.setState({
-      error: '',
-      [event.target.name]: event.target.value
-    });
+  * Handles input validation for adding user to group
+  *
+  * @returns {boolean} If an input is valid or not
+  */
+  isValid() {
+    const error = {};
+    if (!this.state.newUser) {
+      error.error = 'Username is required';
+      return this.setState({ error });
+    }
+    if (this.state.newUser.trim().length === 0) {
+      error.error = 'Username cannot be empty';
+      return this.setState({ error });
+    }
+    return isEmpty(error);
   }
 
   /**
-   * Handles Submit New User event
-   * Dispatches submitNewUser action to add the new user record to the DB
-   * If the submission was successful, it adds a success flash message
-   * If submission was not successful, it returns the appropriate error message
+   * Submits a new user's record to the database
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void}
    */
-  newUserSubmit(event) {
-    this.setState({ error: '', isLoading: true });
+  submitNewUser(event) {
     event.preventDefault();
-    this.props.submitNewUser({
-      groupId: this.props.selectedGroup.id,
-      identifier: this.state.newUser
-    }).then(
-      () => {
-        toastr.success('User has been successfully added to group');
-        $('[data-dismiss=modal]').trigger({ type: 'click' });
-      },
-      ({ response }) => {
-        this.setState({
-          error: response.data,
-          isLoading: false
-        });
-      }
-    );
+    if (this.isValid()) {
+      this.setState({ error: '', isLoading: true });
+      this.props.submitNewUser({
+        groupId: this.props.selectedGroup.id,
+        identifier: this.state.newUser
+      }).then(
+        () => {
+          toastr.success('User has been successfully added to group');
+          $('[data-dismiss=modal]').trigger({ type: 'click' });
+        },
+        ({ response }) => {
+          this.setState({
+            error: response.data,
+            isLoading: false
+          });
+        }
+      );
+    }
   }
 
   /**
-   * Handles logout event
-   * Dispatches logout action
-   * Deletes selected group and group messages from the state
-   * Redirects to the sign in page
+   * Logs a user out
+   *
    * @param {SyntheticEvent} event
+   *
    * @returns {void}
    */
   logout(event) {
     event.preventDefault();
     this.props.logout();
-    this.props.setSelectedGroup({});
-    this.props.setGroupMessages({});
-    this.props.history.push('/signin');
   }
+
 
   /**
    * Render
+   *
    * @returns {ReactElement} Header markup
+   *
    */
   render() {
     const { username, selectedGroup } = this.props;
@@ -191,11 +219,10 @@ export class Header extends React.Component {
 
               <div className="col-md-9 col-sm-7 col-xs-8 mobile-stack">
                 <ul className="cta">
-                  <li>
-                    <span className="search-icon">
-                      <i className="material-icons">search</i>
-                    </span>
-                  </li>
+                  <SearchBtn
+                    onSearchClick={this.onSearchClick}
+                    selectedGroup={selectedGroup}
+                  />
                   <li className="username">
                     <i className="glyphicon glyphicon-user" />
                      @{username}
@@ -239,13 +266,13 @@ export class Header extends React.Component {
             onChange={this.onChange}
             value={this.state.newUser}
             errors={this.state.error}
-            onSubmit={this.newUserSubmit}
+            onSubmit={this.submitNewUser}
           />
 
           <ModalFooter>
             <CancelButton onClick={this.closeModal} />
             <SubmitButton
-              onSubmit={this.newUserSubmit}
+              onSubmit={this.submitNewUser}
               isLoading={this.state.isLoading}
             />
           </ModalFooter>
@@ -270,8 +297,9 @@ export class Header extends React.Component {
 
 /**
  * Maps pieces of the redux state to props
- * Whatever is returned will show up as props in Headbar
+ *
  * @param {object} state Redux state
+ *
  * @returns {object} Username, selected group and member's loading status
  */
 function mapStateToProps(state) {
@@ -284,30 +312,32 @@ function mapStateToProps(state) {
 }
 
 /**
- * Maps action creators to redux dispatch function
- * Action creators bound will be available as props in Header
- * Actions generated by the action creators flows though all the reducers
+ * Maps action creators to redux dispatch function and avails them  as props
+ *
  * @param {function} dispatch Redux dispatch function
+ *
  * @returns {function} Action cretaors bound to redux dispatch function
  */
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     logout,
-    setSelectedGroup,
-    setGroupMessages,
     submitNewUser
   }, dispatch);
 }
 
 Header.propTypes = {
   logout: PropTypes.func.isRequired,
-  setSelectedGroup: PropTypes.func.isRequired,
-  setGroupMessages: PropTypes.func.isRequired,
   submitNewUser: PropTypes.func.isRequired,
   selectedGroup: PropTypes.object,
-  username: PropTypes.string.isRequired,
+  username: PropTypes.string,
   membersLoading: PropTypes.bool.isRequired,
-  groupMembers: PropTypes.array.isRequired
+  groupMembers: PropTypes.array.isRequired,
+  match: PropTypes.object.isRequired
+};
+
+Header.defaultProps = {
+  selectedGroup: {},
+  username: ''
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));
