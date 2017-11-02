@@ -232,8 +232,9 @@ describe('Group Endpoint', () => {
         .send(message)
         .end((err, res) => {
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Message was successfully sent');
-          res.body.should.have.property('messageBody').eql('Test Message');
+          res.body.should.have.property('message').eql('Test Message');
+          res.body.should.have.property('group').eql(2);
+          res.body.should.have.property('priority').eql('critical');
           done();
         });
     });
@@ -259,10 +260,10 @@ describe('Group Endpoint', () => {
           res.body.should.be.a('object');
           res.body.should.have.property('messages').with.lengthOf(4);
           res.body.messages.should.be.a('array');
-          res.body.messages[0].should.have.property('message').eql('Test Message');
-          res.body.messages[0].should.have.property('priority').eql('critical');
-          res.body.messages[0].should.have.property('sentBy').should.be.a('object');
-          res.body.messages[0].sentBy.should.have.property('username').eql('mazma');
+          res.body.messages[3].should.have.property('message').eql('Test Message');
+          res.body.messages[3].should.have.property('priority').eql('critical');
+          res.body.messages[3].should.have.property('sentBy').should.be.a('object');
+          res.body.messages[3].sentBy.should.have.property('username').eql('mazma');
           done();
         });
     });

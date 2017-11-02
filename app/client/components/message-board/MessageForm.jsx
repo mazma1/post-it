@@ -93,7 +93,9 @@ export class MessageForm extends React.Component {
           groupId,
           message: messageInput,
           readBy: username
-        }).then().catch(() => {
+        }).then(() => {
+          this.setState({ messageInput: '' });
+        }).catch(() => {
           toastr.error('Unable to send message, please try again');
         });
       }
