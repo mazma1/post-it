@@ -2,7 +2,8 @@ import axios from 'axios';
 import {
   SET_GROUP_MESSAGES,
   FETCHING_GROUP_MESSAGES,
-  FETCH_GROUP_MESSAGES_FAILURE } from '../actions/types';
+  FETCH_GROUP_MESSAGES_FAILURE,
+  ADD_NEW_MESSAGE } from '../actions/types';
 
 
 /**
@@ -28,6 +29,20 @@ export function getGroupMessages(groupId) {
   };
 }
 
+/**
+   * Informs reducers that the request to post new message finished
+   * successfully
+   *
+   * @param {object} message details of new message
+   *
+   * @returns {action} action type and payload
+   */
+export function addNewMessage(message) {
+  return {
+    type: ADD_NEW_MESSAGE,
+    message
+  };
+}
 
 /**
    * Makes request to post a new message to the database
@@ -43,7 +58,8 @@ export function postNewMessage({ priority, groupId, message, readBy }) {
   const reqBody = { priority, groupId, message, readBy };
   return dispatch => axios.post(`/api/v1/groups/${groupId}/message`, reqBody)
     .then((res) => {
-      dispatch(getGroupMessages(groupId));
+      const newMessage = res.data;
+      dispatch(addNewMessage(newMessage));
     })
     .catch(error => (error));
 }

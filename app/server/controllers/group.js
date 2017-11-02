@@ -132,10 +132,16 @@ export default {
     };
     models.Message.create(messageDetail)
       .then((message) => {
+        const { id, priority, isArchived, readBy } = message;
         res.status(201).send({
-          message: 'Message was successfully sent',
+          id,
+          readBy,
+          priority,
+          isArchived,
+          group: message.groupId,
+          message: message.body,
           timeSent: message.createdAt,
-          messageBody: message.body
+          sentBy: { username: req.decoded.data.username }
         });
         if (req.body.priority === 'urgent' || req.body.priority === 'critical') {
           models.Group.findOne({
@@ -204,10 +210,7 @@ export default {
         model: models.User,
         as: 'sentBy',
         attributes: ['username'],
-      }],
-      order: [
-        ['createdAt', 'DESC'],
-      ]
+      }]
     })
     .then((messages) => {
       if (messages) {

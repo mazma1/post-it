@@ -33,8 +33,7 @@ export class MessageCard extends React.Component {
       isOpen: false,
       messageId: '',
       clickedMessageId: '',
-      messageOpen: false,
-      messages: []
+      messageOpen: false
     };
 
     this.openModal = this.openModal.bind(this);
@@ -42,33 +41,6 @@ export class MessageCard extends React.Component {
     this.onMessageClick = this.onMessageClick.bind(this);
   }
 
-  /**
-    * @method componentDidMount
-    *
-    * @description sets messages from the store to state
-    *
-    * @return {void}
-    *
-    * @memberof MessageCard
-    */
-  componentDidMount() {
-    this.setState({ messages: this.props.message.messages });
-  }
-
-  /**
-    * @method componentWillReceiveprops
-    *
-    * @description updates state with new messages
-    *
-    * @return {void}
-    *
-    * @memberof MessageCard
-    */
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.message.messages.length > this.props.message.messages.length) {
-      this.setState({ messages: nextProps.message.messages });
-    }
-  }
    /**
    * Updates the read status of a message when clicked
    *
@@ -131,7 +103,7 @@ export class MessageCard extends React.Component {
     const messageLoading = this.props.message.isLoading;
     const messageLoadingError = this.props.message.error;
     const props = {
-      messages: this.props.message.messages,
+      messages,
       onMessageClick: this.onMessageClick,
       clickedMessageId: this.state.clickedMessageId,
       authenticatedUsername: this.props.authenticatedUsername

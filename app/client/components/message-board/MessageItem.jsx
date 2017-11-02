@@ -39,7 +39,7 @@ export class MessageItem extends React.Component {
       unreadMsgs: [],
       archivedMsgs: [],
       currentPage: 1,
-      messagesPerPage: 5
+      messagesPerPage: 10
     };
 
     this.onCategorySelect = this.onCategorySelect.bind(this);
@@ -66,6 +66,19 @@ export class MessageItem extends React.Component {
    */
   componentDidMount() {
     this.filterMessages(this.props.messages);
+  }
+
+  /**
+    * @method componentWillReceiveprops
+    *
+    * @description filters new array of messages when a new message is posted
+    *
+    * @return {void}
+    *
+    * @memberof MessageCard
+    */
+  componentWillReceiveProps(nextProps) {
+    this.filterMessages(nextProps.messages);
   }
 
   /**
@@ -322,7 +335,7 @@ function mapDispatchToProps(dispatch) {
 
 
 /**
- * Maps pieces of the redux state to props in Sidebar
+ * Maps pieces of the redux state to props in MessageItem
  *
  * @param {object} state Redux state
  *
