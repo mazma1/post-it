@@ -33,16 +33,42 @@ export class MessageCard extends React.Component {
       isOpen: false,
       messageId: '',
       clickedMessageId: '',
-      messageOpen: false
+      messageOpen: false,
+      messages: []
     };
 
-    // this.setMessageId = this.setMessageId.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.onMessageClick = this.onMessageClick.bind(this);
   }
 
+  /**
+    * @method componentDidMount
+    *
+    * @description sets messages from the store to state
+    *
+    * @return {void}
+    *
+    * @memberof MessageCard
+    */
+  componentDidMount() {
+    this.setState({ messages: this.props.message.messages });
+  }
 
+  /**
+    * @method componentWillReceiveprops
+    *
+    * @description updates state with new messages
+    *
+    * @return {void}
+    *
+    * @memberof MessageCard
+    */
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.message.messages.length > this.props.message.messages.length) {
+      this.setState({ messages: nextProps.message.messages });
+    }
+  }
    /**
    * Updates the read status of a message when clicked
    *
@@ -64,7 +90,6 @@ export class MessageCard extends React.Component {
     };
     return this.props.updateReadStatus(messageDetails);
   }
-
 
   /**
    * Handles Open Modal event
