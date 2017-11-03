@@ -1,10 +1,12 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
+import toastr from 'toastr';
 import {
   SET_CURRENT_USER,
   DELETE_CURRENT_USER,
   SET_GOOGLE_AUTH_STATUS } from './types';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
+
 
 /**
   * Makes request to sign in a user
@@ -23,6 +25,7 @@ export function userSignInRequest(userData) {
     });
 }
 
+
 /**
    * Informs reducers that the request to verify user's auth status
    * via Google finished successfully
@@ -36,24 +39,6 @@ export function setGoogleAuthStatus(status) {
     type: SET_GOOGLE_AUTH_STATUS,
     status
   };
-}
-
-
-/**
-  * Makes request to verify if a google user is a new or returning user
-  *
-  * @param {object} email user's email
-  *
-  * @returns {response} request response
-  */
-export function verifyGoogleUser(email) {
-  const reqBody = { email };
-  return dispatch => axios.post('/api/v1/users/verifyGoogleUser', reqBody).then(
-    (res) => {
-      const status = res.data.message;
-      dispatch(setGoogleAuthStatus(status));
-    }
-  ).catch();
 }
 
 
@@ -75,8 +60,33 @@ export function googleSignIn(userDetails) {
       localStorage.setItem('jwtToken', token);
       setAuthorizationToken(token);
       dispatch(setCurrentUser(jwt.decode(token)));
+      window.location.href = '/message-board';
     });
 }
+
+
+/**
+  * Makes request to authenticate a user via Google API
+  *
+  * @param {object} payload user's email and google token id to be verified
+  *
+  * @returns {response} request response
+  */
+export function authorizeGoogleUser(payload) {
+  const { email, token } = payload;
+  return dispatch => axios.post('/api/v1/users/verifyGoogleUser', { email }).then(
+    (res) => {
+      const status = res.data.message;
+      dispatch(setGoogleAuthStatus(status));
+      if (status === 'Returning user') {
+        dispatch(googleSignIn(token));
+      }
+    }
+  ).catch(() => {
+    toastr.error('Unable to verify user, please try again');
+  });
+}
+
 
 /**
    * Informs reducers that the request to sign in user finished successfully

@@ -3,9 +3,9 @@ import toastr from 'toastr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import GoogleButton from 'react-google-login';
-import { googleSignIn, verifyGoogleUser } from '../../actions/signIn';
+import { authorizeGoogleUser } from '../../actions/signIn';
 import GoogleSignIn from '../sign-in/GoogleSignIn';
+import GoogleAuthButton from '../../components/sign-in/GoogleAuthButton';
 
 /**
   * Displays HomePage
@@ -25,7 +25,6 @@ export class HomePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      newUser: '',
       token: ''
     };
 
@@ -56,23 +55,7 @@ export class HomePage extends React.Component {
     const email = response.profileObj.email;
     const token = response.tokenId;
     this.setState({ token });
-    this.props.verifyGoogleUser(email).then(
-      () => {
-        if (this.props.googleAuthStatus === 'Returning user') {
-          return this.props.googleSignIn(token).then(
-            () => {
-              toastr.success('Sign in was successful. Welcome back!');
-              this.props.history.push('/message-board');
-            }
-          );
-        }
-        if (this.props.googleAuthStatus === 'New user') {
-          this.setState({ newUser: true });
-        }
-      }
-    ).catch(() => {
-      toastr.error('Unable to verify user, please try again');
-    });
+    this.props.authorizeGoogleUser({ email, token });
   }
 
   /**
@@ -81,13 +64,13 @@ export class HomePage extends React.Component {
    * @returns {ReactElement} SignIn page markup
    */
   render() {
-    const { newUser, token } = this.state;
+    const { token } = this.state;
     const { googleAuthStatus } = this.props;
     return (
       <div>
         {(googleAuthStatus === 'New user') ? <GoogleSignIn token={token} /> : null }
 
-        { !newUser ?
+        {(googleAuthStatus !== 'New user' || googleAuthStatus === '') ?
           <div className="background">
             <div className="container index-color">
               <div className="row">
@@ -109,22 +92,10 @@ export class HomePage extends React.Component {
                     </h5>
                     <div className="google-signin">
                       <h6 className="center">Or</h6>
-                      <GoogleButton
-                        className="google-btn btn blue accent-2 waves-effect waves-light left"
+                      <GoogleAuthButton
                         onSuccess={this.googleSignIn}
                         onFailure={this.onFailure}
-                      >
-                        <span>
-                          <span className="google-icon">
-                            <img
-                              src="../../dist/img/google.jpg"
-                              alt="no-img"
-                              className="google-icon google"
-                            />
-                          </span>
-                          Sign In with Google
-                        </span>
-                      </GoogleButton>
+                      />
                     </div>
                   </div>
                   <div className="background-img-hack" />
@@ -146,14 +117,12 @@ function mapStateToProps(state) {
 }
 
 HomePage.propTypes = {
-  googleSignIn: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired,
-  verifyGoogleUser: PropTypes.func.isRequired,
-  googleAuthStatus: PropTypes.string
+  googleAuthStatus: PropTypes.string,
+  authorizeGoogleUser: PropTypes.func.isRequired
 };
 
 HomePage.defaultProps = {
   googleAuthStatus: ''
 };
 
-export default connect(mapStateToProps, { googleSignIn, verifyGoogleUser })(HomePage);
+export default connect(mapStateToProps, { authorizeGoogleUser })(HomePage);
