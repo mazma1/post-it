@@ -42,7 +42,7 @@ export class HomePage extends React.Component {
    * @memberof HomePage
    */
   onFailure(error) {
-    alert('Unable to sign in with Google. Check your network and try again');
+    toastr.error('Unable to sign in with Google.Check your network and try again');
   }
 
   /**
@@ -55,10 +55,10 @@ export class HomePage extends React.Component {
   googleSignIn(response) {
     const email = response.profileObj.email;
     const token = response.tokenId;
-    this.setState({ email, token });
+    this.setState({ token });
     this.props.verifyGoogleUser(email).then(
-      (res) => {
-        if (res.data.message === 'Returning user') {
+      () => {
+        if (this.props.googleAuthStatus === 'Returning user') {
           return this.props.googleSignIn(token).then(
             () => {
               toastr.success('Sign in was successful. Welcome back!');
@@ -66,11 +66,13 @@ export class HomePage extends React.Component {
             }
           );
         }
-        if (res.data.message === 'New user') {
+        if (this.props.googleAuthStatus === 'New user') {
           this.setState({ newUser: true });
         }
       }
-    ).catch();
+    ).catch(() => {
+      toastr.error('Unable to verify user, please try again');
+    });
   }
 
   /**
@@ -80,9 +82,10 @@ export class HomePage extends React.Component {
    */
   render() {
     const { newUser, token } = this.state;
+    const { googleAuthStatus } = this.props;
     return (
       <div>
-        { newUser ? <GoogleSignIn token={token} /> : null }
+        {(googleAuthStatus === 'New user') ? <GoogleSignIn token={token} /> : null }
 
         { !newUser ?
           <div className="background">
@@ -136,10 +139,21 @@ export class HomePage extends React.Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    googleAuthStatus: state.googleAuthStatus
+  };
+}
+
 HomePage.propTypes = {
   googleSignIn: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
-  verifyGoogleUser: PropTypes.func.isRequired
+  verifyGoogleUser: PropTypes.func.isRequired,
+  googleAuthStatus: PropTypes.string
 };
 
-export default connect(null, { googleSignIn, verifyGoogleUser })(HomePage);
+HomePage.defaultProps = {
+  googleAuthStatus: ''
+};
+
+export default connect(mapStateToProps, { googleSignIn, verifyGoogleUser })(HomePage);

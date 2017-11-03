@@ -1,6 +1,9 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
-import { SET_CURRENT_USER, DELETE_CURRENT_USER } from './types';
+import {
+  SET_CURRENT_USER,
+  DELETE_CURRENT_USER,
+  SET_GOOGLE_AUTH_STATUS } from './types';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 
 /**
@@ -20,6 +23,21 @@ export function userSignInRequest(userData) {
     });
 }
 
+/**
+   * Informs reducers that the request to verify user's auth status
+   * via Google finished successfully
+   *
+   * @param {object} user user's information
+   *
+   * @returns {action} action type and payload
+   */
+export function setGoogleAuthStatus(status) {
+  return {
+    type: SET_GOOGLE_AUTH_STATUS,
+    status
+  };
+}
+
 
 /**
   * Makes request to verify if a google user is a new or returning user
@@ -30,7 +48,12 @@ export function userSignInRequest(userData) {
   */
 export function verifyGoogleUser(email) {
   const reqBody = { email };
-  return dispatch => axios.post('/api/v1/users/verifyGoogleUser', reqBody);
+  return dispatch => axios.post('/api/v1/users/verifyGoogleUser', reqBody).then(
+    (res) => {
+      const status = res.data.message;
+      dispatch(setGoogleAuthStatus(status));
+    }
+  ).catch();
 }
 
 
