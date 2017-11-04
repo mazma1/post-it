@@ -110,7 +110,6 @@ export function setCurrentUser(user) {
    */
 export function logout() {
   return (dispatch) => {
-    window.location.href = '/';
     localStorage.removeItem('jwtToken');
     setAuthorizationToken(false);
     dispatch(deleteCurrentUser());
