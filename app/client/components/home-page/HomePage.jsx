@@ -3,9 +3,9 @@ import toastr from 'toastr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import GoogleButton from 'react-google-login';
-import { googleSignIn, verifyGoogleUser } from '../../actions/signIn';
+import { authorizeGoogleUser } from '../../actions/signIn';
 import GoogleSignIn from '../sign-in/GoogleSignIn';
+import GoogleAuthButton from '../../components/sign-in/GoogleAuthButton';
 
 /**
   * Displays HomePage
@@ -25,7 +25,6 @@ export class HomePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      newUser: '',
       token: ''
     };
 
@@ -42,7 +41,7 @@ export class HomePage extends React.Component {
    * @memberof HomePage
    */
   onFailure(error) {
-    alert('Unable to sign in with Google. Check your network and try again');
+    toastr.error('Unable to sign in with Google.Check your network and try again');
   }
 
   /**
@@ -55,22 +54,8 @@ export class HomePage extends React.Component {
   googleSignIn(response) {
     const email = response.profileObj.email;
     const token = response.tokenId;
-    this.setState({ email, token });
-    this.props.verifyGoogleUser(email).then(
-      (res) => {
-        if (res.data.message === 'Returning user') {
-          return this.props.googleSignIn(token).then(
-            () => {
-              toastr.success('Sign in was successful. Welcome back!');
-              this.props.history.push('/message-board');
-            }
-          );
-        }
-        if (res.data.message === 'New user') {
-          this.setState({ newUser: true });
-        }
-      }
-    ).catch();
+    this.setState({ token });
+    this.props.authorizeGoogleUser({ email, token });
   }
 
   /**
@@ -79,12 +64,13 @@ export class HomePage extends React.Component {
    * @returns {ReactElement} SignIn page markup
    */
   render() {
-    const { newUser, token } = this.state;
+    const { token } = this.state;
+    const { googleAuthStatus } = this.props;
     return (
       <div>
-        { newUser ? <GoogleSignIn token={token} /> : null }
+        {(googleAuthStatus === 'New user') ? <GoogleSignIn token={token} /> : null }
 
-        { !newUser ?
+        {(googleAuthStatus !== 'New user' || googleAuthStatus === '') ?
           <div className="background">
             <div className="container index-color">
               <div className="row">
@@ -106,22 +92,10 @@ export class HomePage extends React.Component {
                     </h5>
                     <div className="google-signin">
                       <h6 className="center">Or</h6>
-                      <GoogleButton
-                        className="google-btn btn blue accent-2 waves-effect waves-light left"
+                      <GoogleAuthButton
                         onSuccess={this.googleSignIn}
                         onFailure={this.onFailure}
-                      >
-                        <span>
-                          <span className="google-icon">
-                            <img
-                              src="../../dist/img/google.jpg"
-                              alt="no-img"
-                              className="google-icon google"
-                            />
-                          </span>
-                          Sign In with Google
-                        </span>
-                      </GoogleButton>
+                      />
                     </div>
                   </div>
                   <div className="background-img-hack" />
@@ -136,10 +110,19 @@ export class HomePage extends React.Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    googleAuthStatus: state.googleAuthStatus
+  };
+}
+
 HomePage.propTypes = {
-  googleSignIn: PropTypes.func.isRequired,
-  history: PropTypes.object.isRequired,
-  verifyGoogleUser: PropTypes.func.isRequired
+  googleAuthStatus: PropTypes.string,
+  authorizeGoogleUser: PropTypes.func.isRequired
 };
 
-export default connect(null, { googleSignIn, verifyGoogleUser })(HomePage);
+HomePage.defaultProps = {
+  googleAuthStatus: ''
+};
+
+export default connect(mapStateToProps, { authorizeGoogleUser })(HomePage);

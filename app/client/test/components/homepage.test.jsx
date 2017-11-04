@@ -17,7 +17,7 @@ describe('<HomePage />', () => {
   beforeEach(() => {
     props = {
       googleSignIn: jest.fn(() => Promise.resolve()),
-      verifyGoogleUser: jest.fn(() => Promise.resolve()),
+      authorizeGoogleUser: jest.fn(() => Promise.resolve()),
       history: { push: jest.fn() }
     };
   });
