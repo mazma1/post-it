@@ -8,7 +8,7 @@ import SearchUserReducer from '../reducers/searchUser';
 import GoogleAuthStatusReducer from '../reducers/googleAuthStatus';
 
 // Mapping of our state
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   signedInUser: AuthenticatedUserReducer,
   userGroups: UserGroupsReducer,
   selectedGroup: SelectedGroupReducer,
@@ -17,5 +17,13 @@ const rootReducer = combineReducers({
   searchResult: SearchUserReducer,
   googleAuthStatus: GoogleAuthStatusReducer
 });
+
+
+const rootReducer = (state, action) => {
+  if (action.type === 'DELETE_CURRENT_USER') {
+    state = undefined;
+  }
+  return appReducer(state, action);
+};
 
 export default rootReducer;

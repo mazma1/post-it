@@ -168,6 +168,7 @@ export class Header extends React.Component {
   logout(event) {
     event.preventDefault();
     this.props.logout();
+    this.props.history.push('/signin');
   }
 
 
@@ -332,7 +333,8 @@ Header.propTypes = {
   username: PropTypes.string,
   membersLoading: PropTypes.bool.isRequired,
   groupMembers: PropTypes.array.isRequired,
-  match: PropTypes.object.isRequired
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 Header.defaultProps = {
