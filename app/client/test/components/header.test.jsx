@@ -30,7 +30,8 @@ describe('<Header />', () => {
     membersLoading: false,
     groupMembers: [],
     selectedGroup: undefined,
-    match: { params: {} }
+    match: { params: {} },
+    history: { push: jest.fn() }
   };
   const header = () => {
     if (!mountedHeader) {

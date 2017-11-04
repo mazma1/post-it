@@ -96,14 +96,21 @@ describe('Sign In Action\'s', () => {
     });
   });
 
-  describe('#verifyGoogleUser', () => {
-    it('should make request to determine if user is new or returning', () => {
+  describe('#authorizeGoogleUser', () => {
+    it('should make request to determine if user is new or returning ', () => {
       mock.onPost('/api/v1/users/verifyGoogleUser')
-        .reply(200, { data: { message: 'New User' } });
+        .reply(200, { data: { message: 'Returning user' } });
 
-      const store = mockStore({ data: { message: 'New User' } });
+      const expectedAction = {
+        type: types.SET_GOOGLE_AUTH_STATUS,
+        status: 'Returning user'
+      };
+      const store = mockStore({ data: { message: 'Returning user' } });
 
-      store.dispatch(actions.verifyGoogleUser({ email: 'mazi@yahoo.com' }));
+      store.dispatch(actions.authorizeGoogleUser({ email: 'mazi@yahoo.com' }))
+        .then((data) => {
+          expect(store.getActions()).toEqual(expectedAction);
+        });
     });
   });
 });
