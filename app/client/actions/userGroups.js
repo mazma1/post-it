@@ -4,10 +4,25 @@ import setSelectedGroup from '../actions/setSelectedGroup';
 import { getGroupMessages } from '../actions/groupMessages';
 import { getGroupMembers } from '../actions/groupMembers';
 import {
+  SET_NEW_GROUP,
   SET_USER_GROUPS,
   FETCHING_USER_GROUPS,
   FETCH_USER_GROUPS_FAILURE,
   SUBMIT_NEW_GROUP_FAILURE } from '../actions/types';
+
+/**
+   * Informs reducers that the request to create a new group finished successfully
+   *
+   * @param {object} groupDetails details of new group created
+   *
+   * @returns {action} action type and payload
+   */
+export function setNewGroup(groupDetails) {
+  return {
+    type: SET_NEW_GROUP,
+    groupDetails
+  };
+}
 
 
   /**
@@ -88,6 +103,8 @@ export function submitNewGroup({ groupName, userId }) {
   const reqBody = { groupName };
   return dispatch => axios.post('/api/v1/groups', reqBody)
     .then((res) => {
+      const groupDetails = res.data;
+      dispatch(setNewGroup(groupDetails));
       dispatch(setNewGroupActive(userId));
     });
 }

@@ -4,12 +4,6 @@ import { mount, shallow } from 'enzyme';
 import { Sidebar } from '../../components/client-frame/sidebar/Sidebar';
 import { Brand, MobileToggleBtn } from '../../components/misc/SidebarMisc';
 import GroupList from '../../components/client-frame/sidebar/GroupList';
-import ModalFrame from '../../components/modal/ModalFrame';
-import {
-  ModalHeader,
-  ModalBody,
-  ModalFooter
-} from '../../components/modal/SubModals';
 import mockLocalStorage from '../mockLocalStorage';
 
 Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
@@ -27,6 +21,7 @@ describe('<Sidebar />', () => {
     unreadCount: undefined,
     selectedGroup: undefined,
     userGroups: undefined,
+    pathName: '',
     history: { push: jest.fn() },
     match: {}
   };
@@ -88,14 +83,6 @@ describe('<Sidebar />', () => {
     expect(CWMSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should mount with onChange()', () => {
-    const event = { target: {} };
-    const onChangeSpy = jest.spyOn(Sidebar.prototype, 'onChange');
-    const shallowSidebar = shallow(<Sidebar {...props} />);
-    shallowSidebar.instance().onChange(event);
-    expect(onChangeSpy).toHaveBeenCalledTimes(1);
-  });
-
   it('should mount with onGroupSelect()', () => {
     const group = { id: 1 };
     const onGroupSelectSpy = jest.spyOn(Sidebar.prototype, 'onGroupSelect');
@@ -127,19 +114,12 @@ describe('<Sidebar />', () => {
     expect(Object.keys(mobileToggleBtnDisplay.props()).length).toBe(0);
   });
 
-  it('should always render <GroupList/> with five props', () => {
+  it('should always render <GroupList/> with six props', () => {
     expect(sidebar().find(GroupList).length).toBe(1);
 
     const groupListDisplay = sidebar().find(GroupList);
-    expect(Object.keys(groupListDisplay.props()).length).toBe(5);
+    expect(Object.keys(groupListDisplay.props()).length).toBe(6);
     expect(groupListDisplay.props().userGroups).toBe(props.userGroups);
     expect(groupListDisplay.props().selectedGroup).toBe(props.selectedGroup);
-  });
-
-  it('should always render the createGroup Modal', () => {
-    expect(sidebar().find(ModalFrame).length).toBe(1);
-    expect(sidebar().find(ModalHeader).length).toBe(1);
-    expect(sidebar().find(ModalBody).length).toBe(1);
-    expect(sidebar().find(ModalFooter).length).toBe(1);
   });
 });

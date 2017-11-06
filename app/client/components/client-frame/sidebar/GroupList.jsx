@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import mapKeys from 'lodash/mapKeys';
 import PropTypes from 'prop-types';
@@ -28,26 +28,28 @@ function GroupList(props) {
   const emptyGroup = (
     <div className="loading-padding">
       <p>No groups available.</p>
-      <a
-        href="#createGroup"
-        data-toggle="modal" data-target="#createGroup"
-        onClick={props.openModal}
+      <Link
+        to={{
+          pathname: '/message-board/create-group',
+          state: { previousPath: props.pathName }
+        }}
       >
         Click to create new group
-      </a>
+      </Link>
     </div>
   );
 
   const createGroup = (
     <li role="presentation" className="new-group">
-      <a
+      <Link
+        to={{
+          pathname: '/message-board/create-group',
+          state: { previousPath: props.pathName }
+        }}
         id="createNewGroup"
-        href="#createGroup"
-        data-toggle="modal" data-target="#createGroup"
-        onClick={props.openModal}
       >
         Create New Group
-      </a>
+      </Link>
     </li>
   );
 
@@ -68,7 +70,7 @@ function GroupList(props) {
           key={group.id}
           className={classnames({ active: isSelected })}
         >
-          <NavLink to="#">
+          <Link to="#">
             {capitalizeFirstLetter(group.name)}
             {
               mappedUnreadCount[id] && mappedUnreadCount[id].unreadCount > 0 ?
@@ -77,7 +79,7 @@ function GroupList(props) {
                 </span>
               : null
             }
-          </NavLink>
+          </Link>
         </li>
       );
     });
@@ -99,9 +101,9 @@ function GroupList(props) {
 GroupList.propTypes = {
   unreadCount: PropTypes.array,
   selectedGroup: PropTypes.object,
-  openModal: PropTypes.func.isRequired,
   userGroups: PropTypes.object.isRequired,
   onGroupSelect: PropTypes.func.isRequired,
+  pathName: PropTypes.string.isRequired
 };
 
 GroupList.defaultProps = {

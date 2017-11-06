@@ -1,5 +1,4 @@
 import React from 'react';
-import $ from 'jquery';
 import toastr from 'toastr';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
@@ -9,13 +8,6 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import jwt from 'jsonwebtoken';
 import GroupList from './GroupList';
-import {
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  CancelButton,
-  SubmitButton } from '../../modal/SubModals';
-import ModalFrame from '../../modal/ModalFrame';
 import { Brand, MobileToggleBtn } from '../../misc/SidebarMisc';
 import setSelectedGroup from '../../../actions/setSelectedGroup';
 import { getGroupMembers } from '../../../actions/groupMembers';
@@ -23,7 +15,7 @@ import {
   getGroupMessages,
   updateReadStatus,
   getGroupMessagesCount } from '../../../actions/groupMessages';
-import { getUserGroups, submitNewGroup } from '../../../actions/userGroups';
+import { getUserGroups } from '../../../actions/userGroups';
 
 
 /**
@@ -46,19 +38,12 @@ export class Sidebar extends React.Component {
     super(props);
     this.state = {
       isOpen: false,
-      newGroup: '',
       isLoading: false,
-      error: {},
       groups: []
     };
 
-    this.onChange = this.onChange.bind(this);
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
     this.onGroupSelect = this.onGroupSelect.bind(this);
-    this.submitNewGroup = this.submitNewGroup.bind(this);
     this.getUnreadCount = this.getUnreadCount.bind(this);
-    this.isValid = this.isValid.bind(this);
   }
 
   /**
@@ -81,36 +66,41 @@ export class Sidebar extends React.Component {
             this.props.setSelectedGroup({});
           } else {
             const groupId = this.props.match.params.groupId;
-            this.getUnreadCount(this.props.userGroups.groups);
+            // this.getUnreadCount(this.props.userGroups.groups);
             if (groupId) {
               const mappedGroups = mapKeys(this.props.userGroups.groups, 'id');
               const currentGroup = mappedGroups[groupId];
-              this.props.setSelectedGroup(currentGroup);
-              this.props.getGroupMessages(groupId);
-              this.props.getGroupMembers(groupId);
+              if (currentGroup) {
+                this.props.setSelectedGroup(currentGroup);
+                this.props.getGroupMessages(groupId);
+                this.props.getGroupMembers(groupId);
+              } else {
+                toastr.error('Group does not exist');
+                this.props.history.push('/message-board');
+              }
             }
           }
         }
       )
       .catch((error) => {
-        toastr.error('Unable to load groups, please try again later');
+        toastr.error('Group does not exist');
+        this.props.history.push('/message-board');
       });
     }
   }
 
-
   /**
-   * Handles change event of New Group form
-   *
-   * @param {SyntheticEvent} event
-   *
-   * @returns {void}
-   */
-  onChange(event) {
-    this.setState({
-      error: {},
-      [event.target.name]: event.target.value
-    });
+    * Rerenders the component when active groups change
+    *
+    * @param {object} nextProps new props passed to Sidebar component
+    *
+    * @returns {boolean}
+    */
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.selectedGroup.id !== this.props.selectedGroup.id) {
+      return true;
+    }
+    return nextProps.userGroups.groups > this.props.userGroups.groups;
   }
 
 
@@ -165,83 +155,6 @@ export class Sidebar extends React.Component {
 
 
   /**
-   * Handles Open Modal event
-   *
-   * @param {SyntheticEvent} event
-   *
-   * @returns {void}
-   */
-  openModal(event) {
-    event.stopPropagation();
-    this.setState({
-      isOpen: true
-    });
-  }
-
-  /**
-   * Handles Close Modal event
-   *
-   * @param {SyntheticEvent} event
-   *
-   * @returns {void}
-   */
-  closeModal(event) {
-    event.preventDefault();
-    this.setState({
-      isOpen: false,
-      newGroup: '',
-      error: {}
-    });
-  }
-
-  /**
-   * Handles input validation for creating new group
-   *
-   * @returns {boolean} If an input is valid or not
-   */
-  isValid() {
-    const error = {};
-    if (!this.state.newGroup) {
-      error.error = 'Group name is required';
-      this.setState({ error });
-    }
-    if (this.state.newGroup.trim().length === 0) {
-      error.error = 'Group name cannot be empty';
-      this.setState({ error });
-    }
-    return isEmpty(error);
-  }
-
-
-  /**
-   * Adds a new group record to the DB
-   *
-   * @param {SyntheticEvent} event
-   *
-   * @returns {void}
-   */
-  submitNewGroup(event) {
-    event.preventDefault();
-    if (this.isValid()) {
-      this.setState({ error: {}, isLoading: true });
-      this.props.submitNewGroup({
-        groupName: this.state.newGroup,
-        userId: this.props.signedInUser.user.id
-      }).then(
-        () => {
-          toastr.success('Your group has been successfully created');
-          $('[data-dismiss=modal]').trigger({ type: 'click' });
-          this.setState({ isLoading: false });
-        },
-        ({ response }) => {
-          this.setState({ error: response.data, isLoading: false });
-        }
-      );
-    }  
-  }
-
-
-  /**
    * Render
    *
    * @returns {ReactElement} Sidebar markup
@@ -256,6 +169,7 @@ export class Sidebar extends React.Component {
             <MobileToggleBtn />
 
             <GroupList
+              pathName={this.props.pathName}
               userGroups={userGroups}
               selectedGroup={selectedGroup}
               onGroupSelect={this.onGroupSelect}
@@ -264,27 +178,6 @@ export class Sidebar extends React.Component {
             />
           </div>
         </aside>
-
-        <ModalFrame id="createGroup" show={this.state.isOpen}>
-          <ModalHeader header="Group Name" onClose={this.closeModal} />
-
-          <ModalBody
-            label="Group Name"
-            field="newGroup"
-            onChange={this.onChange}
-            value={this.state.newGroup}
-            errors={this.state.error}
-            onSubmit={this.submitNewGroup}
-          />
-
-          <ModalFooter>
-            <CancelButton onClick={this.closeModal} />
-            <SubmitButton
-              onSubmit={this.submitNewGroup}
-              isLoading={this.state.isLoading}
-            />
-          </ModalFooter>
-        </ModalFrame>
       </div>
     );
   }
@@ -298,8 +191,9 @@ export class Sidebar extends React.Component {
  * @returns {object} Details of signed in user, his groups and the active group
  * and the group messages
  */
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
+    pathName: ownProps.location.pathname,
     signedInUser: state.signedInUser,
     userGroups: state.userGroups,
     selectedGroup: state.selectedGroup,
@@ -321,7 +215,6 @@ function mapDispatchToProps(dispatch) {
     setSelectedGroup,
     getGroupMessages,
     getGroupMembers,
-    submitNewGroup,
     updateReadStatus,
     getGroupMessagesCount
   }, dispatch);
@@ -333,12 +226,12 @@ Sidebar.propTypes = {
   userGroups: PropTypes.object.isRequired,
   setSelectedGroup: PropTypes.func.isRequired,
   selectedGroup: PropTypes.object,
-  submitNewGroup: PropTypes.func.isRequired,
   getGroupMembers: PropTypes.func.isRequired,
   getGroupMessages: PropTypes.func.isRequired,
   getGroupMessagesCount: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  pathName: PropTypes.string.isRequired
 };
 
 Sidebar.defaultProps = {
