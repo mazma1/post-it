@@ -1,7 +1,7 @@
 import models from '../models';
 import sendSms from '../utils/sendSms';
 import sendEmail from '../utils/sendEmail';
-
+import customSort from '../utils/customSort';
 
 export default {
   /**
@@ -213,7 +213,7 @@ export default {
     })
     .then((messages) => {
       if (messages) {
-        res.status(200).send({ messages });
+        res.status(200).send({ messages: messages.sort(customSort) });
       }
     })
     .catch(error => res.status(500).send(error.message));

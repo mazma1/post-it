@@ -81,23 +81,42 @@ export class Sidebar extends React.Component {
             this.props.setSelectedGroup({});
           } else {
             const groupId = this.props.match.params.groupId;
-            this.getUnreadCount(this.props.userGroups.groups);
+            // this.getUnreadCount(this.props.userGroups.groups);
             if (groupId) {
               const mappedGroups = mapKeys(this.props.userGroups.groups, 'id');
               const currentGroup = mappedGroups[groupId];
-              this.props.setSelectedGroup(currentGroup);
-              this.props.getGroupMessages(groupId);
-              this.props.getGroupMembers(groupId);
+              if (currentGroup) {
+                this.props.setSelectedGroup(currentGroup);
+                this.props.getGroupMessages(groupId);
+                this.props.getGroupMembers(groupId);
+              } else {
+                toastr.error('Group does not exist');
+                this.props.history.push('/message-board');
+              }
             }
           }
         }
       )
       .catch((error) => {
-        toastr.error('Unable to load groups, please try again later');
+        toastr.error('Group does not exist');
+        this.props.history.push('/message-board');
       });
     }
   }
 
+  /**
+    * Rerenders the component when active groups change
+    *
+    * @param {object} nextProps new props passed to Sidebar component
+    *
+    * @returns {boolean}
+    */
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.selectedGroup.id !== this.props.selectedGroup.id) {
+      return true;
+    }
+    return nextProps.userGroups.groups > this.props.userGroups.groups;
+  }
 
   /**
    * Handles change event of New Group form
@@ -256,6 +275,7 @@ export class Sidebar extends React.Component {
             <MobileToggleBtn />
 
             <GroupList
+              pathName={this.props.pathName}
               userGroups={userGroups}
               selectedGroup={selectedGroup}
               onGroupSelect={this.onGroupSelect}
@@ -298,8 +318,9 @@ export class Sidebar extends React.Component {
  * @returns {object} Details of signed in user, his groups and the active group
  * and the group messages
  */
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
   return {
+    pathName: ownProps.location.pathname,
     signedInUser: state.signedInUser,
     userGroups: state.userGroups,
     selectedGroup: state.selectedGroup,

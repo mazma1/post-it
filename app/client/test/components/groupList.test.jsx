@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, MemoryRouter } from 'react-router-dom';
+import { Link, MemoryRouter } from 'react-router-dom';
 import { mount } from 'enzyme';
 import GroupList from '../../components/client-frame/sidebar/GroupList';
 
@@ -24,7 +24,8 @@ describe('<GroupList />', () => {
       openModal: jest.fn(),
       userGroups: undefined,
       unreadCount: undefined,
-      selectedGroup: undefined
+      selectedGroup: undefined,
+      pathName: ''
     };
     mountedGroupList = undefined;
   });
@@ -60,10 +61,10 @@ describe('<GroupList />', () => {
       }];
     });
 
-    it('should render a NavLink with the given group name', () => {
+    it('should render a Link with the given group name', () => {
       expect(groupList().find('li').length).toBeGreaterThan(0);
-      expect(groupList().find(NavLink).length).toBe(1);
-      expect(NavLink.children).toBe(props.userGroups.groups.group_name);
+      expect(groupList().find(Link).length).toBe(2);
+      expect(Link.children).toBe(props.userGroups.groups.group_name);
     });
 
     it('should render the button to create a new group', () => {

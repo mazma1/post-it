@@ -127,11 +127,11 @@ describe('<Sidebar />', () => {
     expect(Object.keys(mobileToggleBtnDisplay.props()).length).toBe(0);
   });
 
-  it('should always render <GroupList/> with five props', () => {
+  it('should always render <GroupList/> with six props', () => {
     expect(sidebar().find(GroupList).length).toBe(1);
 
     const groupListDisplay = sidebar().find(GroupList);
-    expect(Object.keys(groupListDisplay.props()).length).toBe(5);
+    expect(Object.keys(groupListDisplay.props()).length).toBe(6);
     expect(groupListDisplay.props().userGroups).toBe(props.userGroups);
     expect(groupListDisplay.props().selectedGroup).toBe(props.selectedGroup);
   });
