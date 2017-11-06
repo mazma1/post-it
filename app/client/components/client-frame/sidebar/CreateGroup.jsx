@@ -37,7 +37,6 @@ export class CreateGroup extends Component {
     this.onChange = this.onChange.bind(this);
     this.isValid = this.isValid.bind(this);
     this.submitNewGroup = this.submitNewGroup.bind(this);
-    this.closePage = this.closePage.bind(this);
   }
 
   /**
@@ -51,15 +50,6 @@ export class CreateGroup extends Component {
     this.setState({ newGroup: event.target.value, error: {} });
   }
 
-  /**
-    * Closes create group page after group has been successfully created
-    *
-    * @returns {void} null
-    */
-  closePage() {
-    const button = document.querySelector('#close-button');
-    button.click();
-  }
 
   /**
    * Handles input validation for creating new group
@@ -97,7 +87,7 @@ export class CreateGroup extends Component {
         () => {
           toastr.success('Your group has been successfully created');
           this.setState({ isLoading: false });
-          this.closePage();
+          this.props.history.push(`${this.props.newGroupId}`);
         },
         ({ response }) => {
           this.setState({ error: response.data, isLoading: false });
@@ -112,7 +102,7 @@ export class CreateGroup extends Component {
    * @returns {ReactElement} Create Group markup
    */
   render() {
-    const error = this.state.error.error;
+    const { error } = this.state.error;
     const { previousPath } = this.props.location.state;
     return (
       <ClientFrame>
@@ -178,7 +168,8 @@ function mapStateToProps(state, ownProps) {
   return {
     ownProps,
     signedInUser: state.signedInUser,
-    groups: state.userGroups.groups
+    groups: state.userGroups.groups,
+    newGroupId: state.newGroup.groupId
   };
 }
 
@@ -186,7 +177,12 @@ CreateGroup.propTypes = {
   location: PropTypes.object.isRequired,
   submitNewGroup: PropTypes.func.isRequired,
   signedInUser: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  newGroupId: PropTypes.number
+};
+
+CreateGroup.defaultProps = {
+  newGroupId: 0
 };
 
 export default connect(mapStateToProps, { submitNewGroup })(CreateGroup);

@@ -41,6 +41,7 @@ export default {
             })
             .then(groupMember => res.status(201).send({
               message: 'Group was successfully created and you have been added to it',
+              groupId: newGroup.id,
               groupName: newGroup.groupName,
               groupOwner: newGroup.userId
             }))
