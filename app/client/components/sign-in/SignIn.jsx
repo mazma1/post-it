@@ -81,8 +81,11 @@ export class SignIn extends React.Component {
 
                     <SignInForm userSignInRequest={userSignInRequest} />
 
-                    <hr className="google-hr" />
-                    <h6 className="google-option">or</h6>
+                    <div className="col s12">
+                      <hr className="google-hr" />
+                      <h6 className="google-option">or</h6>
+                    </div>
+
                     <div className="col s6 offset-s3 google-signin auth-button">
                       <GoogleAuthButton
                         onSuccess={this.googleSignIn}

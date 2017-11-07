@@ -1,9 +1,8 @@
 import React from 'react';
 import toastr from 'toastr';
-import jwt from 'jsonwebtoken';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
+import validToken from '../utils/verifyTokenValidity';
 
 /**
    * Higher order component that validates a user before rendering it's
@@ -34,7 +33,9 @@ export default function (ComposedComponent) {
     constructor(props) {
       super(props);
 
-      this.isExpired = this.isExpired.bind(this);
+      this.state = {
+        expiredToken: null
+      };
     }
 
     /**
@@ -44,29 +45,20 @@ export default function (ComposedComponent) {
      * @returns {void}
      */
     componentWillMount() {
-      const token = localStorage.getItem('jwtToken');
       const { isAuthenticated } = this.props;
       if (!isAuthenticated) {
         toastr.error('You need to sign in to access this page');
         this.props.history.push('/signin');
       }
-      if (isAuthenticated && token && this.isExpired(token)) {
+      if (isAuthenticated && validToken()) {
+        this.setState({ expiredToken: false });
+      }
+      if (isAuthenticated && !validToken()) {
+        this.setState({ expiredToken: true });
         localStorage.removeItem('jwtToken');
         toastr.error('Session has expired. Please log in again');
         this.props.history.push('/signin');
       }
-    }
-
-    /**
-     * Checks if the token in the local storage is still valid or expired
-     *
-     * @param token authentication token retrieved from local storage
-     *
-     * @returns {boolean} validity of token
-     */
-    isExpired(token) {
-      const expiryDate = jwt.decode(token).exp;
-      return expiryDate < Date.now() / 1000;
     }
 
     /**
@@ -75,6 +67,10 @@ export default function (ComposedComponent) {
      * @returns {ReactElement} composed component
      */
     render() {
+      const { expiredToken } = this.state;
+      if (expiredToken === null || expiredToken === true) {
+        return null;
+      }
       return (
         <ComposedComponent {...this.props} />
       );
