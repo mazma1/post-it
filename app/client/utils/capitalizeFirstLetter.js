@@ -5,8 +5,7 @@
    *
    * @returns {string} transformed string
    */
-function capitalizeFirstLetter(string) {
+export default function capitalizeFirstLetter(string) {
   return string.replace(/\b[a-z]/g, letter => letter.toUpperCase());
 }
 
-export default capitalizeFirstLetter;

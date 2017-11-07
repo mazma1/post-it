@@ -6,8 +6,8 @@ import mapKeys from 'lodash/mapKeys';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
-import jwt from 'jsonwebtoken';
 import GroupList from './GroupList';
+import validToken from '../../../utils/verifyTokenValidity';
 import { Brand, MobileToggleBtn } from '../../misc/SidebarMisc';
 import setSelectedGroup from '../../../actions/setSelectedGroup';
 import { getGroupMembers } from '../../../actions/groupMembers';
@@ -52,14 +52,8 @@ export class Sidebar extends React.Component {
    * @returns {void}
    */
   componentWillMount() {
-    const token = localStorage.getItem('jwtToken');
-    let expiredToken;
-    if (token) {
-      const expiryDate = jwt.decode(token).exp;
-      expiredToken = expiryDate < Date.now() / 1000;
-    }
     const userId = this.props.signedInUser.user.id;
-    if (userId && expiredToken === false) {
+    if (userId && validToken()) {
       this.props.getUserGroups(userId).then(
         () => {
           if (this.props.userGroups.hasGroup === false) {

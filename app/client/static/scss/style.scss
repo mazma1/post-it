@@ -691,6 +691,10 @@ html, body, #clientApp, #clientApp>div {
   padding-top: 12px;
 }
 
+.auth-form {
+  margin-bottom: -12px;
+}
+
 .auth-form div.row {
   margin-bottom: 0;
 }
@@ -1121,10 +1125,10 @@ li.new-group:focus {
 }
 
 .google-option {
-  margin-top: -35px;
+  margin-top: -29px;
   background-color: #fff;
   margin-left: auto;
-  width: 5%;
+  width: 8%;
   margin-right: auto;
   color: #343434;
   text-align: center;

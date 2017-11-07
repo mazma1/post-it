@@ -68,7 +68,7 @@ export default {
                 username,
                 email
               }
-            }, process.env.TOKEN_SECRET, { expiresIn: '24h' });
+            }, process.env.TOKEN_SECRET, { expiresIn: '12h' });
             res.status(201).send({ message: 'Signup was successful', token });
           })
           .catch(error => res.status(500).send(error.message));
@@ -121,7 +121,7 @@ export default {
                 username,
                 email
               }
-            }, process.env.TOKEN_SECRET, { expiresIn: '24h' });
+            }, process.env.TOKEN_SECRET, { expiresIn: '12h' });
             res.status(200).send({
               message: 'User successfully logged in',
               token
@@ -203,7 +203,7 @@ export default {
                 username,
                 email
               }
-            }, process.env.TOKEN_SECRET, { expiresIn: '24h' });
+            }, process.env.TOKEN_SECRET, { expiresIn: '12h' });
             res.status(201).send({ message: 'Google sign up was successful', token });
           }).catch((error) => {
             res.status(500).send({ error: error.message });
@@ -219,7 +219,7 @@ export default {
               username,
               email
             }
-          }, process.env.TOKEN_SECRET, { expiresIn: '24h' });
+          }, process.env.TOKEN_SECRET, { expiresIn: '12h' });
           res.status(200).send({ message: 'Google sign in was successful', token });
         }
       }).catch((error) => {

@@ -6,11 +6,10 @@
    *
    * @returns {string} groupName
    */
-function checkGroupnameLength(groupName) {
+export default function checkGroupnameLength(groupName) {
   if (groupName.length > 13) {
     return `${groupName.substring(0, 13)}...`;
   }
   return groupName;
 }
 
-export default checkGroupnameLength;
