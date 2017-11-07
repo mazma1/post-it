@@ -53,8 +53,8 @@ export default {
             firstName,
             lastName,
             email,
+            phoneNumber,
             username: username.toLowerCase(),
-            phoneNumber: `234${phoneNumber.slice(1)}`,
             password: bcrypt.hashSync(req.body.password, salt)
           };
           models.User.create(userData)
@@ -165,7 +165,7 @@ export default {
     const idToken = req.body.tokenId;
     const auth = new GoogleAuth();
     const client = new auth.OAuth2(process.env.CLIENT_ID, '', '');
-    client.verifyIdToken(idToken, process.env.CLIENT_ID, (e, login) => {
+    client.verifyIdToken(idToken,  process.env.CLIENT_ID, (e, login) => {
       const payload = login.getPayload();
       user = {
         firstName: payload.given_name,
@@ -183,15 +183,16 @@ export default {
         },
       }).then((existingUser) => {
         if (!existingUser) {
+          const { phoneNumber } = req.body;
           const { firstName, lastName, username, email, googleId } = user;
           const userData = {
             firstName,
             lastName,
-            username: username.toLowerCase(),
             email,
-            phoneNumber: `234${req.body.phoneNumber.slice(1)}`,
+            phoneNumber,
+            googleId,
+            username: username.toLowerCase(),
             password: bcrypt.hashSync(googleId, salt),
-            googleId
           };
           return models.User.create(userData).then((googleUser) => {
             const { id } = googleUser;

@@ -49,13 +49,8 @@ export default function validateInput(data) {
     errors.phoneNumber = 'This field is required';
   } else if (isNaN(data.phoneNumber.trim())) {
     errors.phoneNumber = 'Phone number must contain only numbers';
-  } else {
-    if (data.phoneNumber.length !== 11) {
-      errors.phoneNumber = 'Phone number must be 11 digits';
-    }
-    if (data.phoneNumber.trim().length === 0) {
-      errors.phoneNumber = 'Phone number cannot be empty';
-    }
+  } else if (data.phoneNumber.trim().length === 0) {
+    errors.phoneNumber = 'Phone number cannot be empty';
   }
 
   if (!data.username) {
