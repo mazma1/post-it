@@ -175,7 +175,7 @@ export class SignUpForm extends React.Component {
             <TextField
               icon="phone"
               error={errors.phoneNumber}
-              label="Phone Number"
+              label="Phone Number (Eg: 2348065432345)"
               onChange={this.onChange}
               value={this.state.phoneNumber}
               field="phoneNumber"
