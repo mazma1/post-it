@@ -413,28 +413,6 @@ describe('User Endpoint', () => {
         });
     });
 
-    it('should return status 400 if length of phone number is not 11 digits', (done) => {
-      const user = {
-        firstName: 'Mary5',
-        lastame: 'Mazi5',
-        email: 'maryx@gmail.com',
-        phoneNumber: '0809876',
-        username: 'maryx',
-        password: '123456',
-        confirmPassword: '123456'
-      };
-      chai.request(app)
-        .post('/api/v1/users/signup')
-        .type('form')
-        .send(user)
-        .end((err, res) => {
-          res.status.should.equal(400);
-          res.body.should.be.a('object');
-          res.body.should.have.property('phoneNumber').eql('Phone number must be 11 digits');
-          done();
-        });
-    });
-
     it('should return status 400 if phone number is an empty string', (done) => {
       const user = {
         firstName: 'Mary3',
@@ -632,6 +610,33 @@ describe('User Endpoint', () => {
           res.body.groups[2].should.have.property('name').eql('test group 3');
           done();
         });
+    });
+
+    describe('internal server error', () => {
+      let stubFindOne;
+
+      beforeEach((done) => {
+        stubFindOne = sinon.stub(models.User, 'findOne')
+          .callsFake(() => Promise.reject({ message: 'Internal server error' }));
+        done();
+      });
+
+      afterEach((done) => {
+        stubFindOne.restore();
+        done();
+      });
+
+      it('should return status 500', (done) => {
+        chai.request(app)
+          .get('/api/v1/users/1/groups')
+          .set('x-access-token', token)
+          .type('form')
+          .end((err, res) => {
+            res.error.status.should.equal(500);
+            res.error.text.should.equal('Internal server error');
+            done();
+          });
+      });
     });
   });
 
@@ -860,6 +865,110 @@ describe('User Endpoint', () => {
           res.body.should.have.property('error').eql('User was not found');
           done();
         });
+    });
+  });
+
+  // Verify Google User
+  describe('POST /api/v1/users/verifyGoogleUser', () => {
+    const newUser = { email: 'test@gmail.com' };
+    const returningUser = { email: 'mazi.mary.o@gmail.com' };
+    it('should specify that a user is new if email does not exist in the database', (done) => {
+      chai.request(app)
+        .post('/api/v1/users/verifyGoogleUser')
+        .send(newUser)
+        .end((err, res) => {
+          res.status.should.equal(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('New user');
+          done();
+        });
+    });
+
+    it('should specify that a user is returning if email exists in the database', (done) => {
+      chai.request(app)
+        .post('/api/v1/users/verifyGoogleUser')
+        .set('x-access-token', token)
+        .send(returningUser)
+        .end((err, res) => {
+          res.status.should.equal(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('Returning user');
+          done();
+        });
+    });
+
+    describe('internal server error', () => {
+      let stubFindOne;
+
+      beforeEach((done) => {
+        stubFindOne = sinon.stub(models.User, 'findOne')
+          .callsFake(() => Promise.reject({ message: 'Internal server error' }));
+        done();
+      });
+
+      afterEach((done) => {
+        stubFindOne.restore();
+        done();
+      });
+
+      it('should return status 500', (done) => {
+        const user = { email: 'test@gmail.com' };
+        chai.request(app)
+          .post('/api/v1/users/verifyGoogleUser')
+          .type('form')
+          .send(user)
+          .end((err, res) => {
+            res.status.should.equal(500);
+            res.body.should.have.property('error').eql('Internal server error');
+            done();
+          });
+      });
+    });
+  });
+
+  // Google Sign In
+  describe('POST /api/v1/users/googleAuth', () => {
+    it('should return a token on successful sign in', (done) => {
+      const user = { email: 'mazi.mary.o@gmail.com' };
+      chai.request(app)
+        .post('/api/v1/users/googleAuth')
+        .type('form')
+        .send(user)
+        .end((err, res) => {
+          res.status.should.equal(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('Google authentication was successful');
+          res.body.should.have.property('token');
+          done();
+        });
+    });
+
+    describe('internal server error', () => {
+      let stubFindOne;
+
+      beforeEach((done) => {
+        stubFindOne = sinon.stub(models.User, 'findOne')
+          .callsFake(() => Promise.reject({ message: 'Internal server error' }));
+        done();
+      });
+
+      afterEach((done) => {
+        stubFindOne.restore();
+        done();
+      });
+
+      it('should return status 500', (done) => {
+        const user = { email: 'mazi.mary.o@gmail.com@gmail.com' };
+        chai.request(app)
+          .post('/api/v1/users/googleAuth')
+          .type('form')
+          .send(user)
+          .end((err, res) => {
+            res.status.should.equal(500);
+            res.body.should.have.property('error').eql('Internal server error');
+            done();
+          });
+      });
     });
   });
 });

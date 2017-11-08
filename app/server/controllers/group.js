@@ -2,6 +2,7 @@ import models from '../models';
 import sendSms from '../utils/sendSms';
 import sendEmail from '../utils/sendEmail';
 import customSort from '../utils/customSort';
+import emailNotificationTemplate from '../utils/emailNotificationTemplate';
 
 export default {
   /**
@@ -157,14 +158,13 @@ export default {
             const uppercasePriority = priority.toUpperCase();
             return members.members.map((member) => {
               const emailParams = {
-                senderAddress: '"Post It ✔" <noreply.swiftpost@gmail.com>',
+                senderAddress: `"Post It ✔" <${process.env.ADMIN_EMAIL}>`,
                 recepientAddress: member.email,
                 groupName: members.groupName,
                 subject: `Post It: ${uppercasePriority} message in ${members.groupName}`,
-                emailBody: `From <b>@${username}</b>: <br><br>
-                            <i>${messageDetail.body}</i> <br><br>
-                            <a href='http://${req.headers.host}/message-board/${messageDetail.groupId}'>Click here</a>
-                            to view message details.`
+                emailBody: emailNotificationTemplate(
+                  req, priority, messageDetail, username
+                )
               };
               sendEmail(emailParams);
 
