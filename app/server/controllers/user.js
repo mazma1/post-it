@@ -1,13 +1,13 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import validator from 'validator';
 import isEmpty from 'lodash/isEmpty';
 import crypto from 'crypto';
-import GoogleAuth from 'google-auth-library';
 import models from '../models';
 import validateSignup from '../utils/signupValidation';
 import sendEmail from '../utils/sendEmail';
 import pagination from '../utils/pagination';
+import generateToken from '../utils/generateToken';
+import resetPasswordTemplate from '../utils/resetPasswordTemplate';
 
 const saltRounds = 7;
 const salt = bcrypt.genSaltSync(saltRounds);
@@ -24,58 +24,47 @@ export default {
    */
   signup(req, res) {
     const { errors, valid } = validateSignup(req.body);
-
     if (!valid) {
-      res.status(400).send(errors);
-    } else {
-      models.User.findOne({
-        where: {
-          $or: [
-            { email: req.body.email },
-            { username: req.body.username.toLowerCase() },
-          ]
-        },
-      })
-      .then((existingUser, err) => {
-        if (existingUser) {
-          if (existingUser.username === req.body.username) {
-            errors.username = 'Username already exists';
-          }
-          if (existingUser.email === req.body.email) {
-            errors.email = 'Email already exists';
-          }
-          if (!isEmpty(errors)) {
-            res.status(409).send(errors);
-          }
-        } else {
-          const { firstName, lastName, username, email, phoneNumber } = req.body;
-          const userData = {
-            firstName,
-            lastName,
-            email,
-            phoneNumber,
-            username: username.toLowerCase(),
-            password: bcrypt.hashSync(req.body.password, salt)
-          };
-          models.User.create(userData)
-          .then((user) => {
-            const { id } = user;
-            const token = jwt.sign({
-              data: {
-                id,
-                firstName,
-                lastName,
-                username,
-                email
-              }
-            }, process.env.TOKEN_SECRET, { expiresIn: '12h' });
-            res.status(201).send({ message: 'Signup was successful', token });
-          })
-          .catch(error => res.status(500).send(error.message));
-        }
-      })
-      .catch(error => res.status(500).send(error.message));
+      return res.status(400).send(errors);
     }
+    models.User.findOne({
+      where: {
+        $or: [
+          { email: req.body.email },
+          { username: req.body.username.toLowerCase() },
+        ]
+      },
+    })
+    .then((existingUser, err) => {
+      if (existingUser) {
+        if (existingUser.username === req.body.username) {
+          errors.username = 'Username already exists';
+        }
+        if (existingUser.email === req.body.email) {
+          errors.email = 'Email already exists';
+        }
+        if (!isEmpty(errors)) {
+          res.status(409).send(errors);
+        }
+      } else {
+        const { firstName, lastName, username, email, phoneNumber } = req.body;
+        const userData = {
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+          username: username.toLowerCase(),
+          password: bcrypt.hashSync(req.body.password, salt)
+        };
+        models.User.create(userData)
+        .then((user) => {
+          const token = generateToken(user);
+          res.status(201).send({ message: 'Signup was successful', token });
+        })
+        .catch(error => res.status(500).send(error.message));
+      }
+    })
+    .catch(error => res.status(500).send(error.message));
   },
 
    /**
@@ -112,16 +101,7 @@ export default {
           res.status(401).send(errors);
         } else if (user) {
           if (bcrypt.compareSync(req.body.password, user.password)) {
-            const { id, firstName, lastName, username, email } = user;
-            const token = jwt.sign({
-              data: {
-                id,
-                firstName,
-                lastName,
-                username,
-                email
-              }
-            }, process.env.TOKEN_SECRET, { expiresIn: '12h' });
+            const token = generateToken(user);
             res.status(200).send({
               message: 'User successfully logged in',
               token
@@ -136,6 +116,15 @@ export default {
     }
   },
 
+  /**
+   * Checks if a user who wants to sign in via Google is new or returning
+   * Route: POST: /api/v1/users/signin
+   *
+   * @param {any} req incoming request from the client
+   * @param {any} res response sent back to client
+   *
+   * @returns {response} response object
+   */
   verifyGoogleUser(req, res) {
     const { email } = req.body;
     models.User.findOne({
@@ -161,72 +150,19 @@ export default {
    * @returns {response} response object
    */
   googleSignIn(req, res) {
-    let user;
-    const idToken = req.body.tokenId;
-    const auth = new GoogleAuth();
-    const client = new auth.OAuth2(process.env.CLIENT_ID, '', '');
-    client.verifyIdToken(idToken,  process.env.CLIENT_ID, (e, login) => {
-      const payload = login.getPayload();
-      user = {
-        firstName: payload.given_name,
-        lastName: payload.family_name,
-        email: payload.email,
-        username: payload.given_name,
-        googleId: payload.sub
-      };
-      models.User.findOne({
-        where: {
-          $or: [
-            { googleId: user.googleId },
-            { email: user.email }
-          ]
-        },
-      }).then((existingUser) => {
-        if (!existingUser) {
-          const { phoneNumber } = req.body;
-          const { firstName, lastName, username, email, googleId } = user;
-          const userData = {
-            firstName,
-            lastName,
-            email,
-            phoneNumber,
-            googleId,
-            username: username.toLowerCase(),
-            password: bcrypt.hashSync(googleId, salt),
-          };
-          return models.User.create(userData).then((googleUser) => {
-            const { id } = googleUser;
-            const token = jwt.sign({
-              data: {
-                id,
-                firstName,
-                lastName,
-                username,
-                email
-              }
-            }, process.env.TOKEN_SECRET, { expiresIn: '12h' });
-            res.status(201).send({ message: 'Google sign up was successful', token });
-          }).catch((error) => {
-            res.status(500).send({ error: error.message });
-          });
-        }
+    const { email } = req.body;
+    models.User.findOne({ where: { email } })
+      .then((existingUser) => {
         if (existingUser) {
-          const { id, firstName, lastName, username, email } = existingUser;
-          const token = jwt.sign({
-            data: {
-              id,
-              firstName,
-              lastName,
-              username,
-              email
-            }
-          }, process.env.TOKEN_SECRET, { expiresIn: '12h' });
-          res.status(200).send({ message: 'Google sign in was successful', token });
+          const token = generateToken(existingUser);
+          res.status(200).send({
+            message: 'Google authentication was successful',
+            token
+          });
         }
       }).catch((error) => {
         res.status(500).send({ error: error.message });
       });
-    });
   },
 
   /**
@@ -284,15 +220,10 @@ export default {
           const resetPasswordHash = crypto.randomBytes(20).toString('hex');
           const resetPasswordExpires = Date.now() + 3600000;
           const emailParams = {
-            senderAddress: process.env.ADMIN_EMAIL,
+            senderAddress: `"Post It ✔" <${process.env.ADMIN_EMAIL}>`,
             recepientAddress: user.email,
             subject: 'Reset your Post It Password',
-            emailBody: `Hello ${user.firstName} ${user.lastName},
-            <br><br>You recently made a request to reset your Post It password.
-            Please click the link below to complete the process.
-            <br><br><a href='http://${req.headers.host}/new-password/${resetPasswordHash}'>Reset now ></a>
-            <br><br>----------------------<br>
-            The Post It Team`
+            emailBody: resetPasswordTemplate(req, user, resetPasswordHash)
           };
 
           models.ForgotPassword.findOne({

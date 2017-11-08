@@ -50,11 +50,7 @@ export function setGoogleAuthStatus(status) {
   * @returns {response} request response
   */
 export function googleSignIn(userDetails) {
-  const reqBody = {
-    tokenId: userDetails.token || userDetails,
-    phoneNumber: userDetails.phoneNumber || null
-  };
-  return dispatch => axios.post('/api/v1/users/googleAuth', reqBody)
+  return dispatch => axios.post('/api/v1/users/googleAuth', userDetails)
     .then((res) => {
       const { token } = res.data;
       localStorage.setItem('jwtToken', token);
@@ -73,13 +69,13 @@ export function googleSignIn(userDetails) {
   * @returns {response} request response
   */
 export function authorizeGoogleUser(payload) {
-  const { email, token } = payload;
+  const { email, userDetails } = payload;
   return dispatch => axios.post('/api/v1/users/verifyGoogleUser', { email }).then(
     (res) => {
       const status = res.data.message;
       dispatch(setGoogleAuthStatus(status));
       if (status === 'Returning user') {
-        dispatch(googleSignIn(token));
+        dispatch(googleSignIn(userDetails));
       }
     }
   ).catch(() => {

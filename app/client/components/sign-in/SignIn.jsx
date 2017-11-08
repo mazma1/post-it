@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import SignInForm from './SignInForm';
-import GoogleSignIn from '../sign-in/GoogleSignIn';
+import GoogleSignUp from '../sign-up/GoogleSignUp';
 import { userSignInRequest, authorizeGoogleUser } from '../../actions/signIn';
 import GoogleAuthButton from '../../components/sign-in/GoogleAuthButton';
 
@@ -21,7 +21,7 @@ export class SignIn extends React.Component {
     super(props);
 
     this.state = {
-      token: ''
+      userDetails: {}
     };
 
     this.googleSignIn = this.googleSignIn.bind(this);
@@ -36,21 +36,30 @@ export class SignIn extends React.Component {
   * @memberof HomePage
   */
   onFailure(error) {
-    toastr.error('Unable to sign in with Google.Check your network and try again');
+    toastr.error(
+      'Unable to sign in with Google.Check your network and try again'
+    );
   }
 
   /**
-   * Handles request to sign in a user via Google
+   * Handles request to sign in via Google
    *
    * @param {any} response response received from Google API
    *
    * @memberof HomePage
    */
   googleSignIn(response) {
-    const email = response.profileObj.email;
-    const token = response.tokenId;
-    this.setState({ token });
-    this.props.authorizeGoogleUser({ email, token });
+    const userDetails = {
+      firstName: response.profileObj.givenName,
+      lastName: response.profileObj.familyName,
+      username: response.profileObj.givenName,
+      email: response.profileObj.email,
+      password: response.profileObj.googleId,
+      confirmPassword: response.profileObj.googleId
+    };
+    const email = userDetails.email;
+    this.setState({ userDetails });
+    this.props.authorizeGoogleUser({ email, userDetails });
   }
 
   /**
@@ -59,14 +68,14 @@ export class SignIn extends React.Component {
    * @returns {ReactElement} SignIn page markup
    */
   render() {
-    const { token } = this.state;
+    const { userDetails } = this.state;
     const { googleAuthStatus, userSignInRequest } = this.props;
     return (
       <div>
         {
           (googleAuthStatus === 'New user') ?
-            <GoogleSignIn token={token} />
-          : null
+            <GoogleSignUp userDetails={userDetails} />
+            : null
         }
 
         {

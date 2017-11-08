@@ -6,24 +6,24 @@ import isEmpty from 'lodash/isEmpty';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import TextField from '../common/FormTextField';
-import { googleSignIn } from '../../actions/signIn';
+import userSignUpRequest from '../../actions/signUp';
 
 
 /**
-  * Displays GoogleSignIn
+  * Displays GoogleSignUp
   *
-  * @class GoogleSignIn
+  * @class GoogleSignUp
   *
   * @extends {React.Component}
   */
-export class GoogleSignIn extends React.Component {
+export class GoogleSignUp extends React.Component {
 
   /**
-     * Creates an instance of GoogleSignIn
+     * Creates an instance of GoogleSignUp
      *
      * @param {any} props
      *
-     * @memberof GoogleSignIn
+     * @memberof GoogleSignUp
      */
   constructor(props) {
     super(props);
@@ -34,7 +34,7 @@ export class GoogleSignIn extends React.Component {
     };
 
     this.onChange = this.onChange.bind(this);
-    this.submitPhoneNumber = this.submitPhoneNumber.bind(this);
+    this.registerGoogleUser = this.registerGoogleUser.bind(this);
   }
 
   /**
@@ -49,21 +49,21 @@ export class GoogleSignIn extends React.Component {
   }
 
   /**
-    * Submits phone number of users who register via Google
+    * Signs up a new Google user
     *
     * @param {SyntheticEvent} event
     *
     * @returns {void} null
     */
-  submitPhoneNumber(event) {
+  registerGoogleUser(event) {
     event.preventDefault();
     this.setState({ errors: {} });
     if (this.isValid()) {
-      const { token } = this.props;
       const { phoneNumber } = this.state;
-      this.props.googleSignIn({ token, phoneNumber }).then(
+      const userDetails = { ...this.props.userDetails, phoneNumber };
+      this.props.userSignUpRequest(userDetails).then(
         () => {
-          toastr.success('Regitration was successful. Welcome to Post It!');
+          toastr.success('Registration was successful. Welcome to Post It!');
           this.props.history.push('/message-board');
         }
       );
@@ -83,10 +83,6 @@ export class GoogleSignIn extends React.Component {
     }
     if (this.state.phoneNumber.trim().length === 0) {
       errors.phoneNumber = 'Phone Number cannot be empty';
-      return this.setState({ errors });
-    }
-    if (this.state.phoneNumber.length !== 11) {
-      errors.phoneNumber = 'Phone number must be 11 digits';
       return this.setState({ errors });
     }
     if (isNaN(this.state.phoneNumber.trim())) {
@@ -115,7 +111,7 @@ export class GoogleSignIn extends React.Component {
                 </p>
               </header>
 
-              <form className="col s10 offset-s1 auth-form" onSubmit={this.submitPhoneNumber}>
+              <form className="col s10 offset-s1 auth-form" onSubmit={this.registerGoogleUser}>
                 <div className="row">
                   <div
                     className={classnames(
@@ -128,7 +124,7 @@ export class GoogleSignIn extends React.Component {
                     <TextField
                       icon="phone"
                       error={errors.phoneNumber}
-                      label="Phone Number"
+                      label="Phone Number (Eg: 2348065432345)"
                       onChange={this.onChange}
                       value={this.state.phoneNumber}
                       field="phoneNumber"
@@ -142,7 +138,7 @@ export class GoogleSignIn extends React.Component {
                   <div className="input-field col s12">
                     <a
                       className="btn auth-btn waves-effect waves-light col s12"
-                      onClick={this.submitPhoneNumber}
+                      onClick={this.registerGoogleUser}
                     >
                       Submit
                     </a>
@@ -160,10 +156,10 @@ export class GoogleSignIn extends React.Component {
   }
 }
 
-GoogleSignIn.propTypes = {
-  googleSignIn: PropTypes.func.isRequired,
+GoogleSignUp.propTypes = {
+  userSignUpRequest: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
-  token: PropTypes.string.isRequired
+  userDetails: PropTypes.object.isRequired
 };
 
-export default withRouter(connect(null, { googleSignIn })(GoogleSignIn));
+export default withRouter(connect(null, { userSignUpRequest })(GoogleSignUp));
