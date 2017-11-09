@@ -51,7 +51,20 @@ export default {
         const { username } = req.decoded.data || req.body;
         message.isArchived.push(username);
         message.update({ isArchived: message.isArchived });
-        res.status(200).send({ message: 'Message successfully archived' });
+        const { id, isArchived, readBy } = message;
+        res.status(200).send({
+          message: 'Message successfully archived',
+          archivedMessage: {
+            id,
+            readBy,
+            isArchived,
+            group: message.groupId,
+            message: message.body,
+            priority: message.priority,
+            timeSent: message.createdAt,
+            sentBy: { username: req.decoded.data.username }
+          }
+        });
       })
       .catch(error => res.status(500).send(error.message));
   }

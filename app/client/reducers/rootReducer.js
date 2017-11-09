@@ -7,6 +7,7 @@ import GroupMessagesReducer from '../reducers/groupMessages';
 import SearchUserReducer from '../reducers/searchUser';
 import GoogleAuthStatusReducer from '../reducers/googleAuthStatus';
 import NewGroupReducer from '../reducers/newGroup';
+import ArchivedMessageReducer from '../reducers/archivedMessage';
 
 // Mapping of our state
 const appReducer = combineReducers({
@@ -17,7 +18,8 @@ const appReducer = combineReducers({
   groupMessages: GroupMessagesReducer,
   searchResult: SearchUserReducer,
   googleAuthStatus: GoogleAuthStatusReducer,
-  newGroup: NewGroupReducer
+  newGroup: NewGroupReducer,
+  archivedMessage: ArchivedMessageReducer
 });
 
 

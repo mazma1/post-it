@@ -1,6 +1,8 @@
 import axios from 'axios';
 import {
   SET_GROUP_MESSAGES,
+  SET_ARCHIVED_MESSAGE,
+  UPDATE_ARCHIVED_MESSSGE,
   FETCHING_GROUP_MESSAGES,
   FETCH_GROUP_MESSAGES_FAILURE,
   ADD_NEW_MESSAGE } from '../actions/types';
@@ -94,6 +96,24 @@ export function updateReadStatus(messageParams) {
     .catch(error => (error));
 }
 
+/**
+  * Informs reducer that request to archive a message finished successfully
+  *
+  * @returns {action} action type and payload
+  */
+export function setArchivedMessage(archivedMessage) {
+  return {
+    type: SET_ARCHIVED_MESSAGE,
+    archivedMessage
+  };
+}
+
+export function updateArchivedMessage(updatedMessages) {
+  return {
+    type: UPDATE_ARCHIVED_MESSSGE,
+    updatedMessages
+  };
+}
 
 /**
    * Makes request to archive a message in a group
@@ -103,7 +123,11 @@ export function updateReadStatus(messageParams) {
    * @returns {response} request response
    */
 export function archiveMessage({ messageId }) {
-  return () => axios.patch(`/api/v1/messages/${messageId}/archive`, messageId)
+  return dispatch => axios.patch(`/api/v1/messages/${messageId}/archive`, messageId)
+    .then((res) => {
+      const { archivedMessage } = res.data;
+      dispatch(setArchivedMessage(archivedMessage));
+    })
     .catch(error => (error));
 }
 

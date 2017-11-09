@@ -1,6 +1,7 @@
 import {
   SET_GROUP_MESSAGES,
   FETCHING_GROUP_MESSAGES,
+  UPDATE_ARCHIVED_MESSSGE,
   FETCH_GROUP_MESSAGES_FAILURE,
   ADD_NEW_MESSAGE } from '../actions/types';
 import initialState from '../utils/initialState';
@@ -34,6 +35,12 @@ export default (state = initialState.groupMessages, action = {}) => {
         ...state,
         isLoading: false,
         messages: [...state.messages, action.message]
+      };
+
+    case UPDATE_ARCHIVED_MESSSGE:
+      return {
+        ...state,
+        messages: action.updatedMessages
       };
 
     case FETCH_GROUP_MESSAGES_FAILURE:
