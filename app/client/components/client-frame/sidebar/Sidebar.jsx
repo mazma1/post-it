@@ -1,7 +1,6 @@
 import React from 'react';
 import toastr from 'toastr';
 import PropTypes from 'prop-types';
-import isEmpty from 'lodash/isEmpty';
 import mapKeys from 'lodash/mapKeys';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -13,8 +12,7 @@ import setSelectedGroup from '../../../actions/setSelectedGroup';
 import { getGroupMembers } from '../../../actions/groupMembers';
 import {
   getGroupMessages,
-  updateReadStatus,
-  getGroupMessagesCount } from '../../../actions/groupMessages';
+  updateReadStatus } from '../../../actions/groupMessages';
 import { getUserGroups } from '../../../actions/userGroups';
 
 
@@ -37,13 +35,10 @@ export class Sidebar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false,
-      isLoading: false,
-      groups: []
+      isLoading: false
     };
 
     this.onGroupSelect = this.onGroupSelect.bind(this);
-    this.getUnreadCount = this.getUnreadCount.bind(this);
   }
 
   /**
@@ -60,7 +55,6 @@ export class Sidebar extends React.Component {
             this.props.setSelectedGroup({});
           } else {
             const groupId = this.props.match.params.groupId;
-            // this.getUnreadCount(this.props.userGroups.groups);
             if (groupId) {
               const mappedGroups = mapKeys(this.props.userGroups.groups, 'id');
               const currentGroup = mappedGroups[groupId];
@@ -114,40 +108,6 @@ export class Sidebar extends React.Component {
     this.props.getGroupMembers(group.id);
   }
 
-
-  /**
-   * Function that gets count of messages unread by a user in a group
-   *
-   * @param {void} null
-   *
-   * @returns {void} null
-   */
-  getUnreadCount(groups) {
-    const groupsWithNotification = [];
-    const { username } = this.props.signedInUser.user;
-    if (!isEmpty(groups)) {
-      groups.map(group => this.props.getGroupMessagesCount(group.id)
-        .then(
-          (res) => {
-            let unreadCount = 0;
-            res.data.messages.map((message) => {
-              if (!message.readBy.split(',').includes(username)) {
-                unreadCount += 1;
-              }
-            });
-            groupsWithNotification.push({
-              id: group.id,
-              name: group.name,
-              unreadCount
-            });
-            this.setState({ groups: groupsWithNotification });
-          }
-        )
-      );
-    }
-  }
-
-
   /**
    * Render
    *
@@ -168,7 +128,6 @@ export class Sidebar extends React.Component {
               selectedGroup={selectedGroup}
               onGroupSelect={this.onGroupSelect}
               openModal={this.openModal}
-              unreadCount={this.state.groups}
             />
           </div>
         </aside>
@@ -209,8 +168,7 @@ function mapDispatchToProps(dispatch) {
     setSelectedGroup,
     getGroupMessages,
     getGroupMembers,
-    updateReadStatus,
-    getGroupMessagesCount
+    updateReadStatus
   }, dispatch);
 }
 
@@ -222,7 +180,6 @@ Sidebar.propTypes = {
   selectedGroup: PropTypes.object,
   getGroupMembers: PropTypes.func.isRequired,
   getGroupMessages: PropTypes.func.isRequired,
-  getGroupMessagesCount: PropTypes.func.isRequired,
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   pathName: PropTypes.string.isRequired

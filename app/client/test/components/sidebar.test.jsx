@@ -18,7 +18,6 @@ describe('<Sidebar />', () => {
     getGroupMessages: jest.fn(),
     getGroupMessagesCount: jest.fn(),
     signedInUser: undefined,
-    unreadCount: undefined,
     selectedGroup: undefined,
     userGroups: undefined,
     pathName: '',
@@ -49,10 +48,6 @@ describe('<Sidebar />', () => {
       id: 1,
       name: 'Cohort 29'
     };
-    props.unreadCount = [{
-      id: 1,
-      unreadCount: '2'
-    }];
     props.signedInUser = {
       isAuthenticated: true,
       user: {
@@ -89,14 +84,6 @@ describe('<Sidebar />', () => {
     const shallowSidebar = shallow(<Sidebar {...props} />);
     shallowSidebar.instance().onGroupSelect(group);
     expect(onGroupSelectSpy).toHaveBeenCalledTimes(1);
-  });
-
-  it('should mount with getUnreadCount()', () => {
-    const groups = [{ id: 1, name: 'Cohort 29' }];
-    const getUnreadCountSpy = jest.spyOn(Sidebar.prototype, 'getUnreadCount');
-    const shallowSidebar = shallow(<Sidebar {...props} />);
-    shallowSidebar.instance().getUnreadCount(groups);
-    expect(getUnreadCountSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should always render <Brand/> with one prop', () => {
