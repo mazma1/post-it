@@ -23,7 +23,6 @@ describe('<GroupList />', () => {
       onGroupSelect: jest.fn(),
       openModal: jest.fn(),
       userGroups: undefined,
-      unreadCount: undefined,
       selectedGroup: undefined,
       pathName: ''
     };
@@ -55,10 +54,6 @@ describe('<GroupList />', () => {
         id: 1,
         name: 'Cohort 29'
       };
-      props.unreadCount = [{
-        id: 1,
-        unreadCount: '2'
-      }];
     });
 
     it('should render a Link with the given group name', () => {
@@ -69,10 +64,6 @@ describe('<GroupList />', () => {
 
     it('should render the button to create a new group', () => {
       expect(groupList().find('#createNewGroup').text()).toBe('Create New Group');
-    });
-
-    it('should render the number of unread messages', () => {
-      expect(groupList().find('span').text()).toBe(props.unreadCount[0].unreadCount);
     });
 
     it('should call `onGroupSelect` function when group is clicked', () => {

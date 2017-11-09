@@ -17,8 +17,7 @@ import capitalizeFirstLetter from '../../../utils/capitalizeFirstLetter';
 function GroupList(props) {
   const { hasGroup } = props.userGroups;
   const groupsArray = props.userGroups.groups;
-  const { unreadCount, onGroupSelect } = props;
-  const mappedUnreadCount = mapKeys(unreadCount, 'id');
+  const { onGroupSelect } = props;
   let groups;
 
   if (props.userGroups.isLoading === true) {
@@ -70,16 +69,7 @@ function GroupList(props) {
           key={group.id}
           className={classnames({ active: isSelected })}
         >
-          <Link to="#">
-            {capitalizeFirstLetter(group.name)}
-            {
-              mappedUnreadCount[id] && mappedUnreadCount[id].unreadCount > 0 ?
-                <span className="new badge">
-                  {mappedUnreadCount[id].unreadCount}
-                </span>
-              : null
-            }
-          </Link>
+          <Link to="#">{capitalizeFirstLetter(group.name)}</Link>
         </li>
       );
     });
@@ -99,7 +89,6 @@ function GroupList(props) {
 }
 
 GroupList.propTypes = {
-  unreadCount: PropTypes.array,
   selectedGroup: PropTypes.object,
   userGroups: PropTypes.object.isRequired,
   onGroupSelect: PropTypes.func.isRequired,
