@@ -12,11 +12,9 @@ const mockStore = configureMockStore(middlewares);
 
 describe('User Groups Action\'s', () => {
   describe('#fetchingUserGroups', () => {
-    it('should set user groups as empty when request has not been fulfilled', () => {
-      const group = [];
+    it('should inform the reducer that request to fetch a user\'s groups has begun', () => {
       const expectedAction = {
-        type: types.FETCHING_USER_GROUPS,
-        group
+        type: types.FETCHING_USER_GROUPS
       };
       expect(actions.fetchingUserGroups()).toEqual(expectedAction);
     });

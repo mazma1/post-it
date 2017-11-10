@@ -27,7 +27,7 @@ export default {
             message: 'Message read status updated successfully'
           });
         })
-        .catch(error => res.status(500).send(error.message));
+        .catch(error => res.status(500).send({ error: error.message }));
     }
     return res.status(200).send({ message: 'User has read message' });
   },

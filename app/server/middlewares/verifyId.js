@@ -3,7 +3,7 @@ import models from '../models';
 export function verifyGroupId(req, res, next) {
   const { group_id } = req.params;
   if (group_id && isNaN(group_id)) {
-    return res.status(400).send({ message: 'Invalid group id' });
+    return res.status(400).send({ error: 'Invalid group id' });
   }
   models.Group.findOne({ where: { id: group_id } })
     .then((group) => {
@@ -18,7 +18,7 @@ export function verifyGroupId(req, res, next) {
 export function verifyUserId(req, res, next) {
   const { user_id } = req.params;
   if (user_id && isNaN(user_id)) {
-    return res.status(400).send({ message: 'Invalid user id' });
+    return res.status(400).send({ error: 'Invalid user id' });
   }
   return next();
 }

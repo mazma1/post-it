@@ -9,11 +9,11 @@ import setAuthorizationToken from '../utils/setAuthorizationToken';
 
 
 /**
-  * Makes request to sign in a user
+  * Makes request to sign in a user to the app
   *
-  * @param {object} userData user's required sign in credentials
+  * @param {object} userData - User's required sign in credentials
   *
-  * @returns {response} request response
+  * @returns {promise} Authentication token
   */
 export function userSignInRequest(userData) {
   return dispatch => axios.post('/api/v1/users/signin', userData)
@@ -27,12 +27,12 @@ export function userSignInRequest(userData) {
 
 
 /**
-   * Informs reducers that the request to verify user's auth status
-   * via Google finished successfully
+   * Informs reducers that the request to verify if a Google user is a new or
+   * returning user finished successfully
    *
-   * @param {object} user user's information
+   * @param {string} status - States whether a user is new or returning
    *
-   * @returns {action} action type and payload
+   * @returns {object} Action that sends the status to the store
    */
 export function setGoogleAuthStatus(status) {
   return {
@@ -43,11 +43,12 @@ export function setGoogleAuthStatus(status) {
 
 
 /**
-  * Makes request to authenticate a user via Google API
+  * Makes request to authenticate a user signing in via Google
   *
-  * @param {object} tokenId user's google token id to be verified
+  * @param {object} userDetails - Details of user gotten from the Google
+  * authentication API
   *
-  * @returns {response} request response
+  * @returns {promise} Authentication token
   */
 export function googleSignIn(userDetails) {
   return dispatch => axios.post('/api/v1/users/googleAuth', userDetails)
@@ -62,23 +63,24 @@ export function googleSignIn(userDetails) {
 
 
 /**
-  * Makes request to authenticate a user via Google API
+  * Makes request to verify if a Google user is a new or returning user, and
+  * proceed to sign a returning user in
   *
-  * @param {object} payload user's email and google token id to be verified
+  * @param {object} payload - Details of user to be verified
   *
-  * @returns {response} request response
+  * @returns {promise} Status of the user
   */
 export function authorizeGoogleUser(payload) {
   const { email, userDetails } = payload;
-  return dispatch => axios.post('/api/v1/users/verifyGoogleUser', { email }).then(
-    (res) => {
-      const status = res.data.message;
-      dispatch(setGoogleAuthStatus(status));
-      if (status === 'Returning user') {
-        dispatch(googleSignIn(userDetails));
-      }
+  return dispatch => axios.post(
+    '/api/v1/users/verifyGoogleUser', { email }
+  ).then((res) => {
+    const status = res.data.message;
+    dispatch(setGoogleAuthStatus(status));
+    if (status === 'Returning user') {
+      dispatch(googleSignIn(userDetails));
     }
-  ).catch(() => {
+  }).catch(() => {
     toastr.error('Unable to verify user, please try again');
   });
 }
@@ -87,9 +89,9 @@ export function authorizeGoogleUser(payload) {
 /**
    * Informs reducers that the request to sign in user finished successfully
    *
-   * @param {object} user user's information
+   * @param {object} user - Information of user who was successfully signed in
    *
-   * @returns {action} action type and payload
+   * @returns {object} Adds the details of the signed in user to the store
    */
 export function setCurrentUser(user) {
   return {
@@ -102,7 +104,7 @@ export function setCurrentUser(user) {
 /**
    * Logs out a user and deletes token from local storage
    *
-   * @returns {action} action to delete user details
+   * @returns {action} action to delete user's details
    */
 export function logout() {
   return (dispatch) => {
@@ -116,7 +118,8 @@ export function logout() {
 /**
    * Informs reducer to delete details of the current user from the store
    *
-   * @returns {action} action type and payload
+   * @returns {object} Action that sets the details of the just signed out user
+   * to an empty object
    */
 export function deleteCurrentUser() {
   return {

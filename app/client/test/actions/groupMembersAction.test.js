@@ -42,10 +42,9 @@ describe('Group Members Action\'s', () => {
   });
 
   describe('#fetchingGroupMembers', () => {
-    it('should set group members as empty when request has not been fulfilled', () => {
+    it('should inform the reducer that request to fetch group members has begun', () => {
       const expectedAction = {
-        type: types.FETCHING_GROUP_MEMBERS,
-        members: []
+        type: types.FETCHING_GROUP_MEMBERS
       };
       expect(actions.fetchingGroupMembers()).toEqual(expectedAction);
     });

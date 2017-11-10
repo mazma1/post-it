@@ -163,10 +163,7 @@ export class MessageItem extends React.Component {
         });
         toastr.success('Message successfully archived');
       }
-    )
-    .catch((error) => {
-      toastr.error('Unable to archive message, please try again');
-    });
+    );
   }
 
 

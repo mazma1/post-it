@@ -1,24 +1,22 @@
 import axios from 'axios';
+import toastr from 'toastr';
 import {
+  ADD_NEW_MESSAGE,
   SET_GROUP_MESSAGES,
   SET_ARCHIVED_MESSAGE,
   UPDATE_ARCHIVED_MESSSGE,
   FETCHING_GROUP_MESSAGES,
-  FETCH_GROUP_MESSAGES_FAILURE,
-  ADD_NEW_MESSAGE } from '../actions/types';
+  FETCH_GROUP_MESSAGES_FAILURE } from '../actions/types';
 
 
 /**
    * Makes request to get the messages of a group
    *
-   * @param {number} groupId group id
+   * @param {number} groupId - Id of group whose messages are being fetched
    *
-   * @returns {response} request response
+   * @returns {promise} An array of the messages in a specified group
    */
 export function getGroupMessages(groupId) {
-  // if (!groupId) {
-  //   return dispatch => dispatch(setGroupMessages({}));
-  // }
   return (dispatch) => {
     dispatch(fetchingGroupMessages({}));
     return axios.get(`/api/v1/groups/${groupId}/messages`)
@@ -31,13 +29,15 @@ export function getGroupMessages(groupId) {
   };
 }
 
+
 /**
    * Informs reducers that the request to post new message finished
    * successfully
    *
-   * @param {object} message details of new message
+   * @param {object} message - Details of new message posted to a group
    *
-   * @returns {action} action type and payload
+   * @returns {object} Action with type ADD_NEW_MESSAGE and message to be added
+   * to the store
    */
 export function addNewMessage(message) {
   return {
@@ -46,15 +46,16 @@ export function addNewMessage(message) {
   };
 }
 
+
 /**
    * Makes request to post a new message to the database
    *
-   * @param {string} priority message priority
-   * @param {number} groupId group id
-   * @param {string} message message being posted
-   * @param {string} readBy users that have read the message
+   * @param {string} priority - Priority of message to be posted
+   * @param {number} groupId - Id of group the message belongs to
+   * @param {string} message - Message being posted
+   * @param {string} readBy - Users that have read the message
    *
-   * @returns {response} request response
+   * @returns {promise} An object containing details of the new message posted
    */
 export function postNewMessage({ priority, groupId, message, readBy }) {
   const reqBody = { priority, groupId, message, readBy };
@@ -63,43 +64,34 @@ export function postNewMessage({ priority, groupId, message, readBy }) {
       const newMessage = res.data;
       dispatch(addNewMessage(newMessage));
     })
-    .catch(error => (error));
-}
-
-
-/**
-   * Makes request to get the messages of a group for count
-   *
-   * @param {number} groupId group id
-   *
-   * @returns {response} request response
-   */
-export function getGroupMessagesCount(groupId) {
-  return () => axios.get(`/api/v1/groups/${groupId}/messages`)
-    .catch(error => (error));
+    .catch(error => toastr.error(`Ooops! ${error.response.data.error}`));
 }
 
 
 /**
    * Makes request to update the users that have read a message
    *
-   * @param {object} messageParams details of message to be updated
+   * @param {object} messageDetails - Details of message to be updated
    *
-   * @returns {response} request response
+   * @returns {promise} A message that indicates that the user who has read a
+   * message was updated successfully
    */
-export function updateReadStatus(messageParams) {
-  const { groupId, messageId } = messageParams;
-  return dispatch => axios.patch(`/api/v1/messages/${messageId}/read`, messageParams)
-    .then((res) => {
-      dispatch(getGroupMessages(groupId));
-    })
-    .catch(error => (error));
+export function updateReadStatus(messageDetails) {
+  const { groupId, messageId } = messageDetails;
+  return dispatch => axios.patch(
+    `/api/v1/messages/${messageId}/read`, messageDetails
+  ).then(res => dispatch(getGroupMessages(groupId)))
+    .catch(error => toastr.error(`Ooops! ${error.response.data.error}`));
 }
 
+
 /**
-  * Informs reducer that request to archive a message finished successfully
+  * Updates the store with details of the archived message
   *
-  * @returns {action} action type and payload
+  * @param {object} archivedMessage details of the message archived by a user
+  *
+  * @returns {object} Action that updates the store with the details of
+  * the archived message
   */
 export function setArchivedMessage(archivedMessage) {
   return {
@@ -108,6 +100,13 @@ export function setArchivedMessage(archivedMessage) {
   };
 }
 
+
+/**
+  * Updates the messages in the store with messages that contain the updated
+  * archived message
+  *
+  * @returns {object} Action that contains the details of the updated message
+  */
 export function updateArchivedMessage(updatedMessages) {
   return {
     type: UPDATE_ARCHIVED_MESSSGE,
@@ -115,32 +114,35 @@ export function updateArchivedMessage(updatedMessages) {
   };
 }
 
+
 /**
    * Makes request to archive a message in a group
    *
-   * @param {number} messageId id of message to be archived
+   * @param {number} messageId - Id of message to be archived
    *
    * @returns {response} request response
    */
 export function archiveMessage({ messageId }) {
-  return dispatch => axios.patch(`/api/v1/messages/${messageId}/archive`, messageId)
-    .then((res) => {
-      const { archivedMessage } = res.data;
-      dispatch(setArchivedMessage(archivedMessage));
-    })
-    .catch(error => (error));
+  return dispatch => axios.patch(
+    `/api/v1/messages/${messageId}/archive`,
+    messageId
+  ).then((res) => {
+    const { archivedMessage } = res.data;
+    dispatch(setArchivedMessage(archivedMessage));
+  }).catch((error) => {
+    toastr.error('Unable to archive message, please try again');
+  });
 }
 
 
  /**
    * Informs reducer that request to fetch group messages has begun
    *
-   * @returns {action} action type and payload
+   * @returns {object} Action with type FETCHING_GROUP_MESSAGES
    */
 export function fetchingGroupMessages() {
   return {
-    type: FETCHING_GROUP_MESSAGES,
-    messages: []
+    type: FETCHING_GROUP_MESSAGES
   };
 }
 
@@ -149,9 +151,10 @@ export function fetchingGroupMessages() {
    * Informs reducers that the request to fetch a group's messages finished
    * successfully
    *
-   * @param {object} membersDetails details of members
+   * @param {object} messages - Array of messages that belong to a specified
+   * group
    *
-   * @returns {action} action type and payload
+   * @returns {object} Action that updates the store with the returned messages
    */
 export function setGroupMessages(messages) {
   return {
@@ -164,9 +167,9 @@ export function setGroupMessages(messages) {
 /**
    * Informs reducers that the request to fetch group messages failed
    *
-   * @param {object} error error returned from failed request
+   * @param {object} error - Error returned from failed request
    *
-   * @returns {action} action type and payload
+   * @returns {object} Action that sends the returned error to the store
    */
 export function fetchGroupMessagesFailure(error) {
   return {

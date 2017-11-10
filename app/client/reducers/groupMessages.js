@@ -8,13 +8,13 @@ import initialState from '../utils/initialState';
 
 
 /**
-* Reducer for group messages related actions.
-*
-* @param {Object} state The old state of the application
-* @param {Object} action The dispatched action
-*
-* @returns {Object} The new application state
-*/
+  * Reducer for actions related to group messages
+  *
+  * @param {Object} state - The old state of the application
+  * @param {Object} action - The dispatched action
+  *
+  * @returns {Object} The new application state
+  */
 export default (state = initialState.groupMessages, action = {}) => {
   switch (action.type) {
     case FETCHING_GROUP_MESSAGES:

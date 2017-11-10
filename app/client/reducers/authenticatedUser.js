@@ -4,10 +4,12 @@ import initialState from '../utils/initialState';
 
 
 /**
-* Reducer for authentication-related actions.
-* @param {Object} state The old state of the application
-* @param {Object} action The dispatched action
-* @returns {Object} The new application state
+* Reducer for authentication-related actions
+*
+* @param {object} state - The old state of the application
+* @param {object} action - The dispatched action
+*
+* @returns {object} - The new application state
 */
 export default (state = initialState.auth, action = {}) => {
   switch (action.type) {

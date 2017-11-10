@@ -8,11 +8,13 @@ import initialState from '../utils/initialState';
 
 
 /**
-* Reducer for actions related to a user's groups.
-* @param {Object} state The old state of the application
-* @param {Object} action The dispatched action
-* @returns {Object} The new application state
-*/
+  * Reducer for actions related to a user's groups
+  *
+  * @param {object} state - The old state of the application
+  * @param {object} action - The dispatched action
+  *
+  * @returns {object} The new application state
+  */
 export default (state = initialState.userGroups, action = {}) => {
   switch (action.type) {
     case FETCHING_USER_GROUPS:

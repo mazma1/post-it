@@ -187,7 +187,7 @@ describe('Group Endpoint', () => {
         .end((err, res) => {
           res.status.should.equal(400);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Invalid group id');
+          res.body.should.have.property('error').eql('Invalid group id');
           done();
         });
     });
@@ -274,7 +274,7 @@ describe('Group Endpoint', () => {
         .end((err, res) => {
           res.status.should.equal(400);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Invalid group id');
+          res.body.should.have.property('error').eql('Invalid group id');
           done();
         });
     });
@@ -314,7 +314,7 @@ describe('Group Endpoint', () => {
         .end((err, res) => {
           res.status.should.equal(400);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Invalid group id');
+          res.body.should.have.property('error').eql('Invalid group id');
           done();
         });
     });
