@@ -282,13 +282,13 @@ export default {
       },
     }).then((hash) => {
       if (hash) {
-        if (Date.now() > hash.expiry_time) {
+        if (Date.now() > hash.expiryTime) {
           res.status(401).send({ message: 'Token has expired' });
         } else {
           res.status(200).send({ message: 'Token is valid' });
         }
       } else {
-        res.status(400).send({ message: 'Reset password token is required' });
+        res.status(400).send({ message: 'Invalid token' });
       }
     }).catch(error => res.status(500).send(error.message));
   },

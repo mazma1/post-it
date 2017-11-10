@@ -50,16 +50,19 @@ export class NewPasswordForm extends React.Component {
       this.props.validateResetPasswordToken({ token }).then(
         () => {},
         ({ response }) => {
+          const errorMessage = response.data.message;
           let flashErrorMsg = '';
-          if (response.data.message === 'Token has expired') {
-            flashErrorMsg = 'Reset link has expired';
-          } else if (response.data.message === 'Token does not exist') {
+          if (errorMessage === 'Token has expired') {
             flashErrorMsg = 'Reset link has expired';
           }
-          toastr.error(
-            `${flashErrorMsg}. Enter your email to receive a valid link`
-          );
-          this.props.history.push('/reset_password');
+          if (errorMessage === 'Token does not exist') {
+            flashErrorMsg = 'Reset link is required';
+          }
+          if (errorMessage === 'Invalid token') {
+            flashErrorMsg = 'Invalid reset link.';
+          }
+          toastr.error(`${flashErrorMsg}. Enter your email to receive a valid link`);
+          this.props.history.push('/reset-password');
         }
       );
     }
