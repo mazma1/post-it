@@ -34,7 +34,7 @@ export class SignInForm extends React.Component {
     };
 
     this.onChange = this.onChange.bind(this);
-    this.onSignInClick = this.onSignInClick.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
 
@@ -56,7 +56,7 @@ export class SignInForm extends React.Component {
    *
    * @returns {void}
    */
-  onSignInClick(event) {
+  onSubmit(event) {
     event.preventDefault();
     if (this.isValid()) {
       this.setState({ errors: {} });
@@ -93,7 +93,7 @@ export class SignInForm extends React.Component {
   render() {
     const { errors } = this.state;
     return (
-      <form className="col s12 auth-form" onSubmit={this.onSignInClick}>
+      <form className="col s12 auth-form" onSubmit={this.onSubmit}>
         <div className="row">
           <div
             className={classnames(
@@ -142,7 +142,8 @@ export class SignInForm extends React.Component {
           <div className="input-field col s12">
             <a
               className="btn auth-btn waves-effect waves-light col s12"
-              onClick={this.onSignInClick}
+              onClick={this.onSubmit}
+              type="submit"
             >
               Sign In
             </a>

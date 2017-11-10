@@ -2,6 +2,7 @@ import React from 'react';
 import toastr from 'toastr';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import isEmpty from 'lodash/isEmpty';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
@@ -75,6 +76,25 @@ export class NewPasswordForm extends React.Component {
   }
 
   /**
+  * Handles input field validation
+  *
+  * @returns {boolean} If an input is valid or not
+  */
+  isValid() {
+    const errors = {};
+    if (this.state.password.trim().length === 0) {
+      errors.password = 'New password is required';
+      this.setState({ errors });
+    }
+    if (this.state.confirmPassword.trim().length === 0) {
+      errors.confirmPassword = 'New password confirmation is required';
+      this.setState({ errors });
+    }
+    return isEmpty(errors);
+  }
+
+
+  /**
    * Submits a user's new password to the database
    *
    * @param {SyntheticEvent} event
@@ -83,21 +103,23 @@ export class NewPasswordForm extends React.Component {
    */
   submitNewPassword(event) {
     event.preventDefault();
-    const token = this.props.match.params.token;
-    const { password, confirmPassword } = this.state;
-    this.props.updatePassword({
-      password,
-      confirmPassword,
-      token
-    }).then(
-      () => {
-        toastr.success('Password has been successfully changed. Please log in with new detail');
-        this.props.history.push('/signin');
-      },
-      ({ response }) => this.setState({ errors: response.data })
-    ).catch(() => {
-      toastr.error('Unable to submit request, please try again');
-    });
+    if (this.isValid()) {
+      const token = this.props.match.params.token;
+      const { password, confirmPassword } = this.state;
+      this.props.updatePassword({
+        password,
+        confirmPassword,
+        token
+      }).then(
+        () => {
+          toastr.success('Password has been successfully changed. Please log in with new detail');
+          this.props.history.push('/signin');
+        },
+        ({ response }) => this.setState({ errors: response.data })
+      ).catch(() => {
+        toastr.error('Unable to submit request, please try again');
+      });
+    }
   }
 
   /**
@@ -117,7 +139,7 @@ export class NewPasswordForm extends React.Component {
               </header>
 
               <form
-                className="col s12 auth-form"
+                className="col s10 offset-s1 auth-form"
                 onSubmit={this.submitNewPassword}
               >
                 <div className="row">
@@ -153,7 +175,7 @@ export class NewPasswordForm extends React.Component {
                     <TextField
                       icon="https"
                       label="Confirm Password"
-                      error={errors.confirm_password}
+                      error={errors.confirmPassword}
                       onChange={this.onChange}
                       value={this.state.confirmPassword}
                       field="confirmPassword"
@@ -163,7 +185,7 @@ export class NewPasswordForm extends React.Component {
                 </div>
 
                 <div className="row">
-                  <div className="input-field col s12">
+                  <div className="input-field col s12 update-password-btn">
                     <a
                       className="btn auth-btn waves-effect waves-light col s12"
                       onClick={this.submitNewPassword}
