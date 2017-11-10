@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import split from 'lodash/split';
 import mapKeys from 'lodash/mapKeys';
 
-/** Table of users that have read a message */
+
+/**
+  * Displays table of users that have read a message
+  *
+  * @class ReadBytTable
+  *
+  * @extends {React.Component}
+  */
 const ReadByTable = (props) => {
   const messagesArray = props.messages;
   const messagesObject = mapKeys(messagesArray, 'id');

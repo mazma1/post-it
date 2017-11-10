@@ -10,7 +10,7 @@ import validateInput from '../../utils/signinValidation';
 
 
 /**
- * Display sign in form
+ * Display Sign In form
  *
  * @class SignInForm
  *
@@ -21,7 +21,7 @@ export class SignInForm extends React.Component {
   /**
      * Creates an instance of SignInForm
      *
-     * @param {any} props
+     * @param {object} props
      *
      * @memberof SignInForm
      */
@@ -48,6 +48,7 @@ export class SignInForm extends React.Component {
   onChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
+
 
   /**
    * Makes request to authenticate a user
@@ -86,7 +87,7 @@ export class SignInForm extends React.Component {
 
 
   /**
-   * Render
+   * Renders the component
    *
    * @returns {ReactElement} Sign in form markup
    */

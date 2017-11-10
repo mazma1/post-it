@@ -12,7 +12,8 @@ import MessageItem from '../message-board/MessageItem';
 
 
 /**
-  * Display MessageCard
+  * A collection of MessageItems that sisplays the available messages
+  * on the message board
   *
   * @class MessageCard
   *
@@ -44,7 +45,7 @@ export class MessageCard extends React.Component {
    /**
    * Updates the read status of a message when clicked
    *
-   * @param {object} clickedMsgProps id and readStatus of clicked message
+   * @param {object} clickedMsgProps - Id and readStatus of clicked message
    *
    * @returns {func} request to update read status
    */
@@ -92,7 +93,7 @@ export class MessageCard extends React.Component {
   }
 
   /**
-   * Render
+   * Renders MessageCard componet
    *
    * @returns {ReactElement} MessageCard markup
    */

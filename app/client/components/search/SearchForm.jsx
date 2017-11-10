@@ -66,7 +66,7 @@ export class SearchForm extends Component {
   }
 
   /**
-   * It is called when the search page is closed to clear previous search result
+   * Clears previous search result when the search page is closed
    *
    * @param {SyntheticEvent} event
    *
@@ -80,9 +80,9 @@ export class SearchForm extends Component {
   }
 
   /**
-   * Renders the search result
+   * Renders the search form, as well as the search result
    *
-   * @returns {ReactElement} Search Result markup
+   * @returns {ReactElement} Search Form and Search Result markup
    */
   render() {
     const { searchResult } = this.props;

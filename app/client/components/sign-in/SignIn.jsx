@@ -10,7 +10,7 @@ import GoogleAuthButton from '../../components/sign-in/GoogleAuthButton';
 
 
 /**
- * Displays sign in page
+ * Displays Sign In page
  *
  * @class SignIn
  *
@@ -28,10 +28,11 @@ export class SignIn extends React.Component {
     this.onFailure = this.onFailure.bind(this);
   }
 
+
   /**
   * Reports if there is an error during google sign in
   *
-  * @param {any} error details of error that occurs
+  * @param {object} error -Details of error that occurs
   *
   * @memberof HomePage
   */
@@ -44,9 +45,9 @@ export class SignIn extends React.Component {
   /**
    * Handles request to sign in via Google
    *
-   * @param {any} response response received from Google API
+   * @param {object} response - Response received from Google API
    *
-   * @memberof HomePage
+   * @returns {void}
    */
   googleSignIn(response) {
     const userDetails = {
@@ -63,7 +64,7 @@ export class SignIn extends React.Component {
   }
 
   /**
-   * Render
+   * Renders the Sign In component
    *
    * @returns {ReactElement} SignIn page markup
    */
@@ -83,7 +84,9 @@ export class SignIn extends React.Component {
             <div className="background">
               <div className="container">
                 <div className="row">
-                  <div className="card-panel col s12 m8 offset-m2 l6 offset-l3 z-depth-5 signin-card">
+                  <div
+                    className="card-panel col s12 m8 offset-m2 l6 offset-l3 z-depth-5 signin-card"
+                  >
                     <header className="auth-header">
                       <h5 className="center">Sign In | Post It</h5>
                     </header>
@@ -112,11 +115,20 @@ export class SignIn extends React.Component {
   }
 }
 
+
+/**
+ * Maps pieces of the redux state to props
+ *
+ * @param {object} state Redux state
+ *
+ * @returns {object} The status of user, whether a new or returning user
+ */
 function mapStateInProps(state) {
   return {
     googleAuthStatus: state.googleAuthStatus
   };
 }
+
 
 /**
  * Maps action creators to redux dispatch function and avails them as props

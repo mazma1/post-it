@@ -23,7 +23,7 @@ export class NewPasswordForm extends React.Component {
   /**
     * Creates an instance of NewPasswordForm
     *
-    * @param {any} props
+    * @param {object} props
     *
     * @memberof NewPasswordForm
     */
@@ -56,12 +56,15 @@ export class NewPasswordForm extends React.Component {
           } else if (response.data.message === 'Token does not exist') {
             flashErrorMsg = 'Reset link has expired';
           }
-          toastr.error(`${flashErrorMsg}. Enter your email to receive a valid link`);
+          toastr.error(
+            `${flashErrorMsg}. Enter your email to receive a valid link`
+          );
           this.props.history.push('/reset_password');
         }
       );
     }
   }
+
 
   /**
    * Handles change event of new password form
@@ -74,6 +77,7 @@ export class NewPasswordForm extends React.Component {
     this.setState({ errors: {} });
     this.setState({ [event.target.name]: event.target.value });
   }
+
 
   /**
   * Handles input field validation
@@ -112,7 +116,9 @@ export class NewPasswordForm extends React.Component {
         token
       }).then(
         () => {
-          toastr.success('Password has been successfully changed. Please log in with new detail');
+          toastr.success(
+            'Password has been successfully changed. Please log in with new detail'
+          );
           this.props.history.push('/signin');
         },
         ({ response }) => this.setState({ errors: response.data })
@@ -123,7 +129,7 @@ export class NewPasswordForm extends React.Component {
   }
 
   /**
-   * Render
+   * Renders new password form component
    *
    * @returns {ReactElement} New password form markup
    */
@@ -133,7 +139,9 @@ export class NewPasswordForm extends React.Component {
       <div className="background">
         <div className="container">
           <div className="row">
-            <div className="card-panel col s12 m8 offset-m2 l6 offset-l3 z-depth-5 signin-card">
+            <div
+              className="card-panel col s12 m8 offset-m2 l6 offset-l3 z-depth-5 signin-card"
+            >
               <header className="auth-header">
                 <h5 className="center">Enter New Password</h5>
               </header>

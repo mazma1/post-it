@@ -5,6 +5,14 @@ import { Link } from 'react-router-dom';
 import checkGroupnameLength from '../../utils/checkGroupNameLength';
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter';
 
+
+/**
+  * Displays button used to add a user to a group
+  *
+  * @param {object} props
+  *
+  * @returns {JSX} Add User button mark up
+  */
 export const AddUserBtn = (props) => {
   if (isEmpty(props.selectedGroup)) {
     return null;
@@ -29,6 +37,14 @@ AddUserBtn.defaultProps = {
   selectedGroup: {}
 };
 
+
+/**
+  * Displays the search icon
+  *
+  * @param {object} props
+  *
+  * @returns {JSX} Search icon mark up
+  */
 export const SearchBtn = (props) => {
   if (isEmpty(props.selectedGroup)) {
     return null;
@@ -52,6 +68,13 @@ SearchBtn.defaultProps = {
 };
 
 
+/**
+  * Displays the name of a group
+  *
+  * @param {object} props
+  *
+  * @returns {JSX} Add User button mark up
+  */
 export const GroupName = (props) => {
   if (isEmpty(props.selectedGroup)) {
     return <div className="col-md-4 col-sm-5 col-xs-3" />;
@@ -61,7 +84,9 @@ export const GroupName = (props) => {
     <div className="col-md-4 col-sm-5 col-xs-3 brand">
       <ul className="zero-padding">
         <h4 className="group-name">
-          {capitalizeFirstLetter(checkGroupnameLength(props.selectedGroup.name))}
+          {
+            capitalizeFirstLetter(checkGroupnameLength(props.selectedGroup.name))
+          }
         </h4>
         <li role="presentation" className="dropdown">
           <a

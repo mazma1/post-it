@@ -1,6 +1,14 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
+
+/**
+  * Holds the sub elements of a modal
+  *
+  * @param {object} props
+  *
+  * @returns {JSX} Modal frame mark up
+  */
 const ModalFrame = (props) => {
   if (props.membersLoading) {
     return null;

@@ -17,7 +17,7 @@ import { getUserGroups } from '../../../actions/userGroups';
 
 
 /**
-  * Display Sidebar
+  * Displays Sidebar
   *
   * @class Sidebar
   *
@@ -28,7 +28,7 @@ export class Sidebar extends React.Component {
   /**
     * Creates an instance of Sidebar
     *
-    * @param {any} props
+    * @param {object} props
     *
     * @memberof Sidebar
     */
@@ -42,10 +42,10 @@ export class Sidebar extends React.Component {
   }
 
   /**
-   * Fetches the groups a signed in user belongs to
-   *
-   * @returns {void}
-   */
+    * Fetches the groups a signed in user belongs to
+    *
+    * @returns {void}
+    */
   componentWillMount() {
     const userId = this.props.signedInUser.user.id;
     if (userId && validToken()) {
@@ -80,9 +80,9 @@ export class Sidebar extends React.Component {
   /**
     * Rerenders the component when active groups change
     *
-    * @param {object} nextProps new props passed to Sidebar component
+    * @param {object} nextProps - New props passed to Sidebar component
     *
-    * @returns {boolean}
+    * @returns {boolean} States if component should rerender or not
     */
   shouldComponentUpdate(nextProps) {
     if (nextProps.selectedGroup.id !== this.props.selectedGroup.id) {
@@ -93,13 +93,13 @@ export class Sidebar extends React.Component {
 
 
   /**
-  * Sets a clicked group as active and fetches the messages and members
-  * that belong to the group
-  *
-  * @param {object} group Details of clicked group
-  *
-  * @returns {void}
-  */
+    * Sets a clicked group as active and fetches the messages and members
+    * that belong to the group
+    *
+    * @param {object} group - Details of clicked group
+    *
+    * @returns {void}
+    */
   onGroupSelect(group) {
     const groupId = group.id;
     this.props.history.push(`/message-board/${groupId}`);
@@ -108,8 +108,9 @@ export class Sidebar extends React.Component {
     this.props.getGroupMembers(group.id);
   }
 
+
   /**
-   * Render
+   * Renders Sidebar component
    *
    * @returns {ReactElement} Sidebar markup
    */
@@ -158,7 +159,7 @@ function mapStateToProps(state, ownProps) {
 /**
  * Maps action creators to redux dispatch function and avails them as props
  *
- * @param {function} dispatch Redux dispatch function
+ * @param {function} dispatch - Redux dispatch function
  *
  * @returns {function} Action cretaors bound to redux dispatch function
  */

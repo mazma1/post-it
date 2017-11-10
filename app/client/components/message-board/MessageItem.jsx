@@ -15,7 +15,7 @@ import {
 
 
 /**
-  * Displays Message Item
+  * Displays a single message on the message board
   *
   * @class MessageItem
   *
@@ -26,7 +26,7 @@ export class MessageItem extends React.Component {
    /**
     * Creates an instance of MessageItem
     *
-    * @param {any} props
+    * @param {object} props
     *
     * @memberof MessageForm
     */
@@ -68,17 +68,17 @@ export class MessageItem extends React.Component {
   }
 
   /**
-    * @method componentWillReceiveprops
+    * Filters new array of messages when a new message is posted
     *
-    * @description filters new array of messages when a new message is posted
+    * @param {object} nextProps - New props passed to MessageItem component
     *
-    * @return {void}
+    * @returns {void}
     *
-    * @memberof MessageCard
     */
   componentWillReceiveProps(nextProps) {
     this.filterMessages(nextProps.messages);
   }
+
 
   /**
    * Handles message category select event
@@ -127,11 +127,12 @@ export class MessageItem extends React.Component {
 
 
   /**
-   * Checks the length of a given message and truncates it if it is more than 300
+   * Checks the length of a given message and truncates it
+   * if it is more than 300
    *
-   * @param {string} message
+   * @param {string} message - Message to be transformed
    *
-   * @returns {message} message/truncated message (if length > 300)
+   * @returns {string} Message or transformed message (if length > 300)
    */
   checkMessageLength(message) {
     if (message.length > 300) {
@@ -145,7 +146,7 @@ export class MessageItem extends React.Component {
    * Archives a given message and updates the messages displayed
    * in both categories
    *
-   * @param {object} messageId id of message to be archived
+   * @param {object} messageId - Id of message to be archived
    *
    * @returns {void} null
    */
@@ -168,7 +169,7 @@ export class MessageItem extends React.Component {
 
 
   /**
-   * Render
+   * Renders Message Item component
    *
    * @returns {ReactElement} Markup for a single message item
    */
@@ -222,7 +223,9 @@ export class MessageItem extends React.Component {
     // pagination logic
     const lastMessageIndex = currentPage * messagesPerPage;
     const firstMessageIndex = lastMessageIndex - messagesPerPage;
-    const currentMessages = filteredMessages.slice(firstMessageIndex, lastMessageIndex);
+    const currentMessages = filteredMessages.slice(
+      firstMessageIndex, lastMessageIndex
+    );
     return (
       <div>
         <select
@@ -283,7 +286,9 @@ export class MessageItem extends React.Component {
                     data-id={this.props.match.params.groupId}
                     onClick={(event) => {
                       const groupId = event.target.dataset.id;
-                      this.props.history.push(`/message-board/${groupId}/message/${message.id}`);
+                      this.props.history.push(
+                        `/message-board/${groupId}/message/${message.id}`
+                      );
                       localStorage.setItem('groupId', event.target.dataset.id);
                     }}
                   >
@@ -338,7 +343,7 @@ function mapDispatchToProps(dispatch) {
  *
  * @param {object} state Redux state
  *
- * @returns {object} Details of selected group
+ * @returns {object} Details of the active group and archived message
  */
 function mapStateToProps(state) {
   return {
@@ -362,4 +367,6 @@ MessageItem.defaultProps = {
   archivedMessage: {}
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MessageItem));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(MessageItem)
+);

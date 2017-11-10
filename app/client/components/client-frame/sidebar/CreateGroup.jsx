@@ -22,7 +22,7 @@ export class CreateGroup extends Component {
   /**
    * Creates an instance of CreateGroup
    *
-   * @param {any} props
+   * @param {object} props
    *
    * @memberof CreateGroup
    */
@@ -69,8 +69,9 @@ export class CreateGroup extends Component {
     return isEmpty(error);
   }
 
+
   /**
-   * Adds a new group record to the DB
+   * Adds a new group record to the database
    *
    * @param {SyntheticEvent} event
    *
@@ -85,8 +86,8 @@ export class CreateGroup extends Component {
         userId: this.props.signedInUser.user.id
       }).then(
         () => {
-          toastr.success('Your group has been successfully created');
           this.setState({ isLoading: false });
+          toastr.success('Your group has been successfully created');
           this.props.history.push(`${this.props.newGroupId}`);
         },
         ({ response }) => {
@@ -95,6 +96,7 @@ export class CreateGroup extends Component {
         );
     }
   }
+
 
   /**
    * Renders Create Group page
@@ -159,14 +161,12 @@ export class CreateGroup extends Component {
 /**
  * Maps pieces of the redux state to props in CreateGroup
  *
- * @param {object} state Redux state
+ * @param {object} state - Redux state
  *
- * @returns {object} Details of signed in user, his groups and the active group
- * and the group messages
+ * @returns {object} Details of signed in user and groups he belongs to
  */
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
-    ownProps,
     signedInUser: state.signedInUser,
     groups: state.userGroups.groups,
     newGroupId: state.newGroup.groupId

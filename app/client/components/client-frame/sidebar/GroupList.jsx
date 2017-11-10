@@ -1,20 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import mapKeys from 'lodash/mapKeys';
 import PropTypes from 'prop-types';
 import capitalizeFirstLetter from '../../../utils/capitalizeFirstLetter';
 
 /**
-  * Displays a list of groups a user belongs to on the message board
+  * Displays a list of groups a user belongs to on the sidebar
   *
-  * @param {object} props User's groups details and required helper functions
+  * @param {object} props - User's groups details and required helper functions
   *
   * @returns {JSX} Unordered list of a user's groups (if any),
   * Defined 'emptyGroup' constant if a user belongs to no group,
   * A 'Loading...' indicator when the groups are still being fetched
   */
-function GroupList(props) {
+const GroupList = (props) => {
   const { hasGroup } = props.userGroups;
   const groupsArray = props.userGroups.groups;
   const { onGroupSelect } = props;
@@ -54,7 +53,6 @@ function GroupList(props) {
 
   if (groupsArray) {
     groups = groupsArray.map((group) => {
-      const id = group.id;
       const isSelected = props.selectedGroup.id === group.id;
       const onGroupClick = () => onGroupSelect({
         id: group.id,
@@ -86,7 +84,7 @@ function GroupList(props) {
       </ul>
     </div>
   );
-}
+};
 
 GroupList.propTypes = {
   selectedGroup: PropTypes.object,
