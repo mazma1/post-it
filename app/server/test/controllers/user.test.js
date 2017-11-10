@@ -751,7 +751,7 @@ describe('User Endpoint', () => {
           res.status.should.equal(400);
           res.body.should.be.a('object');
           res.body.should.have.property('password').eql('New password is required');
-          res.body.should.have.property('confirmPassword').eql('Confirm new password is required');
+          res.body.should.have.property('confirmPassword').eql('New password confirmation is required');
           done();
         });
     });
@@ -777,7 +777,7 @@ describe('User Endpoint', () => {
         .end((err, res) => {
           res.status.should.equal(400);
           res.body.should.be.a('object');
-          res.body.should.have.property('confirmPassword').eql('Confirm new password is required');
+          res.body.should.have.property('confirmPassword').eql('New password confirmation is required');
           done();
         });
     });

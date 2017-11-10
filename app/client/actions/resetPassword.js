@@ -11,8 +11,7 @@ import toastr from 'toastr';
   * successfully sent
   */
 export function resetLinkRequest(email) {
-  return () => axios.post('/api/v1/users/resetpassword', email)
-    .catch(error => toastr.error(`Ooops! ${error.response.data.error}`));
+  return () => axios.post('/api/v1/users/resetpassword', email);
 }
 
 
@@ -24,8 +23,7 @@ export function resetLinkRequest(email) {
   * @returns {promise} Response stating whether the token is valid or not
   */
 export function validateResetPasswordToken(token) {
-  return () => axios.post('/api/v1/users/newpassword', token)
-    .catch(error => toastr.error(`Ooops! ${error.response.data.error}`));
+  return () => axios.post('/api/v1/users/newpassword', token);
 }
 
 

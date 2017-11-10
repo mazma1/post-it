@@ -208,58 +208,57 @@ export default {
     const errors = {};
     if (!req.body.email) {
       errors.email = 'Email field is required';
-      res.status(400).send(errors);
+      return res.status(400).send(errors);
     } if (!validator.isEmail(req.body.email)) {
       errors.email = 'Invalid email address';
-      res.status(401).send(errors);
-    } else {
-      models.User.findOne({
-        where: { email: req.body.email }
-      }).then((user) => {
-        if (user) {
-          const resetPasswordHash = crypto.randomBytes(20).toString('hex');
-          const resetPasswordExpires = Date.now() + 3600000;
-          const emailParams = {
-            senderAddress: `"Post It ✔" <${process.env.ADMIN_EMAIL}>`,
-            recepientAddress: user.email,
-            subject: 'Reset your Post It Password',
-            emailBody: resetPasswordTemplate(req, user, resetPasswordHash)
-          };
-
-          models.ForgotPassword.findOne({
-            where: { userId: user.id }
-          }).then((userAlreadyRequested) => {
-            if (userAlreadyRequested) {
-              models.ForgotPassword.update({
-                hash: resetPasswordHash,
-                expiryTime: Date.now() + 3600000
-              }, {
-                where: { userId: user.id }
-              })
-              .then(() => {
-                sendEmail(emailParams);
-                res.status(200).send({ message: 'Email sent' });
-              })
-              .catch(error => res.status(500).send(error.message));
-            } else {
-              models.ForgotPassword.create({
-                userId: user.id,
-                hash: resetPasswordHash,
-                expiryTime: resetPasswordExpires
-              })
-              .then(() => {
-                sendEmail(emailParams);
-                res.status(200).send({ message: 'Email sent' });
-              });
-            }
-          })
-          .catch(error => res.status(500).send(error.message));
-        } else {
-          res.status(404).send({ message: 'User does not exist' });
-        }
-      })
-      .catch(error => res.status(500).send(error.message));
+      return res.status(401).send(errors);
     }
+    models.User.findOne({
+      where: { email: req.body.email }
+    }).then((user) => {
+      if (user) {
+        const resetPasswordHash = crypto.randomBytes(20).toString('hex');
+        const resetPasswordExpires = Date.now() + 3600000;
+        const emailParams = {
+          senderAddress: `"Post It ✔" <${process.env.ADMIN_EMAIL}>`,
+          recepientAddress: user.email,
+          subject: 'Reset your Post It Password',
+          emailBody: resetPasswordTemplate(req, user, resetPasswordHash)
+        };
+
+        models.ForgotPassword.findOne({
+          where: { userId: user.id }
+        }).then((userAlreadyRequested) => {
+          if (userAlreadyRequested) {
+            models.ForgotPassword.update({
+              hash: resetPasswordHash,
+              expiryTime: Date.now() + 3600000
+            }, {
+              where: { userId: user.id }
+            })
+            .then(() => {
+              sendEmail(emailParams);
+              res.status(200).send({ message: 'Email sent' });
+            })
+            .catch(error => res.status(500).send(error.message));
+          } else {
+            models.ForgotPassword.create({
+              userId: user.id,
+              hash: resetPasswordHash,
+              expiryTime: resetPasswordExpires
+            })
+            .then(() => {
+              sendEmail(emailParams);
+              res.status(200).send({ message: 'Email sent' });
+            });
+          }
+        })
+        .catch(error => res.status(500).send(error.message));
+      } else {
+        res.status(404).send({ message: 'User does not exist' });
+      }
+    })
+    .catch(error => res.status(500).send(error.message));
   },
 
   /**
@@ -303,13 +302,13 @@ export default {
     const errors = {};
     if (!req.body.password && !req.body.confirmPassword) {
       errors.password = 'New password is required';
-      errors.confirmPassword = 'Confirm new password is required';
+      errors.confirmPassword = 'New password confirmation is required';
       res.status(400).send(errors);
     } else if (!req.body.password) {
       errors.password = 'New password is required';
       res.status(400).send(errors);
     } else if (!req.body.confirmPassword) {
-      errors.confirmPassword = 'Confirm new password is required';
+      errors.confirmPassword = 'New password confirmation is required';
       res.status(400).send(errors);
     } else if (!validator.equals(req.body.password, req.body.confirmPassword)) {
       errors.confirmPassword = 'Passwords must match';

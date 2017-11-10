@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
 import TextField from '../common/FormTextField';
 import { resetLinkRequest } from '../../actions/resetPassword';
 
@@ -48,6 +49,20 @@ export class SubmitEmailForm extends React.Component {
   }
 
   /**
+   * Handles input field validation
+   *
+   * @returns {boolean} If an input is valid or not
+   */
+  isValid() {
+    const error = {};
+    if (this.state.email.trim().length === 0) {
+      error.email = 'Email field cannot be empty';
+      this.setState({ error });
+    }
+    return isEmpty(error);
+  }
+
+  /**
    * Sends email containg password reset instructions to user
    *
    * @param {SyntheticEvent} event
@@ -56,18 +71,20 @@ export class SubmitEmailForm extends React.Component {
    */
   submitResetRequest(event) {
     event.preventDefault();
-    this.setState({ error: {} });
-    this.props.resetLinkRequest({ email: this.state.email }).then(
-      () => {
-        toastr.success(`An email has been sent to ${this.state.email} with further instructions`);
-        this.setState({ email: '' });
-      },
-      ({ response }) => {
-        this.setState({ error: response.data });
-      }
-    ).catch(() => {
-      toastr.error('Unable to submit request, please try again');
-    });
+    if (this.isValid()) {
+      this.setState({ error: {} });
+      this.props.resetLinkRequest({ email: this.state.email }).then(
+        () => {
+          toastr.success(`An email has been sent to ${this.state.email} with further instructions`);
+          this.setState({ email: '' });
+        },
+        ({ response }) => {
+          this.setState({ error: response.data });
+        }
+      ).catch(() => {
+        toastr.error('Unable to submit request, please try again');
+      });
+    }
   }
 
   /**
@@ -83,7 +100,7 @@ export class SubmitEmailForm extends React.Component {
           <div className="row">
             <div className="card-panel col s12 m8 offset-m2 l6 offset-l3 z-depth-5 signin-card">
               <header className="auth-header pwd-reset-auth-header">
-                <h5 className="cSubmit">Request Password Reset</h5>
+                <h5 className="center">Request Password Reset</h5>
               </header>
 
               <form
@@ -123,8 +140,8 @@ export class SubmitEmailForm extends React.Component {
                   </div>
                 </div>
 
-                <div className="cSubmit call-to-sign-in">
-                  <p className="cSubmit">Remember your password?
+                <div className="center call-to-sign-in">
+                  <p className="center">Remember your password?
                     <Link to="/signin"> Sign In</Link>
                   </p>
                 </div>
