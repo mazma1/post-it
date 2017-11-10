@@ -16,32 +16,32 @@ router.post(
 );
 
 router.post(
-  '/api/v1/users/googleAuth',
+  '/api/v1/users/google-auth',
   userController.googleSignIn
 );
 
 router.post(
-  '/api/v1/users/verifyGoogleUser',
+  '/api/v1/users/verify-user',
   userController.verifyGoogleUser
 );
 
 router.post(
-  '/api/v1/users/resetpassword',
+  '/api/v1/users/reset-password',
   userController.sendResetPasswordLink
 );
 
 router.post(
-  '/api/v1/users/newpassword',
+  '/api/v1/users/new-password',
   userController.validateResetPasswordToken
 );
 
 router.patch(
-  '/api/v1/users/updatepassword/:token',
+  '/api/v1/users/update-password/:token',
   userController.updateUserPassword
 );
 
 router.get(
-  '/api/v1/users/:user_id/groups',
+  '/api/v1/users/:userId/groups',
   tokenAuth,
   verifyUserId,
   userController.getUserGroups

@@ -14,13 +14,13 @@ const salt = bcrypt.genSaltSync(saltRounds);
 
 export default {
   /**
-   * Creates a new user
-   * Route: POST: /api/v1/users/signup
-   *
-   * @param {any} req incoming request from the client
-   * @param {any} res response sent back to client
-   *
-   * @returns {response} response object
+    * Creates a new user
+    * Route: POST: /api/v1/users/signup
+    *
+    * @param {object} req - Incoming request from the client
+    * @param {object} res - Response sent back to client
+    *
+   * @returns {object} Authentication token
    */
   signup(req, res) {
     const { errors, valid } = validateSignup(req.body);
@@ -67,14 +67,14 @@ export default {
     .catch(error => res.status(500).send(error.message));
   },
 
-   /**
+  /**
    * Authenticates and logs a user in
    * Route: POST: /api/v1/users/signin
    *
-   * @param {any} req incoming request from the client
-   * @param {any} res response sent back to client
+   * @param {object} req - Incoming request from the client
+   * @param {object} res - Response sent back to client
    *
-   * @returns {response} response object
+   * @returns {object} Authentication token
    */
   signin(req, res) {
     const errors = {};
@@ -116,15 +116,16 @@ export default {
     }
   },
 
+
   /**
-   * Checks if a user who wants to sign in via Google is new or returning
-   * Route: POST: /api/v1/users/signin
-   *
-   * @param {any} req incoming request from the client
-   * @param {any} res response sent back to client
-   *
-   * @returns {response} response object
-   */
+    * Checks if a user who wants to sign in via Google is new or returning
+    * Route: POST: /api/v1/users/signin
+    *
+    * @param {object} req - Incoming request from the client
+    * @param {object} res - Response sent back to client
+    *
+    * @returns {object} States if a user is new or returning
+    */
   verifyGoogleUser(req, res) {
     const { email } = req.body;
     models.User.findOne({
@@ -140,15 +141,16 @@ export default {
     });
   },
 
+
   /**
-   * Authenticates and logs a user in using the google API
-   * Route: POST: /api/v1/users/googleAuth
-   *
-   * @param {any} req incoming request from the client
-   * @param {any} res response sent back to client
-   *
-   * @returns {response} response object
-   */
+    * Authenticates and logs a user in using the google API
+    * Route: POST: /api/v1/users/google-auth
+    *
+    * @param {object} req - Incoming request from the client
+    * @param {object} res - Response sent back to client
+    *
+    * @returns {object} Authentication token
+    */
   googleSignIn(req, res) {
     const { email } = req.body;
     models.User.findOne({ where: { email } })
@@ -166,17 +168,17 @@ export default {
   },
 
   /**
-   * Fetches the groups a user belongs to
-   * Route: GET: /api/v1/users/:user_id/groups
-   *
-   * @param {any} req incoming request from the client
-   * @param {any} res response sent back to client
-   *
-   * @returns {response} response object
-   */
+    * Fetches the groups a user belongs to
+    * Route: GET: /api/v1/users/:userId/groups
+    *
+    * @param {object} req - Incoming request from the client
+    * @param {object} res - Response sent back to client
+    *
+    * @returns {object} Groups a user belongs to
+    */
   getUserGroups(req, res) {
     models.User.findOne({
-      where: { id: req.params.user_id },
+      where: { id: req.params.userId },
       attributes: [],
       include: [{
         model: models.Group,
@@ -195,15 +197,16 @@ export default {
     .catch(error => res.status(500).send(error.message));
   },
 
+
   /**
-   * Sends reset password link on request
-   * Route: POST: /api/v1/users/resetPassword
-   *
-   * @param {any} req incoming request from the client
-   * @param {any} res response sent back to client
-   *
-   * @returns {response} response object
-   */
+    * Sends reset password link on request
+    * Route: POST: /api/v1/users/resetPassword
+    *
+    * @param {object} req - Incoming request from the client
+    * @param {object} res - Response sent back to client
+    *
+    * @returns {object} Message stating that email was successfully sent
+    */
   sendResetPasswordLink(req, res) {
     const errors = {};
     if (!req.body.email) {
@@ -261,15 +264,16 @@ export default {
     .catch(error => res.status(500).send(error.message));
   },
 
+
   /**
-   * Checks the validity of reset password token
-   * Route: POST: /api/v1/users/newpassword
-   *
-   * @param {any} req incoming request from the client
-   * @param {any} res response sent back to client
-   *
-   * @returns {response} response object
-   */
+    * Checks the validity of reset password token
+    * Route: POST: /api/v1/users/new-password
+    *
+    * @param {object} req - Incoming request from the client
+    * @param {object} res - Response sent back to client
+    *
+    * @returns {object} Message stating if token is valid, expired or missing
+    */
   validateResetPasswordToken(req, res) {
     const token = req.body.token;
     models.ForgotPassword.findOne({
@@ -289,14 +293,15 @@ export default {
     }).catch(error => res.status(500).send(error.message));
   },
 
+
   /**
    * Updates a user's password
-   * Route: PATCH: /api/v1/users/newpassword
+   * Route: PATCH: /api/v1/users/new-password
    *
-   * @param {any} req incoming request from the client
-   * @param {any} res response sent back to client
+   * @param {object} req - Incoming request from the client
+   * @param {object} res - Response sent back to client
    *
-   * @returns {response} response object
+   * @returns {object} Message stating that password was successfully updated
    */
   updateUserPassword(req, res) {
     const errors = {};
@@ -338,12 +343,13 @@ export default {
 
   /**
    * Search for registered user
-   * Route: POST: /api/v1/users/search'
+   * Route: POST: /api/v1/users/search
    *
-   * @param {any} req incoming request from the client
-   * @param {any} res response sent back to client
+   * @param {object} req - Incoming request from the client
+   * @param {object} res - Response sent back to client
    *
-   * @returns {response} response object
+   * @returns {object} Users that match a search query, given the specified
+   * offset and limit
    */
   searchForUser(req, res) {
     if (req.query.q) {

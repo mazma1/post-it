@@ -1,5 +1,4 @@
 import axios from 'axios';
-import toastr from 'toastr';
 
 
 /**
@@ -11,7 +10,7 @@ import toastr from 'toastr';
   * successfully sent
   */
 export function resetLinkRequest(email) {
-  return () => axios.post('/api/v1/users/resetpassword', email);
+  return () => axios.post('/api/v1/users/reset-password', email);
 }
 
 
@@ -23,7 +22,7 @@ export function resetLinkRequest(email) {
   * @returns {promise} Response stating whether the token is valid or not
   */
 export function validateResetPasswordToken(token) {
-  return () => axios.post('/api/v1/users/newpassword', token);
+  return () => axios.post('/api/v1/users/new-password', token);
 }
 
 
@@ -38,6 +37,6 @@ export function validateResetPasswordToken(token) {
 export function updatePassword(newPasswordDetails) {
   const { token } = newPasswordDetails;
   return () => axios.patch(
-    `/api/v1/users/updatepassword/${token}`, newPasswordDetails
+    `/api/v1/users/update-password/${token}`, newPasswordDetails
   );
 }
