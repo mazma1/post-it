@@ -50,16 +50,6 @@ describe('Group Messages Action\'s', () => {
     });
   });
 
-  describe('#getGroupMessagesCount', () => {
-    it('should make a request to get the count of messages in a group', () => {
-      mock.onGet('/api/v1/groups/1/messages')
-        .reply(201, {});
-      const store = mockStore();
-
-      store.dispatch(actions.getGroupMessagesCount(1));
-    });
-  });
-
   describe('#updateReadStatus', () => {
     it('should make a request to update a user that has read a message', () => {
       mock.onPatch('/api/v1/messages/1/read');
@@ -88,10 +78,9 @@ describe('Group Messages Action\'s', () => {
   });
 
   describe('#fetchingGroupMessages', () => {
-    it('should set group messages as empty when request has not been fulfilled', () => {
+    it('should inform the reducer that request to fetch group messages has begun', () => {
       const expectedAction = {
-        type: types.FETCHING_GROUP_MESSAGES,
-        messages: []
+        type: types.FETCHING_GROUP_MESSAGES
       };
       expect(actions.fetchingGroupMessages()).toEqual(expectedAction);
     });

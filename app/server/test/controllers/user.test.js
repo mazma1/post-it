@@ -577,7 +577,7 @@ describe('User Endpoint', () => {
         .end((err, res) => {
           res.status.should.equal(400);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Invalid user id');
+          res.body.should.have.property('error').eql('Invalid user id');
           done();
         });
     });

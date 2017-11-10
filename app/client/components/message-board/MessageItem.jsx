@@ -3,7 +3,6 @@ import moment from 'moment';
 import toastr from 'toastr';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import mapKeys from 'lodash/mapKeys';
 import { connect } from 'react-redux';
 import lodashSplit from 'lodash/split';
 import includes from 'lodash/includes';
@@ -12,7 +11,7 @@ import { withRouter } from 'react-router-dom';
 import MessageForm from './MessageForm';
 import {
   getGroupMessagesCount,
-  archiveMessage } from '../../actions/groupMessages';
+  archiveMessage, updateArchivedMessage } from '../../actions/groupMessages';
 
 
 /**
@@ -151,21 +150,20 @@ export class MessageItem extends React.Component {
    * @returns {void} null
    */
   archiveMessageRequest(messageId) {
-    const mappedMessages = mapKeys(this.props.messages, 'group');
-    const groupId = Object.keys(mappedMessages)[0];
+    const { messages } = this.props;
     this.props.archiveMessage(messageId).then(
       () => {
-        this.props.getGroupMessagesCount(groupId).then(
-          (response) => {
-            this.filterMessages(response.data.messages);
+        this.props.messages.map((message, index) => {
+          if (message.id === this.props.archivedMessage.id) {
+            const messageIndex = messages.indexOf(message);
+            messages[messageIndex] = this.props.archivedMessage;
+            this.props.updateArchivedMessage(messages);
+            this.filterMessages(this.props.messages);
           }
-        );
+        });
         toastr.success('Message successfully archived');
       }
-    )
-    .catch((error) => {
-      toastr.error('Unable to archive message, please try again');
-    });
+    );
   }
 
 
@@ -329,7 +327,8 @@ export class MessageItem extends React.Component {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     getGroupMessagesCount,
-    archiveMessage
+    archiveMessage,
+    updateArchivedMessage
   }, dispatch);
 }
 
@@ -343,7 +342,8 @@ function mapDispatchToProps(dispatch) {
  */
 function mapStateToProps(state) {
   return {
-    selectedGroup: state.selectedGroup
+    selectedGroup: state.selectedGroup,
+    archivedMessage: state.archivedMessage[0]
   };
 }
 
@@ -352,12 +352,14 @@ MessageItem.propTypes = {
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   archiveMessage: PropTypes.func.isRequired,
-  getGroupMessagesCount: PropTypes.func.isRequired,
+  archivedMessage: PropTypes.object,
+  updateArchivedMessage: PropTypes.func.isRequired,
   authenticatedUsername: PropTypes.string.isRequired,
 };
 
 MessageItem.defaultProps = {
-  messages: []
+  messages: [],
+  archivedMessage: {}
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MessageItem));

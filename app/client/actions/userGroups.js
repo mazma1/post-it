@@ -10,12 +10,14 @@ import {
   FETCH_USER_GROUPS_FAILURE,
   SUBMIT_NEW_GROUP_FAILURE } from '../actions/types';
 
+
 /**
-   * Informs reducers that the request to create a new group finished successfully
+   * Informs reducers that the request to create a new group finished
+   * successfully
    *
-   * @param {object} groupDetails details of new group created
+   * @param {object} groupDetails - Details of new group created
    *
-   * @returns {action} action type and payload
+   * @returns {object} Action that sends the newly created group to the store
    */
 export function setNewGroup(groupDetails) {
   return {
@@ -28,9 +30,9 @@ export function setNewGroup(groupDetails) {
   /**
    * Fetches the groups a user belongs to
    *
-   * @param {integer} userId authenticated user's id
+   * @param {number} userId - Authenticated user's id
    *
-   * @returns {response} request response
+   * @returns {promise} Array of groups a user belongs to
    */
 export function getUserGroups(userId) {
   return (dispatch) => {
@@ -50,12 +52,11 @@ export function getUserGroups(userId) {
  /**
    * Informs reducer that request to fetch a user's groups has begun
    *
-   * @returns {action} action type and payload
+   * @returns {action} Action with type FETCHING_USER_GROUPS
    */
 export function fetchingUserGroups() {
   return {
-    type: FETCHING_USER_GROUPS,
-    group: []
+    type: FETCHING_USER_GROUPS
   };
 }
 
@@ -64,9 +65,9 @@ export function fetchingUserGroups() {
    * Informs reducers that the request to fetch a user's groups
    * finished successfully
    *
-   * @param {array} groups user's groups returned from API request
+   * @param {array} groups - User's groups returned from the API call
    *
-   * @returns {action} action type and payload
+   * @returns {object} Action that sends the user's groups to the store
    */
 export function setUserGroups(groups) {
   return {
@@ -79,9 +80,9 @@ export function setUserGroups(groups) {
 /**
    * Informs reducers that the request to fetch a user's groups failed
    *
-   * @param {object} error error returned from failed request
+   * @param {object} error - Error returned from failed request
    *
-   * @returns {action} action type and payload
+   * @returns {object} Action that sends the request error to the store
    */
 export function fetchUserGroupsFailure(error) {
   return {
@@ -94,10 +95,10 @@ export function fetchUserGroupsFailure(error) {
 /**
    * Posts a new group to the database
    *
-   * @param {string} groupName mane of new group
-   * @param {integer} userId id of user who created the group
+   * @param {string} groupName - Name of new group
+   * @param {number} userId - Id of user who created the group
    *
-   * @returns {response} request response
+   * @returns {promise} Details of the newly created groups
    */
 export function submitNewGroup({ groupName, userId }) {
   const reqBody = { groupName };
@@ -111,11 +112,11 @@ export function submitNewGroup({ groupName, userId }) {
 
 
 /**
-   * Sets a newly created group as active
+   * Sets a newly created group as the active group
    *
-   * @param {integer} userId id of authenticated user
+   * @param {number} userId - Id of the currently signed in user
    *
-   * @returns {response} request response
+   * @returns {promise} Groups that the currently signed in user belongs to
    */
 export function setNewGroupActive(userId) {
   return dispatch => axios.get(`/api/v1/users/${userId}/groups`)
@@ -134,9 +135,9 @@ export function setNewGroupActive(userId) {
 /**
    * Informs reducers that the request to submit a new group failed
    *
-   * @param {object} error error returned from failed request
+   * @param {object} error - Error returned from failed request
    *
-   * @returns {action} action type and payload
+   * @returns {object} Action that sends the request error to the store
    */
 export function submittingNewGroupFailure(error) {
   return {

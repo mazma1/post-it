@@ -1,18 +1,18 @@
-import { SET_SELECTED_GROUP } from '../actions/types';
+import { SET_ARCHIVED_MESSAGE } from '../actions/types';
 
 
 /**
-  * Reducer that handles the selected group action
+  * Reducer that updates the details of an archived message
   *
   * @param {object} state - The old state of the application
   * @param {object} action - The dispatched action
   *
   * @returns {object} The new application state
   */
-export default (state = {}, action = {}) => {
+export default (state = [], action = {}) => {
   switch (action.type) {
-    case SET_SELECTED_GROUP:
-      return action.selectedGroup;
+    case SET_ARCHIVED_MESSAGE:
+      return [action.archivedMessage];
 
     default:
       return state;
