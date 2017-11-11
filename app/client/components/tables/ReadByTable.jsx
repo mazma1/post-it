@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import split from 'lodash/split';
 import mapKeys from 'lodash/mapKeys';
+import Table from '../tables/Table';
 
 
 /**
@@ -33,11 +34,7 @@ const ReadByTable = (props) => {
 
   return (
     <div>
-      <table className="striped">
-        <tbody>
-          {readByRow}
-        </tbody>
-      </table>
+      <Table body={readByRow} />
     </div>
   );
 };

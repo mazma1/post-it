@@ -22,7 +22,7 @@ export class SearchForm extends Component {
   /**
    * Creates an instance of SearchForm
    *
-   * @param {any} props
+   * @param {object} props
    *
    * @memberof SearchForm
    */

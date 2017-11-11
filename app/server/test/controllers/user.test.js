@@ -708,6 +708,19 @@ describe('User Endpoint', () => {
           done();
         });
     });
+
+    it('should return status 400 if token is invalid', (done) => {
+      chai.request(app)
+        .post('/api/v1/users/new-password')
+        .type('form')
+        .send({ token: 1234 })
+        .end((err, res) => {
+          res.status.should.equal(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('Invalid token');
+          done();
+        });
+    });
   });
 
   describe('Mocked POST /api/v1/users/newpassword', () => {
