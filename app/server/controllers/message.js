@@ -3,17 +3,18 @@ import models from '../models';
 
 export default {
   /**
-   * Updates a user that have read a message
-   * Route: PATCH: /api/v1/messages/:message_id/read
-   *
-   * @param {any} req incoming request from the client
-   * @param {any} res response sent back to client
-   *
-   * @returns {response} response object
+    * Updates a user that have read a message
+    * Route: PATCH: /api/v1/messages/:messageId/read
+    *
+    * @param {object} req - Incoming request from the client
+    * @param {object} res - Response sent back to client
+    *
+    * @returns {object} Message that indicates that message status was
+    * updated successfully
    */
   updateMessageReadStatus(req, res) {
     const { username, readBy } = req.body;
-    const messageId = req.params.message_id;
+    const messageId = req.params.messageId;
     const updatedReadBy = `${readBy},${username}`;
 
     if (!includes(readBy, username)) {
@@ -32,19 +33,20 @@ export default {
     return res.status(200).send({ message: 'User has read message' });
   },
 
+
   /**
-   * Archives a given message
-   * Route: PATCH: /api/v1/messages/:message_id/archive
-   *
-   * @param {any} req incoming request from the client
-   * @param {any} res response sent back to client
-   *
-   * @returns {response} response object
-   */
+    * Archives a given message
+    * Route: PATCH: /api/v1/messages/:messageId/archive
+    *
+    * @param {object} req - Incoming request from the client
+    * @param {object} res - Response sent back to client
+    *
+    * @returns {object} Details of message that was archived
+    */
   archiveMessage(req, res) {
     models.Message.findOne({
       where: {
-        id: req.params.message_id
+        id: req.params.messageId
       }
     })
       .then((message) => {

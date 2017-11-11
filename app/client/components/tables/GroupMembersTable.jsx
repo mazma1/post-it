@@ -1,7 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-/** Group members table component */
+
+/**
+  * Displays list of users in a group
+  *
+  * @class GroupMembersTable
+  *
+  * @extends {React.Component}
+  */
 const GroupMembersTable = (props) => {
   const memberRow = props.groupMembers.map(member => (
     <tr key={member.id}>

@@ -1,3 +1,5 @@
+
+/** Reducer's initial states */
 export default {
   auth: { isAuthenticated: false, user: {} },
   groupMembers: { isLoading: false, members: [] },

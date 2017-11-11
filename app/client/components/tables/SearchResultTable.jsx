@@ -5,9 +5,22 @@ import isEmpty from 'lodash/isEmpty';
 import Pagination from '../Pagination';
 import { searchUser } from '../../actions/search';
 
-/** Table of search result */
+/**
+ * Displays table of search result
+ *
+ * @class SearchResultTable
+ *
+ * @extends {React.Component}
+ */
 export class SearchResultTable extends React.Component {
 
+  /**
+   * Creates an instance of SearchResultTable
+   *
+   * @param {any} props
+   *
+   * @memberof SignUpForm
+   */
   constructor(props) {
     super(props);
 
@@ -35,7 +48,8 @@ export class SearchResultTable extends React.Component {
 
 
   /**
-   * Render
+   * Renders component
+   *
    * @returns {ReactElement} Search table markup
    */
   render() {

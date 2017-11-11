@@ -10,7 +10,7 @@ import userSignUpRequest from '../../actions/signUp';
 
 
 /**
-  * Displays GoogleSignUp
+  * Displays form to collect user's phone number while signing up via Google
   *
   * @class GoogleSignUp
   *
@@ -21,7 +21,7 @@ export class GoogleSignUp extends React.Component {
   /**
      * Creates an instance of GoogleSignUp
      *
-     * @param {any} props
+     * @param {object} props
      *
      * @memberof GoogleSignUp
      */
@@ -37,6 +37,7 @@ export class GoogleSignUp extends React.Component {
     this.registerGoogleUser = this.registerGoogleUser.bind(this);
   }
 
+
   /**
    * Handles change event of phone number input field
    *
@@ -47,6 +48,7 @@ export class GoogleSignUp extends React.Component {
   onChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
+
 
   /**
     * Signs up a new Google user
@@ -70,6 +72,7 @@ export class GoogleSignUp extends React.Component {
     }
   }
 
+
   /**
     * Validates user's phone number to be submitted
     *
@@ -92,8 +95,9 @@ export class GoogleSignUp extends React.Component {
     return isEmpty(errors);
   }
 
+
   /**
-    * Render
+    * Renders component
     *
     * @returns {ReactElement} Google Sign In markup
     */
@@ -103,7 +107,9 @@ export class GoogleSignUp extends React.Component {
       <div className="background">
         <div className="container">
           <div className="row">
-            <div className="card-panel col s12 m8 offset-m2 l6 offset-l3 z-depth-5 signin-card">
+            <div
+              className="card-panel col s12 m8 offset-m2 l6 offset-l3 z-depth-5 signin-card"
+            >
               <header className="auth-header center">
                 <h5>You're almost there!</h5><br />
                 <p className="social-login">
@@ -111,7 +117,10 @@ export class GoogleSignUp extends React.Component {
                 </p>
               </header>
 
-              <form className="col s10 offset-s1 auth-form" onSubmit={this.registerGoogleUser}>
+              <form
+                className="col s10 offset-s1 auth-form"
+                onSubmit={this.registerGoogleUser}
+              >
                 <div className="row">
                   <div
                     className={classnames(

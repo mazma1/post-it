@@ -10,7 +10,7 @@ import { resetLinkRequest } from '../../actions/resetPassword';
 
 
 /**
-  * Displays form for submiting email for password reset
+  * Displays form for submiting email when requesting for password reset
   *
   * @class SubmitEmailForm
   *
@@ -36,6 +36,7 @@ export class SubmitEmailForm extends React.Component {
     this.submitResetRequest = this.submitResetRequest.bind(this);
   }
 
+
   /**
    * Handles change event of email input form
    *
@@ -47,6 +48,7 @@ export class SubmitEmailForm extends React.Component {
     this.setState({ error: {} });
     this.setState({ [event.target.name]: event.target.value });
   }
+
 
   /**
    * Handles input field validation
@@ -62,6 +64,7 @@ export class SubmitEmailForm extends React.Component {
     return isEmpty(error);
   }
 
+
   /**
    * Sends email containg password reset instructions to user
    *
@@ -75,7 +78,9 @@ export class SubmitEmailForm extends React.Component {
       this.setState({ error: {} });
       this.props.resetLinkRequest({ email: this.state.email }).then(
         () => {
-          toastr.success(`An email has been sent to ${this.state.email} with further instructions`);
+          toastr.success(
+            `An email has been sent to ${this.state.email} with further instructions`
+          );
           this.setState({ email: '' });
         },
         ({ response }) => {
@@ -88,7 +93,7 @@ export class SubmitEmailForm extends React.Component {
   }
 
   /**
-   * Render
+   * Renders form to submit email
    *
    * @returns {ReactElement} Email Form markup
    */
@@ -98,7 +103,9 @@ export class SubmitEmailForm extends React.Component {
       <div className="background">
         <div className="container">
           <div className="row">
-            <div className="card-panel col s12 m8 offset-m2 l6 offset-l3 z-depth-5 signin-card">
+            <div
+              className="card-panel col s12 m8 offset-m2 l6 offset-l3 z-depth-5 signin-card"
+            >
               <header className="auth-header pwd-reset-auth-header">
                 <h5 className="center">Request Password Reset</h5>
               </header>

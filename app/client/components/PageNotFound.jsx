@@ -1,6 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+
+/**
+ * Displays a message informing a user that the page visited doe not exist
+ *
+ * @param {object} props
+ *
+ * @returns {JSX} PageNotFound markup
+ */
 const PageNotFound = props => (
   <div>
     <div className="not-found text-center">

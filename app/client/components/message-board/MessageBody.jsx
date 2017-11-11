@@ -14,7 +14,7 @@ import { updateReadStatus } from '../../actions/groupMessages';
 
 
 /**
-  * Display the full content of a message
+  * Displays the full content of a message
   *
   * @class MessageBody
   *
@@ -24,7 +24,8 @@ export class MessageBody extends React.Component {
 
   /**
     * Creates an instance of MessageBody
-    * @param {any} props
+    *
+    * @param {object} props
     *
     * @memberof MessageBody
     */
@@ -57,12 +58,14 @@ export class MessageBody extends React.Component {
 
 
   /**
-    * Takes a user to the previous page
+    * Takes a user back to the previous page
     *
     * @returns {void} null
     */
   handleBackClick() {
-    this.props.history.push(`/message-board/${localStorage.getItem('groupId')}`);
+    this.props.history.push(
+      `/message-board/${localStorage.getItem('groupId')}`
+    );
     localStorage.removeItem('groupId');
   }
 
@@ -100,8 +103,6 @@ export class MessageBody extends React.Component {
   /**
     * Function that updates that a user has read a message
     *
-    * @param {void} null
-    *
     * @returns {void} null
     */
   updateMessageDetails() {
@@ -119,7 +120,7 @@ export class MessageBody extends React.Component {
 
 
   /**
-    * Render
+    * Renders the MessageBody component
     *
     * @returns {ReactElement} Full message markup
     */
@@ -136,11 +137,17 @@ export class MessageBody extends React.Component {
               <div className="card">
                 <div className="card-content">
                   <span className="card-title">
-                    {(messages.length > 0) ? clickedMessage.sentBy.username : null}
+                    {
+                      (messages.length > 0) ?
+                        clickedMessage.sentBy.username
+                      : null
+                    }
                   </span>
                   <hr />
                   <h6 className="message-content full-msg">
-                    {(messages.length > 0) ? clickedMessage.message : null}
+                    {
+                      (messages.length > 0) ? clickedMessage.message : null
+                    }
                   </h6>
                 </div>
 

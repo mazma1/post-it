@@ -8,7 +8,7 @@ import GoogleSignUp from '../sign-up/GoogleSignUp';
 import GoogleAuthButton from '../../components/sign-in/GoogleAuthButton';
 
 /**
-  * Displays HomePage
+  * Displays the HomePage
   *
   * @class HomePage
   *
@@ -18,7 +18,7 @@ export class HomePage extends React.Component {
   /**
     * Creates an instance of HomePage
     *
-    * @param {any} props
+    * @param {object} props
     *
     * @memberof HomePage
     */
@@ -36,9 +36,9 @@ export class HomePage extends React.Component {
   /**
    * Reports if there is an error during google sign in
    *
-   * @param {any} error details of error that occurs
+   * @param {object} error - Details of error that occurs
    *
-   * @memberof HomePage
+   * @returns {void}
    */
   onFailure(error) {
     toastr.error(
@@ -49,9 +49,9 @@ export class HomePage extends React.Component {
   /**
    * Handles request to sign in via Google
    *
-   * @param {any} response response received from Google API
+   * @param {object} response response received from Google API
    *
-   * @memberof HomePage
+   * @returns {void}
    */
   googleSignIn(response) {
     const userDetails = {
@@ -68,9 +68,9 @@ export class HomePage extends React.Component {
   }
 
   /**
-   * Render
+   * Renders the Hompage component
    *
-   * @returns {ReactElement} SignIn page markup
+   * @returns {ReactElement} Homepage markup
    */
   render() {
     const { userDetails } = this.state;

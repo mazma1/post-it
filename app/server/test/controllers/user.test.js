@@ -644,7 +644,7 @@ describe('User Endpoint', () => {
   describe('POST /api/v1/users/resetpassword', () => {
     it('should return status 400 for missing email', (done) => {
       chai.request(app)
-        .post('/api/v1/users/resetpassword')
+        .post('/api/v1/users/reset-password')
         .type('form')
         .send()
         .end((err, res) => {
@@ -657,7 +657,7 @@ describe('User Endpoint', () => {
 
     it('should return status 401 for invalid email', (done) => {
       chai.request(app)
-        .post('/api/v1/users/resetpassword')
+        .post('/api/v1/users/reset-password')
         .type('form')
         .send({ email: 'xyz' })
         .end((err, res) => {
@@ -670,7 +670,7 @@ describe('User Endpoint', () => {
 
     it('should return status 404 if user does not exist', (done) => {
       chai.request(app)
-        .post('/api/v1/users/resetpassword')
+        .post('/api/v1/users/reset-password')
         .type('form')
         .send({ email: 'abc@email.com' })
         .end((err, res) => {
@@ -683,7 +683,7 @@ describe('User Endpoint', () => {
 
     it('should send a hash token to user', (done) => {
       chai.request(app)
-        .post('/api/v1/users/resetpassword')
+        .post('/api/v1/users/reset-password')
         .type('form')
         .send({ email: 'mazi.mary.o@gmail.com' })
         .end((err, res) => {
@@ -698,7 +698,7 @@ describe('User Endpoint', () => {
   describe('POST /api/v1/users/newpassword', () => {
     it('should return status 400 if token is missing', (done) => {
       chai.request(app)
-        .post('/api/v1/users/newpassword')
+        .post('/api/v1/users/new-password')
         .type('form')
         .send()
         .end((err, res) => {
@@ -728,7 +728,7 @@ describe('User Endpoint', () => {
 
     it('should return status 200 if token is valid', (done) => {
       chai.request(app)
-        .post('/api/v1/users/newpassword')
+        .post('/api/v1/users/new-password')
         .type('form')
         .send({ token: 'resetPassword' })
         .end((err, res) => {
@@ -744,7 +744,7 @@ describe('User Endpoint', () => {
   describe('POST /api/v1/users/updatepassword/:token', () => {
     it('should return status 400 if password and confirm password fields are missing', (done) => {
       chai.request(app)
-        .patch('/api/v1/users/updatepassword/:token')
+        .patch('/api/v1/users/update-password/:token')
         .type('form')
         .send()
         .end((err, res) => {
@@ -758,7 +758,7 @@ describe('User Endpoint', () => {
 
     it('returns status 400 if password field is missing', (done) => {
       chai.request(app)
-        .patch('/api/v1/users/updatepassword/:token')
+        .patch('/api/v1/users/update-password/:token')
         .type('form')
         .send({ confirmPassword: '123456' })
         .end((err, res) => {
@@ -771,7 +771,7 @@ describe('User Endpoint', () => {
 
     it('should return status 400 if confirm password field is missing', (done) => {
       chai.request(app)
-        .patch('/api/v1/users/updatepassword/:token')
+        .patch('/api/v1/users/update-password/:token')
         .type('form')
         .send({ password: '123456' })
         .end((err, res) => {
@@ -784,7 +784,7 @@ describe('User Endpoint', () => {
 
     it('should return status 400 if passwords don\'t match', (done) => {
       chai.request(app)
-        .patch('/api/v1/users/updatepassword/:token')
+        .patch('/api/v1/users/update-password/:token')
         .type('form')
         .send({ password: '123456', confirmPassword: '12' })
         .end((err, res) => {
@@ -797,7 +797,7 @@ describe('User Endpoint', () => {
 
     it('should return status 404 with message that token does not exist', (done) => {
       chai.request(app)
-        .patch(`/api/v1/users/updatepassword/${passwordHash}`)
+        .patch(`/api/v1/users/update-password/${passwordHash}`)
         .type('form')
         .send({ password: '12345678', confirmPassword: '12345678' })
         .end((err, res) => {
@@ -874,7 +874,7 @@ describe('User Endpoint', () => {
     const returningUser = { email: 'mazi.mary.o@gmail.com' };
     it('should specify that a user is new if email does not exist in the database', (done) => {
       chai.request(app)
-        .post('/api/v1/users/verifyGoogleUser')
+        .post('/api/v1/users/verify-user')
         .send(newUser)
         .end((err, res) => {
           res.status.should.equal(200);
@@ -886,7 +886,7 @@ describe('User Endpoint', () => {
 
     it('should specify that a user is returning if email exists in the database', (done) => {
       chai.request(app)
-        .post('/api/v1/users/verifyGoogleUser')
+        .post('/api/v1/users/verify-user')
         .set('x-access-token', token)
         .send(returningUser)
         .end((err, res) => {
@@ -914,7 +914,7 @@ describe('User Endpoint', () => {
       it('should return status 500', (done) => {
         const user = { email: 'test@gmail.com' };
         chai.request(app)
-          .post('/api/v1/users/verifyGoogleUser')
+          .post('/api/v1/users/verify-user')
           .type('form')
           .send(user)
           .end((err, res) => {
@@ -931,7 +931,7 @@ describe('User Endpoint', () => {
     it('should return a token on successful sign in', (done) => {
       const user = { email: 'mazi.mary.o@gmail.com' };
       chai.request(app)
-        .post('/api/v1/users/googleAuth')
+        .post('/api/v1/users/google-auth')
         .type('form')
         .send(user)
         .end((err, res) => {
@@ -960,7 +960,7 @@ describe('User Endpoint', () => {
       it('should return status 500', (done) => {
         const user = { email: 'mazi.mary.o@gmail.com@gmail.com' };
         chai.request(app)
-          .post('/api/v1/users/googleAuth')
+          .post('/api/v1/users/google-auth')
           .type('form')
           .send(user)
           .end((err, res) => {

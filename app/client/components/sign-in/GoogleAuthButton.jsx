@@ -2,6 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import GoogleButton from 'react-google-login';
 
+
+/**
+ * Displays the Google login button
+ *
+ * @param {object} props
+ *
+ * @returns {JSX} Google Auth Button markup
+ */
 const GoogleAuthButton = props => (
   <div>
     <GoogleButton

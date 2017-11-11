@@ -10,7 +10,7 @@ import validateInput from '../../../server/utils/signupValidation';
 
 
 /**
- * Display sign up form
+ * Displays sign up form
  *
  * @class SignUpForm
  *
@@ -21,7 +21,7 @@ export class SignUpForm extends React.Component {
   /**
    * Creates an instance of SignUpForm
    *
-   * @param {any} props
+   * @param {object} props
    *
    * @memberof SignUpForm
    */
@@ -91,7 +91,7 @@ export class SignUpForm extends React.Component {
   }
 
   /**
-   * Render
+   * Renders component
    *
    * @returns {ReactElement} Sign up form markup
    */

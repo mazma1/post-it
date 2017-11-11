@@ -2,6 +2,14 @@ import React from 'react';
 import classnames from 'classnames';
 import { PropTypes } from 'prop-types';
 
+
+/**
+  * Header element of a modal
+  *
+  * @param {object} props
+  *
+  * @returns {JSX} Modal header mark up
+  */
 export const ModalHeader = props => (
   <div className="modal-header">
     <button
@@ -22,6 +30,14 @@ ModalHeader.propTypes = {
   header: PropTypes.string.isRequired
 };
 
+
+/**
+  * Body element of a modal
+  *
+  * @param {object} props
+  *
+  * @returns {JSX} Modal body mark up
+  */
 export const ModalBody = (props) => {
   const { error } = props.errors;
   return (
@@ -73,6 +89,14 @@ ModalBody.defaultProps = {
   errors: {}
 };
 
+
+/**
+  * Close button
+  *
+  * @param {object} props
+  *
+  * @returns {JSX} Close button mark up
+  */
 export const CloseButton = props => (
   <button
     type="button"
@@ -89,6 +113,14 @@ CloseButton.propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
+
+/**
+  * Cancel button
+  *
+  * @param {object} props
+  *
+  * @returns {JSX} Cancel button mark up
+  */
 export const CancelButton = props => (
   <button
     type="button"
@@ -105,6 +137,14 @@ CancelButton.propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
+
+/**
+  * Submit button
+  *
+  * @param {object} props
+  *
+  * @returns {JSX} Submit button mark up
+  */
 export const SubmitButton = props => (
   <button
     type="button"
@@ -125,6 +165,14 @@ SubmitButton.defaultProps = {
   isLoading: false
 };
 
+
+/**
+  * Footer element of a modal
+  *
+  * @param {object} props
+  *
+  * @returns {JSX} Modal footer mark up
+  */
 export const ModalFooter = props => (
   <div className="modal-footer">
 

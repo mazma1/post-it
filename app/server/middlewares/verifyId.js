@@ -1,11 +1,11 @@
 import models from '../models';
 
 export function verifyGroupId(req, res, next) {
-  const { group_id } = req.params;
-  if (group_id && isNaN(group_id)) {
+  const { groupId } = req.params;
+  if (groupId && isNaN(groupId)) {
     return res.status(400).send({ error: 'Invalid group id' });
   }
-  models.Group.findOne({ where: { id: group_id } })
+  models.Group.findOne({ where: { id: groupId } })
     .then((group) => {
       if (!group) {
         return res.status(404).send({ error: 'Group does not exist' });
@@ -16,8 +16,8 @@ export function verifyGroupId(req, res, next) {
 }
 
 export function verifyUserId(req, res, next) {
-  const { user_id } = req.params;
-  if (user_id && isNaN(user_id)) {
+  const { userId } = req.params;
+  if (userId && isNaN(userId)) {
     return res.status(400).send({ error: 'Invalid user id' });
   }
   return next();

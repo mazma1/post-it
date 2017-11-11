@@ -2,7 +2,7 @@ import models from '../models';
 
 export default (req, res, next) => {
   const userId = req.decoded.data.id;
-  const groupId = req.params.group_id;
+  const { groupId } = req.params;
   models.Group.findOne({ where: { id: groupId } })
     .then((group) => {
       if (!group) {

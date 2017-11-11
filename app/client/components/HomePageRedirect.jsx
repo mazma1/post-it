@@ -16,13 +16,13 @@ import HomePage from './home-page/HomePage';
 class HomePageRedirect extends React.Component {
 
 /**
- * Checks a user's authentication status when accessing the index page
- * If user's session is still active (user is still authenticated),
- * user is redirected to the message board
- * If user's session has expired, the index page is rendered
- *
- * @returns {void}
- */
+  * Checks a user's authentication status when accessing the index page
+  * If user's session is still active (user is still authenticated),
+  * user is redirected to the message board
+  * If user's session has expired, the index page is rendered
+  *
+  * @returns {void}
+  */
   componentDidMount() {
     if (this.props.isAuthenticated) {
       this.props.history.push('/message-board');
@@ -30,7 +30,7 @@ class HomePageRedirect extends React.Component {
   }
 
   /**
-   * Render
+   * Renders component
    *
    * @returns {ReactElement} Home page component
    */

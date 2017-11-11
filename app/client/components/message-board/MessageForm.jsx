@@ -19,7 +19,7 @@ export class MessageForm extends React.Component {
   /**
     * Creates an instance of MessageForm
     *
-    * @param {any} props
+    * @param {object} props
     *
     * @memberof MessageForm
     */
@@ -120,7 +120,9 @@ export class MessageForm extends React.Component {
             onSubmit={this.onMessageSend}
           >
             <div className="form-group">
-              <div className="col-lg-8 col-md-7 col-sm-6 col-xs-11 msg-form-container">
+              <div
+                className="col-lg-8 col-md-7 col-sm-6 col-xs-11 msg-form-container"
+              >
                 <input
                   className="form-control"
                   type="text"
@@ -133,7 +135,9 @@ export class MessageForm extends React.Component {
                 />
               </div>
 
-              <div className="col-lg-3 col-md-3 col-sm-4 col-xs-11 priority-container">
+              <div
+                className="col-lg-3 col-md-3 col-sm-4 col-xs-11 priority-container"
+              >
                 <label>Priority</label>
                 <select
                   className="browser-default"

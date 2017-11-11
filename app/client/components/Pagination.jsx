@@ -2,6 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactPaginate from 'react-paginate';
 
+/**
+ * Displays pagination
+ *
+ * @param {object} props
+ *
+ * @returns {JSX} Pagination markup
+ */
 const Pagination = ({ handlePageClick, pageCount }) => (
   <ReactPaginate
     previousLabel={'previous'}

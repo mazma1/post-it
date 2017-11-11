@@ -6,14 +6,14 @@ import emailNotificationTemplate from '../utils/emailNotificationTemplate';
 
 export default {
   /**
-   * Creates a new group
-   * Route: POST: /api/v1/groups
-   *
-   * @param {any} req incoming request from the client
-   * @param {any} res response sent back to client
-   *
-   * @returns {response} response object
-   */
+    * Creates a new group
+    * Route: POST: /api/v1/groups
+    *
+    * @param {object} req - Incoming request from the client
+    * @param {object} res - Response sent back to client
+    *
+    * @returns {object} Details of new group created
+    */
   createGroup(req, res) {
     let error = '';
     const userId = req.decoded.data.id;
@@ -55,14 +55,16 @@ export default {
     }
   },
 
+
   /**
-   * Adds a user to a group
-   * Route: POST: /api/v1/groups/:group_id/user
-   *
-   * @param {any} req incoming request from the client
-   * @param {any} res response sent back to client
-   *
-   * @returns {response} response object
+    * Adds a user to a group
+    * Route: POST: /api/v1/groups/:groupId/user
+    *
+    * @param {object} req - Incoming request from the client
+    * @param {object} res - Response sent back to client
+    *
+    * @returns {object} - Message that indicates that user was successfully
+    * added to group
    */
   addUserToGroup(req, res) {
     let error = '';
@@ -73,14 +75,17 @@ export default {
     } else {
       models.User.findOne({
         where: {
-          $or: [{ username: req.body.identifier }, { email: req.body.identifier }]
+          $or: [
+            { username: req.body.identifier },
+            { email: req.body.identifier }
+          ]
         },
       })
       .then((user) => {
         if (user) {
           models.GroupMember.findOne({
             where: {
-              $and: [{ userId: user.id }, { groupId: req.params.group_id }]
+              $and: [{ userId: user.id }, { groupId: req.params.groupId }]
             },
           })
           .then((member) => {
@@ -89,7 +94,7 @@ export default {
               res.status(409).send({ error });
             } else {
               const details = {
-                groupId: req.params.group_id,
+                groupId: req.params.groupId,
                 userId: user.id
               };
               models.GroupMember.create(details)
@@ -107,15 +112,16 @@ export default {
     }
   },
 
+
   /**
-   * Post message to a group
-   * Route: POST: /api/v1/groups/:group_id/message
-   *
-   * @param {any} req incoming request from the client
-   * @param {any} res response sent back to client
-   *
-   * @returns {response} response object
-   */
+    * Post message to a group
+    * Route: POST: /api/v1/groups/:groupId/message
+    *
+    * @param {object} req - Incoming request from the client
+    * @param {object} res - Response sent back to client
+    *
+    * @returns {object} Details of posted message
+    */
   postMessageToGroup(req, res) {
     const userId = req.decoded.data.id;
     const { username } = req.decoded.data;
@@ -128,7 +134,7 @@ export default {
       priority,
       readBy: req.decoded.data.username,
       body: req.body.message,
-      groupId: req.params.group_id,
+      groupId: req.params.groupId,
       isArchived: ['']
     };
     models.Message.create(messageDetail)
@@ -185,18 +191,20 @@ export default {
       .catch(err => res.status(500).send(err.message));
   },
 
+
   /**
-   * Get messages posted to a group
-   * Route: GET: /api/v1/groups/:group_id/messages
-   *
-   * @param {any} req incoming request from the client
-   * @param {any} res response sent back to client
-   *
-   * @returns {response} response object
-   */
+    * Get messages posted to a group
+    * Route: GET: /api/v1/groups/:groupId/messages
+    *
+    * @param {object} req - Incoming request from the client
+    * @param {object} res - Response sent back to client
+    *
+    * @returns {object} Messages that belong to a group
+    */
   getGroupMessages(req, res) {
+    const { groupId } = req.params;
     models.Message.findAll({
-      where: { groupId: req.params.group_id },
+      where: { groupId },
       attributes: [
         'id',
         ['groupId', 'group'],
@@ -220,18 +228,19 @@ export default {
     .catch(error => res.status(500).send(error.message));
   },
 
+
    /**
    * Get the groups a user belongs to
-   * Route: GET: /api/v1/groups/:group_id/members
+   * Route: GET: /api/v1/groups/:groupId/members
    *
-   * @param {any} req incoming request from the client
-   * @param {any} res response sent back to client
+   * @param {object} req - Incoming request from the client
+   * @param {object} res - Response sent back to client
    *
-   * @returns {response} response object
+   * @returns {object} Users that belong to a group
    */
   getGroupMembers(req, res) {
     models.Group.findOne({
-      where: { id: req.params.group_id },
+      where: { id: req.params.groupId },
       attributes: [],
       include: [{
         model: models.User,

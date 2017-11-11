@@ -51,7 +51,7 @@ export function setGoogleAuthStatus(status) {
   * @returns {promise} Authentication token
   */
 export function googleSignIn(userDetails) {
-  return dispatch => axios.post('/api/v1/users/googleAuth', userDetails)
+  return dispatch => axios.post('/api/v1/users/google-auth', userDetails)
     .then((res) => {
       const { token } = res.data;
       localStorage.setItem('jwtToken', token);
@@ -73,7 +73,7 @@ export function googleSignIn(userDetails) {
 export function authorizeGoogleUser(payload) {
   const { email, userDetails } = payload;
   return dispatch => axios.post(
-    '/api/v1/users/verifyGoogleUser', { email }
+    '/api/v1/users/verify-user', { email }
   ).then((res) => {
     const status = res.data.message;
     dispatch(setGoogleAuthStatus(status));

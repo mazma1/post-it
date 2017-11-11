@@ -13,7 +13,7 @@ router.post(
 );
 
 router.post(
-  '/api/v1/groups/:group_id/user',
+  '/api/v1/groups/:groupId/user',
   tokenAuth,
   verifyGroupId,
   verifyMembership,
@@ -21,7 +21,7 @@ router.post(
 );
 
 router.post(
-  '/api/v1/groups/:group_id/message',
+  '/api/v1/groups/:groupId/message',
   tokenAuth,
   verifyGroupId,
   verifyMembership,
@@ -29,7 +29,7 @@ router.post(
 );
 
 router.get(
-  '/api/v1/groups/:group_id/messages',
+  '/api/v1/groups/:groupId/messages',
   tokenAuth,
   verifyGroupId,
   verifyMembership,
@@ -37,7 +37,7 @@ router.get(
 );
 
 router.get(
-  '/api/v1/groups/:group_id/members',
+  '/api/v1/groups/:groupId/members',
   tokenAuth,
   verifyGroupId,
   verifyMembership,

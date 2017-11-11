@@ -16,12 +16,12 @@ import {
   SubmitButton } from '../modal/SubModals';
 import { logout } from '../../actions/signIn';
 import { submitNewUser } from '../../actions/groupMembers';
-import { AddUserBtn, SearchBtn, GroupName } from '../misc/HeaderMisc';
 import GroupMembersTable from '../tables/GroupMembersTable';
+import { AddUserBtn, SearchBtn, GroupName } from '../misc/HeaderMisc';
 
 
 /**
- * Display Header
+ * Displays Header component
  *
  * @class Header
  *
@@ -32,7 +32,7 @@ export class Header extends React.Component {
   /**
     * Creates an instance of Header
     *
-    * @param {any} props
+    * @param {object} props
     *
     * @memberof Header
     */
@@ -80,6 +80,7 @@ export class Header extends React.Component {
     });
   }
 
+
   /**
   * Handles Open Modal event
   *
@@ -111,10 +112,11 @@ export class Header extends React.Component {
     });
   }
 
+
   /**
   * Handles input validation for adding user to group
   *
-  * @returns {boolean} If an input is valid or not
+  * @returns {boolean} Whether an input is valid or not
   */
   isValid() {
     const error = {};
@@ -128,6 +130,7 @@ export class Header extends React.Component {
     }
     return isEmpty(error);
   }
+
 
   /**
    * Submits a new user's record to the database
@@ -158,6 +161,7 @@ export class Header extends React.Component {
     }
   }
 
+
   /**
    * Logs a user out
    *
@@ -173,10 +177,9 @@ export class Header extends React.Component {
 
 
   /**
-   * Render
+   * Renders Header component
    *
-   * @returns {ReactElement} Header markup
-   *
+   * @returns {ReactElement} Sidebar markup
    */
   render() {
     const { username, selectedGroup } = this.props;
@@ -280,7 +283,10 @@ export class Header extends React.Component {
         </ModalFrame>
 
         {/*Group Members Modal*/}
-        <ModalFrame id="groupMembers" membersLoading={this.props.membersLoading}>
+        <ModalFrame
+          id="groupMembers"
+          membersLoading={this.props.membersLoading}
+        >
           <ModalHeader header="Group Members" onClose={this.closeModal} />
 
           <div className="modal-body">
