@@ -2,10 +2,12 @@ import React from 'react';
 import toastr from 'toastr';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
 import {
   Link,
   withRouter } from 'react-router-dom';
 import TextField from '../common/FormTextField';
+import userSignUpRequest from '../../actions/signUp';
 import validateInput from '../../../server/utils/signupValidation';
 
 
@@ -279,5 +281,5 @@ SignUpForm.propTypes = {
   userSignUpRequest: PropTypes.func.isRequired
 };
 
-export default withRouter(SignUpForm);
+export default withRouter(connect(null, { userSignUpRequest })(SignUpForm));
 

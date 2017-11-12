@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import Table from '../tables/Table';
 
 /**
   * Displays list of users in a group
@@ -22,11 +22,7 @@ const GroupMembersTable = (props) => {
 
   return (
     <div>
-      <table className="striped">
-        <tbody>
-          {memberRow}
-        </tbody>
-      </table>
+      <Table body={memberRow} />
     </div>
   );
 };

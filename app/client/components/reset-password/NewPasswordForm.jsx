@@ -59,7 +59,7 @@ export class NewPasswordForm extends React.Component {
             flashErrorMsg = 'Reset link is required';
           }
           if (errorMessage === 'Invalid token') {
-            flashErrorMsg = 'Invalid reset link.';
+            flashErrorMsg = 'Invalid reset link';
           }
           toastr.error(`${flashErrorMsg}. Enter your email to receive a valid link`);
           this.props.history.push('/reset-password');

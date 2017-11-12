@@ -275,22 +275,28 @@ export default {
     * @returns {object} Message stating if token is valid, expired or missing
     */
   validateResetPasswordToken(req, res) {
-    const token = req.body.token;
-    models.ForgotPassword.findOne({
-      where: {
-        hash: token
-      },
-    }).then((hash) => {
-      if (hash) {
-        if (Date.now() > hash.expiryTime) {
-          res.status(401).send({ message: 'Token has expired' });
+    const { token } = req.body;
+    if (!token) {
+      return res.status(400).send({
+        message: 'Reset password token is required'
+      });
+    } else {
+      models.ForgotPassword.findOne({
+        where: {
+          hash: token
+        },
+      }).then((hash) => {
+        if (hash) {
+          if (Date.now() > hash.expiryTime) {
+            res.status(401).send({ message: 'Token has expired' });
+          } else {
+            res.status(200).send({ message: 'Token is valid' });
+          }
         } else {
-          res.status(200).send({ message: 'Token is valid' });
+          res.status(400).send({ message: 'Invalid token' });
         }
-      } else {
-        res.status(400).send({ message: 'Invalid token' });
-      }
-    }).catch(error => res.status(500).send(error.message));
+      }).catch(error => res.status(500).send(error.message));
+    }
   },
 
 

@@ -1,12 +1,13 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
+import Table from '../../components/tables/Table';
 import ReadByTable from '../../components/tables/ReadByTable';
 
 let props;
 let mountedReadByTable;
 const readByTable = () => {
   if (!mountedReadByTable) {
-    mountedReadByTable = shallow(
+    mountedReadByTable = mount(
       <ReadByTable {...props} />
     );
   }
@@ -28,6 +29,7 @@ describe('<ReadByTable />', () => {
   });
 
   it('should render user(s) that have read a message', () => {
-    expect(readByTable().find('#readBy').text()).toBe('@mazma');
+    const tableDisplay = readByTable().find(Table);
+    expect(tableDisplay.find('#readBy').text()).toBe('@mazma');
   });
 });
