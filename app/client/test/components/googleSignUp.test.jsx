@@ -19,7 +19,8 @@ describe('<GoogleSignUp />', () => {
     props = {
       googleSignUp: jest.fn(() => Promise.resolve()),
       token: '',
-      history: { push: jest.fn() }
+      history: { push: jest.fn() },
+      userSignUpRequest: { push: jest.fn() }
     };
   });
 

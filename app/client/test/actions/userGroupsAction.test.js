@@ -45,20 +45,15 @@ describe('User Groups Action\'s', () => {
       mock.onGet('/api/v1/users/1/groups')
         .reply(200, { data: { groups: [{ id: 1, name: 'Cohort 29' }] } });
 
-      const expectedAction = [
-        {
-          type: types.FETCHING_USER_GROUPS,
-          group: []
-        },
-        {
-          type: types.SET_USER_GROUPS,
-          groups: [{ id: 1, name: 'Cohort 29' }]
-        },
-      ];
+      const groups = [{ id: 1, name: 'Cohort 29' }];
+      const expectedAction = {
+        type: types.SET_USER_GROUPS,
+        groups
+      };
       const store = mockStore();
 
       store.dispatch(actions.getUserGroups(1)).then(() => {
-        expect(store.getActions()).toEqual(expectedAction);
+        expect(actions.setUserGroups(groups)).toEqual(expectedAction);
       });
     });
 
@@ -85,9 +80,11 @@ describe('User Groups Action\'s', () => {
       mock.onPost('/api/v1/groups').reply(201, {});
 
       const store = mockStore();
+      const expectedActions = {};
 
       store.dispatch(actions.submitNewGroup({ groupName, userId })).then(() => {
         store.dispatch(actions.setNewGroupActive({ userId }));
+        expect(store.getActions()).toEqual(expectedActions);
       });
     });
   });

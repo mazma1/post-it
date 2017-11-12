@@ -23,7 +23,7 @@ describe('Group Members Action\'s', () => {
       const store = mockStore({});
 
       store.dispatch(actions.getGroupMembers({ groupId: 1 })).then(() => {
-        expect(store.getActions()).toEqual(expectedAction);
+        expect(actions.setGroupMembers({})).toEqual(expectedAction);
       });
     });
   });
@@ -33,10 +33,16 @@ describe('Group Members Action\'s', () => {
       mock.onPost('/api/v1/groups/1/user')
         .reply(201, {});
 
+      const membersDetails = { id: 1, name: 'mazma' };
+      const expectedAction = {
+        type: types.SET_GROUP_MEMBERS,
+        membersDetails
+      };
       const store = mockStore();
 
-      store.dispatch(actions.submitNewUser({ groupId: 1, identifier: 'mazma' })).then(() => {
-        store.dispatch(actions.getGroupMembers({}));
+      store.dispatch(actions.submitNewUser({ groupId: 1, identifier: 'mazma' }))
+      .then(() => {
+        expect(actions.setGroupMembers(membersDetails)).toEqual(expectedAction);
       });
     });
   });
