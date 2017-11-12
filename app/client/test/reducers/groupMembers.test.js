@@ -35,7 +35,6 @@ describe('Group Members Reducer', () => {
     expect(groupMembersReducer(undefined, action)).toEqual(
       {
         isLoading: false,
-        group_name: action.membersDetails.group_name,
         members: action.membersDetails.members
       }
     );

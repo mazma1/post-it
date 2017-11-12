@@ -60,7 +60,8 @@ describe('Group Messages Action\'s', () => {
       };
       const store = mockStore();
 
-      store.dispatch(actions.updateReadStatus({ groupId: 1, messageId: 1 })).then(() => {
+      store.dispatch(actions.updateReadStatus({ groupId: 1, messageId: 1 }))
+      .then(() => {
         expect(actions.setGroupMessages({})).toEqual(expectedAction);
       });
     });
@@ -69,10 +70,15 @@ describe('Group Messages Action\'s', () => {
   describe('#archiveMessage', () => {
     it('should make a request to archive a message', () => {
       mock.onPatch('/api/v1/messages/1/archive');
+      const expectedAction = {
+        type: types.SET_ARCHIVED_MESSAGE,
+        archivedMessage: {}
+      };
       const store = mockStore();
 
-      store.dispatch(actions.updateReadStatus({ groupId: 1, messageId: 1 })).then(() => {
-        store.dispatch(actions.archiveMessage(1));
+      store.dispatch(actions.archiveMessage(1))
+      .then(() => {
+        expect(actions.setArchivedMessage({})).toEqual(expectedAction);
       });
     });
   });

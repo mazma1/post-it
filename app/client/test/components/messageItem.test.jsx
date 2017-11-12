@@ -10,6 +10,7 @@ describe('<MessageItem />', () => {
   const props = {
     getGroupMessagesCount: jest.fn(),
     archiveMessageRequest: jest.fn(),
+    updateArchivedMessage: jest.fn(),
     messages: undefined,
     authenticatedUsername: undefined,
     match: {},

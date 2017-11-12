@@ -15,8 +15,11 @@ describe('Reset Password Action\'s', () => {
         .reply(201, {});
 
       const store = mockStore({ isAuthenticated: [] });
+      const expectedActions = {};
 
-      store.dispatch(actions.resetLinkRequest());
+      store.dispatch(actions.resetLinkRequest()).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
     });
   });
 
@@ -26,8 +29,11 @@ describe('Reset Password Action\'s', () => {
         .reply(201, {});
 
       const store = mockStore({ isAuthenticated: [] });
+      const expectedActions = {};
 
-      store.dispatch(actions.validateResetPasswordToken());
+      store.dispatch(actions.validateResetPasswordToken()).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
     });
   });
 
@@ -40,8 +46,11 @@ describe('Reset Password Action\'s', () => {
         .reply(201, {});
 
       const store = mockStore({ isAuthenticated: [] });
+      const expectedActions = {};
 
-      store.dispatch(actions.updatePassword(newPasswordDetails));
+      store.dispatch(actions.updatePassword(newPasswordDetails)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
     });
   });
 });

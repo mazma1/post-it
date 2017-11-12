@@ -55,7 +55,20 @@ describe('Sign In Action\'s', () => {
         type: types.DELETE_CURRENT_USER,
         user
       };
-      expect(actions.deleteCurrentUser(user)).toEqual(expectedAction);
+      const store = mockStore();
+      store.dispatch(actions.deleteCurrentUser(user));
+      expect(store.getActions()).toEqual([expectedAction]);
+    });
+  });
+
+  describe('#setGoogleAuthStatus', () => {
+    it('should update the store with status of a Google verified user', () => {
+      const status = 'Returning user';
+      const expectedAction = {
+        type: types.SET_GOOGLE_AUTH_STATUS,
+        status
+      };
+      expect(actions.setGoogleAuthStatus(status)).toEqual(expectedAction);
     });
   });
 
@@ -64,9 +77,10 @@ describe('Sign In Action\'s', () => {
       mock.onPost('/api/v1/users/signin')
         .reply(201, { data: { token: '1234tycngsgu67890plkm' } });
 
+      const user = { token: '1234tycngsgu67890plkm' };
       const expectedAction = {
         type: types.SET_CURRENT_USER,
-        user: { token: '1234tycngsgu67890plkm' }
+        user
       };
       const store = mockStore();
 
@@ -74,24 +88,26 @@ describe('Sign In Action\'s', () => {
         username: 'mazma',
         password: 1234
       })).then(() => {
-        expect(store.getActions()).toEqual(expectedAction);
+        expect(actions.setCurrentUser(user)).toEqual(expectedAction);
       });
     });
   });
 
   describe('#googleSignIn', () => {
     it('should create SET_CURRENT_USER after successful sign in via Google', () => {
-      mock.onPost('/api/v1/users/googleAuth')
+      mock.onPost('/api/v1/users/google-auth')
         .reply(201, { data: { token: '1234tycngsgu67890plkm' } });
 
+      const user = { token: '1234tycngsgu67890plkm' };
       const expectedAction = {
         type: types.SET_CURRENT_USER,
-        user: { token: '1234tycngsgu67890plkm' }
+        user
       };
-      const store = mockStore({ data: { token: '1234tycngsgu67890plkm' } });
+      const store = mockStore();
 
-      store.dispatch(actions.googleSignIn({ token: 'mazma' })).then((data) => {
-        expect(store.getActions()).toEqual(expectedAction);
+      store.dispatch(actions.googleSignIn({ token: '1234tycngsgu67890plkm' }))
+      .then((data) => {
+        expect(actions.setCurrentUser(user)).toEqual(expectedAction);
       });
     });
   });
