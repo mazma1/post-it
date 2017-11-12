@@ -10,7 +10,7 @@ const resetPasswordTemplate = (req, user, resetPasswordHash) => `
         Please click the link below to complete the process.
       </p>
       <p style="font-size: 1rem; padding-bottom: 100px;">
-        <a href='http://${req.headers.host}/new-password/${resetPasswordHash}'>Reset now ></a>
+        <a href='${req.headers.origin}/new-password/${resetPasswordHash}'>Reset now ></a>
       </p>
     <hr style="margin-bottom: 0;">
       <p style="text-align: center; margin: 7px;"><em>© Post It</em></p>
