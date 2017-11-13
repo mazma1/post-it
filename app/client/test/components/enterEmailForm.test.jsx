@@ -38,7 +38,7 @@ describe('<SubmitEmailForm />', () => {
   });
 
   it('should call submitResetRequest() when the form is submitted', () => {
-    const requestResetButton = emailForm().find('a');
+    const requestResetButton = emailForm().find('button');
     const event = { preventDefault: jest.fn() };
     const submitResetRequestSpy = jest.spyOn(emailForm().instance(), 'submitResetRequest');
     requestResetButton.simulate('click', event);
