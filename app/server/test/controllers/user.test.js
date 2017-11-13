@@ -676,7 +676,7 @@ describe('User Endpoint', () => {
         .end((err, res) => {
           res.status.should.equal(404);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('User does not exist');
+          res.body.should.have.property('email').eql('User does not exist');
           done();
         });
     });

@@ -5,6 +5,7 @@ import { PropTypes } from 'prop-types';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
+import validator from 'validator';
 import TextField from '../common/FormTextField';
 import { resetLinkRequest } from '../../actions/resetPassword';
 
@@ -29,7 +30,8 @@ export class SubmitEmailForm extends React.Component {
     super(props);
     this.state = {
       email: '',
-      error: {}
+      error: {},
+      isLoading: false,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -59,8 +61,13 @@ export class SubmitEmailForm extends React.Component {
     const error = {};
     if (this.state.email.trim().length === 0) {
       error.email = 'Email field cannot be empty';
-      this.setState({ error });
     }
+    if (this.state.email.trim().length > 0
+          && !validator.isEmail(this.state.email)
+        ) {
+      error.email = 'Invalid email address';
+    }
+    this.setState({ error });
     return isEmpty(error);
   }
 
@@ -75,16 +82,16 @@ export class SubmitEmailForm extends React.Component {
   submitResetRequest(event) {
     event.preventDefault();
     if (this.isValid()) {
-      this.setState({ error: {} });
+      this.setState({ error: {}, isLoading: true });
       this.props.resetLinkRequest({ email: this.state.email }).then(
         () => {
           toastr.success(
             `An email has been sent to ${this.state.email} with further instructions`
           );
-          this.setState({ email: '' });
+          this.setState({ email: '', isLoading: false });
         },
         ({ response }) => {
-          this.setState({ error: response.data });
+          this.setState({ error: response.data, isLoading: false });
         }
       ).catch(() => {
         toastr.error('Unable to submit request, please try again');
@@ -138,12 +145,13 @@ export class SubmitEmailForm extends React.Component {
 
                 <div className="row">
                   <div className="input-field col s12">
-                    <a
+                    <button
                       className="btn auth-btn waves-effect waves-light col s12"
+                      disabled={this.state.isLoading}
                       onClick={this.submitResetRequest}
                     >
                       Request Reset
-                    </a>
+                    </button>
                   </div>
                 </div>
 
