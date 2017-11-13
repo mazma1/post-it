@@ -16,7 +16,7 @@ A simple Node.js application that allows friends and colleagues create groups fo
 ## To get started
 1. Clone the repository: `git clone https://github.com/mazma1/post-it`
 2. Ensure you have installed [NodeJS](https://nodejs.org/en/) and [Postgres](https://www.postgresql.org/download/)
-3. Create a [Nexmo] (https://www.nexmo.com/) account and get your API key and secret which you will include as `NEXMO_KEY` and `NEXMO_SECRET` in your `.env` file. This is required for SMS notification
+3. Create a [Nexmo](https://www.nexmo.com/) account and get your API key and secret which you will include as `NEXMO_KEY` and `NEXMO_SECRET` in your `.env` file. This is required for SMS notification
 4. Navigate into the app's root directory: `cd post-it`
 5. Create a `.env` file in the root directory using the sample `.env.sample` file
 6. Install all dependencies: `npm install`
