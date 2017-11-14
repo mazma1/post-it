@@ -1,7 +1,7 @@
 import express from 'express';
 import UserController from '../controllers/UserController';
 import tokenAuth from '../middlewares/tokenAuth';
-import { verifyUserId } from '../middlewares/verifyId';
+import verifyUserId from '../middlewares/verifyUserId';
 
 const router = express.Router();
 

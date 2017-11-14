@@ -23,7 +23,7 @@ const MessageController = {
       }, {
         where: { id: messageId }
       })
-        .then((update) => {
+        .then(() => {
           res.status(201).send({
             message: 'Message read status updated successfully'
           });
