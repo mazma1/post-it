@@ -35,7 +35,7 @@ const UserController = {
         ]
       },
     })
-    .then((existingUser, err) => {
+    .then((existingUser) => {
       if (existingUser) {
         if (existingUser.username === req.body.username) {
           errors.username = 'Username already exists';

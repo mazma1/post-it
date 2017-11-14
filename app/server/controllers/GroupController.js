@@ -1,8 +1,6 @@
 import models from '../models';
-import sendSms from '../utils/sendSms';
-import sendEmail from '../utils/sendEmail';
 import customSort from '../utils/customSort';
-import emailNotificationTemplate from '../utils/emailNotificationTemplate';
+import sendNotification from '../utils/sendNotification';
 
 const GroupController = {
   /**
@@ -40,7 +38,7 @@ const GroupController = {
               groupId: newGroup.id,
               userId
             })
-            .then(groupMember => res.status(201).send({
+            .then(() => res.status(201).send({
               message: 'Group was successfully created and you have been added to it',
               groupId: newGroup.id,
               groupName: newGroup.groupName,
@@ -67,8 +65,8 @@ const GroupController = {
     * added to group
    */
   addUserToGroup(req, res) {
+    const { groupId } = req.params;
     let error = '';
-
     if (!req.body.identifier) {
       error = 'Username or email is required';
       res.status(400).send({ error });
@@ -83,26 +81,25 @@ const GroupController = {
       })
       .then((user) => {
         if (user) {
-          models.GroupMember.findOne({
-            where: {
-              $and: [{ userId: user.id }, { groupId: req.params.groupId }]
-            },
-          })
-          .then((member) => {
-            if (member) {
-              error = 'User has already been added to group';
-              res.status(409).send({ error });
-            } else {
-              const details = {
-                groupId: req.params.groupId,
-                userId: user.id
-              };
-              models.GroupMember.create(details)
-              .then(groupMember => res.status(201).send({
-                message: 'User successfully added to group',
-              }))
-              .catch(err => res.status(500).send(err));
-            }
+          user.getGroups().then((groups) => {
+            groups.map((group) => {
+              if (
+                parseInt(group.id, 10) === parseInt(groupId, 10)
+              ) {
+                error = 'User has already been added to group';
+                res.status(409).send({ error });
+              } else {
+                const details = {
+                  groupId,
+                  userId: user.id
+                };
+                models.GroupMember.create(details)
+                .then(() => res.status(201).send({
+                  message: 'User successfully added to group',
+                }))
+                .catch(err => res.status(500).send(err));
+              }
+            });
           });
         } else {
           error = 'User does not exist';
@@ -124,7 +121,6 @@ const GroupController = {
     */
   postMessageToGroup(req, res) {
     const userId = req.decoded.data.id;
-    const { username } = req.decoded.data;
     if (!req.body.message) {
       return res.status(400).send({ error: 'Message is required' });
     }
@@ -150,42 +146,8 @@ const GroupController = {
           timeSent: message.createdAt,
           sentBy: { username: req.decoded.data.username }
         });
-        if (req.body.priority === 'urgent' || req.body.priority === 'critical') {
-          models.Group.findOne({
-            where: { id: messageDetail.groupId },
-            attributes: ['groupName'],
-            include: [{
-              model: models.User,
-              as: 'members',
-              attributes: ['email', 'phoneNumber'],
-              through: { attributes: [] }
-            }]
-          }).then((members) => {
-            const uppercasePriority = priority.toUpperCase();
-            return members.members.map((member) => {
-              const emailParams = {
-                senderAddress: `"Post It ✔" <${process.env.ADMIN_EMAIL}>`,
-                recepientAddress: member.email,
-                groupName: members.groupName,
-                subject: `Post It: ${uppercasePriority} message in ${members.groupName}`,
-                emailBody: emailNotificationTemplate(
-                  req, priority, messageDetail, username
-                )
-              };
-              sendEmail(emailParams);
-
-              if (req.body.priority === 'critical' && process.env.NODE_ENV !== 'test') {
-                const smsParams = {
-                  priority: uppercasePriority,
-                  group: members.groupName,
-                  message: messageDetail.body,
-                  to: member.phoneNumber
-                };
-                sendSms(smsParams);
-              }
-            });
-          })
-          .catch(err => res.status(500).send(err.message));
+        if (priority === 'urgent' || priority === 'critical') {
+          sendNotification(req, message, messageDetail);
         }
       })
       .catch(err => res.status(500).send(err.message));
