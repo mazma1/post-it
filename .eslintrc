@@ -28,6 +28,7 @@
     "curly": ["error", "multi-line"],
     "class-methods-use-this": 0,
     "jsx-a11y/img-has-alt": 0,
+    "jsx-a11y/no-static-element-interactions": 0,
     "import/no-named-as-default": 0,
     "import/extensions": [0, "never",
       {
@@ -57,6 +58,7 @@
     "document": true,
     "jest": true,
     "no-unused-vars": false,
-    "localStorage": true
+    "localStorage": true,
+    "window": true
   }
 }

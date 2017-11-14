@@ -1,6 +1,13 @@
 import Nexmo from 'nexmo';
 
-function sendSMS(smsParams) {
+/**
+  * Sends SMS notification
+  *
+  * @param {object} smsParams - Details required to send SMS
+  *
+  * @returns {void} null
+  */
+function sendSms(smsParams) {
   const nexmo = new Nexmo({
     apiKey: process.env.NEXMO_KEY,
     apiSecret: process.env.NEXMO_SECRET
@@ -13,4 +20,4 @@ function sendSMS(smsParams) {
   nexmo.message.sendSms(from, to, text);
 }
 
-export default sendSMS;
+export default sendSms;

@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { MessageItem } from '../../components/message-board/MessageItem';
-import mockLocalStorage from '../mockLocalStorage';
+import MockLocalStorage from '../MockLocalStorage';
 
-Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+Object.defineProperty(window, 'localStorage', { value: MockLocalStorage });
 
 describe('<MessageItem />', () => {
   let mountedMessageItem;

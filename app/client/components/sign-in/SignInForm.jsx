@@ -5,8 +5,8 @@ import classnames from 'classnames';
 import {
   Link,
   withRouter } from 'react-router-dom';
-import TextField from '../common/FormTextField';
-import validateInput from '../../utils/signinValidation';
+import TextField from '../partials/FormTextField';
+import signInValidation from '../../utils/signInValidation';
 
 
 /**
@@ -78,7 +78,7 @@ export class SignInForm extends React.Component {
    * @returns {boolean} If an input is valid or not
    */
   isValid() {
-    const { errors, valid } = validateInput(this.state);
+    const { errors, valid } = signInValidation(this.state);
     if (!valid) {
       this.setState({ errors });
     }

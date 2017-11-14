@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import TextField from '../common/FormTextField';
+import TextField from '../partials/FormTextField';
 import userSignUpRequest from '../../actions/signUp';
 
 

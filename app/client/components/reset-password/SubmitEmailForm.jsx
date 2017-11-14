@@ -6,7 +6,7 @@ import toastr from 'toastr';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import validator from 'validator';
-import TextField from '../common/FormTextField';
+import TextField from '../partials/FormTextField';
 import { resetLinkRequest } from '../../actions/resetPassword';
 
 

@@ -6,7 +6,6 @@
  *
  * @return {Array} returns a sorted array
  */
-
 function customSort(firstElement, nextElement) {
   return firstElement.id > nextElement.id;
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import TextField from '../../components/common/FormTextField';
+import TextField from '../../components/partials/FormTextField';
 import { SignUpForm } from '../../components/sign-up/SignUpForm';
 
 

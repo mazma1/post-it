@@ -6,7 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
-import TextField from '../common/FormTextField';
+import TextField from '../partials/FormTextField';
 import {
   validateResetPasswordToken,
   updatePassword } from '../../actions/resetPassword';

@@ -1,3 +1,13 @@
+/**
+  * Email notification template
+  *
+  * @param {object} req - Request from the client
+  * @param {string} priority - Message priority
+  * @param {object} messageDetail - Details of the message sent
+  * @param {object} username - User who sent the message
+  *
+  * @returns {void} null
+  */
 const emailNotificationTemplate = (req, priority, messageDetail, username) => `
 <div style="width: 100%; height: 100% background: black; padding: 50px 0 100px;">
   <div style="width: 70%; display: block; margin: 0 auto; border: 1px solid transparent; background: #F0F0EF;">

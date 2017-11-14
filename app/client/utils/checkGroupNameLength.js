@@ -6,7 +6,7 @@
   *
   * @returns {string} Group name, either transfrommed or not
   */
-export default function checkGroupnameLength(groupName) {
+export default function checkGroupNameLength(groupName) {
   if (groupName.length > 13) {
     return `${groupName.substring(0, 13)}...`;
   }

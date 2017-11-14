@@ -182,7 +182,6 @@ export class MessageBody extends React.Component {
             </div>
           </div>
 
-          {/* Read By Modal */}
           <ModalFrame id="readBy">
             <ModalHeader header="Message Read By" onClose={this.closeModal} />
 

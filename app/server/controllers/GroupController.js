@@ -4,7 +4,7 @@ import sendEmail from '../utils/sendEmail';
 import customSort from '../utils/customSort';
 import emailNotificationTemplate from '../utils/emailNotificationTemplate';
 
-export default {
+const GroupController = {
   /**
     * Creates a new group
     * Route: POST: /api/v1/groups
@@ -257,3 +257,5 @@ export default {
     .catch(error => res.status(500).send(error.message));
   }
 };
+
+export default GroupController;

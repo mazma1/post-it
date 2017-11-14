@@ -2,17 +2,18 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { mount, shallow } from 'enzyme';
 import { Header } from '../../components/client-frame/Header';
-import { AddUserBtn, GroupName } from '../../components/misc/HeaderMisc';
+import AddUserButton from '../../components/partials/AddUserButton';
+import GroupName from '../../components/partials/GroupName';
 import GroupMembers from '../../components/tables/GroupMembersTable';
 import ModalFrame from '../../components/modal/ModalFrame';
-import mockLocalStorage from '../mockLocalStorage';
+import MockLocalStorage from '../MockLocalStorage';
 import {
   ModalHeader,
   ModalBody,
   ModalFooter
 } from '../../components/modal/SubModals';
 
-Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+Object.defineProperty(window, 'localStorage', { value: MockLocalStorage });
 Object.defineProperty(window.location, 'href', {
   writable: true,
   value: '/'
@@ -111,11 +112,11 @@ describe('<Header />', () => {
     expect(Object.keys(groupMembersDisplay.props()).length).toBe(1);
   });
 
-  it('should always render <AddUserBtn/> with two props', () => {
-    expect(header().find(AddUserBtn).length).toBe(1);
+  it('should always render <AddUserButton/> with two props', () => {
+    expect(header().find(AddUserButton).length).toBe(1);
 
-    const addUserBtnDisplay = header().find(AddUserBtn);
-    expect(Object.keys(addUserBtnDisplay.props()).length).toBe(2);
+    const addUserButtonDisplay = header().find(AddUserButton);
+    expect(Object.keys(addUserButtonDisplay.props()).length).toBe(2);
   });
 
   it('should always render addUser and groupMembers Modals', () => {

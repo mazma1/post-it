@@ -1,5 +1,5 @@
 import express from 'express';
-import groupController from '../controllers/group';
+import GroupController from '../controllers/GroupController';
 import tokenAuth from '../middlewares/tokenAuth';
 import { verifyGroupId } from '../middlewares/verifyId';
 import verifyMembership from '../middlewares/verifyMembership';
@@ -9,7 +9,7 @@ const router = express.Router();
 router.post(
   '/api/v1/groups',
   tokenAuth,
-  groupController.createGroup
+  GroupController.createGroup
 );
 
 router.post(
@@ -17,7 +17,7 @@ router.post(
   tokenAuth,
   verifyGroupId,
   verifyMembership,
-  groupController.addUserToGroup
+  GroupController.addUserToGroup
 );
 
 router.post(
@@ -25,7 +25,7 @@ router.post(
   tokenAuth,
   verifyGroupId,
   verifyMembership,
-  groupController.postMessageToGroup
+  GroupController.postMessageToGroup
 );
 
 router.get(
@@ -33,7 +33,7 @@ router.get(
   tokenAuth,
   verifyGroupId,
   verifyMembership,
-  groupController.getGroupMessages
+  GroupController.getGroupMessages
 );
 
 router.get(
@@ -41,7 +41,7 @@ router.get(
   tokenAuth,
   verifyGroupId,
   verifyMembership,
-  groupController.getGroupMembers
+  GroupController.getGroupMembers
 );
 
 export default router;

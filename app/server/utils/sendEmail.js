@@ -1,6 +1,13 @@
 import nodemailer from 'nodemailer';
 import smtpTransport from 'nodemailer-smtp-transport';
 
+/**
+  * Sends Email notification
+  *
+  * @param {object} emailParams - Details required to send email
+  *
+  * @returns {void} null
+  */
 function sendEmail(emailParams) {
   const mailOptions = {
     from: emailParams.senderAddress,
