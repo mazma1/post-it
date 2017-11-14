@@ -47,24 +47,35 @@ export class NewPasswordForm extends React.Component {
   componentWillMount() {
     if (this.props.match.params.token) {
       const token = this.props.match.params.token;
-      this.props.validateResetPasswordToken({ token }).then(
-        () => {},
-        ({ response }) => {
-          const errorMessage = response.data.message;
-          let flashErrorMsg = '';
-          if (errorMessage === 'Token has expired') {
-            flashErrorMsg = 'Reset link has expired';
-          }
-          if (errorMessage === 'Token does not exist') {
-            flashErrorMsg = 'Reset link is required';
-          }
-          if (errorMessage === 'Invalid token') {
-            flashErrorMsg = 'Invalid reset link';
-          }
-          toastr.error(`${flashErrorMsg}. Enter your email to receive a valid link`);
-          this.props.history.push('/reset-password');
-        }
+      this.props.validateResetPasswordToken({ token });
+    }
+  }
+
+  /**
+   * Sends an error message to the user if an invalid reset password
+   * token is provided
+   *
+   * @param {object} nextProps - New props received by the component
+   *
+   * @returns {void} null
+   */
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.tokenStatus.status === 'failure') {
+      const errorMessage = nextProps.tokenStatus.message;
+      let flashErrorMsg = '';
+      if (errorMessage === 'Token has expired') {
+        flashErrorMsg = 'Reset link has expired';
+      }
+      if (errorMessage === 'Token does not exist') {
+        flashErrorMsg = 'Reset link is required';
+      }
+      if (errorMessage === 'Invalid token') {
+        flashErrorMsg = 'Invalid reset link';
+      }
+      toastr.error(
+        `${flashErrorMsg}. Enter your email to receive a valid link`
       );
+      this.props.history.push('/reset-password');
     }
   }
 
@@ -216,6 +227,21 @@ export class NewPasswordForm extends React.Component {
   }
 }
 
+
+/**
+ * Maps pieces of the redux state to props
+ *
+ * @param {object} state Redux state
+ *
+ * @returns {object} States if token provided to reset password is valid or not
+ */
+function mapStateToProps(state) {
+  return {
+    tokenStatus: state.resetPassword
+  };
+}
+
+
 /**
  * Maps action creators to redux dispatch function and avails them as props
  *
@@ -234,7 +260,9 @@ NewPasswordForm.propTypes = {
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   updatePassword: PropTypes.func.isRequired,
+  tokenStatus: PropTypes.object.isRequired,
   validateResetPasswordToken: PropTypes.func.isRequired
 };
 
-export default withRouter(connect(null, mapDispatchToProps)(NewPasswordForm));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(NewPasswordForm));

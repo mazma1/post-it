@@ -8,8 +8,9 @@ import SearchUserReducer from '../reducers/searchUser';
 import GoogleAuthStatusReducer from '../reducers/googleAuthStatus';
 import NewGroupReducer from '../reducers/newGroup';
 import ArchivedMessageReducer from '../reducers/archivedMessage';
+import ResetPasswordReducer from '../reducers/resetPassword';
 
-// Mapping of our state
+
 const appReducer = combineReducers({
   signedInUser: AuthenticatedUserReducer,
   userGroups: UserGroupsReducer,
@@ -19,7 +20,8 @@ const appReducer = combineReducers({
   searchResult: SearchUserReducer,
   googleAuthStatus: GoogleAuthStatusReducer,
   newGroup: NewGroupReducer,
-  archivedMessage: ArchivedMessageReducer
+  archivedMessage: ArchivedMessageReducer,
+  resetPassword: ResetPasswordReducer
 });
 
 

@@ -106,7 +106,7 @@ describe('Sign In Action\'s', () => {
       const store = mockStore();
 
       store.dispatch(actions.googleSignIn({ token: '1234tycngsgu67890plkm' }))
-      .then((data) => {
+      .then(() => {
         expect(actions.setCurrentUser(user)).toEqual(expectedAction);
       });
     });
@@ -124,7 +124,7 @@ describe('Sign In Action\'s', () => {
       const store = mockStore({ data: { message: 'Returning user' } });
 
       store.dispatch(actions.authorizeGoogleUser({ email: 'mazi@yahoo.com' }))
-        .then((data) => {
+        .then(() => {
           expect(store.getActions()).toEqual(expectedAction);
         });
     });
