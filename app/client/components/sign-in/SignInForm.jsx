@@ -6,7 +6,7 @@ import {
   Link,
   withRouter } from 'react-router-dom';
 import TextField from '../common/FormTextField';
-import validateInput from '../../utils/signinValidation';
+import validateInput from '../../utils/validateInput';
 
 
 /**
