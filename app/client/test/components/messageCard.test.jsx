@@ -2,9 +2,9 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { MessageCard } from '../../components/message-board/MessageCard';
 import Dashboard from '../../components/Dashboard';
-import mockLocalStorage from '../mockLocalStorage';
+import MockLocalStorage from '../MockLocalStorage';
 
-Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+Object.defineProperty(window, 'localStorage', { value: MockLocalStorage });
 
 describe('<MessageCard />', () => {
   let props;

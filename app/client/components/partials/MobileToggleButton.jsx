@@ -1,31 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
-
-/**
-  * Displays the brand name
-  *
-  * @param {object} props
-  *
-  * @returns {JSX} Brand Name mark up
-  */
-export const Brand = props => (
-  <div id="brand-name">
-    {props.brandName}
-  </div>
-);
-
-Brand.propTypes = {
-  brandName: PropTypes.string.isRequired
-};
-
 
 /**
   * Displays the sidebar toggle button on mobile devices
   *
   * @returns {JSX} Toggle button mark up
   */
-export const MobileToggleBtn = () => (
+const MobileToggleButton = () => (
   <button
     type="button"
     className="mobile-nav-btn navbar-toggle collapsed"
@@ -41,3 +21,4 @@ export const MobileToggleBtn = () => (
   </button>
 );
 
+export default MobileToggleButton;

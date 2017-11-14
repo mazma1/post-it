@@ -4,9 +4,9 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import * as actions from '../../../client/actions/signIn';
 import * as types from '../../actions/types';
-import mockLocalStorage from '../mockLocalStorage';
+import MockLocalStorage from '../MockLocalStorage';
 
-Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+Object.defineProperty(window, 'localStorage', { value: MockLocalStorage });
 Object.defineProperty(window.location, 'href', {
   writable: true,
   value: '/'

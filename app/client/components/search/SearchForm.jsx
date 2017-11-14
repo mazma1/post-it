@@ -3,7 +3,7 @@ import toastr from 'toastr';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import TextField from '../common/FormTextField';
+import TextField from '../partials/FormTextField';
 import { SubmitButton } from '../modal/SubModals';
 import SearchResult from '../search/SearchResult';
 import ClientFrame from '../client-frame/ClientFrame';

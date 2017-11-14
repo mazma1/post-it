@@ -1,7 +1,7 @@
 import includes from 'lodash/includes';
 import models from '../models';
 
-export default {
+const MessageController = {
   /**
     * Updates a user that have read a message
     * Route: PATCH: /api/v1/messages/:messageId/read
@@ -71,3 +71,6 @@ export default {
       .catch(error => res.status(500).send(error.message));
   }
 };
+
+export default MessageController;
+

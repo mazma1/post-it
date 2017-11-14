@@ -40,7 +40,7 @@ export class HomePage extends React.Component {
    *
    * @returns {void}
    */
-  onFailure(error) {
+  onFailure() {
     toastr.error(
       'Unable to sign in with Google.Check your network and try again'
     );
@@ -124,6 +124,14 @@ export class HomePage extends React.Component {
   }
 }
 
+
+/**
+  * Maps pieces of the redux state to props
+  *
+  * @param {object} state Redux state
+  *
+  * @returns {object} States if a Google authenticated user is new or returning
+  */
 function mapStateToProps(state) {
   return {
     googleAuthStatus: state.googleAuthStatus

@@ -2,7 +2,8 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { mount, shallow } from 'enzyme';
 import { Sidebar } from '../../components/client-frame/sidebar/Sidebar';
-import { Brand, MobileToggleBtn } from '../../components/misc/SidebarMisc';
+import Brand from '../../components/partials/Brand';
+import MobileToggleButton from '../../components/partials/MobileToggleButton';
 import GroupList from '../../components/client-frame/sidebar/GroupList';
 import mockLocalStorage from '../mockLocalStorage';
 
@@ -94,10 +95,10 @@ describe('<Sidebar />', () => {
     expect(brandDisplay.props().brandName).toBe('Post It');
   });
 
-  it('should always render <MobileToggleBtn /> with no prop', () => {
-    expect(sidebar().find(MobileToggleBtn).length).toBe(1);
+  it('should always render <MobileToggleButton /> with no prop', () => {
+    expect(sidebar().find(MobileToggleButton).length).toBe(1);
 
-    const mobileToggleBtnDisplay = sidebar().find(MobileToggleBtn);
+    const mobileToggleBtnDisplay = sidebar().find(MobileToggleButton);
     expect(Object.keys(mobileToggleBtnDisplay.props()).length).toBe(0);
   });
 

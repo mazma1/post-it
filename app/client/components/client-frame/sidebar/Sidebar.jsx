@@ -6,8 +6,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import GroupList from './GroupList';
-import validToken from '../../../utils/verifyTokenValidity';
-import { Brand, MobileToggleBtn } from '../../misc/SidebarMisc';
+import validateToken from '../../../utils/validateToken';
+import Brand from '../../partials/Brand';
+import MobileToggleButton from '../../partials/MobileToggleButton';
 import setSelectedGroup from '../../../actions/setSelectedGroup';
 import { getGroupMembers } from '../../../actions/groupMembers';
 import {
@@ -48,7 +49,7 @@ export class Sidebar extends React.Component {
     */
   componentWillMount() {
     const userId = this.props.signedInUser.user.id;
-    if (userId && validToken()) {
+    if (userId && validateToken()) {
       this.props.getUserGroups(userId).then(
         () => {
           if (this.props.userGroups.hasGroup === false) {
@@ -70,7 +71,7 @@ export class Sidebar extends React.Component {
           }
         }
       )
-      .catch((error) => {
+      .catch(() => {
         toastr.error('Group does not exist');
         this.props.history.push('/message-board');
       });
@@ -121,7 +122,7 @@ export class Sidebar extends React.Component {
         <aside className="navbar-default mobile-navbar">
           <div id="sidebar">
             <Brand brandName="Post It" />
-            <MobileToggleBtn />
+            <MobileToggleButton />
 
             <GroupList
               pathName={this.props.pathName}
@@ -140,7 +141,8 @@ export class Sidebar extends React.Component {
 /**
  * Maps pieces of the redux state to props in Sidebar
  *
- * @param {object} state Redux state
+ * @param {object} state - Redux state
+ * @param {object} ownProps - Component's inherent properties
  *
  * @returns {object} Details of signed in user, his groups and the active group
  * and the group messages
@@ -190,4 +192,6 @@ Sidebar.defaultProps = {
   selectedGroup: {}
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Sidebar));
+export default withRouter(connect(
+  mapStateToProps, mapDispatchToProps)(Sidebar)
+);

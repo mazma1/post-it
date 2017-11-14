@@ -2,11 +2,12 @@ import validator from 'validator';
 import isEmpty from 'lodash/isEmpty';
 
 /**
-   * Validates a user's credentials for sign up
-   *
-   * @param {any} data credentials submitted for sign up
-   * @returns {response} validation errors(if any)
-   */
+  * Validates a user's credentials for sign up
+  *
+  * @param {any} data credentials submitted for sign up
+  *
+  * @returns {object} validation errors(if any)
+  */
 export default function validateInput(data) {
   const errors = {};
   const lettersRegex = /^[A-Za-z]+$/;

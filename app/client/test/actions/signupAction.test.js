@@ -3,10 +3,10 @@ import thunk from 'redux-thunk';
 import MockAdapter from 'axios-mock-adapter';
 import configureMockStore from 'redux-mock-store';
 import * as types from '../../actions/types';
-import mockLocalStorage from '../mockLocalStorage';
+import MockLocalStorage from '../MockLocalStorage';
 import userSignUpRequest from '../../../client/actions/signUp';
 
-Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+Object.defineProperty(window, 'localStorage', { value: MockLocalStorage });
 
 const middlewares = [thunk];
 const mock = new MockAdapter(axios);

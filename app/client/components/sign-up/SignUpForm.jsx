@@ -6,9 +6,9 @@ import { connect } from 'react-redux';
 import {
   Link,
   withRouter } from 'react-router-dom';
-import TextField from '../common/FormTextField';
+import TextField from '../partials/FormTextField';
 import userSignUpRequest from '../../actions/signUp';
-import validateInput from '../../../server/utils/signupValidation';
+import validateInput from '../../../server/utils/validateInput';
 
 
 /**
