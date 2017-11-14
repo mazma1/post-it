@@ -163,4 +163,5 @@ SearchForm.propTypes = {
   searchResult: PropTypes.object.isRequired
 };
 
-export default connect(mapStateToProps, { searchUser, resetSearch })(SearchForm);
+export default connect(
+  mapStateToProps, { searchUser, resetSearch })(SearchForm);

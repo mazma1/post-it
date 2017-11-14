@@ -57,22 +57,4 @@ describe('User Groups Reducer', () => {
       }
     );
   });
-
-  // it('should act on an action with the type SUBMIT_NEW_GROUP_FAILURE', () => {
-  //   const error = {
-  //     response: {
-  //       data: {
-  //         error: {}
-  //       }
-  //     }
-  //   };
-  //   const action = {
-  //     type: types.SUBMIT_NEW_GROUP_FAILURE,
-  //     error
-  //   };
-  //   expect(userGroupsReducer(undefined, action)).toEqual({
-  //     groups: [],
-  //     error: action.error.response.data
-  //   });
-  // });
 });
