@@ -5,9 +5,9 @@ import { Sidebar } from '../../components/client-frame/sidebar/Sidebar';
 import Brand from '../../components/partials/Brand';
 import MobileToggleButton from '../../components/partials/MobileToggleButton';
 import GroupList from '../../components/client-frame/sidebar/GroupList';
-import mockLocalStorage from '../mockLocalStorage';
+import MockLocalStorage from '../MockLocalStorage';
 
-Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+Object.defineProperty(window, 'localStorage', { value: MockLocalStorage });
 
 describe('<Sidebar />', () => {
   let mountedSidebar;
