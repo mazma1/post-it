@@ -205,4 +205,8 @@ MessageForm.propTypes = {
   username: PropTypes.string
 };
 
+MessageForm.defaultProps = {
+  username: ''
+};
+
 export default connect(mapStateToProps, mapDispatchToProps)(MessageForm);

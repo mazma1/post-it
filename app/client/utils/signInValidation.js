@@ -7,7 +7,7 @@ const isEmpty = require('lodash/isEmpty');
   *
   * @returns {object} Validation errors (if any)
   */
-export default function validateInput(data) {
+export default function signInValidation(data) {
   const errors = {};
 
   if (!data.identifier) {

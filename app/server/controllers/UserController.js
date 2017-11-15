@@ -3,16 +3,16 @@ import validator from 'validator';
 import isEmpty from 'lodash/isEmpty';
 import crypto from 'crypto';
 import models from '../models';
-import validateSignup from '../utils/signupValidation';
+import validateSignup from '../utils/validateInput';
 import sendEmail from '../utils/sendEmail';
-import pagination from '../utils/pagination';
+import paginate from '../utils/paginate';
 import generateToken from '../utils/generateToken';
 import resetPasswordTemplate from '../utils/resetPasswordTemplate';
 
 const saltRounds = 7;
 const salt = bcrypt.genSaltSync(saltRounds);
 
-export default {
+const UserController = {
   /**
     * Creates a new user
     * Route: POST: /api/v1/users/signup
@@ -35,7 +35,7 @@ export default {
         ]
       },
     })
-    .then((existingUser, err) => {
+    .then((existingUser) => {
       if (existingUser) {
         if (existingUser.username === req.body.username) {
           errors.username = 'Username already exists';
@@ -261,7 +261,7 @@ export default {
         res.status(404).send({ email: 'User does not exist' });
       }
     })
-    .catch(error => res.status(500).send(error.message));
+    .catch(error => res.status(500).send({ error: error.message }));
   },
 
 
@@ -388,7 +388,7 @@ export default {
         if (users.count > 0) {
           return res.status(200).send({
             users: users.rows,
-            pagination: pagination(users.count, limit, offset)
+            pagination: paginate(users.count, limit, offset)
           });
         }
         res.status(404).send({ error: 'User was not found' });
@@ -401,3 +401,5 @@ export default {
     }
   }
 };
+
+export default UserController;

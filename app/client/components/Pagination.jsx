@@ -5,7 +5,8 @@ import ReactPaginate from 'react-paginate';
 /**
  * Displays pagination
  *
- * @param {object} props
+ * @param {function} handlePageClick - It handles navigation between pages
+ * @param {number} pageCount - Total number of records that match a given search
  *
  * @returns {JSX} Pagination markup
  */

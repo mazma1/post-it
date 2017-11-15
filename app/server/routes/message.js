@@ -1,5 +1,5 @@
 import express from 'express';
-import messageCtrl from '../controllers/message';
+import MessageController from '../controllers/MessageController';
 import tokenAuth from '../middlewares/tokenAuth';
 
 const router = express.Router();
@@ -7,13 +7,13 @@ const router = express.Router();
 router.patch(
   '/api/v1/messages/:messageId/read',
   tokenAuth,
-  messageCtrl.updateMessageReadStatus
+  MessageController.updateMessageReadStatus
 );
 
 router.patch(
   '/api/v1/messages/:messageId/archive',
   tokenAuth,
-  messageCtrl.archiveMessage
+  MessageController.archiveMessage
 );
 
 export default router;

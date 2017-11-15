@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
   *
   * @returns {boolean} validity of token
   */
-export default function verifyTokenValidity() {
+export default function validateToken() {
   const token = localStorage.getItem('jwtToken');
   let expiredToken;
   if (token) {

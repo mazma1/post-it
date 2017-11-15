@@ -1,3 +1,13 @@
+/**
+  * Reset password mail template
+  *
+  * @param {object} req - Request from the client
+  * @param {object} user - User requesting for a password reset
+  * @param {string} resetPasswordHash - Token to validate the authenticity of
+  * the request
+  *
+  * @returns {void} null
+  */
 const resetPasswordTemplate = (req, user, resetPasswordHash) => `
 <div style="width: 100%; height: 100% background: black; padding: 50px 0 100px;">
   <div style="width: 70%; display: block; margin: 0 auto; border: 1px solid transparent; background: #F0F0EF;">

@@ -4,9 +4,9 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import * as actions from '../../../client/actions/signIn';
 import * as types from '../../actions/types';
-import mockLocalStorage from '../mockLocalStorage';
+import MockLocalStorage from '../MockLocalStorage';
 
-Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+Object.defineProperty(window, 'localStorage', { value: MockLocalStorage });
 Object.defineProperty(window.location, 'href', {
   writable: true,
   value: '/'
@@ -106,7 +106,7 @@ describe('Sign In Action\'s', () => {
       const store = mockStore();
 
       store.dispatch(actions.googleSignIn({ token: '1234tycngsgu67890plkm' }))
-      .then((data) => {
+      .then(() => {
         expect(actions.setCurrentUser(user)).toEqual(expectedAction);
       });
     });
@@ -124,7 +124,7 @@ describe('Sign In Action\'s', () => {
       const store = mockStore({ data: { message: 'Returning user' } });
 
       store.dispatch(actions.authorizeGoogleUser({ email: 'mazi@yahoo.com' }))
-        .then((data) => {
+        .then(() => {
           expect(store.getActions()).toEqual(expectedAction);
         });
     });

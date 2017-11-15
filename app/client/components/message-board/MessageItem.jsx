@@ -154,7 +154,7 @@ export class MessageItem extends React.Component {
     const { messages } = this.props;
     this.props.archiveMessage(messageId).then(
       () => {
-        this.props.messages.map((message, index) => {
+        this.props.messages.map((message) => {
           if (message.id === this.props.archivedMessage.id) {
             const messageIndex = messages.indexOf(message);
             messages[messageIndex] = this.props.archivedMessage;

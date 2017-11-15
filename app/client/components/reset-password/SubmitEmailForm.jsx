@@ -6,7 +6,7 @@ import toastr from 'toastr';
 import { connect } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import validator from 'validator';
-import TextField from '../common/FormTextField';
+import TextField from '../partials/FormTextField';
 import { resetLinkRequest } from '../../actions/resetPassword';
 
 
@@ -86,7 +86,7 @@ export class SubmitEmailForm extends React.Component {
       this.props.resetLinkRequest({ email: this.state.email }).then(
         () => {
           toastr.success(
-            `An email has been sent to ${this.state.email} with further instructions`
+            `${this.props.emailStatus.message}! Check your inbox, ${this.state.email} for further instructions`
           );
           this.setState({ email: '', isLoading: false });
         },
@@ -171,8 +171,29 @@ export class SubmitEmailForm extends React.Component {
   }
 }
 
+
+/**
+ * Maps pieces of the redux state to props
+ *
+ * @param {object} state Redux state
+ *
+ * @returns {object} States if email containing reset password link was
+ * successfully sent or not
+ */
+function mapStateToProps(state) {
+  return {
+    emailStatus: state.resetPassword
+  };
+}
+
 SubmitEmailForm.propTypes = {
   resetLinkRequest: PropTypes.func.isRequired,
+  emailStatus: PropTypes.object
 };
 
-export default connect(null, { resetLinkRequest })(SubmitEmailForm);
+
+SubmitEmailForm.defaultProps = {
+  emailStatus: {}
+};
+
+export default connect(mapStateToProps, { resetLinkRequest })(SubmitEmailForm);

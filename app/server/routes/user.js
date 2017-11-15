@@ -1,56 +1,56 @@
 import express from 'express';
-import userController from '../controllers/user';
+import UserController from '../controllers/UserController';
 import tokenAuth from '../middlewares/tokenAuth';
-import { verifyUserId } from '../middlewares/verifyId';
+import verifyUserId from '../middlewares/verifyUserId';
 
 const router = express.Router();
 
 router.post(
   '/api/v1/users/signup',
-  userController.signup
+  UserController.signup
 );
 
 router.post(
   '/api/v1/users/signin',
-  userController.signin
+  UserController.signin
 );
 
 router.post(
   '/api/v1/users/google-auth',
-  userController.googleSignIn
+  UserController.googleSignIn
 );
 
 router.post(
   '/api/v1/users/verify-user',
-  userController.verifyGoogleUser
+  UserController.verifyGoogleUser
 );
 
 router.post(
   '/api/v1/users/reset-password',
-  userController.sendResetPasswordLink
+  UserController.sendResetPasswordLink
 );
 
 router.post(
   '/api/v1/users/new-password',
-  userController.validateResetPasswordToken
+  UserController.validateResetPasswordToken
 );
 
 router.patch(
   '/api/v1/users/update-password/:token',
-  userController.updateUserPassword
+  UserController.updateUserPassword
 );
 
 router.get(
   '/api/v1/users/:userId/groups',
   tokenAuth,
   verifyUserId,
-  userController.getUserGroups
+  UserController.getUserGroups
 );
 
 router.get(
   '/api/v1/users/search',
   tokenAuth,
-  userController.searchForUser
+  UserController.searchForUser
 );
 
 export default router;

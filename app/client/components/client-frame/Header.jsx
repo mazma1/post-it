@@ -17,7 +17,9 @@ import {
 import { logout } from '../../actions/signIn';
 import { submitNewUser } from '../../actions/groupMembers';
 import GroupMembersTable from '../tables/GroupMembersTable';
-import { AddUserBtn, SearchBtn, GroupName } from '../misc/HeaderMisc';
+import AddUserButton from '../partials/AddUserButton';
+import SearchButton from '../partials/SearchButton';
+import GroupName from '../partials/GroupName';
 
 
 /**
@@ -57,22 +59,23 @@ export class Header extends React.Component {
 
 
   /**
-  * Sets an active group id to the local storage when the search icon is clicked
-  *
-  * @returns {void} null
-  */
+    * Sets an active group id to the local storage when the search icon is 
+    * clicked
+    *
+    * @returns {void} null
+    */
   onSearchClick() {
     localStorage.setItem('group', this.props.match.params.groupId);
   }
 
 
   /**
-   * Handles change event of New User input form
-   *
-   * @param {SyntheticEvent} event
-   *
-   * @returns {void}
-   */
+    * Handles change event of New User input form
+    *
+    * @param {SyntheticEvent} event
+    *
+    * @returns {void}
+    */
   onChange(event) {
     this.setState({
       error: '',
@@ -82,12 +85,12 @@ export class Header extends React.Component {
 
 
   /**
-  * Handles Open Modal event
-  *
-  * @param {SyntheticEvent} event
-  *
-  * @returns {void}
-  */
+    * Handles Open Modal event
+    *
+    * @param {SyntheticEvent} event
+    *
+    * @returns {void}
+    */
   openModal(event) {
     event.preventDefault();
     this.setState({
@@ -197,7 +200,7 @@ export class Header extends React.Component {
 
               <div className="col-md-8 col-sm-7 col-xs-9 lg-stack">
                 <ul className="cta">
-                  <SearchBtn
+                  <SearchButton
                     onSearchClick={this.onSearchClick}
                     selectedGroup={selectedGroup}
                   />
@@ -205,7 +208,7 @@ export class Header extends React.Component {
                     <i className="glyphicon glyphicon-user pr6" />
                      @{username}
                   </li>
-                  <AddUserBtn
+                  <AddUserButton
                     selectedGroup={selectedGroup}
                     openModal={this.openModal}
                   />
@@ -223,7 +226,7 @@ export class Header extends React.Component {
 
               <div className="col-md-9 col-sm-7 col-xs-8 mobile-stack">
                 <ul className="cta">
-                  <SearchBtn
+                  <SearchButton
                     onSearchClick={this.onSearchClick}
                     selectedGroup={selectedGroup}
                   />
@@ -260,7 +263,6 @@ export class Header extends React.Component {
           </div>
         </section>
 
-        {/*Add User Modal*/}
         <ModalFrame id="addUser" show={this.state.isOpen}>
           <ModalHeader header="Add New User" onClose={this.closeModal} />
 
@@ -282,7 +284,6 @@ export class Header extends React.Component {
           </ModalFooter>
         </ModalFrame>
 
-        {/*Group Members Modal*/}
         <ModalFrame
           id="groupMembers"
           membersLoading={this.props.membersLoading}

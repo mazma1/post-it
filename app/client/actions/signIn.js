@@ -9,6 +9,34 @@ import setAuthorizationToken from '../utils/setAuthorizationToken';
 
 
 /**
+   * Informs reducers that the request to sign in user finished successfully
+   *
+   * @param {object} user - Information of user who was successfully signed in
+   *
+   * @returns {object} Adds the details of the signed in user to the store
+   */
+export function setCurrentUser(user) {
+  return {
+    type: SET_CURRENT_USER,
+    user
+  };
+}
+
+
+/**
+   * Informs reducer to delete details of the current user from the store
+   *
+   * @returns {object} Action that sets the details of the just signed out user
+   * to an empty object
+   */
+export function deleteCurrentUser() {
+  return {
+    type: DELETE_CURRENT_USER,
+    user: {}
+  };
+}
+
+/**
   * Makes request to sign in a user to the app
   *
   * @param {object} userData - User's required sign in credentials
@@ -87,21 +115,6 @@ export function authorizeGoogleUser(payload) {
 
 
 /**
-   * Informs reducers that the request to sign in user finished successfully
-   *
-   * @param {object} user - Information of user who was successfully signed in
-   *
-   * @returns {object} Adds the details of the signed in user to the store
-   */
-export function setCurrentUser(user) {
-  return {
-    type: SET_CURRENT_USER,
-    user
-  };
-}
-
-
-/**
    * Logs out a user and deletes token from local storage
    *
    * @returns {action} action to delete user's details
@@ -114,16 +127,3 @@ export function logout() {
   };
 }
 
-
-/**
-   * Informs reducer to delete details of the current user from the store
-   *
-   * @returns {object} Action that sets the details of the just signed out user
-   * to an empty object
-   */
-export function deleteCurrentUser() {
-  return {
-    type: DELETE_CURRENT_USER,
-    user: {}
-  };
-}

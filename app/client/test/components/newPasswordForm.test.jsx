@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import TextField from '../../components/common/FormTextField';
+import TextField from '../../components/partials/FormTextField';
 import { NewPasswordForm } from '../../components/reset-password/NewPasswordForm';
 
 describe('<NewPasswordForm />', () => {

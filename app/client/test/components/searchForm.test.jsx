@@ -1,11 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import mockLocalStorage from '../mockLocalStorage';
-import TextField from '../../components/common/FormTextField';
+import MockLocalStorage from '../MockLocalStorage';
+import TextField from '../../components/partials/FormTextField';
 import { SearchForm } from '../../components/search/SearchForm';
 import { SubmitButton } from '../../components/modal/SubModals';
 
-Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+Object.defineProperty(window, 'localStorage', { value: MockLocalStorage });
 
 describe('<SearchForm />', () => {
   let mountedSearchForm;

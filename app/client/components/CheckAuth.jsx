@@ -2,13 +2,13 @@ import React from 'react';
 import toastr from 'toastr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import validToken from '../utils/verifyTokenValidity';
+import validToken from '../utils/validateToken';
 
 /**
     * Higher order component that validates a user before rendering it's
     * composed component
     *
-    * @param {ReactComponent} ComposedComponet - Component it renders if user
+    * @param {ReactComponent} ComposedComponent - Component it renders if user
     * is authenticated
     *
     * @returns {ReactComponent} CheckAuth
