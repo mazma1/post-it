@@ -4,12 +4,14 @@ import { Link } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
-import TextField from '../common/FormTextField';
+import isEmpty from 'lodash/isEmpty';
+import validator from 'validator';
+import TextField from '../partials/FormTextField';
 import { resetLinkRequest } from '../../actions/resetPassword';
 
 
 /**
-  * Displays form for submiting email for password reset
+  * Displays form for submiting email when requesting for password reset
   *
   * @class SubmitEmailForm
   *
@@ -28,12 +30,14 @@ export class SubmitEmailForm extends React.Component {
     super(props);
     this.state = {
       email: '',
-      error: {}
+      error: {},
+      isLoading: false,
     };
 
     this.onChange = this.onChange.bind(this);
     this.submitResetRequest = this.submitResetRequest.bind(this);
   }
+
 
   /**
    * Handles change event of email input form
@@ -47,6 +51,27 @@ export class SubmitEmailForm extends React.Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
+
+  /**
+   * Handles input field validation
+   *
+   * @returns {boolean} If an input is valid or not
+   */
+  isValid() {
+    const error = {};
+    if (this.state.email.trim().length === 0) {
+      error.email = 'Email field cannot be empty';
+    }
+    if (this.state.email.trim().length > 0
+          && !validator.isEmail(this.state.email)
+        ) {
+      error.email = 'Invalid email address';
+    }
+    this.setState({ error });
+    return isEmpty(error);
+  }
+
+
   /**
    * Sends email containg password reset instructions to user
    *
@@ -56,22 +81,26 @@ export class SubmitEmailForm extends React.Component {
    */
   submitResetRequest(event) {
     event.preventDefault();
-    this.setState({ error: {} });
-    this.props.resetLinkRequest({ email: this.state.email }).then(
-      () => {
-        toastr.success(`An email has been sent to ${this.state.email} with further instructions`);
-        this.setState({ email: '' });
-      },
-      ({ response }) => {
-        this.setState({ error: response.data });
-      }
-    ).catch(() => {
-      toastr.error('Unable to submit request, please try again');
-    });
+    if (this.isValid()) {
+      this.setState({ error: {}, isLoading: true });
+      this.props.resetLinkRequest({ email: this.state.email }).then(
+        () => {
+          toastr.success(
+            `${this.props.emailStatus.message}! Check your inbox, ${this.state.email} for further instructions`
+          );
+          this.setState({ email: '', isLoading: false });
+        },
+        ({ response }) => {
+          this.setState({ error: response.data, isLoading: false });
+        }
+      ).catch(() => {
+        toastr.error('Unable to submit request, please try again');
+      });
+    }
   }
 
   /**
-   * Render
+   * Renders form to submit email
    *
    * @returns {ReactElement} Email Form markup
    */
@@ -81,9 +110,11 @@ export class SubmitEmailForm extends React.Component {
       <div className="background">
         <div className="container">
           <div className="row">
-            <div className="card-panel col s12 m8 offset-m2 l6 offset-l3 z-depth-5 signin-card">
+            <div
+              className="card-panel col s12 m8 offset-m2 l6 offset-l3 z-depth-5 signin-card"
+            >
               <header className="auth-header pwd-reset-auth-header">
-                <h5 className="cSubmit">Request Password Reset</h5>
+                <h5 className="center">Request Password Reset</h5>
               </header>
 
               <form
@@ -114,17 +145,18 @@ export class SubmitEmailForm extends React.Component {
 
                 <div className="row">
                   <div className="input-field col s12">
-                    <a
+                    <button
                       className="btn auth-btn waves-effect waves-light col s12"
+                      disabled={this.state.isLoading}
                       onClick={this.submitResetRequest}
                     >
                       Request Reset
-                    </a>
+                    </button>
                   </div>
                 </div>
 
-                <div className="cSubmit call-to-sign-in">
-                  <p className="cSubmit">Remember your password?
+                <div className="center call-to-sign-in">
+                  <p className="center">Remember your password?
                     <Link to="/signin"> Sign In</Link>
                   </p>
                 </div>
@@ -139,8 +171,29 @@ export class SubmitEmailForm extends React.Component {
   }
 }
 
+
+/**
+ * Maps pieces of the redux state to props
+ *
+ * @param {object} state Redux state
+ *
+ * @returns {object} States if email containing reset password link was
+ * successfully sent or not
+ */
+function mapStateToProps(state) {
+  return {
+    emailStatus: state.resetPassword
+  };
+}
+
 SubmitEmailForm.propTypes = {
   resetLinkRequest: PropTypes.func.isRequired,
+  emailStatus: PropTypes.object
 };
 
-export default connect(null, { resetLinkRequest })(SubmitEmailForm);
+
+SubmitEmailForm.defaultProps = {
+  emailStatus: {}
+};
+
+export default connect(mapStateToProps, { resetLinkRequest })(SubmitEmailForm);

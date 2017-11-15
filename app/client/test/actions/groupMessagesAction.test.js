@@ -50,16 +50,6 @@ describe('Group Messages Action\'s', () => {
     });
   });
 
-  describe('#getGroupMessagesCount', () => {
-    it('should make a request to get the count of messages in a group', () => {
-      mock.onGet('/api/v1/groups/1/messages')
-        .reply(201, {});
-      const store = mockStore();
-
-      store.dispatch(actions.getGroupMessagesCount(1));
-    });
-  });
-
   describe('#updateReadStatus', () => {
     it('should make a request to update a user that has read a message', () => {
       mock.onPatch('/api/v1/messages/1/read');
@@ -70,7 +60,8 @@ describe('Group Messages Action\'s', () => {
       };
       const store = mockStore();
 
-      store.dispatch(actions.updateReadStatus({ groupId: 1, messageId: 1 })).then(() => {
+      store.dispatch(actions.updateReadStatus({ groupId: 1, messageId: 1 }))
+      .then(() => {
         expect(actions.setGroupMessages({})).toEqual(expectedAction);
       });
     });
@@ -79,19 +70,23 @@ describe('Group Messages Action\'s', () => {
   describe('#archiveMessage', () => {
     it('should make a request to archive a message', () => {
       mock.onPatch('/api/v1/messages/1/archive');
+      const expectedAction = {
+        type: types.SET_ARCHIVED_MESSAGE,
+        archivedMessage: {}
+      };
       const store = mockStore();
 
-      store.dispatch(actions.updateReadStatus({ groupId: 1, messageId: 1 })).then(() => {
-        store.dispatch(actions.archiveMessage(1));
+      store.dispatch(actions.archiveMessage(1))
+      .then(() => {
+        expect(actions.setArchivedMessage({})).toEqual(expectedAction);
       });
     });
   });
 
   describe('#fetchingGroupMessages', () => {
-    it('should set group messages as empty when request has not been fulfilled', () => {
+    it('should inform the reducer that request to fetch group messages has begun', () => {
       const expectedAction = {
-        type: types.FETCHING_GROUP_MESSAGES,
-        messages: []
+        type: types.FETCHING_GROUP_MESSAGES
       };
       expect(actions.fetchingGroupMessages()).toEqual(expectedAction);
     });

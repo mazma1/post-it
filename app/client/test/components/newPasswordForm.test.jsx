@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import TextField from '../../components/common/FormTextField';
+import TextField from '../../components/partials/FormTextField';
 import { NewPasswordForm } from '../../components/reset-password/NewPasswordForm';
 
 describe('<NewPasswordForm />', () => {
@@ -49,6 +49,6 @@ describe('<NewPasswordForm />', () => {
     const event = { preventDefault: jest.fn() };
     const submitNewPasswordSpy = jest.spyOn(newPasswordForm().instance(), 'submitNewPassword');
     updatePasswordButton.simulate('click', event);
-    expect(submitNewPasswordSpy.mock.calls.length).toBe(1);
+    expect(submitNewPasswordSpy.mock.calls.length).toBe(2);
   });
 });

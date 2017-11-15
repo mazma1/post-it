@@ -1,17 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-export const Brand = props => (
-  <div id="brand-name">
-    {props.brandName}
-  </div>
-);
-
-
-export const MobileToggleBtn = () => (
+/**
+  * Displays the sidebar toggle button on mobile devices
+  *
+  * @returns {JSX} Toggle button mark up
+  */
+const MobileToggleButton = () => (
   <button
     type="button"
-    className="mobile-nav-btn  navbar-toggle collapsed"
+    className="mobile-nav-btn navbar-toggle collapsed"
     data-toggle="collapse"
     data-target="#menu-content"
     aria-expanded="false"
@@ -24,6 +21,4 @@ export const MobileToggleBtn = () => (
   </button>
 );
 
-Brand.propTypes = {
-  brandName: PropTypes.string.isRequired
-};
+export default MobileToggleButton;

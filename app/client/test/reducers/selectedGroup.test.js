@@ -2,7 +2,7 @@ import selectedGroupReducer from '../../../client/reducers/selectedGroup';
 import * as types from '../../actions/types';
 
 
-describe('Selected Grroup Reducer', () => {
+describe('Selected Group Reducer', () => {
   it('should return initial state', () => {
     expect(selectedGroupReducer(undefined, {})).toEqual({});
   });

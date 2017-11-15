@@ -1,14 +1,47 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
-import { SET_CURRENT_USER, DELETE_CURRENT_USER } from './types';
+import toastr from 'toastr';
+import {
+  SET_CURRENT_USER,
+  DELETE_CURRENT_USER,
+  SET_GOOGLE_AUTH_STATUS } from './types';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 
+
 /**
-  * Makes request to sign in a user
+   * Informs reducers that the request to sign in user finished successfully
+   *
+   * @param {object} user - Information of user who was successfully signed in
+   *
+   * @returns {object} Adds the details of the signed in user to the store
+   */
+export function setCurrentUser(user) {
+  return {
+    type: SET_CURRENT_USER,
+    user
+  };
+}
+
+
+/**
+   * Informs reducer to delete details of the current user from the store
+   *
+   * @returns {object} Action that sets the details of the just signed out user
+   * to an empty object
+   */
+export function deleteCurrentUser() {
+  return {
+    type: DELETE_CURRENT_USER,
+    user: {}
+  };
+}
+
+/**
+  * Makes request to sign in a user to the app
   *
-  * @param {object} userData user's required sign in credentials
+  * @param {object} userData - User's required sign in credentials
   *
-  * @returns {response} request response
+  * @returns {promise} Authentication token
   */
 export function userSignInRequest(userData) {
   return dispatch => axios.post('/api/v1/users/signin', userData)
@@ -22,77 +55,75 @@ export function userSignInRequest(userData) {
 
 
 /**
-  * Makes request to verify if a google user is a new or returning user
-  *
-  * @param {object} email user's email
-  *
-  * @returns {response} request response
-  */
-export function verifyGoogleUser(email) {
-  const reqBody = { email };
-  return dispatch => axios.post('/api/v1/users/verifyGoogleUser', reqBody);
+   * Informs reducers that the request to verify if a Google user is a new or
+   * returning user finished successfully
+   *
+   * @param {string} status - States whether a user is new or returning
+   *
+   * @returns {object} Action that sends the status to the store
+   */
+export function setGoogleAuthStatus(status) {
+  return {
+    type: SET_GOOGLE_AUTH_STATUS,
+    status
+  };
 }
 
 
 /**
-  * Makes request to authenticate a user via Google API
+  * Makes request to authenticate a user signing in via Google
   *
-  * @param {object} tokenId user's google token id to be verified
+  * @param {object} userDetails - Details of user gotten from the Google
+  * authentication API
   *
-  * @returns {response} request response
+  * @returns {promise} Authentication token
   */
 export function googleSignIn(userDetails) {
-  const reqBody = {
-    tokenId: userDetails.token || userDetails,
-    phoneNumber: userDetails.phoneNumber || null
-  };
-  return dispatch => axios.post('/api/v1/users/googleAuth', reqBody)
+  return dispatch => axios.post('/api/v1/users/google-auth', userDetails)
     .then((res) => {
       const { token } = res.data;
       localStorage.setItem('jwtToken', token);
       setAuthorizationToken(token);
       dispatch(setCurrentUser(jwt.decode(token)));
+      window.location.href = '/message-board';
     });
 }
 
+
 /**
-   * Informs reducers that the request to sign in user finished successfully
-   *
-   * @param {object} user user's information
-   *
-   * @returns {action} action type and payload
-   */
-export function setCurrentUser(user) {
-  return {
-    type: SET_CURRENT_USER,
-    user
-  };
+  * Makes request to verify if a Google user is a new or returning user, and
+  * proceed to sign a returning user in
+  *
+  * @param {object} payload - Details of user to be verified
+  *
+  * @returns {promise} Status of the user
+  */
+export function authorizeGoogleUser(payload) {
+  const { email, userDetails } = payload;
+  return dispatch => axios.post(
+    '/api/v1/users/verify-user', { email }
+  ).then((res) => {
+    const status = res.data.message;
+    dispatch(setGoogleAuthStatus(status));
+    if (status === 'Returning user') {
+      dispatch(googleSignIn(userDetails));
+    }
+  }).catch(() => {
+    toastr.error('Unable to verify user, please try again');
+  });
 }
 
 
 /**
    * Logs out a user and deletes token from local storage
    *
-   * @returns {action} action to delete user details
+   * @returns {action} action to delete user's details
    */
 export function logout() {
   return (dispatch) => {
-    window.location.href = '/';
     localStorage.removeItem('jwtToken');
     setAuthorizationToken(false);
     dispatch(deleteCurrentUser());
   };
 }
 
-
-/**
-   * Informs reducer to delete details of the current user from the store
-   *
-   * @returns {action} action type and payload
-   */
-export function deleteCurrentUser() {
-  return {
-    type: DELETE_CURRENT_USER,
-    user: {}
-  };
-}

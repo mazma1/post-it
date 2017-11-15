@@ -26,7 +26,6 @@ describe('Group Members Reducer', () => {
 
   it('should act on an action with the type SET_GROUP_MEMBERS', () => {
     const membersDetails = {
-      group_name: 'Cohort 29',
       members: { id: 1, name: 'mazma' }
     };
     const action = {
@@ -36,7 +35,6 @@ describe('Group Members Reducer', () => {
     expect(groupMembersReducer(undefined, action)).toEqual(
       {
         isLoading: false,
-        group_name: action.membersDetails.group_name,
         members: action.membersDetails.members
       }
     );

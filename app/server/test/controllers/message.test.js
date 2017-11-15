@@ -67,8 +67,8 @@ describe('Message Endpoint', () => {
           .type('form')
           .send({ read: 'mazma', username: 'mary' })
           .end((err, res) => {
-            res.error.status.should.equal(500);
-            res.error.text.should.equal('Internal server error');
+            res.status.should.equal(500);
+            res.body.should.have.property('error').eql('Internal server error');
             done();
           });
       });

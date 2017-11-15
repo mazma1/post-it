@@ -1,24 +1,22 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import classnames from 'classnames';
-import mapKeys from 'lodash/mapKeys';
 import PropTypes from 'prop-types';
 import capitalizeFirstLetter from '../../../utils/capitalizeFirstLetter';
 
 /**
-  * Displays a list of groups a user belongs to on the message board
+  * Displays a list of groups a user belongs to on the sidebar
   *
-  * @param {object} props User's groups details and required helper functions
+  * @param {object} props - User's groups details and required helper functions
   *
   * @returns {JSX} Unordered list of a user's groups (if any),
   * Defined 'emptyGroup' constant if a user belongs to no group,
   * A 'Loading...' indicator when the groups are still being fetched
   */
-function GroupList(props) {
+const GroupList = (props) => {
   const { hasGroup } = props.userGroups;
   const groupsArray = props.userGroups.groups;
-  const { unreadCount, onGroupSelect } = props;
-  const mappedUnreadCount = mapKeys(unreadCount, 'id');
+  const { onGroupSelect } = props;
   let groups;
 
   if (props.userGroups.isLoading === true) {
@@ -28,32 +26,33 @@ function GroupList(props) {
   const emptyGroup = (
     <div className="loading-padding">
       <p>No groups available.</p>
-      <a
-        href="#createGroup"
-        data-toggle="modal" data-target="#createGroup"
-        onClick={props.openModal}
+      <Link
+        to={{
+          pathname: '/message-board/create-group',
+          state: { previousPath: props.pathName }
+        }}
       >
         Click to create new group
-      </a>
+      </Link>
     </div>
   );
 
   const createGroup = (
     <li role="presentation" className="new-group">
-      <a
+      <Link
+        to={{
+          pathname: '/message-board/create-group',
+          state: { previousPath: props.pathName }
+        }}
         id="createNewGroup"
-        href="#createGroup"
-        data-toggle="modal" data-target="#createGroup"
-        onClick={props.openModal}
       >
         Create New Group
-      </a>
+      </Link>
     </li>
   );
 
   if (groupsArray) {
     groups = groupsArray.map((group) => {
-      const id = group.id;
       const isSelected = props.selectedGroup.id === group.id;
       const onGroupClick = () => onGroupSelect({
         id: group.id,
@@ -68,16 +67,7 @@ function GroupList(props) {
           key={group.id}
           className={classnames({ active: isSelected })}
         >
-          <NavLink to="#">
-            {capitalizeFirstLetter(group.name)}
-            {
-              mappedUnreadCount[id] && mappedUnreadCount[id].unreadCount > 0 ?
-                <span className="new badge">
-                  {mappedUnreadCount[id].unreadCount}
-                </span>
-              : null
-            }
-          </NavLink>
+          <Link to="#">{capitalizeFirstLetter(group.name)}</Link>
         </li>
       );
     });
@@ -94,14 +84,13 @@ function GroupList(props) {
       </ul>
     </div>
   );
-}
+};
 
 GroupList.propTypes = {
-  unreadCount: PropTypes.array,
   selectedGroup: PropTypes.object,
-  openModal: PropTypes.func.isRequired,
   userGroups: PropTypes.object.isRequired,
   onGroupSelect: PropTypes.func.isRequired,
+  pathName: PropTypes.string.isRequired
 };
 
 GroupList.defaultProps = {

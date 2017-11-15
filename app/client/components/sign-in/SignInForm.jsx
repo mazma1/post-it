@@ -5,12 +5,12 @@ import classnames from 'classnames';
 import {
   Link,
   withRouter } from 'react-router-dom';
-import TextField from '../common/FormTextField';
-import validateInput from '../../utils/signinValidation';
+import TextField from '../partials/FormTextField';
+import signInValidation from '../../utils/signInValidation';
 
 
 /**
- * Display sign in form
+ * Display Sign In form
  *
  * @class SignInForm
  *
@@ -21,7 +21,7 @@ export class SignInForm extends React.Component {
   /**
      * Creates an instance of SignInForm
      *
-     * @param {any} props
+     * @param {object} props
      *
      * @memberof SignInForm
      */
@@ -34,7 +34,7 @@ export class SignInForm extends React.Component {
     };
 
     this.onChange = this.onChange.bind(this);
-    this.onSignInClick = this.onSignInClick.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
 
@@ -49,6 +49,7 @@ export class SignInForm extends React.Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
+
   /**
    * Makes request to authenticate a user
    *
@@ -56,7 +57,7 @@ export class SignInForm extends React.Component {
    *
    * @returns {void}
    */
-  onSignInClick(event) {
+  onSubmit(event) {
     event.preventDefault();
     if (this.isValid()) {
       this.setState({ errors: {} });
@@ -77,7 +78,7 @@ export class SignInForm extends React.Component {
    * @returns {boolean} If an input is valid or not
    */
   isValid() {
-    const { errors, valid } = validateInput(this.state);
+    const { errors, valid } = signInValidation(this.state);
     if (!valid) {
       this.setState({ errors });
     }
@@ -86,14 +87,14 @@ export class SignInForm extends React.Component {
 
 
   /**
-   * Render
+   * Renders the component
    *
    * @returns {ReactElement} Sign in form markup
    */
   render() {
     const { errors } = this.state;
     return (
-      <form className="col s12 auth-form" onSubmit={this.onSignInClick}>
+      <form className="col s12 auth-form" onSubmit={this.onSubmit}>
         <div className="row">
           <div
             className={classnames(
@@ -142,7 +143,8 @@ export class SignInForm extends React.Component {
           <div className="input-field col s12">
             <a
               className="btn auth-btn waves-effect waves-light col s12"
-              onClick={this.onSignInClick}
+              onClick={this.onSubmit}
+              type="submit"
             >
               Sign In
             </a>

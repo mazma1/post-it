@@ -1,8 +1,6 @@
-// mock localStorage
-
 let localStorage = {};
 
-export default {
+const MockLocalStorage = {
   setItem(key, value) {
     return Object.assign(localStorage, { [key]: value });
   },
@@ -16,3 +14,5 @@ export default {
     localStorage = {};
   }
 };
+
+export default MockLocalStorage;

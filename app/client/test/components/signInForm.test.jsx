@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import TextField from '../../components/common/FormTextField';
+import TextField from '../../components/partials/FormTextField';
 import { SignInForm } from '../../components/sign-in/SignInForm';
 
 
@@ -30,11 +30,11 @@ describe('<SignInForm />', () => {
     expect(onChangeSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should mount with onSignInClick()', () => {
+  it('should mount with onSubmit()', () => {
     const event = { preventDefault: jest.fn() };
-    const onSignInClickSpy = jest.spyOn(signInForm().instance(), 'onSignInClick');
-    signInForm().instance().onSignInClick(event);
-    expect(onSignInClickSpy).toHaveBeenCalledTimes(1);
+    const onSubmitSpy = jest.spyOn(signInForm().instance(), 'onSubmit');
+    signInForm().instance().onSubmit(event);
+    expect(onSubmitSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should always render the sign in form', () => {
@@ -42,10 +42,10 @@ describe('<SignInForm />', () => {
     expect(signInForm().find(TextField).length).toBe(2);
   });
 
-  it('should call onSignInClick() when the form is submitted', () => {
+  it('should call onSubmit() when the form is submitted', () => {
     const submitButton = signInForm().find('.auth-btn');
     const event = { preventDefault: jest.fn() };
-    const signInSubmitSpy = jest.spyOn(signInForm().instance(), 'onSignInClick');
+    const signInSubmitSpy = jest.spyOn(signInForm().instance(), 'onSubmit');
     submitButton.simulate('click', event);
     expect(signInSubmitSpy.mock.calls.length).toBe(2);
   });

@@ -1,11 +1,13 @@
 import { SET_SELECTED_GROUP } from '../actions/types';
 
 /**
-  * Makes request to sign up a user
+  * Updates the redux store with details of an active group
   *
-  * @param {object} group group id and name of selected group
+  * @param {object} group - Object that contains the group id and name
+  * of selected group
   *
-  * @returns {action} action type and payload
+  * @returns {object} Action that sends the details of the active group to the
+  * reducers
   */
 export default function setSelectedGroup(group) {
   return {

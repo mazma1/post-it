@@ -2,17 +2,12 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { mount, shallow } from 'enzyme';
 import { Sidebar } from '../../components/client-frame/sidebar/Sidebar';
-import { Brand, MobileToggleBtn } from '../../components/misc/SidebarMisc';
+import Brand from '../../components/partials/Brand';
+import MobileToggleButton from '../../components/partials/MobileToggleButton';
 import GroupList from '../../components/client-frame/sidebar/GroupList';
-import ModalFrame from '../../components/modal/ModalFrame';
-import {
-  ModalHeader,
-  ModalBody,
-  ModalFooter
-} from '../../components/modal/SubModals';
-import mockLocalStorage from '../mockLocalStorage';
+import MockLocalStorage from '../MockLocalStorage';
 
-Object.defineProperty(window, 'localStorage', { value: mockLocalStorage });
+Object.defineProperty(window, 'localStorage', { value: MockLocalStorage });
 
 describe('<Sidebar />', () => {
   let mountedSidebar;
@@ -24,9 +19,9 @@ describe('<Sidebar />', () => {
     getGroupMessages: jest.fn(),
     getGroupMessagesCount: jest.fn(),
     signedInUser: undefined,
-    unreadCount: undefined,
     selectedGroup: undefined,
     userGroups: undefined,
+    pathName: '',
     history: { push: jest.fn() },
     match: {}
   };
@@ -54,10 +49,6 @@ describe('<Sidebar />', () => {
       id: 1,
       name: 'Cohort 29'
     };
-    props.unreadCount = [{
-      id: 1,
-      unreadCount: '2'
-    }];
     props.signedInUser = {
       isAuthenticated: true,
       user: {
@@ -88,28 +79,12 @@ describe('<Sidebar />', () => {
     expect(CWMSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should mount with onChange()', () => {
-    const event = { target: {} };
-    const onChangeSpy = jest.spyOn(Sidebar.prototype, 'onChange');
-    const shallowSidebar = shallow(<Sidebar {...props} />);
-    shallowSidebar.instance().onChange(event);
-    expect(onChangeSpy).toHaveBeenCalledTimes(1);
-  });
-
   it('should mount with onGroupSelect()', () => {
     const group = { id: 1 };
     const onGroupSelectSpy = jest.spyOn(Sidebar.prototype, 'onGroupSelect');
     const shallowSidebar = shallow(<Sidebar {...props} />);
     shallowSidebar.instance().onGroupSelect(group);
     expect(onGroupSelectSpy).toHaveBeenCalledTimes(1);
-  });
-
-  it('should mount with getUnreadCount()', () => {
-    const groups = [{ id: 1, name: 'Cohort 29' }];
-    const getUnreadCountSpy = jest.spyOn(Sidebar.prototype, 'getUnreadCount');
-    const shallowSidebar = shallow(<Sidebar {...props} />);
-    shallowSidebar.instance().getUnreadCount(groups);
-    expect(getUnreadCountSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should always render <Brand/> with one prop', () => {
@@ -120,26 +95,19 @@ describe('<Sidebar />', () => {
     expect(brandDisplay.props().brandName).toBe('Post It');
   });
 
-  it('should always render <MobileToggleBtn /> with no prop', () => {
-    expect(sidebar().find(MobileToggleBtn).length).toBe(1);
+  it('should always render <MobileToggleButton /> with no prop', () => {
+    expect(sidebar().find(MobileToggleButton).length).toBe(1);
 
-    const mobileToggleBtnDisplay = sidebar().find(MobileToggleBtn);
+    const mobileToggleBtnDisplay = sidebar().find(MobileToggleButton);
     expect(Object.keys(mobileToggleBtnDisplay.props()).length).toBe(0);
   });
 
-  it('should always render <GroupList/> with five props', () => {
+  it('should always render <GroupList/> with six props', () => {
     expect(sidebar().find(GroupList).length).toBe(1);
 
     const groupListDisplay = sidebar().find(GroupList);
-    expect(Object.keys(groupListDisplay.props()).length).toBe(5);
+    expect(Object.keys(groupListDisplay.props()).length).toBe(6);
     expect(groupListDisplay.props().userGroups).toBe(props.userGroups);
     expect(groupListDisplay.props().selectedGroup).toBe(props.selectedGroup);
-  });
-
-  it('should always render the createGroup Modal', () => {
-    expect(sidebar().find(ModalFrame).length).toBe(1);
-    expect(sidebar().find(ModalHeader).length).toBe(1);
-    expect(sidebar().find(ModalBody).length).toBe(1);
-    expect(sidebar().find(ModalFooter).length).toBe(1);
   });
 });

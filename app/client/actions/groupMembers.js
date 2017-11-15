@@ -1,18 +1,16 @@
 import axios from 'axios';
+import toastr from 'toastr';
 import { SET_GROUP_MEMBERS, FETCHING_GROUP_MEMBERS } from '../actions/types';
 
 
 /**
    * Makes request to get the members of a group
    *
-   * @param {number} groupId group id
+   * @param {number} groupId - Id of group whose members are being fetched
    *
-   * @returns {response} request response
+   * @returns {promise} An array of the members in a specified group
    */
 export function getGroupMembers(groupId) {
-  // if (!groupId) {
-  //   return dispatch => dispatch(setGroupMembers({}));
-  // }
   return (dispatch) => {
     dispatch(fetchingGroupMembers);
     return axios.get(`/api/v1/groups/${groupId}/members`)
@@ -20,7 +18,7 @@ export function getGroupMembers(groupId) {
         const membersDetails = res.data;
         dispatch(setGroupMembers(membersDetails));
       })
-      .catch(error => (error));
+      .catch(error => toastr.error(`Ooops! ${error.response.data.error}`));
   };
 }
 
@@ -28,29 +26,29 @@ export function getGroupMembers(groupId) {
 /**
    * Makes request to add a user to a group
    *
-   * @param {number} groupId group id
-   * @param {string} identifier username/email of user to be added to group
+   * @param {number} groupId - Id of group user will be added to
+   * @param {string} identifier - Username/email of user to be added to group
    *
-   * @returns {response} request response
+   * @returns {promise} A message that indicates that user was successfully
+   * added to group
    */
 export function submitNewUser({ groupId, identifier }) {
-  const reqBody = { identifier };
-  return dispatch => axios.post(`/api/v1/groups/${groupId}/user`, reqBody)
-    .then((res) => {
-      dispatch(getGroupMembers(groupId));
-    });
+  return dispatch => axios.post(
+    `/api/v1/groups/${groupId}/user`, { identifier }
+  ).then((res) => {
+    dispatch(getGroupMembers(groupId));
+  });
 }
 
 
  /**
    * Informs reducer that request to fetch group members has begun
    *
-   * @returns {action} action type and payload
+   * @returns {object} Action with type FETCHING_GROUP_MEMBERS
    */
 export function fetchingGroupMembers() {
   return {
-    type: FETCHING_GROUP_MEMBERS,
-    members: []
+    type: FETCHING_GROUP_MEMBERS
   };
 }
 
@@ -58,9 +56,10 @@ export function fetchingGroupMembers() {
    * Informs reducers that the request to fetch a group's members finished
    * successfully
    *
-   * @param {object} membersDetails details of members
+   * @param {object} membersDetails details of members to add to redux store
    *
-   * @returns {action} action type and payload
+   * @returns {object} Action that updates the store with the members in a
+   * specified group
    */
 export function setGroupMembers(membersDetails) {
   return {

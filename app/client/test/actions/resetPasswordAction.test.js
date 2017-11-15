@@ -2,6 +2,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
+import * as types from '../../actions/types';
 import * as actions from '../../../client/actions/resetPassword';
 
 const middlewares = [thunk];
@@ -14,9 +15,15 @@ describe('Reset Password Action\'s', () => {
       mock.onPost('/api/v1/users/resetpassword')
         .reply(201, {});
 
-      const store = mockStore({ isAuthenticated: [] });
+      const expectedAction = {
+        type: types.REQUEST_NEW_PASSWORD_SUCCESS,
+        message: 'Email sent'
+      };
+      const store = mockStore();
 
-      store.dispatch(actions.resetLinkRequest());
+      store.dispatch(actions.resetLinkRequest()).then(() => {
+        expect(store.getActions()).toEqual(expectedAction);
+      });
     });
   });
 
@@ -25,23 +32,15 @@ describe('Reset Password Action\'s', () => {
       mock.onPost('/api/v1/users/newpassword')
         .reply(201, {});
 
-      const store = mockStore({ isAuthenticated: [] });
-
-      store.dispatch(actions.validateResetPasswordToken());
-    });
-  });
-
-  describe('#updatePassword', () => {
-    it('should make request to update user\'s password', () => {
-      const newPasswordDetails = {
-        token: '56789iuyhghjkl'
+      const store = mockStore();
+      const expectedAction = {
+        type: types.SET_TOKEN_STATUS,
+        message: 'Email sent'
       };
-      mock.onPost('/api/v1/users/updatepassword/sdfhji987trdj')
-        .reply(201, {});
 
-      const store = mockStore({ isAuthenticated: [] });
-
-      store.dispatch(actions.updatePassword(newPasswordDetails));
+      store.dispatch(actions.validateResetPasswordToken()).then(() => {
+        expect(store.getActions()).toEqual(expectedAction);
+      });
     });
   });
 });

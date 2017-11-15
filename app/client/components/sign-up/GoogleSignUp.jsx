@@ -5,25 +5,25 @@ import classnames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import TextField from '../common/FormTextField';
-import { googleSignIn } from '../../actions/signIn';
+import TextField from '../partials/FormTextField';
+import userSignUpRequest from '../../actions/signUp';
 
 
 /**
-  * Displays GoogleSignIn
+  * Displays form to collect user's phone number while signing up via Google
   *
-  * @class GoogleSignIn
+  * @class GoogleSignUp
   *
   * @extends {React.Component}
   */
-export class GoogleSignIn extends React.Component {
+export class GoogleSignUp extends React.Component {
 
   /**
-     * Creates an instance of GoogleSignIn
+     * Creates an instance of GoogleSignUp
      *
-     * @param {any} props
+     * @param {object} props
      *
-     * @memberof GoogleSignIn
+     * @memberof GoogleSignUp
      */
   constructor(props) {
     super(props);
@@ -34,8 +34,9 @@ export class GoogleSignIn extends React.Component {
     };
 
     this.onChange = this.onChange.bind(this);
-    this.submitPhoneNumber = this.submitPhoneNumber.bind(this);
+    this.registerGoogleUser = this.registerGoogleUser.bind(this);
   }
+
 
   /**
    * Handles change event of phone number input field
@@ -48,27 +49,29 @@ export class GoogleSignIn extends React.Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
+
   /**
-    * Submits phone number of users who register via Google
+    * Signs up a new Google user
     *
     * @param {SyntheticEvent} event
     *
     * @returns {void} null
     */
-  submitPhoneNumber(event) {
+  registerGoogleUser(event) {
     event.preventDefault();
     this.setState({ errors: {} });
     if (this.isValid()) {
-      const { token } = this.props;
       const { phoneNumber } = this.state;
-      this.props.googleSignIn({ token, phoneNumber }).then(
+      const userDetails = { ...this.props.userDetails, phoneNumber };
+      this.props.userSignUpRequest(userDetails).then(
         () => {
-          toastr.success('Regitration was successful. Welcome to Post It!');
+          toastr.success('Registration was successful. Welcome to Post It!');
           this.props.history.push('/message-board');
         }
       );
     }
   }
+
 
   /**
     * Validates user's phone number to be submitted
@@ -85,10 +88,6 @@ export class GoogleSignIn extends React.Component {
       errors.phoneNumber = 'Phone Number cannot be empty';
       return this.setState({ errors });
     }
-    if (this.state.phoneNumber.length !== 11) {
-      errors.phoneNumber = 'Phone number must be 11 digits';
-      return this.setState({ errors });
-    }
     if (isNaN(this.state.phoneNumber.trim())) {
       errors.phoneNumber = 'Phone number must contain only numbers';
       return this.setState({ errors });
@@ -96,8 +95,9 @@ export class GoogleSignIn extends React.Component {
     return isEmpty(errors);
   }
 
+
   /**
-    * Render
+    * Renders component
     *
     * @returns {ReactElement} Google Sign In markup
     */
@@ -107,7 +107,9 @@ export class GoogleSignIn extends React.Component {
       <div className="background">
         <div className="container">
           <div className="row">
-            <div className="card-panel col s12 m8 offset-m2 l6 offset-l3 z-depth-5 signin-card">
+            <div
+              className="card-panel col s12 m8 offset-m2 l6 offset-l3 z-depth-5 signin-card"
+            >
               <header className="auth-header center">
                 <h5>You're almost there!</h5><br />
                 <p className="social-login">
@@ -115,7 +117,10 @@ export class GoogleSignIn extends React.Component {
                 </p>
               </header>
 
-              <form className="col s10 offset-s1 auth-form" onSubmit={this.submitPhoneNumber}>
+              <form
+                className="col s10 offset-s1 auth-form"
+                onSubmit={this.registerGoogleUser}
+              >
                 <div className="row">
                   <div
                     className={classnames(
@@ -128,7 +133,7 @@ export class GoogleSignIn extends React.Component {
                     <TextField
                       icon="phone"
                       error={errors.phoneNumber}
-                      label="Phone Number"
+                      label="Phone Number (Eg: 2348065432345)"
                       onChange={this.onChange}
                       value={this.state.phoneNumber}
                       field="phoneNumber"
@@ -142,7 +147,7 @@ export class GoogleSignIn extends React.Component {
                   <div className="input-field col s12">
                     <a
                       className="btn auth-btn waves-effect waves-light col s12"
-                      onClick={this.submitPhoneNumber}
+                      onClick={this.registerGoogleUser}
                     >
                       Submit
                     </a>
@@ -160,10 +165,10 @@ export class GoogleSignIn extends React.Component {
   }
 }
 
-GoogleSignIn.propTypes = {
-  googleSignIn: PropTypes.func.isRequired,
+GoogleSignUp.propTypes = {
+  userSignUpRequest: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
-  token: PropTypes.string.isRequired
+  userDetails: PropTypes.object.isRequired
 };
 
-export default withRouter(connect(null, { googleSignIn })(GoogleSignIn));
+export default withRouter(connect(null, { userSignUpRequest })(GoogleSignUp));

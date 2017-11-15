@@ -3,7 +3,6 @@ import moment from 'moment';
 import toastr from 'toastr';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import mapKeys from 'lodash/mapKeys';
 import { connect } from 'react-redux';
 import lodashSplit from 'lodash/split';
 import includes from 'lodash/includes';
@@ -12,11 +11,11 @@ import { withRouter } from 'react-router-dom';
 import MessageForm from './MessageForm';
 import {
   getGroupMessagesCount,
-  archiveMessage } from '../../actions/groupMessages';
+  archiveMessage, updateArchivedMessage } from '../../actions/groupMessages';
 
 
 /**
-  * Displays Message Item
+  * Displays a single message on the message board
   *
   * @class MessageItem
   *
@@ -27,7 +26,7 @@ export class MessageItem extends React.Component {
    /**
     * Creates an instance of MessageItem
     *
-    * @param {any} props
+    * @param {object} props
     *
     * @memberof MessageForm
     */
@@ -39,7 +38,7 @@ export class MessageItem extends React.Component {
       unreadMsgs: [],
       archivedMsgs: [],
       currentPage: 1,
-      messagesPerPage: 5
+      messagesPerPage: 10
     };
 
     this.onCategorySelect = this.onCategorySelect.bind(this);
@@ -67,6 +66,19 @@ export class MessageItem extends React.Component {
   componentDidMount() {
     this.filterMessages(this.props.messages);
   }
+
+  /**
+    * Filters new array of messages when a new message is posted
+    *
+    * @param {object} nextProps - New props passed to MessageItem component
+    *
+    * @returns {void}
+    *
+    */
+  componentWillReceiveProps(nextProps) {
+    this.filterMessages(nextProps.messages);
+  }
+
 
   /**
    * Handles message category select event
@@ -115,11 +127,12 @@ export class MessageItem extends React.Component {
 
 
   /**
-   * Checks the length of a given message and truncates it if it is more than 300
+   * Checks the length of a given message and truncates it
+   * if it is more than 300
    *
-   * @param {string} message
+   * @param {string} message - Message to be transformed
    *
-   * @returns {message} message/truncated message (if length > 300)
+   * @returns {string} Message or transformed message (if length > 300)
    */
   checkMessageLength(message) {
     if (message.length > 300) {
@@ -133,31 +146,30 @@ export class MessageItem extends React.Component {
    * Archives a given message and updates the messages displayed
    * in both categories
    *
-   * @param {object} messageId id of message to be archived
+   * @param {object} messageId - Id of message to be archived
    *
    * @returns {void} null
    */
   archiveMessageRequest(messageId) {
-    const mappedMessages = mapKeys(this.props.messages, 'group');
-    const groupId = Object.keys(mappedMessages)[0];
+    const { messages } = this.props;
     this.props.archiveMessage(messageId).then(
       () => {
-        this.props.getGroupMessagesCount(groupId).then(
-          (response) => {
-            this.filterMessages(response.data.messages);
+        this.props.messages.map((message) => {
+          if (message.id === this.props.archivedMessage.id) {
+            const messageIndex = messages.indexOf(message);
+            messages[messageIndex] = this.props.archivedMessage;
+            this.props.updateArchivedMessage(messages);
+            this.filterMessages(this.props.messages);
           }
-        );
+        });
         toastr.success('Message successfully archived');
       }
-    )
-    .catch((error) => {
-      toastr.error('Unable to archive message, please try again');
-    });
+    );
   }
 
 
   /**
-   * Render
+   * Renders Message Item component
    *
    * @returns {ReactElement} Markup for a single message item
    */
@@ -211,7 +223,9 @@ export class MessageItem extends React.Component {
     // pagination logic
     const lastMessageIndex = currentPage * messagesPerPage;
     const firstMessageIndex = lastMessageIndex - messagesPerPage;
-    const currentMessages = filteredMessages.slice(firstMessageIndex, lastMessageIndex);
+    const currentMessages = filteredMessages.slice(
+      firstMessageIndex, lastMessageIndex
+    );
     return (
       <div>
         <select
@@ -272,7 +286,9 @@ export class MessageItem extends React.Component {
                     data-id={this.props.match.params.groupId}
                     onClick={(event) => {
                       const groupId = event.target.dataset.id;
-                      this.props.history.push(`/message-board/${groupId}/message/${message.id}`);
+                      this.props.history.push(
+                        `/message-board/${groupId}/message/${message.id}`
+                      );
                       localStorage.setItem('groupId', event.target.dataset.id);
                     }}
                   >
@@ -316,21 +332,23 @@ export class MessageItem extends React.Component {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     getGroupMessagesCount,
-    archiveMessage
+    archiveMessage,
+    updateArchivedMessage
   }, dispatch);
 }
 
 
 /**
- * Maps pieces of the redux state to props in Sidebar
+ * Maps pieces of the redux state to props in MessageItem
  *
  * @param {object} state Redux state
  *
- * @returns {object} Details of selected group
+ * @returns {object} Details of the active group and archived message
  */
 function mapStateToProps(state) {
   return {
-    selectedGroup: state.selectedGroup
+    selectedGroup: state.selectedGroup,
+    archivedMessage: state.archivedMessage[0]
   };
 }
 
@@ -339,12 +357,16 @@ MessageItem.propTypes = {
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   archiveMessage: PropTypes.func.isRequired,
-  getGroupMessagesCount: PropTypes.func.isRequired,
+  archivedMessage: PropTypes.object,
+  updateArchivedMessage: PropTypes.func.isRequired,
   authenticatedUsername: PropTypes.string.isRequired,
 };
 
 MessageItem.defaultProps = {
-  messages: []
+  messages: [],
+  archivedMessage: {}
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MessageItem));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(MessageItem)
+);

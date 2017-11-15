@@ -1,57 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
-import { Link } from 'react-router-dom';
-import checkGroupnameLength from '../../utils/checkGroupNameLength';
+import checkGroupNameLength from '../../utils/checkGroupNameLength';
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter';
 
-export const AddUserBtn = (props) => {
-  if (isEmpty(props.selectedGroup)) {
-    return null;
-  }
-  return (
-    <button
-      className="btn waves-effect waves-light blue lighten-1"
-      data-toggle="modal" data-target="#addUser"
-      onClick={props.openModal}
-    >
-      Add User
-    </button>
-  );
-};
-
-AddUserBtn.propTypes = {
-  selectedGroup: PropTypes.object,
-  openModal: PropTypes.func.isRequired
-};
-
-AddUserBtn.defaultProps = {
-  selectedGroup: {}
-};
-
-export const SearchBtn = (props) => {
-  if (isEmpty(props.selectedGroup)) {
-    return null;
-  }
-  return (
-    <li>
-      <Link to="/search" onClick={props.onSearchClick}>
-        <i className="glyphicon glyphicon-search pointer" />
-      </Link>
-    </li>
-  );
-};
-
-SearchBtn.propTypes = {
-  selectedGroup: PropTypes.object,
-  onSearchClick: PropTypes.func.isRequired
-};
-
-SearchBtn.defaultProps = {
-  selectedGroup: {}
-};
-
-
+/**
+  * Displays the name of a group
+  *
+  * @param {object} props
+  *
+  * @returns {JSX} Add User button mark up
+  */
 export const GroupName = (props) => {
   if (isEmpty(props.selectedGroup)) {
     return <div className="col-md-4 col-sm-5 col-xs-3" />;
@@ -61,7 +20,11 @@ export const GroupName = (props) => {
     <div className="col-md-4 col-sm-5 col-xs-3 brand">
       <ul className="zero-padding">
         <h4 className="group-name">
-          {capitalizeFirstLetter(checkGroupnameLength(props.selectedGroup.name))}
+          {
+            capitalizeFirstLetter(
+              checkGroupNameLength(props.selectedGroup.name)
+            )
+          }
         </h4>
         <li role="presentation" className="dropdown">
           <a
@@ -98,3 +61,4 @@ GroupName.defaultProps = {
   selectedGroup: {}
 };
 
+export default GroupName;

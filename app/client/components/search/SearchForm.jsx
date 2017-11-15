@@ -3,7 +3,7 @@ import toastr from 'toastr';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import TextField from '../common/FormTextField';
+import TextField from '../partials/FormTextField';
 import { SubmitButton } from '../modal/SubModals';
 import SearchResult from '../search/SearchResult';
 import ClientFrame from '../client-frame/ClientFrame';
@@ -22,7 +22,7 @@ export class SearchForm extends Component {
   /**
    * Creates an instance of SearchForm
    *
-   * @param {any} props
+   * @param {object} props
    *
    * @memberof SearchForm
    */
@@ -66,7 +66,7 @@ export class SearchForm extends Component {
   }
 
   /**
-   * It is called when the search page is closed to clear previous search result
+   * Clears previous search result when the search page is closed
    *
    * @param {SyntheticEvent} event
    *
@@ -80,9 +80,9 @@ export class SearchForm extends Component {
   }
 
   /**
-   * Renders the search result
+   * Renders the search form, as well as the search result
    *
-   * @returns {ReactElement} Search Result markup
+   * @returns {ReactElement} Search Form and Search Result markup
    */
   render() {
     const { searchResult } = this.props;
@@ -163,4 +163,5 @@ SearchForm.propTypes = {
   searchResult: PropTypes.object.isRequired
 };
 
-export default connect(mapStateToProps, { searchUser, resetSearch })(SearchForm);
+export default connect(
+  mapStateToProps, { searchUser, resetSearch })(SearchForm);

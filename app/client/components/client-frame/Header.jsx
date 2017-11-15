@@ -16,12 +16,14 @@ import {
   SubmitButton } from '../modal/SubModals';
 import { logout } from '../../actions/signIn';
 import { submitNewUser } from '../../actions/groupMembers';
-import { AddUserBtn, SearchBtn, GroupName } from '../misc/HeaderMisc';
 import GroupMembersTable from '../tables/GroupMembersTable';
+import AddUserButton from '../partials/AddUserButton';
+import SearchButton from '../partials/SearchButton';
+import GroupName from '../partials/GroupName';
 
 
 /**
- * Display Header
+ * Displays Header component
  *
  * @class Header
  *
@@ -32,7 +34,7 @@ export class Header extends React.Component {
   /**
     * Creates an instance of Header
     *
-    * @param {any} props
+    * @param {object} props
     *
     * @memberof Header
     */
@@ -57,22 +59,23 @@ export class Header extends React.Component {
 
 
   /**
-  * Sets an active group id to the local storage when the search icon is clicked
-  *
-  * @returns {void} null
-  */
+    * Sets an active group id to the local storage when the search icon is 
+    * clicked
+    *
+    * @returns {void} null
+    */
   onSearchClick() {
     localStorage.setItem('group', this.props.match.params.groupId);
   }
 
 
   /**
-   * Handles change event of New User input form
-   *
-   * @param {SyntheticEvent} event
-   *
-   * @returns {void}
-   */
+    * Handles change event of New User input form
+    *
+    * @param {SyntheticEvent} event
+    *
+    * @returns {void}
+    */
   onChange(event) {
     this.setState({
       error: '',
@@ -80,13 +83,14 @@ export class Header extends React.Component {
     });
   }
 
+
   /**
-  * Handles Open Modal event
-  *
-  * @param {SyntheticEvent} event
-  *
-  * @returns {void}
-  */
+    * Handles Open Modal event
+    *
+    * @param {SyntheticEvent} event
+    *
+    * @returns {void}
+    */
   openModal(event) {
     event.preventDefault();
     this.setState({
@@ -111,10 +115,11 @@ export class Header extends React.Component {
     });
   }
 
+
   /**
   * Handles input validation for adding user to group
   *
-  * @returns {boolean} If an input is valid or not
+  * @returns {boolean} Whether an input is valid or not
   */
   isValid() {
     const error = {};
@@ -128,6 +133,7 @@ export class Header extends React.Component {
     }
     return isEmpty(error);
   }
+
 
   /**
    * Submits a new user's record to the database
@@ -158,6 +164,7 @@ export class Header extends React.Component {
     }
   }
 
+
   /**
    * Logs a user out
    *
@@ -168,14 +175,14 @@ export class Header extends React.Component {
   logout(event) {
     event.preventDefault();
     this.props.logout();
+    this.props.history.push('/signin');
   }
 
 
   /**
-   * Render
+   * Renders Header component
    *
-   * @returns {ReactElement} Header markup
-   *
+   * @returns {ReactElement} Sidebar markup
    */
   render() {
     const { username, selectedGroup } = this.props;
@@ -193,7 +200,7 @@ export class Header extends React.Component {
 
               <div className="col-md-8 col-sm-7 col-xs-9 lg-stack">
                 <ul className="cta">
-                  <SearchBtn
+                  <SearchButton
                     onSearchClick={this.onSearchClick}
                     selectedGroup={selectedGroup}
                   />
@@ -201,7 +208,7 @@ export class Header extends React.Component {
                     <i className="glyphicon glyphicon-user pr6" />
                      @{username}
                   </li>
-                  <AddUserBtn
+                  <AddUserButton
                     selectedGroup={selectedGroup}
                     openModal={this.openModal}
                   />
@@ -219,7 +226,7 @@ export class Header extends React.Component {
 
               <div className="col-md-9 col-sm-7 col-xs-8 mobile-stack">
                 <ul className="cta">
-                  <SearchBtn
+                  <SearchButton
                     onSearchClick={this.onSearchClick}
                     selectedGroup={selectedGroup}
                   />
@@ -256,7 +263,6 @@ export class Header extends React.Component {
           </div>
         </section>
 
-        {/*Add User Modal*/}
         <ModalFrame id="addUser" show={this.state.isOpen}>
           <ModalHeader header="Add New User" onClose={this.closeModal} />
 
@@ -278,8 +284,10 @@ export class Header extends React.Component {
           </ModalFooter>
         </ModalFrame>
 
-        {/*Group Members Modal*/}
-        <ModalFrame id="groupMembers" membersLoading={this.props.membersLoading}>
+        <ModalFrame
+          id="groupMembers"
+          membersLoading={this.props.membersLoading}
+        >
           <ModalHeader header="Group Members" onClose={this.closeModal} />
 
           <div className="modal-body">
@@ -332,7 +340,8 @@ Header.propTypes = {
   username: PropTypes.string,
   membersLoading: PropTypes.bool.isRequired,
   groupMembers: PropTypes.array.isRequired,
-  match: PropTypes.object.isRequired
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 Header.defaultProps = {

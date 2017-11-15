@@ -13,6 +13,7 @@ import MessageBody from '../components/message-board/MessageBody';
 import MessageBoard from '../components/message-board/MessageBoard';
 import NewPassword from '../components/reset-password/NewPasswordForm';
 import ResetPassword from '../components/reset-password/SubmitEmailForm';
+import CreateGroup from '../components/client-frame/sidebar/CreateGroup';
 
 
 if (module.hot) {
@@ -43,6 +44,10 @@ function Client() {
         <Route
           exact path="/message-board"
           component={CheckAuth(MessageBoard)}
+        />
+        <Route
+          exact path="/message-board/create-group"
+          component={CheckAuth(CreateGroup)}
         />
         <Route
           exact path="/message-board/:groupId"

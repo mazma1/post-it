@@ -16,12 +16,13 @@ A simple Node.js application that allows friends and colleagues create groups fo
 ## To get started
 1. Clone the repository: `git clone https://github.com/mazma1/post-it`
 2. Ensure you have installed [NodeJS](https://nodejs.org/en/) and [Postgres](https://www.postgresql.org/download/)
-3. Navigate into the app's root directory: `cd post-it`
-4. Create a `.env` file in the root directory using the sample `.env.sample` file
-5. Install all dependencies: `npm install`
-6. Run tests to ensure the app is not broken: `npm test`
-7. Run `npm run db:migrate` to populate your database with initial user data
-8. Start the app: `npm run start:dev`
+3. Create a [Nexmo](https://www.nexmo.com/) account and get your API key and secret which you will include as `NEXMO_KEY` and `NEXMO_SECRET` in your `.env` file. This is required for SMS notification
+4. Navigate into the app's root directory: `cd post-it`
+5. Create a `.env` file in the root directory using the sample `.env.sample` file
+6. Install all dependencies: `npm install`
+7. Run tests to ensure the app is not broken: `npm test`
+8. Run `npm run db:migrate` to populate your database with initial user data
+9. Start the app: `npm run start:dev`
 
 
 ## Available Functionalities on Client
@@ -48,13 +49,13 @@ For more of the api, [go here.](http://docs.postit9.apiary.io/)
 
 1. Users are added to the group one at a time.
 2. Group creator cannot remove users from group
-3. Chat message notifications are not real-time. You have to refresh your browser to see new message notifications.
+3. No in-app notification, only email and SMS
 4. Users cannot update their profile
 
 
 ## Contributing
 
-This project is open for contributions. All contributions must adhere to the Airbnb styleguide.
+This project is open for contributions. All contributions must adhere to the following Airbnb style guides:
 1. [Javascript](http://airbnb.io/javascript/) 
 2. [React](https://github.com/airbnb/javascript/tree/master/react)   
 
@@ -62,7 +63,25 @@ This project is open for contributions. All contributions must adhere to the Air
 1. Raise an issue in the app's repo
 2. Fork the repository
 3. Implement the said feature
+4. Commit your changes
+> Your commit message(s) should follow the format below. It should comprise of:
+> *  A header: summarizes what feature was implemented
+>* A body: gives a concise description of said feature
+> ```
+> feat(kafka): implement exactly one time delivery
+> - ensure every event published to kafka is delivered exactly once
+> - implement error handling for failed delivery
+
+
 4. Raise a pull request to the development branch
+> Pull requests should also follow the format below:
+> ```
+> - What does this PR do?
+> - Description of Task to be completed?
+> - How should this be manually tested?
+> - Any background context you want to provide?
+> - Screenshots (if appropriate)
+> - Questions
 
 ## License
 [MIT](https://github.com/mazma1/post-it/blob/chore/implement-feedback/LICENSE)

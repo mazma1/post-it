@@ -1,10 +1,19 @@
 import express from 'express';
-import messageCtrl from '../controllers/message';
+import MessageController from '../controllers/MessageController';
 import tokenAuth from '../middlewares/tokenAuth';
 
 const router = express.Router();
 
-router.patch('/api/v1/messages/:message_id/read', tokenAuth, messageCtrl.updateMessageReadStatus);
-router.patch('/api/v1/messages/:message_id/archive', tokenAuth, messageCtrl.archiveMessage);
+router.patch(
+  '/api/v1/messages/:messageId/read',
+  tokenAuth,
+  MessageController.updateMessageReadStatus
+);
+
+router.patch(
+  '/api/v1/messages/:messageId/archive',
+  tokenAuth,
+  MessageController.archiveMessage
+);
 
 export default router;

@@ -2,15 +2,17 @@ import React from 'react';
 import toastr from 'toastr';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { connect } from 'react-redux';
 import {
   Link,
   withRouter } from 'react-router-dom';
-import TextField from '../common/FormTextField';
-import validateInput from '../../../server/utils/signupValidation';
+import TextField from '../partials/FormTextField';
+import userSignUpRequest from '../../actions/signUp';
+import validateInput from '../../../server/utils/validateInput';
 
 
 /**
- * Display sign up form
+ * Displays sign up form
  *
  * @class SignUpForm
  *
@@ -21,7 +23,7 @@ export class SignUpForm extends React.Component {
   /**
    * Creates an instance of SignUpForm
    *
-   * @param {any} props
+   * @param {object} props
    *
    * @memberof SignUpForm
    */
@@ -91,7 +93,7 @@ export class SignUpForm extends React.Component {
   }
 
   /**
-   * Render
+   * Renders component
    *
    * @returns {ReactElement} Sign up form markup
    */
@@ -175,7 +177,7 @@ export class SignUpForm extends React.Component {
             <TextField
               icon="phone"
               error={errors.phoneNumber}
-              label="Phone Number"
+              label="Phone Number (Eg: 2348065432345)"
               onChange={this.onChange}
               value={this.state.phoneNumber}
               field="phoneNumber"
@@ -279,5 +281,5 @@ SignUpForm.propTypes = {
   userSignUpRequest: PropTypes.func.isRequired
 };
 
-export default withRouter(SignUpForm);
+export default withRouter(connect(null, { userSignUpRequest })(SignUpForm));
 

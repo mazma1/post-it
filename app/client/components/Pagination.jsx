@@ -2,6 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactPaginate from 'react-paginate';
 
+/**
+ * Displays pagination
+ *
+ * @param {function} handlePageClick - It handles navigation between pages
+ * @param {number} pageCount - Total number of records that match a given search
+ *
+ * @returns {JSX} Pagination markup
+ */
 const Pagination = ({ handlePageClick, pageCount }) => (
   <ReactPaginate
     previousLabel={'previous'}

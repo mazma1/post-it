@@ -691,6 +691,10 @@ html, body, #clientApp, #clientApp>div {
   padding-top: 12px;
 }
 
+.auth-form {
+  margin-bottom: -12px;
+}
+
 .auth-form div.row {
   margin-bottom: 0;
 }
@@ -1118,4 +1122,45 @@ li.new-group:focus {
 
 .social-padding-bottom {
   padding-bottom: 50px;
+}
+
+.google-option {
+  margin-top: -29px;
+  background-color: #fff;
+  margin-left: auto;
+  width: 8%;
+  margin-right: auto;
+  color: #343434;
+  text-align: center;
+}
+
+.google-hr {
+  width: 53%;
+}
+
+.sign-in-google {
+  width: 55%;
+  margin-left: 120px;
+}
+
+.google-signin.auth-button {
+  padding-bottom: 50px;
+}
+
+.auth-button button {
+  font-size: 12px;
+  height: 42px;
+}
+
+.auth-button button .google-icon {
+  margin-right: 7px;
+}
+
+.auth-button img.google-icon.google{
+  width: 38px;
+  margin-left: -12px;
+}
+
+.update-password-btn {
+  padding-bottom: 30px !important;
 }

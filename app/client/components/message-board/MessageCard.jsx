@@ -12,7 +12,8 @@ import MessageItem from '../message-board/MessageItem';
 
 
 /**
-  * Display MessageCard
+  * A collection of MessageItems that sisplays the available messages
+  * on the message board
   *
   * @class MessageCard
   *
@@ -36,17 +37,15 @@ export class MessageCard extends React.Component {
       messageOpen: false
     };
 
-    // this.setMessageId = this.setMessageId.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.onMessageClick = this.onMessageClick.bind(this);
   }
 
-
    /**
    * Updates the read status of a message when clicked
    *
-   * @param {object} clickedMsgProps id and readStatus of clicked message
+   * @param {object} clickedMsgProps - Id and readStatus of clicked message
    *
    * @returns {func} request to update read status
    */
@@ -64,7 +63,6 @@ export class MessageCard extends React.Component {
     };
     return this.props.updateReadStatus(messageDetails);
   }
-
 
   /**
    * Handles Open Modal event
@@ -95,7 +93,7 @@ export class MessageCard extends React.Component {
   }
 
   /**
-   * Render
+   * Renders MessageCard componet
    *
    * @returns {ReactElement} MessageCard markup
    */
@@ -106,7 +104,7 @@ export class MessageCard extends React.Component {
     const messageLoading = this.props.message.isLoading;
     const messageLoadingError = this.props.message.error;
     const props = {
-      messages: this.props.message.messages,
+      messages,
       onMessageClick: this.onMessageClick,
       clickedMessageId: this.state.clickedMessageId,
       authenticatedUsername: this.props.authenticatedUsername
