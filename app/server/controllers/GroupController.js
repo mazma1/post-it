@@ -26,30 +26,30 @@ const GroupController = {
     } else {
       models.Group.findOne({
         where: { groupName },
-      })
-      .then((existingGroup) => {
+      }).then((existingGroup) => {
         if (existingGroup) {
           error = 'Group already exists';
           res.status(409).send({ error });
         } else {
           models.Group.create(groupData)
-          .then((newGroup) => {
-            models.GroupMember.create({
-              groupId: newGroup.id,
-              userId
+            .then((newGroup) => {
+              models.GroupMember.create({
+                groupId: newGroup.id,
+                userId,
+                isAdmin: '1'
+              })
+                .then(() => res.status(201).send({
+                  message: 'Group was successfully created and you have been added to it',
+                  groupId: newGroup.id,
+                  groupName: newGroup.groupName,
+                  groupOwner: newGroup.userId
+                }))
+                .catch(err => res.status(500).send(err.message));
             })
-            .then(() => res.status(201).send({
-              message: 'Group was successfully created and you have been added to it',
-              groupId: newGroup.id,
-              groupName: newGroup.groupName,
-              groupOwner: newGroup.userId
-            }))
             .catch(err => res.status(500).send(err.message));
-          })
-          .catch(err => res.status(500).send(err.message));
         }
       })
-      .catch(err => res.status(500).send(err.message));
+        .catch(err => res.status(500).send(err.message));
     }
   },
 
@@ -79,33 +79,33 @@ const GroupController = {
           ]
         },
       })
-      .then((user) => {
-        if (user) {
-          user.getGroups().then((groups) => {
-            groups.map((group) => {
-              if (
-                parseInt(group.id, 10) === parseInt(groupId, 10)
-              ) {
-                error = 'User has already been added to group';
-                res.status(409).send({ error });
-              } else {
+        .then((user) => {
+          if (user) {
+            user.getGroups().then((groups) => {
+              groups.map((group) => {
+                if (
+                  parseInt(group.id, 10) === parseInt(groupId, 10)
+                ) {
+                  error = 'User has already been added to group';
+                  return res.status(409).send({ error });
+                }
                 const details = {
                   groupId,
-                  userId: user.id
+                  userId: user.id,
+                  isAdmin: '0'
                 };
-                models.GroupMember.create(details)
-                .then(() => res.status(201).send({
-                  message: 'User successfully added to group',
-                }))
-                .catch(err => res.status(500).send(err));
-              }
+                return models.GroupMember.create(details)
+                  .then(() => res.status(201).send({
+                    message: 'User successfully added to group',
+                  }))
+                  .catch(err => res.status(500).send(err));
+              });
             });
-          });
-        } else {
-          error = 'User does not exist';
-          res.status(404).send({ error });
-        }
-      });
+          } else {
+            error = 'User does not exist';
+            return res.status(404).send({ error });
+          }
+        });
     }
   },
 
@@ -182,16 +182,16 @@ const GroupController = {
         attributes: ['username'],
       }]
     })
-    .then((messages) => {
-      if (messages) {
-        res.status(200).send({ messages: messages.sort(customSort) });
-      }
-    })
-    .catch(error => res.status(500).send(error.message));
+      .then((messages) => {
+        if (messages) {
+          res.status(200).send({ messages: messages.sort(customSort) });
+        }
+      })
+      .catch(error => res.status(500).send(error.message));
   },
 
 
-   /**
+  /**
    * Get the groups a user belongs to
    * Route: GET: /api/v1/groups/:groupId/members
    *
@@ -211,12 +211,64 @@ const GroupController = {
         through: { attributes: [] }
       }]
     })
-    .then((group) => {
-      if (group) {
-        res.status(200).send(group);
+      .then((group) => {
+        if (group) {
+          res.status(200).send(group);
+        }
+      })
+      .catch(error => res.status(500).send(error.message));
+  },
+  
+  
+  /**
+   * Get the groups a user belongs to
+   * Route: GET: /api/v1/groups/:groupId/members
+   *
+   * @param {object} req - Incoming request from the client
+   * @param {object} res - Response sent back to client
+   *
+   * @returns {object} Message that states that a user has been successfully
+   * removed from group
+   */
+  removeUser(req, res) {
+    const currentUser = req.decoded.data.id;
+    const { groupId, userId } = req.params;
+    models.GroupMember.findAll({
+      where: { groupId }
+    }).then(
+      (groupMembers) => {
+        const groupAdmin = groupMembers.find(
+          member => member.isAdmin === '1' && member.userId === currentUser
+        );
+        if (!groupAdmin) {
+          return res.status(403).send({
+            error: 'You do not have the permission to perform this operation'
+          });
+        }
+        if (groupAdmin && parseInt(userId, 10) === currentUser) {
+          return res.status(403).send({
+            error: 'You cannot remove yourself from group'
+          });
+        }
+        const groupMember = groupMembers.find(
+          member => member.userId === parseInt(userId, 10)
+        );
+        if (!groupMember) {
+          return res.status(404).send({
+            error: 'User not found'
+          });
+        }
+        return models.GroupMember.destroy({
+          where: {
+            userId: groupMember.userId,
+            groupId
+          },
+          force: true
+        }).then(() => res.status(200).send({
+          message: 'User removed successfully'
+        })).catch(error => res.status(500).send({ error }));
       }
-    })
-    .catch(error => res.status(500).send(error.message));
+    ).catch(error => res.status(500).send({ error }));
   }
 };
 

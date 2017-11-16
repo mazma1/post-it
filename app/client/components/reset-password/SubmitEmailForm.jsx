@@ -63,8 +63,8 @@ export class SubmitEmailForm extends React.Component {
       error.email = 'Email field cannot be empty';
     }
     if (this.state.email.trim().length > 0
-          && !validator.isEmail(this.state.email)
-        ) {
+      && !validator.isEmail(this.state.email)
+    ) {
       error.email = 'Invalid email address';
     }
     this.setState({ error });

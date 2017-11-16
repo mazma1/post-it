@@ -54,10 +54,7 @@ const GroupList = (props) => {
   if (groupsArray) {
     groups = groupsArray.map((group) => {
       const isSelected = props.selectedGroup.id === group.id;
-      const onGroupClick = () => onGroupSelect({
-        id: group.id,
-        name: group.name
-      });
+      const onGroupClick = () => onGroupSelect(group);
 
       return (
         <li

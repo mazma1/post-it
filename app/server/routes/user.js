@@ -5,6 +5,13 @@ import verifyUserId from '../middlewares/verifyUserId';
 
 const router = express.Router();
 
+router.get('/api/v1', (req, res) => {
+  res.status(200).send({
+    message: 'Welcome to Post It API',
+    docs: 'https://postiit.docs.apiary.io/'
+  });
+});
+
 router.post(
   '/api/v1/users/signup',
   UserController.signup
