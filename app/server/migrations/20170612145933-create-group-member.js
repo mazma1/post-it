@@ -30,6 +30,13 @@ module.exports = {
           key: 'id'
         }
       },
+      isAdmin: {
+        type: Sequelize.ENUM('0', '1'),
+        defaultValue: '0',
+        validate: {
+          isIn: [['0', '1']]
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

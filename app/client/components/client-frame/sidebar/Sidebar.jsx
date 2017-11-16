@@ -71,10 +71,10 @@ export class Sidebar extends React.Component {
           }
         }
       )
-      .catch(() => {
-        toastr.error('Group does not exist');
-        this.props.history.push('/message-board');
-      });
+        .catch(() => {
+          toastr.error('Group does not exist');
+          this.props.history.push('/message-board');
+        });
     }
   }
 

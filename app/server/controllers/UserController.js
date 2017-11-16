@@ -35,36 +35,36 @@ const UserController = {
         ]
       },
     })
-    .then((existingUser) => {
-      if (existingUser) {
-        if (existingUser.username === req.body.username) {
-          errors.username = 'Username already exists';
+      .then((existingUser) => {
+        if (existingUser) {
+          if (existingUser.username === req.body.username) {
+            errors.username = 'Username already exists';
+          }
+          if (existingUser.email === req.body.email) {
+            errors.email = 'Email already exists';
+          }
+          if (!isEmpty(errors)) {
+            res.status(409).send(errors);
+          }
+        } else {
+          const { firstName, lastName, username, email, phoneNumber } = req.body;
+          const userData = {
+            firstName,
+            lastName,
+            email,
+            phoneNumber,
+            username: username.toLowerCase(),
+            password: bcrypt.hashSync(req.body.password, salt)
+          };
+          models.User.create(userData)
+            .then((user) => {
+              const token = generateToken(user);
+              res.status(201).send({ message: 'Signup was successful', token });
+            })
+            .catch(error => res.status(500).send({ error: error.message }));
         }
-        if (existingUser.email === req.body.email) {
-          errors.email = 'Email already exists';
-        }
-        if (!isEmpty(errors)) {
-          res.status(409).send(errors);
-        }
-      } else {
-        const { firstName, lastName, username, email, phoneNumber } = req.body;
-        const userData = {
-          firstName,
-          lastName,
-          email,
-          phoneNumber,
-          username: username.toLowerCase(),
-          password: bcrypt.hashSync(req.body.password, salt)
-        };
-        models.User.create(userData)
-        .then((user) => {
-          const token = generateToken(user);
-          res.status(201).send({ message: 'Signup was successful', token });
-        })
-        .catch(error => res.status(500).send(error.message));
-      }
-    })
-    .catch(error => res.status(500).send(error.message));
+      })
+      .catch(error => res.status(500).send({ error: error.message }));
   },
 
   /**
@@ -95,24 +95,24 @@ const UserController = {
           ]
         },
       })
-      .then((user) => {
-        if (!user) {
-          errors.identifier = 'Invalid username or password';
-          res.status(401).send(errors);
-        } else if (user) {
-          if (bcrypt.compareSync(req.body.password, user.password)) {
-            const token = generateToken(user);
-            res.status(200).send({
-              message: 'User successfully logged in',
-              token
-            });
-          } else {
+        .then((user) => {
+          if (!user) {
             errors.identifier = 'Invalid username or password';
             res.status(401).send(errors);
+          } else if (user) {
+            if (bcrypt.compareSync(req.body.password, user.password)) {
+              const token = generateToken(user);
+              res.status(200).send({
+                message: 'User successfully logged in',
+                token
+              });
+            } else {
+              errors.identifier = 'Invalid username or password';
+              res.status(401).send(errors);
+            }
           }
-        }
-      })
-      .catch(err => res.status(500).send(err.message));
+        })
+        .catch(err => res.status(500).send({ error: err.message }));
     }
   },
 
@@ -183,18 +183,18 @@ const UserController = {
       include: [{
         model: models.Group,
         as: 'groups',
-        attributes: ['id', ['groupName', 'name']],
+        attributes: ['id', ['groupName', 'name'], ['userId', 'groupOwner']],
         through: { attributes: [] }
       }]
     })
-    .then((user) => {
-      if (user) {
-        res.status(200).send(user);
-      } else {
-        res.status(404).send({ message: 'User does not exist' });
-      }
-    })
-    .catch(error => res.status(500).send(error.message));
+      .then((user) => {
+        if (user) {
+          res.status(200).send(user);
+        } else {
+          res.status(404).send({ message: 'User does not exist' });
+        }
+      })
+      .catch(error => res.status(500).send({ error: error.message }));
   },
 
 
@@ -239,29 +239,29 @@ const UserController = {
             }, {
               where: { userId: user.id }
             })
-            .then(() => {
-              sendEmail(emailParams);
-              res.status(200).send({ message: 'Email sent' });
-            })
-            .catch(error => res.status(500).send(error.message));
+              .then(() => {
+                sendEmail(emailParams);
+                res.status(200).send({ message: 'Email sent' });
+              })
+              .catch(error => res.status(500).send(error.message));
           } else {
             models.ForgotPassword.create({
               userId: user.id,
               hash: resetPasswordHash,
               expiryTime: resetPasswordExpires
             })
-            .then(() => {
-              sendEmail(emailParams);
-              res.status(200).send({ message: 'Email sent' });
-            });
+              .then(() => {
+                sendEmail(emailParams);
+                res.status(200).send({ message: 'Email sent' });
+              });
           }
         })
-        .catch(error => res.status(500).send(error.message));
+          .catch(error => res.status(500).send({ error: error.message }));
       } else {
         res.status(404).send({ email: 'User does not exist' });
       }
     })
-    .catch(error => res.status(500).send({ error: error.message }));
+      .catch(error => res.status(500).send({ error: error.message }));
   },
 
 
@@ -280,23 +280,22 @@ const UserController = {
       return res.status(400).send({
         message: 'Reset password token is required'
       });
-    } else {
-      models.ForgotPassword.findOne({
-        where: {
-          hash: token
-        },
-      }).then((hash) => {
-        if (hash) {
-          if (Date.now() > hash.expiryTime) {
-            res.status(401).send({ message: 'Token has expired' });
-          } else {
-            res.status(200).send({ message: 'Token is valid' });
-          }
-        } else {
-          res.status(400).send({ message: 'Invalid token' });
-        }
-      }).catch(error => res.status(500).send(error.message));
     }
+    models.ForgotPassword.findOne({
+      where: {
+        hash: token
+      },
+    }).then((hash) => {
+      if (hash) {
+        if (Date.now() > hash.expiryTime) {
+          res.status(401).send({ message: 'Token has expired' });
+        } else {
+          res.status(200).send({ message: 'Token is valid' });
+        }
+      } else {
+        res.status(400).send({ message: 'Invalid token' });
+      }
+    }).catch(error => res.status(500).send({ error: error.message }));
   },
 
 
@@ -340,7 +339,7 @@ const UserController = {
           } else {
             res.status(404).send({ message: 'Token does not exist' });
           }
-        }).catch(err => res.status(500).send(err.message));
+        }).catch(err => res.status(500).send({ error: err.message }));
       } else {
         res.status(400).send({ message: 'Reset password token is required' });
       }
@@ -384,18 +383,18 @@ const UserController = {
         limit,
         offset
       })
-      .then((users) => {
-        if (users.count > 0) {
-          return res.status(200).send({
-            users: users.rows,
-            pagination: paginate(users.count, limit, offset)
-          });
-        }
-        res.status(404).send({ error: 'User was not found' });
-      })
-      .catch((error) => {
-        res.status(500).send({ error: error.message });
-      });
+        .then((users) => {
+          if (users.count > 0) {
+            return res.status(200).send({
+              users: users.rows,
+              pagination: paginate(users.count, limit, offset)
+            });
+          }
+          res.status(404).send({ error: 'User was not found' });
+        })
+        .catch((error) => {
+          res.status(500).send({ error: error.message });
+        });
     } else {
       res.status(400).send({ error: 'A search keyword is required' });
     }

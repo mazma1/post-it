@@ -13,6 +13,14 @@ export default (sequelize, DataTypes) => {
       validate: {
         notEmpty: true
       }
+    },
+    isAdmin: {
+      type: DataTypes.ENUM,
+      values: ['0', '1'],
+      defaultValue: '0',
+      validate: {
+        isIn: [['0', '1']]
+      }
     }
   });
   GroupMember.associate = (models) => {

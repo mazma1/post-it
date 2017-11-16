@@ -559,8 +559,8 @@ describe('User Endpoint', () => {
           .type('form')
           .send(user)
           .end((err, res) => {
-            res.error.status.should.equal(500);
-            res.error.text.should.equal('Internal server error');
+            res.status.should.equal(500);
+            res.body.should.have.property('error').eql('Internal server error');
             done();
           });
       });
@@ -632,8 +632,8 @@ describe('User Endpoint', () => {
           .set('x-access-token', token)
           .type('form')
           .end((err, res) => {
-            res.error.status.should.equal(500);
-            res.error.text.should.equal('Internal server error');
+            res.status.should.equal(500);
+            res.body.should.have.property('error').eql('Internal server error');
             done();
           });
       });
