@@ -192,16 +192,16 @@ describe('Group Endpoint', () => {
         });
     });
 
-    it('should return status 401 if user does not belong to group', (done) => {
+    it('should return status 403 if user does not belong to group', (done) => {
       const token1 = jwt.sign({ data: { id: 3 } }, process.env.TOKEN_SECRET, { expiresIn: '24hr' });
       const message = 'Hello';
       chai.request(app).post('/api/v1/groups/6/message')
         .set('x-access-token', token1)
         .send({ message })
         .end((err, res) => {
-          res.status.should.equal(401);
+          res.status.should.equal(403);
           res.body.should.be.a('object');
-          res.body.should.have.property('error').eql('You don\'t belong to this group');
+          res.body.should.have.property('error').eql('Unauthorized! You do not belong to this group');
           done();
         });
     });

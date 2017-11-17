@@ -2,6 +2,8 @@ import models from '../models';
 
 
 /**
+ * Authorizes only members of a group to perform specified actions
+ * in the group
  *
  * @param {object} req - Request from the client
  * @param {object} res - Response sent back to the client
@@ -23,8 +25,8 @@ function verifyMembership(req, res, next) {
       group.getMembers().then((members) => {
         const groupMember = members.find(member => member.id === userId);
         if (!groupMember) {
-          return res.status(401).send({
-            error: 'You don\'t belong to this group'
+          return res.status(403).send({
+            error: 'Unauthorized! You do not belong to this group'
           });
         } else if (groupMember) {
           next();

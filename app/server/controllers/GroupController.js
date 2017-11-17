@@ -44,12 +44,12 @@ const GroupController = {
                   groupName: newGroup.groupName,
                   groupOwner: newGroup.userId
                 }))
-                .catch(err => res.status(500).send(err.message));
+                .catch(err => res.status(500).send({ error: err.message }));
             })
-            .catch(err => res.status(500).send(err.message));
+            .catch(err => res.status(500).send({ error: err.message }));
         }
       })
-        .catch(err => res.status(500).send(err.message));
+        .catch(err => res.status(500).send({ error: err.message }));
     }
   },
 
@@ -98,7 +98,7 @@ const GroupController = {
                   .then(() => res.status(201).send({
                     message: 'User successfully added to group',
                   }))
-                  .catch(err => res.status(500).send(err));
+                  .catch(err => res.status(500).send({ error: err }));
               });
             });
           } else {
@@ -150,7 +150,7 @@ const GroupController = {
           sendNotification(req, message, messageDetail);
         }
       })
-      .catch(err => res.status(500).send(err.message));
+      .catch(err => res.status(500).send({ error: err.message }));
   },
 
 
@@ -187,7 +187,7 @@ const GroupController = {
           res.status(200).send({ messages: messages.sort(customSort) });
         }
       })
-      .catch(error => res.status(500).send(error.message));
+      .catch(error => res.status(500).send({ error: error.message }));
   },
 
 
@@ -216,13 +216,13 @@ const GroupController = {
           res.status(200).send(group);
         }
       })
-      .catch(error => res.status(500).send(error.message));
+      .catch(error => res.status(500).send({ error: error.message }));
   },
-  
-  
+
+
   /**
-   * Get the groups a user belongs to
-   * Route: GET: /api/v1/groups/:groupId/members
+   * Remove a user from a group
+   * Route: DELETE: /api/v1/groups/:groupId/users/:userId
    *
    * @param {object} req - Incoming request from the client
    * @param {object} res - Response sent back to client
