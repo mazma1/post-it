@@ -2,6 +2,7 @@ import express from 'express';
 import GroupController from '../controllers/GroupController';
 import tokenAuth from '../middlewares/tokenAuth';
 import verifyMembership from '../middlewares/verifyMembership';
+import verifyUserId from '../middlewares/verifyUserId';
 
 const router = express.Router();
 
@@ -37,6 +38,14 @@ router.get(
   tokenAuth,
   verifyMembership,
   GroupController.getGroupMembers
+);
+
+router.delete(
+  '/api/v1/groups/:groupId/users/:userId',
+  tokenAuth,
+  verifyUserId,
+  verifyMembership,
+  GroupController.removeUser
 );
 
 export default router;

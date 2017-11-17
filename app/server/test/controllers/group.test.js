@@ -330,4 +330,52 @@ describe('Group Endpoint', () => {
         });
     });
   });
+
+  // Remove user from group
+  describe('DELETE /api/v1/groups/:groupId/users/:userId', () => {
+    it('should return status 403 if user performing the removal is not the group admin', (done) => {
+      const testToken = jwt.sign({ data: { id: 3 } }, process.env.TOKEN_SECRET, { expiresIn: '3m' });
+      chai.request(app).delete('/api/v1/groups/1/users/3')
+        .set('x-access-token', testToken)
+        .end((err, res) => {
+          res.status.should.equal(403);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('You do not have the permission to perform this operation');
+          done();
+        });
+    });
+
+    it('should return status 404 if user does not exist in the group', (done) => {
+      chai.request(app).delete('/api/v1/groups/6/users/5')
+        .set('x-access-token', token)
+        .end((err, res) => {
+          res.status.should.equal(404);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('User not found');
+          done();
+        });
+    });
+
+    it('should successfully remove a user from a group when a group admin requests', (done) => {
+      chai.request(app).delete('/api/v1/groups/6/users/2')
+        .set('x-access-token', token)
+        .end((err, res) => {
+          res.status.should.equal(200);
+          res.body.should.be.a('object');
+          res.body.should.have.property('message').eql('User removed successfully');
+          done();
+        });
+    });
+
+    it('should return status 403 if admin is requesting to remove himself', (done) => {
+      chai.request(app).delete('/api/v1/groups/6/users/1')
+        .set('x-access-token', token)
+        .end((err, res) => {
+          res.status.should.equal(403);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('You cannot remove yourself from group');
+          done();
+        });
+    });
+  });
 });

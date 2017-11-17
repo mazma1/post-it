@@ -1,5 +1,14 @@
 import models from '../models';
 
+
+/**
+ *
+ * @param {object} req - Request from the client
+ * @param {object} res - Response sent back to the client
+ * @param {function} next - Executes succeeding middleware
+ *
+ * @returns {function} next
+ */
 function verifyMembership(req, res, next) {
   const userId = req.decoded.data.id;
   const { groupId } = req.params;

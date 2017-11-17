@@ -27,29 +27,7 @@ export function setNewGroup(groupDetails) {
 }
 
 
-  /**
-   * Fetches the groups a user belongs to
-   *
-   * @param {number} userId - Authenticated user's id
-   *
-   * @returns {promise} Array of groups a user belongs to
-   */
-export function getUserGroups(userId) {
-  return (dispatch) => {
-    dispatch(fetchingUserGroups());
-    return axios.get(`/api/v1/users/${userId}/groups`)
-      .then((res) => {
-        const { groups } = res.data;
-        dispatch(setUserGroups(groups));
-      })
-      .catch((error) => {
-        dispatch(fetchUserGroupsFailure(error));
-      });
-  };
-}
-
-
- /**
+/**
    * Informs reducer that request to fetch a user's groups has begun
    *
    * @returns {action} Action with type FETCHING_USER_GROUPS
@@ -78,6 +56,21 @@ export function setUserGroups(groups) {
 
 
 /**
+   * Informs reducers that the request to submit a new group failed
+   *
+   * @param {object} error - Error returned from failed request
+   *
+   * @returns {object} Action that sends the request error to the store
+   */
+export function submittingNewGroupFailure(error) {
+  return {
+    type: SUBMIT_NEW_GROUP_FAILURE,
+    error
+  };
+}
+
+
+/**
    * Informs reducers that the request to fetch a user's groups failed
    *
    * @param {object} error - Error returned from failed request
@@ -93,21 +86,24 @@ export function fetchUserGroupsFailure(error) {
 
 
 /**
-   * Posts a new group to the database
-   *
-   * @param {string} groupName - Name of new group
-   * @param {number} userId - Id of user who created the group
-   *
-   * @returns {promise} Details of the newly created groups
-   */
-export function submitNewGroup({ groupName, userId }) {
-  const reqBody = { groupName };
-  return dispatch => axios.post('/api/v1/groups', reqBody)
-    .then((res) => {
-      const groupDetails = res.data;
-      dispatch(setNewGroup(groupDetails));
-      dispatch(setNewGroupActive(userId));
-    });
+ * Fetches the groups a user belongs to
+ *
+ * @param {number} userId - Authenticated user's id
+ *
+ * @returns {promise} Array of groups a user belongs to
+ */
+export function getUserGroups(userId) {
+  return (dispatch) => {
+    dispatch(fetchingUserGroups());
+    return axios.get(`/api/v1/users/${userId}/groups`)
+      .then((res) => {
+        const { groups } = res.data;
+        dispatch(setUserGroups(groups));
+      })
+      .catch((error) => {
+        dispatch(fetchUserGroupsFailure(error));
+      });
+  };
 }
 
 
@@ -133,15 +129,20 @@ export function setNewGroupActive(userId) {
 
 
 /**
-   * Informs reducers that the request to submit a new group failed
+   * Posts a new group to the database
    *
-   * @param {object} error - Error returned from failed request
+   * @param {string} groupName - Name of new group
+   * @param {number} userId - Id of user who created the group
    *
-   * @returns {object} Action that sends the request error to the store
+   * @returns {promise} Details of the newly created groups
    */
-export function submittingNewGroupFailure(error) {
-  return {
-    type: SUBMIT_NEW_GROUP_FAILURE,
-    error
-  };
+export function submitNewGroup({ groupName, userId }) {
+  const reqBody = { groupName };
+  return dispatch => axios.post('/api/v1/groups', reqBody)
+    .then((res) => {
+      const groupDetails = res.data;
+      dispatch(setNewGroup(groupDetails));
+      dispatch(setNewGroupActive(userId));
+    });
 }
+
