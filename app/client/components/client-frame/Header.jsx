@@ -155,8 +155,14 @@ export class Header extends React.Component {
           $('[data-dismiss=modal]').trigger({ type: 'click' });
         },
         ({ response }) => {
+          let error = '';
+          if (response.status >= 500) {
+            error = { error: response.statusText };
+          } else {
+            error = response.data;
+          }
           this.setState({
-            error: response.data,
+            error,
             isLoading: false
           });
         }

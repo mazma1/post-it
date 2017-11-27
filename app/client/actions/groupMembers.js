@@ -35,7 +35,7 @@ export function getGroupMembers(groupId) {
 export function submitNewUser({ groupId, identifier }) {
   return dispatch => axios.post(
     `/api/v1/groups/${groupId}/user`, { identifier }
-  ).then((res) => {
+  ).then(() => {
     dispatch(getGroupMembers(groupId));
   });
 }

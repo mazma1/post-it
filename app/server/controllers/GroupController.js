@@ -96,7 +96,7 @@ const GroupController = {
                 };
                 return models.GroupMember.create(details)
                   .then(() => res.status(201).send({
-                    message: 'User successfully added to group',
+                    message: 'User successfully added to group'
                   }))
                   .catch(err => res.status(500).send({ error: err }));
               });

@@ -23,9 +23,6 @@ export default (sequelize, DataTypes) => {
       }
     }
   });
-  GroupMember.associate = (models) => {
-
-  };
 
   return GroupMember;
 };
