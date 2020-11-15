@@ -1,4 +1,4 @@
-# Post It
+# Post It - Test GitPod
 A simple Node.js application that allows friends and colleagues create groups for messaging. Up to date version of project can be found on the `development` branch.
 
 [![Build Status](https://travis-ci.org/mazma1/post-it.svg?branch=chore/implement-feedback)](https://travis-ci.org/mazma1/post-it)
